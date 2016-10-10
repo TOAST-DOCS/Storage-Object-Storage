@@ -361,5 +361,5 @@ X-Auth-Token: {Token ID}
 
 ### References
 
-Swift API v1 - http://developer.openstack.org/api-ref-objectstorage-v1.html
+Swift API v1 - http://developer.openstack.org/api-ref-objectstorage-v1.html <br />
 Identity API v2 - http://developer.openstack.org/api-ref-identity-v2.html
