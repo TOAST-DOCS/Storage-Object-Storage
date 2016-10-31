@@ -22,7 +22,7 @@ In case of using API, to obtain Tenant Name which is used as a request parameter
 
 3.  Tenant Name which project ID item value of Project List uses in API
 
-<img src="media/image1.png" width="560" height="136" />
+<img src="http://static.toastoven.net/prod_infrastructure/object_storage/img_111.png" />
 
 \[Figure 1\] Check Tenant Name
 
@@ -30,11 +30,11 @@ In case of using API, to obtain Tenant Name which is used as a request parameter
 
 In case of using API, to obtain Account which is used as a request parameter, refer to Account name in &lt;API Endpoint&gt; chat window as shown in \[Figure 2\].
 
-<img src="media/image2.png" width="560" height="128" />
+<img src="http://static.toastoven.net/prod_infrastructure/object_storage/img_112_sc.png" />
 
 \[Figure 2\] Check Account
 
-<img src="media/image3.png" width="560" height="425" />
+<img src="http://static.toastoven.net/prod_infrastructure/object_storage/img_113.png" />
 
 \[Figure 3\] Account check chat window
 
