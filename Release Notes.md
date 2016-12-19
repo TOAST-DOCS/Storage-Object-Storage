@@ -1,3 +1,5 @@
+## Infrastructure > Object Storage > Release Notes
+
 ### 2016.12.22
 
 #### 기능 개선/변경
