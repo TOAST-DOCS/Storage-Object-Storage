@@ -37,7 +37,7 @@ POST   https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ```
 ```
 [Notice]
-공공클라우드 서비스의 Token 발급 URL은 아래와 같습니다.
+TOAST Cloud G 서비스의 Token 발급 URL은 아래와 같습니다.
 POST   https://gov-api-compute.cloud.toast.com/identity/v2.0/tokens
 ```
 
@@ -119,7 +119,7 @@ POST   https://gov-api-compute.cloud.toast.com/identity/v2.0/tokens
 ```
 [Notice]
 아래 API 가이드는 일반클라우드 서비스를 기준으로 작성되었습니다.
-공공클라우드 서비스용 Object Storage API의 endpoint URL은 https://gov-api-storage.cloud.toast.com 이므로, 
+TOAST Cloud G 서비스용 Object Storage API의 endpoint URL은 https://gov-api-storage.cloud.toast.com 이므로, 
 아래 가이드의 내용중 endpoint URL 부분을 수정해서 이용하시길 바랍니다.
 ```
 
