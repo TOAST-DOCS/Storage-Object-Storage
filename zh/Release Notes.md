@@ -1,5 +1,11 @@
 ## Infrastructure > Object Storage > Release Notes
 
+### 2017.10.26
+
+#### 기능 수정
+* Object Storage 폴더명 특수문자 제한
+    * Object Storage의 컨테이너 및 폴더 이름에 일부 특수 문자(., .., &, <, >, ", ', ;)와 공백 문자는 사용할 수 없도록 수정되었습니다.
+
 ### 2017.03.23
 
 #### 기능 개선
