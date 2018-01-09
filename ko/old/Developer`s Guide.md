@@ -111,6 +111,10 @@ POST   https://api-compute.cloud.toast.com/identity/v2.0/tokens
 > [주의]  
 > Token 발급 응답은 “expires” field를 포함하고 있습니다. 이field는 발급받은 Token이 언제까지 유효한지를 알려줍니다. 매번 새로운 Token을 발급받을 필요 없이, 이 정보를 사용해 Token의 유효 기간을 확인하고 갱신할 수 있도록 합니다.
 
+```
+PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
+X-Auth-Token: {Token ID}
+```
 ## Containers
 
 ### Container 생성
