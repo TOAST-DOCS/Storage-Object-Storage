@@ -21,7 +21,15 @@ API를 이용할 때 Tenant Name을 파라미터로 입력해야 합니다. Tena
 
 ### API Endpoint 확인
 
-API의  엔드 포인트는 `[API Endpoint]` 버튼을 클릭해 확인할 수 있습니다. 인증 토큰을 받기 위한 API는 Identity URL을, 그 외 API는 Object-Store URL을 사용합니다. Object-Store URL에는 사용자의 Account 정보가 포함되어 있습니다.
+API의  엔드 포인트는 `[API Endpoint]` 버튼을 클릭해 확인할 수 있습니다.
+
+| 항목 | API Endpoint | 용도 |
+|---|---|---|
+| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | 인증 토큰 발급 |
+| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 오브젝트 스토리지 제어 |
+
+> [참조]
+> API에 사용되는 사용자의 Account는 `AUTH_***` 형태의 문자열입니다. Object-Store API Endpoint에 포함되어 있습니다.
 
 
 ## 인증 토큰 발급
@@ -29,8 +37,9 @@ API의  엔드 포인트는 `[API Endpoint]` 버튼을 클릭해 확인할 수 �
 인증 토큰은 오브젝트 스토리지의 RESTful API를 사용할 때 필요한 인증키입니다. 외부 공개로 설정하지 않은 컨테이너나 개체들에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정 별로 관리됩니다. URL Prefix는 앞서 확인한 Identity URL 입니다.
 
 [Method, URL]
+
 ```
-POST    /tokens
+POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ```
 
 [Request Parameters]
@@ -82,26 +91,7 @@ POST    /tokens
             },
             "issued_at": "2018-01-15T07:05:05.719672"
         },
-        "serviceCatalog": [
-            …
-        ],
-        "user": {
-            "username": "…",
-            "id": "…",
-            "name": "…",
-            "roles": [
-                {
-                    "name": "project_admin"
-                }
-            ],
-            "roles_links": []
-        },
-        "metadata": {
-            "roles": [
-                "…"
-            ],
-            "is_admin": 0
-        }
+        …
     }
 }
 ```
@@ -111,14 +101,14 @@ POST    /tokens
 
 
 ## 컨테이너
-컨테이너 API의 Prefix는 앞서 확인한 Object-Store URL 입니다.
 
 ### 컨테이너 생성
 오브젝트 스토리지에 파일을 올리기 위해서는 반드시 컨테이너를 생성해야 합니다.
 
 [Method, URL]
+
 ```
-PUT /{Container}
+PUT https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -127,6 +117,7 @@ X-Auth-Token: [토큰 ID]
 |이름|종류|속성|설명|
 |---|---|---|---|
 |X-Auth-Token|Header|String|발급 받은 토큰 ID|
+|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|URL|String|생성할 컨테이너 이름|
 
 > [참고]  
@@ -161,7 +152,7 @@ X-Auth-Token: [토큰 ID]
 [Method, URL]
 
 ```
-POST  /{Container}
+POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: {토큰 ID}
 X-Container-Read: {컨테이너 읽기 정책}
 X-Container-Write: {컨테이너 쓰기 정책}
@@ -174,6 +165,7 @@ X-Container-Write: {컨테이너 쓰기 정책}
 |X-Auth-Token|Header|String|발급 받은 토큰 ID|
 |X-Container-Read|Header|String|컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에 대해 접근 허용<br/>.r:example.com,test.com – 특정 주소에 대해 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에 대해 접근 허용|
 |X-Container-Write|Header|String|컨테이너 쓰기에 대한 접근 규칙 지정|
+|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|URL|String|수정할 컨테이너 이름|
 
 [Request Example]
@@ -203,7 +195,7 @@ GET https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 [Method, URL]
 
 ```
-DELETE   /{Container}
+DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -212,13 +204,13 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
+|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|	URL|	String|	삭제할 컨테이너 이름|
 
 > [참고]  
 > 이 요청은 응답 본문을 반환하지 않습니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## 개체
-개체 API의 Prefix는 앞서 확인한 Object-Store URL 입니다.
 
 ### 개체 업로드
 
@@ -227,7 +219,7 @@ X-Auth-Token: [토큰 ID]
 [Method, URL]
 
 ```
-PUT   /{Container}/{Object}
+PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -236,6 +228,7 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
+|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	생성할 개체 이름|
 |-|	Body|	Plain| Text	생성할 개체의 내용|
@@ -250,7 +243,7 @@ X-Auth-Token: [토큰 ID]
 [Method, URL]
 
 ```
-PUT   /{Container}/{Object}
+PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -259,6 +252,7 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
+|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	내용을 수정할 개체 이름|
 
@@ -270,7 +264,7 @@ X-Auth-Token: [토큰 ID]
 [Method, URL]
 
 ```
-GET   /{Container}/{Object}
+GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -279,6 +273,7 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
+|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	내려 받을 개체 이름|
 
@@ -290,7 +285,7 @@ X-Auth-Token: [토큰 ID]
 [Method, URL]
 
 ```
-COPY   /{Container}/{Object}
+COPY   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -300,6 +295,7 @@ X-Auth-Token: [토큰 ID]
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
 |Destination|	Header|	String|	개체를 복사할 대상, `{컨테이너 이름} / {복사된 개체의 이름}`|
+|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	복사할 개체 이름|
 
@@ -312,7 +308,7 @@ X-Auth-Token: [토큰 ID]
 [Method, URL]
 
 ```
-POST   /{Container}/{Object}
+POST   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -322,6 +318,7 @@ X-Auth-Token: [토큰 ID]
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
 |Content-Type|	Header|	String|	변경할 개체 형식|
+|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	속성을 수정할 개체 이름|
 
@@ -333,7 +330,7 @@ X-Auth-Token: [토큰 ID]
 [Method, URL]
 
 ```
-DELETE   /{Container}/{Object}
+DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -342,6 +339,7 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
+|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	삭제할 개체 이름|
 
