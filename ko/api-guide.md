@@ -2,35 +2,35 @@
 
 ## 사전 준비
 ### User Access Key ID 발급
+
+API를 이용하기 위해 인증 토큰을 발급 받으려면 Secret Access Key가 필요합니다. 이 키는 User Access Key ID와 함께 발급 받을 수 있습니다.
+
 1. 웹 콘솔 상단 오른쪽의 마이페이지 버튼 클릭
 2. 드롭다운 메뉴에서 [API 보안 설정] 메뉴 클릭
-3. API 보안 설정 메뉴에서 User Access Key ID 발급
+3. API 보안 설정 메뉴에서 User Access Key ID 발급 버튼 클릭
+4. Secret Access Key 발급
+
 
 ### Tenant Name 확인
-API를 이용할 때 요청 파라미터로 사용하는 Tenant Name을 얻어오기 위해서는 [그림 1]과 같이 프로젝트 설정의 프로젝트 기본 정보에서 [프로젝트 ID] 값을 참조합니다.
+
+API를 이용할 때 Tenant Name을 파라미터로 입력해야 합니다. Tenant Name은 프로젝트 설정 페이지에서 확인할 수 있는 [프로젝트 ID]를 사용합니다.
 
 1. 웹 콘솔의 프로젝트 설정 버튼 클릭
-3. 프로젝트 설정의 프로젝트 ID 값이 API에서 사용하는 Tenant Name
+2. 프로젝트 ID 값 확인
 
-![[그림 1] Tenant Name 확인](http://static.toastoven.net/prod_infrastructure/object_storage/img_111.png)
-<center>[그림 1] Tenant Name 확인</center>
 
-### Account 확인
-API를 이용할 때 요청 파라미터로 사용하는 Account를 얻어오기 위해서는 [그림 2]와 같이 &lt;API Endpoint> 대화창에서 Account 항목을 참조합니다.
+### API Endpoint 확인
 
-![[그림 2] Account 확인](http://static.toastoven.net/prod_infrastructure/object_storage/img_112_sc.png)
-<center>[그림 2] Account 확인</center>
+API의  엔드 포인트는 `[API Endpoint]` 버튼을 클릭해 확인할 수 있습니다. 인증 토큰을 받기 위한 API는 Identity URL을, 그 외 API는 Object-Store URL을 사용합니다. Object-Store URL에는 사용자의 Account 정보가 포함되어 있습니다.
 
-![[그림 3] Account 확인 대화창](http://static.toastoven.net/prod_infrastructure/object_storage/img_113.png)
-<center>[그림 3] Account 확인 대화창</center>
 
 ## 인증 토큰 발급
 
-토큰은 오브젝트 스토리지의 RESTful API를 사용할 때 필요한 인증키입니다. 외부로 공개 설정하지 않은 컨테이너나 개체들에 접근하기 위해서는 토큰이 필요합니다. 토큰은 계정 별로 관리됩니다.
+인증 토큰은 오브젝트 스토리지의 RESTful API를 사용할 때 필요한 인증키입니다. 외부 공개로 설정하지 않은 컨테이너나 개체들에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정 별로 관리됩니다. URL Prefix는 앞서 확인한 Identity URL 입니다.
 
 [Method, URL]
 ```
-POST   https://api-compute.cloud.toast.com/identity/v2.0/tokens
+POST    /tokens
 ```
 
 [Request Parameters]
@@ -39,17 +39,17 @@ POST   https://api-compute.cloud.toast.com/identity/v2.0/tokens
 |---|---|---|---|
 |TenantName|	Body or Plain|	String|	TOAST 프로젝트 ID|
 |Username|	Plain|	String|	TOAST 사용자 ID, 현재 프로젝트에 멤버로 등록된 사용자|
-|Password|	Plain|	String|	사용자 비밀번호, 사전에 발급받은 User Access Key ID
+|Password|	Plain|	String|	사용자 비밀번호, 사전에 발급받은 Secret Access Key
 
 [Request Body Example]
 
 ```
 {
   "auth": {
-    "tenantName": "X1k372c9",
+    "tenantName": "{Project ID}",
     "passwordCredentials": {
-      "username": "test@nhnent.com",
-      "password": "..."
+      "username": "{TOAST Account E-Mail}",
+      "password": "{Secret Access Key}"
     }
   }
 }
@@ -69,17 +69,18 @@ POST   https://api-compute.cloud.toast.com/identity/v2.0/tokens
 {
     "access": {
         "token": {
-            "expires": "2015-11-23T03:14:23Z",
-            "id": "bbefb86f8e7d41cfb40e582ca5ca39a8",
+            "expires": "2018-01-15T08:05:05Z",
+            "id": "b587ae461278419da6ecd21a2344c8aa",
             "tenant": {
                 "description": "",
                 "enabled": true,
-                "id": "70c11b619c3f4a53af8d2466ee1b0234",
-                "name": "X1k372c9",
+                "id": "c6439197d5e74e4593ca37a62bbc09a6",
+                "name": "9AD5KRlH",
+                "groupId": "XEj2zkHrbA7modGU",
                 "project_domain": "NORMAL",
                 "swift": true
             },
-            "issued_at": "2015-11-23T02:14:23.482540"
+            "issued_at": "2018-01-15T07:05:05.719672"
         },
         "serviceCatalog": [
             …
@@ -105,57 +106,52 @@ POST   https://api-compute.cloud.toast.com/identity/v2.0/tokens
 }
 ```
 
-> [주의]  
-> 토큰 발급 응답은 “expires” 항목을 포함하고 있습니다. 이 항목은 발급받은 토큰이 언제까지 유효한지를 알려줍니다. 매번 새로운 토큰을 발급받을 필요 없이, 이 정보를 사용해 토큰의 유효 기간을 확인하고 갱신할 수 있도록 합니다.
+> [참고]  
+> 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급 받아야 합니다.
 
-```
-PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [토큰 ID]
-```
+
 ## 컨테이너
+컨테이너 API의 Prefix는 앞서 확인한 Object-Store URL 입니다.
 
 ### 컨테이너 생성
 오브젝트 스토리지에 파일을 올리기 위해서는 반드시 컨테이너를 생성해야 합니다.
 
 [Method, URL]
 ```
-PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
+PUT /{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
 [Request Parameters]
 
-|이름|	종류|	속성|	설명|
+|이름|종류|속성|설명|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
-|Account|	URL|	String|	사용자 계정명, API Endpoint> 대화창에서 확인|
-|Container|	URL|	String|	생성할 컨테이너 이름|
+|X-Auth-Token|Header|String|발급 받은 토큰 ID|
+|Container|URL|String|생성할 컨테이너 이름|
 
 > [참고]  
-> 이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성에 성공했다면 상태코드 201을 반환합니다.
+> 이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태코드 201을 반환합니다.
 
 ### 컨테이너 조회
-
-지정한 컨테이너에 대한 정보와 내부에 저장된 개체들의 목록을 조회합니다.
+지정한 컨테이너의 정보와 내부에 저장된 개체들의 목록을 조회합니다.
 
 [Method, URL]
 ```
-GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
+GET   /{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
 [Request Parameters]
 
-|이름|	종류|	속성|	설명|
+|이름|종류|속성|설명|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
-|Account|	URL|	String|	사용자 계정명|
-|Container|	URL|	String|	조회할 컨테이너 이름|
+|X-Auth-Token|Header|String|발급 받은 토큰 ID|
+|Container|URL|String|조회할 컨테이너 이름|
 
 [Response Body Example]
 
 ```
-{지정한 컨테이너에 속한 개체 목록}
+[지정한 컨테이너에 속한 개체 목록]
 ```
 
 ### 컨테이너 수정
@@ -165,7 +161,7 @@ X-Auth-Token: [토큰 ID]
 [Method, URL]
 
 ```
-POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
+POST  /{Container}
 X-Auth-Token: {토큰 ID}
 X-Container-Read: {컨테이너 읽기 정책}
 X-Container-Write: {컨테이너 쓰기 정책}
@@ -173,13 +169,12 @@ X-Container-Write: {컨테이너 쓰기 정책}
 
 [Request Parameters]
 
-|이름|	종류|	속성|	설명|
+|이름|종류|속성|설명|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
-|X-Container-Read|	Header|	String|	컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에 대해 접근 허용<br/>.r:example.com,test.com – 특정 주소에 대해 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에 대해 접근 허용|
-|X-Container-Write|	Header|	String|	컨테이너 쓰기에 대한 접근 규칙 지정|
-|Account|	URL|	String|	사용자 계정명|
-|Container|	URL|	String|	수정할 컨테이너 이름|
+|X-Auth-Token|Header|String|발급 받은 토큰 ID|
+|X-Container-Read|Header|String|컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에 대해 접근 허용<br/>.r:example.com,test.com – 특정 주소에 대해 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에 대해 접근 허용|
+|X-Container-Write|Header|String|컨테이너 쓰기에 대한 접근 규칙 지정|
+|Container|URL|String|수정할 컨테이너 이름|
 
 [Request Example]
 
@@ -208,7 +203,7 @@ GET https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 [Method, URL]
 
 ```
-DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
+DELETE   /{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -217,22 +212,22 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
-|Account|	URL|	String|	사용자 계정명|
 |Container|	URL|	String|	삭제할 컨테이너 이름|
 
 > [참고]  
-> 이 요청은 응답 본문을 반환하지 않습니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다. 그렇지 않으면 에러코드를 반환합니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+> 이 요청은 응답 본문을 반환하지 않습니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## 개체
+개체 API의 Prefix는 앞서 확인한 Object-Store URL 입니다.
 
 ### 개체 업로드
 
-지정한 컨테이너에 새로운 개체를 업로드합니다..
+지정한 컨테이너에 새로운 개체를 업로드합니다.
 
 [Method, URL]
 
 ```
-PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+PUT   /{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -241,22 +236,21 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
-|Account|	URL|	String|	사용자 계정명|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	생성할 개체 이름|
 |-|	Body|	Plain| Text	생성할 개체의 내용|
 
 > [참고]  
-> 요청 Header에서 Content-type 항목의 값을 개체 속성에 맞게 설정 해야 합니다. 요청이 올바르면 상태코드 201를 반환합니다.
+> 요청 헤더에 개체 속성에 맞는 Content-type 항목을 설정 해야 합니다. 요청이 올바르면 상태코드 201를 반환합니다.
 
 ### 개체 내용 수정
 
-생성하려는 개체가 이미 존재하는 경우 해당 개체의 내용이 수정되어 반영됩니다.
+개체 업로드 API와 같지만 개체가 이미 컨테이너에 있다면 해당 개체의 내용이 수정됩니다.
 
 [Method, URL]
 
 ```
-PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+PUT   /{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -265,19 +259,18 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
-|Account|	URL|	String|	사용자 계정명|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	내용을 수정할 개체 이름|
 
 > [참고]  
-> 요청 Header에서 Content-type 항목의 값을 개체 속성에 맞게 설정 해야 합니다. 요청이 올바르면 상태코드 201를 반환합니다.
+> 요청 헤더에 개체 속성에 맞는 Content-type 항목을 설정 해야 합니다. 요청이 올바르면 상태코드 201를 반환합니다.
 
 ### 개체 다운로드
 
 [Method, URL]
 
 ```
-GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+GET   /{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -286,7 +279,6 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
-|Account|	URL|	String|	사용자 계정명|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	내려 받을 개체 이름|
 
@@ -298,7 +290,7 @@ X-Auth-Token: [토큰 ID]
 [Method, URL]
 
 ```
-COPY   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+COPY   /{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -307,20 +299,20 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
-|Destination|	Header|	String|	개체를 복사할 대상, 컨테이너 이름 + 복사된 개체의 이름|
-|Account|	URL|	String|	사용자 계정명|
+|Destination|	Header|	String|	개체를 복사할 대상, `{컨테이너 이름} / {복사된 개체의 이름}`|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	복사할 개체 이름|
+
 
 > [참고]  
 > 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태코드 201을 반환합니다.
 
-### 개체 속성 수정
+### 개체 메타데이터 수정
 
 [Method, URL]
 
 ```
-POST   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+POST   /{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -330,7 +322,6 @@ X-Auth-Token: [토큰 ID]
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
 |Content-Type|	Header|	String|	변경할 개체 형식|
-|Account|	URL|	String|	사용자 계정명|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	속성을 수정할 개체 이름|
 
@@ -340,8 +331,9 @@ X-Auth-Token: [토큰 ID]
 ### 개체 삭제
 
 [Method, URL]
+
 ```
-DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+DELETE   /{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
@@ -350,7 +342,6 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급 받은 토큰 ID|
-|Account|	URL|	String|	사용자 계정명|
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	삭제할 개체 이름|
 
