@@ -47,8 +47,8 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |TenantName|	Body or Plain|	String|	TOAST 프로젝트 ID|
-|Username|	Plain|	String|	TOAST 사용자 ID, 현재 프로젝트에 멤버로 등록된 사용자|
-|Password|	Plain|	String|	사용자 비밀번호, 사전에 발급받은 Secret Access Key
+|Username|	Plain|	String|	User Access Key ID |
+|Password|	Plain|	String|	Secret Access Key |
 
 [Request Body Example]
 
@@ -57,7 +57,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
   "auth": {
     "tenantName": "{Project ID}",
     "passwordCredentials": {
-      "username": "{User Access Key ID or TOAST Account E-Mail}",
+      "username": "{User Access Key ID}",
       "password": "{Secret Access Key}"
     }
   }
