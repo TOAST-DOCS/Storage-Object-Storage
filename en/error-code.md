@@ -1,1 +1,1 @@
-## Storage > Object Storage > Error Code
+## Storage > Object Storage > 오류 코드
