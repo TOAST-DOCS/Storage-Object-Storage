@@ -28,7 +28,7 @@ API의 엔드포인트는 `[API Endpoint]` 버튼을 클릭해 확인할 수 있
 | Identity | https://api-compute.cloud.toast.com/identity/v2.0 | 인증 토큰 발급 |
 | Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 오브젝트 스토리지 제어 |
 
-> [참조]
+> [참고]  
 > API에 사용되는 사용자의 Account는 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
 
 
