@@ -128,7 +128,7 @@ X-Auth-Token: [토큰 ID]
 
 [Method, URL]
 ```
-GET   /{Container}
+GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
