@@ -1,4 +1,4 @@
-## Storage > Object Storage > 릴리스 노트
+## Storage > Object Storage > release notes
 
 ### 2017.10.26
 

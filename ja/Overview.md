@@ -1,4 +1,4 @@
-## Storage > Object Storage > 개요
+## Storage > Object Storage > Overview
 
 오브젝트 스토리지는 많은 양의 데이터를 저장할 수 있는 온라인 저장소 서비스입니다.
 

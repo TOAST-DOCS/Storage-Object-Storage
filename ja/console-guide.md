@@ -1,5 +1,4 @@
-## Storage > 오브젝트 스토리지 > 콘솔 사용 가이드
-
+## Storage > 오브젝트 스토리지 > console guide
 
 ### 컨테이너 생성
 

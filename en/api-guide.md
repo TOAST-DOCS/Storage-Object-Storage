@@ -1,4 +1,4 @@
-## Storage > Object Storage > API 가이드
+## Storage > Object Storage > api guide
 
 ## 사전 준비
 ### User Access Key ID 발급
