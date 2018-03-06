@@ -11,7 +11,7 @@ API를 이용할 때 Tenant Name을 파라미터로 입력해야 합니다. Tena
 
 ### API Endpoint 확인
 
-API의 엔드포인트는 Object Storage 서비스 페이지의 `[API Endpoint]` 버튼을 클릭해 확인할 수 있습니다.
+API의 엔드포인트는 Object Storage 서비스 페이지의 `[API Endpoint 설정]` 버튼을 클릭해 확인할 수 있습니다.
 
 | 항목 | API Endpoint | 용도 |
 |---|---|---|
