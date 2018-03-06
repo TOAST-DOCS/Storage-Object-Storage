@@ -26,7 +26,7 @@ API의 엔드포인트는 Object Storage 서비스 페이지의 `[API Endpoint]`
 API 비밀번호는 Object Storage 서비스 페이지의 `[API Endpoint 설정]` 버튼을 클릭한 다음 설정할 수 있습니다.
 
 1. [API Endpoint 설정] 버튼 클릭
-2. API Endpoint 설정 > API 비밀번호 설정 항목에서 토큰 발급시 사용할 비밀번호 입력
+2. API Endpoint 설정 > API 비밀번호 설정 항목에 토큰 발급시 사용할 비밀번호 입력
 3. 비밀번호 입력 후 저장 버튼 클릭
 
 ## 인증 토큰 발급
