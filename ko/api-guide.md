@@ -1,15 +1,6 @@
 ## Storage > Object Storage > API 가이드
 
 ## 사전 준비
-### User Access Key ID 발급
-
-API를 이용하기 위해 인증 토큰을 발급받으려면 Secret Access Key가 필요합니다. 이 키는 User Access Key ID와 함께 발급받을 수 있습니다.
-
-1. 웹 콘솔 상단 오른쪽의 계정명 클릭
-2. 드롭다운 메뉴에서 [API 보안 설정] 클릭
-3. API 보안 설정 메뉴에서 User Access Key ID 발급 버튼 클릭
-4. Secret Access Key 발급
-
 
 ### Tenant Name 확인
 
@@ -18,10 +9,9 @@ API를 이용할 때 Tenant Name을 파라미터로 입력해야 합니다. Tena
 1. 웹 콘솔의 프로젝트 설정 버튼 클릭
 2. 프로젝트 ID 값 확인
 
-
 ### API Endpoint 확인
 
-API의 엔드포인트는 `[API Endpoint]` 버튼을 클릭해 확인할 수 있습니다.
+API의 엔드포인트는 Object Storage 서비스 페이지의 `[API Endpoint 설정]` 버튼을 클릭해 확인할 수 있습니다.
 
 | 항목 | API Endpoint | 용도 |
 |---|---|---|
@@ -31,6 +21,13 @@ API의 엔드포인트는 `[API Endpoint]` 버튼을 클릭해 확인할 수 있
 > [참고]  
 > API에 사용되는 사용자의 Account는 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
 
+### API 비밀번호 설정
+
+API 비밀번호는 Object Storage 서비스 페이지의 `[API Endpoint 설정]` 버튼을 클릭한 다음 설정할 수 있습니다.
+
+1. [API Endpoint 설정] 버튼 클릭
+2. API Endpoint 설정 > API 비밀번호 설정 항목에 토큰 발급시 사용할 비밀번호 입력
+3. 비밀번호 입력 후 저장 버튼 클릭
 
 ## 인증 토큰 발급
 
@@ -45,9 +42,9 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
-|TenantName|	Body or Plain|	String|	TOAST 프로젝트 ID|
-|Username|	Plain|	String|	User Access Key ID |
-|Password|	Plain|	String|	Secret Access Key |
+|tenantName|	Body or Plain|	String|	TOAST 프로젝트 ID|
+|username|	Plain|	String|	TOAST 계정 ID(Email) 입력|
+|password|	Plain|	String|	API Endpoint 설정 대화창에서 저장한 비밀번호|
 
 **[Request Body Example]**
 ```
@@ -55,8 +52,8 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
   "auth": {
     "tenantName": "{Project ID}",
     "passwordCredentials": {
-      "username": "{User Access Key ID}",
-      "password": "{Secret Access Key}"
+      "username": "{TOAST ID}",
+      "password": "{API Password}"
     }
   }
 }
