@@ -1,15 +1,6 @@
-## Storage > Object Storage > api guide
+## Storage > Object Storage > API 가이드
 
 ## 사전 준비
-### User Access Key ID 발급
-
-API를 이용하기 위해 인증 토큰을 발급받으려면 Secret Access Key가 필요합니다. 이 키는 User Access Key ID와 함께 발급받을 수 있습니다.
-
-1. 웹 콘솔 상단 오른쪽의 계정명 클릭
-2. 드롭다운 메뉴에서 [API 보안 설정] 클릭
-3. API 보안 설정 메뉴에서 User Access Key ID 발급 버튼 클릭
-4. Secret Access Key 발급
-
 
 ### Tenant Name 확인
 
@@ -18,53 +9,57 @@ API를 이용할 때 Tenant Name을 파라미터로 입력해야 합니다. Tena
 1. 웹 콘솔의 프로젝트 설정 버튼 클릭
 2. 프로젝트 ID 값 확인
 
-
 ### API Endpoint 확인
 
-API의 엔드포인트는 `[API Endpoint]` 버튼을 클릭해 확인할 수 있습니다.
+API의 엔드포인트는 Object Storage 서비스 페이지의 `[API Endpoint 설정]` 버튼을 클릭해 확인할 수 있습니다.
 
 | 항목 | API Endpoint | 용도 |
 |---|---|---|
 | Identity | https://api-compute.cloud.toast.com/identity/v2.0 | 인증 토큰 발급 |
 | Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 오브젝트 스토리지 제어 |
 
-> [참조]
+> [참고]  
 > API에 사용되는 사용자의 Account는 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
 
+### API 비밀번호 설정
+
+API 비밀번호는 Object Storage 서비스 페이지의 `[API Endpoint 설정]` 버튼을 클릭한 다음 설정할 수 있습니다.
+
+1. [API Endpoint 설정] 버튼 클릭
+2. API Endpoint 설정 > API 비밀번호 설정 항목에 토큰 발급시 사용할 비밀번호 입력
+3. 비밀번호 입력 후 저장 버튼 클릭
 
 ## 인증 토큰 발급
 
 인증 토큰은 오브젝트 스토리지의 RESTful API를 사용할 때 필요한 인증키입니다. 외부 공개로 설정하지 않은 컨테이너나 개체들에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
-|TenantName|	Body or Plain|	String|	TOAST 프로젝트 ID|
-|Username|	Plain|	String|	User Access Key ID |
-|Password|	Plain|	String|	Secret Access Key |
+|tenantName|	Body or Plain|	String|	TOAST 프로젝트 ID|
+|username|	Plain|	String|	TOAST 계정 ID(Email) 입력|
+|password|	Plain|	String|	API Endpoint 설정 대화창에서 저장한 비밀번호|
 
-[Request Body Example]
-
+**[Request Body Example]**
 ```
 {
   "auth": {
     "tenantName": "{Project ID}",
     "passwordCredentials": {
-      "username": "{User Access Key ID}",
-      "password": "{Secret Access Key}"
+      "username": "{TOAST ID}",
+      "password": "{API Password}"
     }
   }
 }
 ```
 
-[Response Parameters]
+**[Response Parameters]**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
@@ -72,8 +67,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 |access.token.tenant.id|	Plain|	String|	토큰을 요청한 프로젝트에 대응하는 Tenant ID|
 |access.token.expires|	Plain|	String|	발급된 토큰이 만료되는 시간, <br/> 토큰 발급 시간으로부터 1시간|
 
-[Response Body Example]
-
+**[Response Body Example]**
 ```
 {
     "access": {
@@ -105,14 +99,13 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ### 컨테이너 생성
 오브젝트 스토리지에 파일을 올리기 위해서는 반드시 컨테이너를 생성해야 합니다.
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 PUT https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|종류|속성|설명|
 |---|---|---|---|
@@ -120,19 +113,19 @@ X-Auth-Token: [토큰 ID]
 |Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|URL|String|생성할 컨테이너 이름|
 
-> [참고]  
+> [참고]
 > 이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
 
 ### 컨테이너 조회
 지정한 컨테이너의 정보와 내부에 저장된 개체들의 목록을 조회합니다.
 
-[Method, URL]
+**[Method, URL]**
 ```
-GET   /{Container}
+GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|종류|속성|설명|
 |---|---|---|---|
@@ -140,7 +133,6 @@ X-Auth-Token: [토큰 ID]
 |Container|URL|String|조회할 컨테이너 이름|
 
 [Response Body Example]
-
 ```
 [지정한 컨테이너에 속한 개체 목록]
 ```
@@ -149,8 +141,7 @@ X-Auth-Token: [토큰 ID]
 
 컨테이너의 메타데이터를 변경하여 접근 규칙을 지정할 수 있습니다.
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: {토큰 ID}
@@ -158,7 +149,7 @@ X-Container-Read: {컨테이너 읽기 정책}
 X-Container-Write: {컨테이너 쓰기 정책}
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|종류|속성|설명|
 |---|---|---|---|
@@ -168,20 +159,19 @@ X-Container-Write: {컨테이너 쓰기 정책}
 |Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|URL|String|수정할 컨테이너 이름|
 
-[Request Example]
-
+**[Request Example]**
 ```
 POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: [토큰 ID]
 X-Container-Read: .r:*
 ```
 
-> [참고]  
+> [참고]
 > 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 읽기 권한을 공개로 설정한 후에는 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
 
-[Verification Example]
+**[Verification Example]**
 ```
 $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 
@@ -192,14 +182,13 @@ $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 
 지정한 컨테이너를 삭제합니다.
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
@@ -207,7 +196,7 @@ X-Auth-Token: [토큰 ID]
 |Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|	URL|	String|	삭제할 컨테이너 이름|
 
-> [참고]  
+> [참고]
 > 이 요청은 응답 본문을 반환하지 않습니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## 개체
@@ -216,14 +205,13 @@ X-Auth-Token: [토큰 ID]
 
 지정한 컨테이너에 새로운 개체를 업로드합니다.
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
@@ -233,7 +221,7 @@ X-Auth-Token: [토큰 ID]
 |Object|	URL|	String|	생성할 개체 이름|
 |-|	Body|	Plain| Text	생성할 개체의 내용|
 
-> [참고]  
+> [참고]
 > 요청 헤더에 개체 속성에 맞는 Content-type 항목을 설정해야 합니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 
@@ -241,8 +229,7 @@ X-Auth-Token: [토큰 ID]
 
 5GB를 초과하는 용량을 가진 개체는 5GB 이하의 세그먼트로 나누어 업로드해야 합니다.
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}/{Count}
 X-Auth-Token: [토큰 ID]
@@ -260,8 +247,7 @@ X-Auth-Token: [토큰 ID]
 
 모든 개체의 세그먼트를 업로드한 다음 매니패스트 개체를 생성하면 하나의 개체처럼 사용할 수 있습니다. 매니패스트 개체는 세그먼트들이 저장된 경로를 가리킵니다.
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
@@ -278,8 +264,7 @@ X-Object-Manifest: {Container}/{Object}/
 |-|	Body|	Plain| Text 분할한 개체의 내용|
 
 
-[Example]
-
+**[Example]**
 ```
 // 분할된 개체 업로드
 $ curl -X PUT -H 'X-Auth-Token: *****' http://10.162.50.125/v1/AUTH_*****/con/sample.jpg/001 --data-binary '.....'
@@ -296,14 +281,13 @@ $ curl http://10.162.50.125/v1/AUTH_*****/con/sample.jpg > sample.jpg
 
 개체 업로드 API와 같지만, 개체가 이미 컨테이너에 있다면 해당 개체의 내용이 수정됩니다.
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
@@ -312,19 +296,18 @@ X-Auth-Token: [토큰 ID]
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	내용을 수정할 개체 이름|
 
-> [참고]  
+> [참고]
 > 요청 헤더에 개체 속성에 맞는 Content-type 항목을 설정해야 합니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 ### 개체 다운로드
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
@@ -333,19 +316,18 @@ X-Auth-Token: [토큰 ID]
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	다운로드할 개체 이름|
 
-> [참고]  
+> [참고]
 > 개체의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
 ### 개체 복사
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 COPY   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
@@ -356,19 +338,18 @@ X-Auth-Token: [토큰 ID]
 |Object|	URL|	String|	복사할 개체 이름|
 
 
-> [참고]  
+> [참고]
 > 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 ### 개체 메타데이터 수정
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 POST   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
@@ -378,19 +359,18 @@ X-Auth-Token: [토큰 ID]
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	속성을 수정할 개체 이름|
 
-> [참고]  
+> [참고]
 > 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
 
 ### 개체 삭제
 
-[Method, URL]
-
+**[Method, URL]**
 ```
 DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
 ```
 
-[Request Parameters]
+**[Request Parameters]**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
@@ -399,11 +379,9 @@ X-Auth-Token: [토큰 ID]
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	삭제할 개체 이름|
 
-> [참고]  
+> [참고]
 > 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## References
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
-
-Identity API v2 - [http://developer.openstack.org/api-ref-identity-v2.html](http://developer.openstack.org/api-ref-identity-v2.html)
