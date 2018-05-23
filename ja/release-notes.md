@@ -1,6 +1,6 @@
 ## Storage > Object Storage > release notes
 
-### 2018.04.22
+### 2018.04.24
 
 #### 기능 수정
 * 폴더명 특수문자 제한
