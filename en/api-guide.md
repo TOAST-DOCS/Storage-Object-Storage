@@ -46,7 +46,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 |username|	Plain|	String|	TOAST 계정 ID(이메일) 입력|
 |password|	Plain|	String|	**API Endpoint 설정**에서 저장한 비밀번호|
 
-**Request Body Example**
+**Request Body**
 ```
 {
   "auth": {
@@ -132,9 +132,99 @@ X-Auth-Token: [토큰 ID]
 |X-Auth-Token|Header|String|발급받은 토큰 ID|
 |Container|URL|String|조회할 컨테이너 이름|
 
-**Response Body Example**
+**Response Body**
 ```
 [지정한 컨테이너에 속한 개체 목록]
+```
+
+#### 질의
+컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
+
+##### 1만 개 이상의 개체 목록 조회
+컨테이너 조회 API로 조회할 수 있는 목록의 개체 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 개체 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 개체의 다음 개체부터 최대 1만 개의 목록을 반환합니다.
+
+**Method, URL**
+```
+GET		https://api-storage.cloud.toast.com/v1/{Account}/{Container}?marker={Object}
+X-Auth-Token: [토큰 ID]
+```
+
+**Request Parameters**
+
+|이름|종류|속성|설명|
+|---|---|---|---|
+|X-Auth-Token|Header|String|발급받은 토큰 ID|
+|Container|URL|String|조회할 컨테이너 이름|
+|Object|URL|String|기준 개체 이름|
+
+**Response Body**
+```
+[지정한 컨테이너에 속한 지정한 개체 다음 개체 목록]
+```
+
+##### 폴더 단위의 개체 목록 조회
+컨테이너에 여러 개의 폴더를 생성하고, 폴더에 개체를 업로드했다면 `path` 질의를 이용해 폴더 단위로 개체 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 개체 목록은 조회할 수 없습니다.
+
+**Method, URL**
+```
+GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?path={Path}
+```
+
+**Request Parameters**
+
+|이름|종류|속성|설명|
+|---|---|---|---|
+|X-Auth-Token|Header|String|발급받은 토큰 ID|
+|Container|URL|String|조회할 컨테이너 이름|
+|Path|URL|String|조회할 폴더 이름|
+
+**Response Body**
+```
+[지정한 컨테이너에 속한 지정한 폴더의 개체 목록]
+```
+
+##### 접두어로 시작하는 개체 목록 조회
+`prefix` 질의를 사용하면 지정한 접두어로 시작하는 개체들의 목록을 반환합니다. path 질의로는 조회할 수 없는 하위 폴더를 포함한 폴더의 개체 목록을 조회하는데 사용할 수 있습니다.
+
+**Method, URL**
+```
+GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?prefix={Prefix}
+X-Auth-Token: [토큰 ID]
+```
+
+**Request Parameters**
+
+|이름|종류|속성|설명|
+|---|---|---|---|
+|X-Auth-Token|Header|String|발급받은 토큰 ID|
+|Container|URL|String|조회할 컨테이너 이름|
+|Prefix|URL|String|검색할 접두어|
+
+**Response Body**
+```
+[지정한 컨테이너에 속하고 지정한 접두어로 시작하는 개체 목록]
+```
+
+##### 목록의 최대 개체 수 지정
+`limit` 질의를 사용하면 반환할 개체 목록의 최대 개체 수를 지정할 수 있습니다.
+
+**Method, URL**
+```
+GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?limit={Number}
+X-Auth-Token: [토큰 ID]
+```
+
+**Request Parameters**
+
+|이름|종류|속성|설명|
+|---|---|---|---|
+|X-Auth-Token|Header|String|발급받은 토큰 ID|
+|Container|URL|String|조회할 컨테이너 이름|
+|Number|URL|String|목록에 표시할 개체 수|
+
+**Response Body**
+```
+[지정한 컨테이너에 속한 지정된 수 만큼의 개체 목록]
 ```
 
 ### 컨테이너 수정
@@ -161,9 +251,9 @@ X-Container-Write: {컨테이너 쓰기 정책}
 
 **Request Example**
 ```
-POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [토큰 ID]
-X-Container-Read: .r:*
+$ curl -X POST https://api-storage.cloud.toast.com/v1/{Account}/{Container} \
+  -H 'X-Auth-Token: [토큰 ID]' \
+  -H 'X-Container-Read: .r:*'
 ```
 
 > [참고]
