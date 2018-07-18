@@ -1,50 +1,50 @@
-## Storage > 오브젝트 스토리지 > 콘솔 사용 가이드
+## Storage > Object Storage > Console Guide
 
 
-### 컨테이너 생성
+### Create Containers 
 
-오브젝트 스토리지에 개체를 업로드하려면 반드시 하나 이상의 컨테이너가 필요합니다.
+To upload objects to object storage, at least one container is required. 
 
-* **컨테이너 접근 정책**
-    * Private: 허가된 사용자만 컨테이너 내부의 개체에 접근할 수 있습니다.
-    * Public: 공개 URL을 통해 누구나 컨테이너 내부의 개체에 접근할 수 있습니다.
+* **Container Access Policy**
+    * Private: Only allowed users can access objects within container.
+    * Public: Anyone can access objects within container via public URL.
 * **Storage Class**
-    * Standard : 기본값입니다.
+    * Standard: Default 
 
-> [참고]
-> 컨테이너 이름은 영문 255자, 한글 85자로 제한됩니다.
-
-
-### 컨테이너 삭제
-컨테이너를 삭제하기 전에 컨테이너가 비어 있는지 확인해야 합니다. 컨테이너 안에 개체가 남아 있는 경우 삭제되지 않습니다.
-
-> [참고]
-> 폴더를 삭제할 때도 개체가 남아 있는 경우 삭제되지 않습니다.
-
-### 폴더 생성
-
-폴더는 오브젝트 스토리지의 개체를 그룹으로 묶기 위한 가상의 단위입니다. Windows의 폴더나 Linux의 디렉터리와 유사하게 계층적으로 개체를 관리할 수 있도록 도와줍니다.
-
-> [참고]
-> 폴더 이름은 영문 255자, 한글 85자로 제한됩니다. 빗금(/)은 폴더를 구분하는 구분자로 사용됩니다.
+> [Note]
+> Container name is limited to 255 in English, or 85 in Korean. 
 
 
-### 개체 업로드
+### Delete Containers 
+Make sure the container is empty before it is deleted. Any remained objects in a container cannot be deleted. 
 
-모든 개체는 컨테이너 안에 업로드해야 합니다. 개체 하나의 최대 용량은 5GB로 제한됩니다.
+> [Note]
+> Objects that remain when folder is deleted shall not be deleted. 
 
-> [참고]
-> 웹 콘솔에서는 5GB를 초과하는 파일은 업로드할 수 없습니다.
-> 업로드할 개체의 용량이 5GB를 초과한다면 `split` 등의 명령줄 도구를 사용해 나누거나, 사용자 애플리케이션에서 5GB 이하의 크기로 나누어 업로드하도록 프로그래밍해야 합니다.
-> 자세한 사용 방법은 API 가이드의 [멀티파트 업로드](api-guide/#_10)를 참고합니다.
+### Create Folders 
 
-### 개체 다운로드
+Folder is a virtual unit to bind objects of object storage in groups. It helps to manage objects in the hierarchical order, similar to folder of Windows or directory of Linux. 
 
-컨테이너를 만들 때 컨테이너 접근 정책을 프라이빗으로 설정했다면 허용된 사용자만 개체에 접근할 수 있습니다. 만약 퍼블릭으로 설정했다면 **Actions > Public URL 보기**를 클릭해 개체의 공개 URL을 확인할 수 있습니다.  이 URL로 개체의 하이퍼링크를 만들거나, 개체를 직접 다운로드할 수 있습니다.
+> [Note]
+> Folder name cannot exceed 255 characters in English or 85 in Korean: slash (/) serves as a delimiter between folders. 
 
-**예제**
 
-* 웹 페이지 작성
+### Upload Objects 
+
+All objects must be uploaded to containers. One object cannot be larger than 5GB. 
+
+> [Note]
+> Files exceeding 5GB cannot be uploaded in a web console. 
+> Objects exceeding 5GB must be split by using commands, like  `split`, or programmed to be divided into less than 5GB before uploaded.  
+> Fore more details, refer to [Upload Multiple Parts](api-guide/#_10) of API guide. 
+
+### Download Objects 
+
+For creating a container, if container access policy is set private, only allowed users can access objects. If it is set public, click **Actions > View Public URL** to check public URL of the object. This URL helps to create hyperlink of an object or directly download objects.   
+
+**Example ** 
+
+* Write Web Pages 
 
 ```
 # cat > index.html
@@ -55,15 +55,15 @@
 </html>
 ```
 
-* 웹 서버 실행
+* Execute Web Servers 
 
 ```
 # python -m SimpleHTTPServer 80
 Serving HTTP on 0.0.0.0 port 80 ...
 ```
 
-웹 브라우저로 접속한 뒤 **Download**를 클릭하여 정상적으로 파일이 다운로드되는 것을 확인합니다.
+Access through web browser and click **Download** to see if files are downloaded properly. 
 
 
-### 개체 복사
-개체를 복사하여 새로운 개체를 만듭니다. 복사할 개체가 있는 컨테이너에 새로운 이름의 개체를 만들거나, 다른 컨테이너에 개체를 복사할 수 있습니다.
+### Copy Objects
+Copy objects to create  new objects. Create an object under a new name to the container which has an object to copy, or copy objects to another container. 
