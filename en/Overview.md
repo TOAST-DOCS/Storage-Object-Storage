@@ -1,42 +1,42 @@
-## Storage > Object Storage > 개요
+## Storage > Object Storage > Overview 
 
-오브젝트 스토리지는 많은 양의 데이터를 저장할 수 있는 온라인 저장소 서비스입니다.
+Object Storage refers to an online storage which can save large-capacity data. 
 
-## 서비스 특징
+## Features 
 
-### 확장성
+### Scalable 
 
-거의 무한대로 용량을 증설할 수 있습니다. 사용자는 스토리지의 용량을 고려할 필요 없이, 필요할 때 원하는 만큼 데이터를 저장할 수 있습니다.
+Volume scale-up is almost limitless. Data can be saved whenever and as much as a user wants, without considering storage volume. 
 
-### 접근성 제어
+### Control Accessibility   
 
-컨테이너별로 접근 권한을 다르게 설정할 수 있습니다. 프라이빗으로 설정한 컨테이너에는 허가된 사용자만 접근할 수 있습니다. 컨테이너를 퍼블릭으로 설정하면 공개 URL을 이용해 누구나 해당 컨테이너 내부의 개체에 접근할 수 있습니다.
+Access authority can be differently set for each container. Only allowed users can access a private container, whereas a public container can be accessed by anyone to internal objects, via public URL. 
 
-### 데이터 안정성 보장
+### Ensure Data Security 
 
-데이터를 안전하게 저장하기 위해 개체마다 총 3개의 복제본을 만듭니다. 복제본을 만드는 동안에는 복제한 데이터의 무결성을 보장할 수 없으므로 데이터에 접근할 수 없습니다. 따라서 데이터를 저장한 다음 바로 GET 요청을 보낸다면 실패 응답을 받을 수도 있습니다. 최소 2개의 복제본이 같다면 복제에 성공한 것으로 간주하여 저장이 완료되며 데이터에 접근할 수 있습니다.
+A total of three copies are created for each object to safely save data. Access to data is unavailable during copies are created, since integrity of copied data cannot be ensured. Hence, sending a request of GET right after data saving may result in failure response. If at least two copies are same, saving is completed as copying is considered to be successful, and access to data is allowed.    
 
-### 편리한 웹 콘솔 제공
+### Provide Convenient Web Console
 
-사용자의 편의를 위해 계층적 디렉터리 구조로 데이터를 관리할 수 있는 웹 콘솔을 제공합니다. 애플리케이션이 데이터에 접근할 때는 개체의 ID로 RESTful API를 이용할 수 있고, 사용자가 직접 데이터에 접근할 때는 익숙한 디렉터리 구조의 웹 콘솔을 사용할 수 있습니다. 폴더를 이용해 개체들을 그룹화하여 관리할 수 있습니다.
+For user's convenience, web console is provided to manage data in the hierarchical directory structure. When an application approaches data, RESTful API is available as an object ID, while user can use the web console with familiar directory structure to approach data. You may use folders to manage objects under groups. 
 
-### RESTful API 제공
+### Provide RESTful APIs
 
-컨테이너와 개체를 제어할 수 있는 HTTP(s) 기반의 REST API를 제공합니다. API를 이용하면 사용자의 애플리케이션에서 오브젝트 스토리지를 사용할 수 있습니다.
+HTTP(s)-based REST API is provided to control containers and objects. With APIs, object storage becomes available on user's applications. 
 
 
-## 서비스 구조 
+## Service Hierarchy  
 ![오브젝트 스토리지 서비스 구조](http://static.toastoven.net/prod_infrastructure/object_storage/overview/obs_structure.jpg)
 
 
-## 용어
-#### 개체(object)
-저장할 데이터를 의미하는 오브젝트 스토리지의 기본적인 관리 단위입니다. 일반적으로 파일을 개체로 사용합니다.
-#### 폴더(folder)
-개체를 묶는 가상의 단위입니다. Windows의 폴더나 Linux의 디렉터리와 유사하게 계층적으로 개체를 관리할 수 있도록 도와줍니다.
-#### 컨테이너(container)
-최상위 폴더를 의미합니다. 기본적으로 접근 권한 설정의 단위가 됩니다. 모든 개체는 반드시 컨테이너 안에 존재해야 합니다.
-#### 계정(account)
-오브젝트 스토리지의 사용자 계정입니다. TOAST의 오브젝트 스토리지는 계정 단위로 격리됩니다.
+## Glossary 
+#### Object
+Data to be saved, as a basic management unit of object storage: generally refers to a file. 
+#### Folder
+A virtual unit that binds many objects: helps to manage objects in hierarchy, similar to folder of Windows or directory of Linux. 
+#### Container
+Folder in the highest order, which serves as the basic unit for access authority setting. All objects must exist in a container. 
+#### Account
+Refers to user's account for object storage. TOAST Object Storage is classified by the account unit. 
 #### API Endpoint
-오브젝트 스토리지에 REST API로 접근하기 위해 제공되는 HTTP URL입니다. 해당 URL로 요청하면 오브젝트 스토리지에 접근할 수 있습니다.
+Refers to HTTP URL which is provided to access object storage via REST API. When requested with the URL, access is allowed to object storage.   
