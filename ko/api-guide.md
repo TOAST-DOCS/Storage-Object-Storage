@@ -2,51 +2,45 @@
 
 ## 사전 준비
 
-### Tenant Name 확인
+오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(Token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 개체들에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
 
-API를 이용할 때 Tenant Name을 파라미터로 입력해야 합니다. Tenant Name은 프로젝트 설정 페이지에서 확인할 수 있는 [프로젝트 ID]입니다.
+### 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
 
-1. 웹 콘솔의 프로젝트 설정 버튼 클릭
-2. 프로젝트 ID 값 확인
-
-### API Endpoint 확인
-
-API의 엔드포인트는 Object Storage 서비스 페이지의 `[API Endpoint 설정]` 버튼을 클릭해 확인할 수 있습니다.
+토큰 발급을 위한 테넌트 아이디와 API의 엔드포인트는 Object Storage 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
 
 | 항목 | API Endpoint | 용도 |
 |---|---|---|
 | Identity | https://api-compute.cloud.toast.com/identity/v2.0 | 인증 토큰 발급 |
 | Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 오브젝트 스토리지 제어 |
+| Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
 
 > [참고]  
-> API에 사용되는 사용자의 Account는 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
+> API에 사용되는 사용자의 계정(Account)은 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
 
 ### API 비밀번호 설정
 
-API 비밀번호는 Object Storage 서비스 페이지의 `[API Endpoint 설정]` 버튼을 클릭한 다음 설정할 수 있습니다.
+API 비밀번호는 Object Storage 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭한 다음 설정할 수 있습니다.
 
-1. [API Endpoint 설정] 버튼 클릭
-2. API Endpoint 설정 > API 비밀번호 설정 항목에 토큰 발급시 사용할 비밀번호 입력
-3. 비밀번호 입력 후 저장 버튼 클릭
+1. **API Endpoint 설정** 버튼을 클릭합니다.
+2. **API Endpoint 설정** 아래 **API 비밀번호 설정** 입력 상자에 토큰 발급 시 사용할 비밀번호를 입력합니다.
+3. **저장** 버튼을 클릭합니다.
 
 ## 인증 토큰 발급
 
-인증 토큰은 오브젝트 스토리지의 RESTful API를 사용할 때 필요한 인증키입니다. 외부 공개로 설정하지 않은 컨테이너나 개체들에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
-
-**[Method, URL]**
+**Method, URL**
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |tenantId|	Body or Plain|	String|	Tenant ID. API Endpoint 설정 대화창에서 확인 가능.|
-|username|	Plain|	String|	TOAST 계정 ID(Email) 입력|
-|password|	Plain|	String|	API Endpoint 설정 대화창에서 저장한 비밀번호|
+|username|	Plain|	String|	TOAST 계정 ID(이메일) 입력|
+|password|	Plain|	String|	**API Endpoint 설정**에서 저장한 비밀번호|
 
-**[Request Body Example]**
+**Request Body**
 ```
 {
   "auth": {
@@ -59,7 +53,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 }
 ```
 
-**[Response Parameters]**
+**Response Parameter**
 
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
@@ -67,7 +61,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 |access.token.tenant.id|	Plain|	String|	토큰을 요청한 프로젝트에 대응하는 Tenant ID|
 |access.token.expires|	Plain|	String|	발급된 토큰이 만료되는 시간, <br/> 토큰 발급 시간으로부터 1시간|
 
-**[Response Body Example]**
+**Response Body Example**
 ```
 {
     "access": {
@@ -91,7 +85,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ```
 
 > [주의]  
-> 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급 받아야 합니다.
+> 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
 
 
 ## 컨테이너
@@ -99,13 +93,13 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ### 컨테이너 생성
 오브젝트 스토리지에 파일을 올리기 위해서는 반드시 컨테이너를 생성해야 합니다.
 
-**[Method, URL]**
+**Method, URL**
 ```
 PUT https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
 |이름|종류|속성|설명|
 |---|---|---|---|
@@ -119,25 +113,25 @@ X-Auth-Token: [토큰 ID]
 ### 컨테이너 조회
 지정한 컨테이너의 정보와 내부에 저장된 개체들의 목록을 조회합니다.
 
-**[Method, URL]**
+**Method, URL**
 ```
 GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
 X-Auth-Token: [토큰 ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
 |이름|종류|속성|설명|
 |---|---|---|---|
 |X-Auth-Token|Header|String|발급받은 토큰 ID|
 |Container|URL|String|조회할 컨테이너 이름|
 
-[Response Body Example]
+**Response Body**
 ```
 [지정한 컨테이너에 속한 개체 목록]
 ```
 
-#### 질의 
+#### 질의
 컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
 
 ##### 1만 개 이상의 개체 목록 조회
