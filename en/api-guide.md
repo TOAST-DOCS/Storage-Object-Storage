@@ -162,7 +162,7 @@ X-Container-Write: {Write Container Policy}
 **[Request Example]**
 ```
 POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [トークンID]
+X-Auth-Token: [Token ID]
 X-Container-Read: .r:*
 ```
 
