@@ -242,7 +242,7 @@ GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?path={Path}
 
 **[Example]**
 ```
-// `ex` 폴더의 개체 목록 조회
+// ex 폴더의 개체 목록 조회
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?path=ex
 ex/20d33f.jpg
@@ -272,8 +272,8 @@ X-Auth-Token: [토큰 ID]
 ```
 
 **[Example]**
-* `314`로 시작하는 개체 목록 조회
 ```
+// 314로 시작하는 개체 목록 조회
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
 3146f0.jpg
@@ -304,8 +304,8 @@ X-Auth-Token: [토큰 ID]
 ```
 
 **[Example]**
-* 10개의 개체만 조회
 ```
+// 10개의 개체만 조회
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?limit=10
 ...{9개의 개체}...
@@ -335,8 +335,8 @@ X-Container-Write: {컨테이너 쓰기 정책}
 |Container|URL|String|수정할 컨테이너 이름|
 
 **[Example]**
-* 모든 사용자에게 읽기/쓰기 허용
 ```
+// 모든 사용자에게 읽기/쓰기 허용
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
