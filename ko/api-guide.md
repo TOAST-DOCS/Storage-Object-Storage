@@ -14,7 +14,7 @@
 | Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 오브젝트 스토리지 제어 |
 | Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
 
-> [참고]  
+> [참고]
 > API에 사용되는 사용자의 계정(Account)은 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
 
 ### API 비밀번호 설정
@@ -124,7 +124,7 @@ https://api-compute.cloud.toast.com/identity/v2.0/tokens \
 }
 ```
 
-> [주의]  
+> [주의]
 > 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
 
 
