@@ -1,50 +1,58 @@
-## Storage > Object Storage > API 가이드
+## Storage > Object Storage > API向导
 
-## 사전 준비
+## 事前准备
 
-오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(Token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 개체들에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
+### 确认用户(tenant name)名称
 
-### 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
+使用API时，必须输入用户名作为参数。用户的名称是“项目ID”，可以在项目页面确认。
 
-토큰 발급을 위한 테넌트 아이디와 API의 엔드포인트는 Object Storage 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
+1. 在Web控制台左侧区域的组织(ORGANIZATION)名下方，点击齿轮形状的按钮，再点击“项目设置”按钮.
+2. 确认“项目ID”值。
 
-| 항목 | API Endpoint | 용도 |
+### 确认API Endpoint
+
+API的Endpoint（地域节点）可以在Object Storage页面上点击“API Endpoint设置”按钮来确认。
+
+| 项目 | API Endpoint | 用途 |
 |---|---|---|
-| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | 인증 토큰 발급 |
-| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 오브젝트 스토리지 제어 |
-| Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
 
-> [참고]  
-> API에 사용되는 사용자의 계정(Account)은 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
+| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 控制对象存储。|
+| Identity |  https://api-compute.cloud.toast.com/identity/v2.0 | 颁发身份验证令牌。|
 
-### API 비밀번호 설정
+> [参考]
+> 用在API的用户帐户(account)是“AUTH_***”形式的字符串。它包含在Object-Store API Endpoint中。
 
-API 비밀번호는 Object Storage 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭한 다음 설정할 수 있습니다.
+### 设置API密码
 
-1. **API Endpoint 설정** 버튼을 클릭합니다.
-2. **API Endpoint 설정** 아래 **API 비밀번호 설정** 입력 상자에 토큰 발급 시 사용할 비밀번호를 입력합니다.
-3. **저장** 버튼을 클릭합니다.
+可以通过单击Object Storage服务页面上的“API Endpoint设置”按钮来设置API密码。
 
-## 인증 토큰 발급
+1. 点击 “API Endpoint 设置” 按钮。
+2. 在 “API Endpoint 设置” 下方的“设置API密码”的输入框中输入发出令牌时使用的密码。
+3. 点击“保存”按钮。
 
-**[Method, URL]**
+
+## 颁发身份验证令牌
+
+身份验证令牌是使用对象存储的REST API时所需的身份验证密钥。如需访问尚未设置为“Public”的Bucket或对象文件时，则需要令牌。令牌按帐户类别来管理。
+
+**Method, URL**
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|tenantId|	Body or Plain|	String|	Tenant ID. API Endpoint 설정 대화창에서 확인 가능.|
-|username|	Plain|	String|	TOAST 계정 ID(이메일) 입력|
-|password|	Plain|	String|	**API Endpoint 설정**에서 저장한 비밀번호|
+|tenantName|	Body or Plain|	String|	TOAST 项目ID|
+|username|	Plain|	String|	输入TOAST帐户 ID(邮箱) |
+|password|	Plain|	String|	在**API Endpoint设置**保存的密码|
 
-**[Request Body]**
+**Request Body Example**
 ```
 {
   "auth": {
-    "tenantId": "{Tenant ID}",
+    "tenantName": "{Project ID}",
     "passwordCredentials": {
       "username": "{TOAST ID}",
       "password": "{API Password}"
@@ -53,574 +61,330 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 }
 ```
 
-**[Response Parameters]**
+**Response Parameter**
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|access.token.id|	Body or Plain|	String|	발급된 토큰 ID|
-|access.token.tenant.id|	Plain|	String|	토큰을 요청한 프로젝트에 대응하는 Tenant ID|
-|access.token.expires|	Plain|	String|	발급된 토큰이 만료되는 시간, <br/> 토큰 발급 시간으로부터 1시간|
+|access.token.id|	Body or Plain|	String|	颁发的令牌ID|
+|access.token.tenant.id|	Plain|	String|	与请求令牌的项目相对应的Tenant ID |
+|access.token.expires|	Plain|	String|	已颁发令牌的到期时间, <br/>颁发令牌时间起1小时|
 
-**[Response Body]**
+**Response Body Example**
 ```
 {
-  "access": {
-    "token": {
-      "expires": "{Expires Time}",
-      "id": "{Token ID}",
-      "tenant": {
-        "description": "",
-        "enabled": true,
-        "id": "{Tenant ID}",
-        "name": "{TOAST ID}",
-        "groupId": "{TOAST Project ID}",
-        "project_domain": "NORMAL",
-        "swift": true
-      },
-      "issued_at": "{Token Issued Time}"
-    },
-    "serviceCatalog" : []
-  }
+    "access": {
+        "token": {
+            "expires": "2018-01-15T08:05:05Z",
+            "id": "b587ae461278419da6ecd21a2344c8aa",
+            "tenant": {
+                "description": "",
+                "enabled": true,
+                "id": "c6439197d5e74e4593ca37a62bbc09a6",
+                "name": "9AD5KRlH",
+                "groupId": "XEj2zkHrbA7modGU",
+                "project_domain": "NORMAL",
+                "swift": true
+            },
+            "issued_at": "2018-01-15T07:05:05.719672"
+        },
+        …
+    }
 }
 ```
 
-
-**[Example]**
-```
-$ curl -X POST -H 'Content-Type:application/json' \
-https://api-compute.cloud.toast.com/identity/v2.0/tokens \
--d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
-
-{
-  "access": {
-    "token": {
-      "expires": "2018-01-15T08:05:05Z",
-      "id": "b587ae461278419da6ecd21a2344c8aa",
-      "tenant": {
-        "description": "",
-        "enabled": true,
-        "id": "*****",
-        "name": "*****",
-        "groupId": "*****",
-        "project_domain": "NORMAL",
-        "swift": true
-      },
-      "issued_at": "2018-01-15T07:05:05.719672"
-    },
-    "serviceCatalog" : [
-      {
-        "endpoints" : [
-          {
-            "region" : "KR1",
-            "publicURL" : "https://api-storage.cloud.toast.com/v1/AUTH_*****"
-          }
-        ],
-        "type" : "object-store",
-        "name" : "swift",
-        "endpoints_links" : []
-      }
-    ]
-  }
-}
-```
-
-> [주의]  
-> 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
+> [注意]  
+> 令牌具有效期。对响应令牌颁发请求中包含的“expires”栏是令牌到期的时间。令牌过期后，必须颁发新令牌。
 
 
-## 컨테이너
+## Bucket
 
-### 컨테이너 생성
-오브젝트 스토리지에 파일을 올리기 위해서는 반드시 컨테이너를 생성해야 합니다.
+### 创建Bucket
+为了上传对象文件到对象存储中，需要您先要创建一个Bucket。
 
-**[Method, URL]**
+**Method, URL**
 ```
 PUT https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|종류|속성|설명|
+|名称|种类|属性|说明|
 |---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|URL|String|생성할 컨테이너 이름|
+|X-Auth-Token|Header|String|颁发的令牌ID|
+|Account|URL|String|用户帐户名称, 包含在API Endpoint中|
+|Container|URL|String|需创建的Bucket名称|
 
-> [참고]
-> 이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
+> [参考]
+> 此API不会返回响应正文。如创建Bucket，则返回状态码201。
 
-**[Example]**
-```
-$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
-```
+### 查询Bucket
+查询指定的Bucket信息和保存在Bucket中的对象列表。
 
-### 컨테이너 조회
-지정한 컨테이너의 정보와 내부에 저장된 개체들의 목록을 조회합니다.
-
-**[Method, URL]**
+**Method, URL**
 ```
 GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|종류|속성|설명|
+|名称|种类|属性|说明|
 |---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Container|URL|String|조회할 컨테이너 이름|
+|X-Auth-Token|Header|String|颁发的令牌ID|
+|Container|URL|String|要查询的Bucket名称|
 
-**[Response Body]**
+**Response Body Example**
 ```
-[지정한 컨테이너에 속한 개체 목록]
-```
-
-**[Example]**
-```
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
-ba6610.jpg
-20d33f.jpg
-31466f.jpg
+[属于指定Bucket的对象列表]
 ```
 
-#### 질의
-컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
+###编辑Bucket
 
-##### 1만 개 이상의 개체 목록 조회
-컨테이너 조회 API로 조회할 수 있는 목록의 개체 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 개체 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 개체의 다음 개체부터 최대 1만 개의 목록을 반환합니다.
+可以通过变更Bucket的元数据来指定访问的规则。
 
-**[Method, URL]**
-```
-GET    https://api-storage.cloud.toast.com/v1/{Account}/{Container}?marker={Object}
-X-Auth-Token: [토큰 ID]
-```
-
-**[Request Parameters]**
-
-|이름|종류|속성|설명|
-|---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Container|URL|String|조회할 컨테이너 이름|
-|Object|URL|String|기준 개체 이름|
-
-**[Response Body]**
-```
-[지정한 컨테이너에 속한 지정한 개체 다음 개체 목록]
-```
-
-**[Example]**
-```
-// `20d33f.jpg` 이후의 개체 목록 조회
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
-{지정한 개체(20d33f.jpg) 이후의 목록}
-```
-
-##### 폴더 단위의 개체 목록 조회
-컨테이너에 여러 개의 폴더를 생성하고, 폴더에 개체를 업로드했다면 `path` 질의를 이용해 폴더 단위로 개체 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 개체 목록은 조회할 수 없습니다.
-
-**[Method, URL]**
-```
-GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?path={Path}
-```
-
-**[Request Parameters]**
-
-|이름|종류|속성|설명|
-|---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Container|URL|String|조회할 컨테이너 이름|
-|Path|URL|String|조회할 폴더 이름|
-
-**[Response Body]**
-```
-[지정한 컨테이너에 속한 지정한 폴더의 개체 목록]
-```
-
-**[Example]**
-```
-// ex 폴더의 개체 목록 조회
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?path=ex
-ex/20d33f.jpg
-ex/31466f.jpg
-```
-
-##### 접두어로 시작하는 개체 목록 조회
-`prefix` 질의를 사용하면 지정한 접두어로 시작하는 개체들의 목록을 반환합니다. path 질의로는 조회할 수 없는 하위 폴더를 포함한 폴더의 개체 목록을 조회하는데 사용할 수 있습니다.
-
-**[Method, URL]**
-```
-GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?prefix={Prefix}
-X-Auth-Token: [토큰 ID]
-```
-
-**[Request Parameters]**
-
-|이름|종류|속성|설명|
-|---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Container|URL|String|조회할 컨테이너 이름|
-|Prefix|URL|String|검색할 접두어|
-
-**[Response Body]**
-```
-[지정한 컨테이너에 속하고 지정한 접두어로 시작하는 개체 목록]
-```
-
-**[Example]**
-```
-// 314로 시작하는 개체 목록 조회
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
-3146f0.jpg
-3147a6.jpg
-31486f.jpg
-```
-
-##### 목록의 최대 개체 수 지정
-`limit` 질의를 사용하면 반환할 개체 목록의 최대 개체 수를 지정할 수 있습니다.
-
-**[Method, URL]**
-```
-GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?limit={Number}
-X-Auth-Token: [토큰 ID]
-```
-
-**[Request Parameters]**
-
-|이름|종류|속성|설명|
-|---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Container|URL|String|조회할 컨테이너 이름|
-|Number|URL|String|목록에 표시할 개체 수|
-
-**[Response Body]**
-```
-[지정한 컨테이너에 속한 지정된 수 만큼의 개체 목록]
-```
-
-**[Example]**
-```
-// 10개의 개체만 조회
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?limit=10
-...{9개의 개체}...
-31466f0.jpg
-```
-
-### 컨테이너 수정
-
-컨테이너의 메타데이터를 변경하여 접근 규칙을 지정할 수 있습니다.
-
-**[Method, URL]**
+**Method, URL**
 ```
 POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: {토큰 ID}
-X-Container-Read: {컨테이너 읽기 정책}
-X-Container-Write: {컨테이너 쓰기 정책}
+X-Auth-Token: {令牌ID}
+X-Container-Read: {Bucket读规则}
+X-Container-Write: {Bucket写规则}
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|종류|속성|설명|
+|名称|种类|属性|说明|
 |---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|X-Container-Read|Header|String|컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에 대해 접근 허용<br/>.r:example.com,test.com – 특정 주소에 대해 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에 대해 접근 허용|
-|X-Container-Write|Header|String|컨테이너 쓰기에 대한 접근 규칙 지정|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|URL|String|수정할 컨테이너 이름|
+|X-Auth-Token|Header|String|颁发的令牌ID|
+|X-Container-Read|Header|String|对Bucket读的访问规则
+指定<br/>.r:* - 允许所有用户的访问<br/>.r:example.com,test.com – 允许特定地址的访问, 以‘,’来分隔<br/>.rlistings. – 允许查询Bucket目录<br/>AUTH_.... – 允许特定账户的访问|
+|X-Container-Write|Header|String|指定对写Bucket的访问规则|
+|Account|URL|String|用户账户名，包含在API Endpoint中|
+|Container|URL|String|要修改的Bucket名称|
 
-**[Example]**
+**Request Example**
 ```
-// 모든 사용자에게 읽기/쓰기 허용
-$ curl -X POST \
--H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
--H 'X-Container-Read: .r:*' \
--H 'X-Container-Write: .r:*' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
+POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
+X-Auth-Token: [令牌ID]
+X-Container-Read: .r:*
 ```
 
-> [참고]
-> 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+> [参考]
+>此API不会返回响应正文。如果请求正确，则返回状态码204。
 
-읽기 권한을 공개로 설정한 후에는 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
+将读权限设置为“Public”后，可以使用`curl`, `wget`等道具，或通过浏览器可以在没有令牌的情况下直接访问。
 
-**[Verification Example]**
+**Verification Example**
 ```
 $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 
-{개체의 내용}
+{对象的内容}
 ```
 
-### 컨테이너 삭제
+### 删除Bucket
 
-지정한 컨테이너를 삭제합니다.
+删除指定的Bucket。
 
-**[Method, URL]**
+**Method, URL**
 ```
 DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	삭제할 컨테이너 이름|
+|X-Auth-Token|	Header|	String|颁发的令牌ID|
+|Account|URL|String|用户账户名，包含在API Endpoint中|
+|Container|	URL|	String|要删除的Bucket名称|
 
-**[Example]**
-```
-$ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
-```
+> [参考]
+> 此请求不会返回响应正文。要删除的Bucket必须为空。如果请求正确，则返回状态码204。
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+## 对象
 
-## 개체
+### 上传对象
 
-### 개체 업로드
+在指定的Bucket中上传新对象文件。
 
-지정한 컨테이너에 새로운 개체를 업로드합니다.
-
-**[Method, URL]**
+**Method, URL**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	생성할 개체 이름|
-|-|	Body|	Plain| Text	생성할 개체의 내용|
+|X-Auth-Token|	Header|	String|颁发的令牌ID|
+|Account|URL|String|用户账户名，包含在API Endpoint中|
+|Container|	URL|	String|	Bucket名称|
+|Object|	URL|	String|	要创建的对象的名称|
+|-|	Body|	Plain| Text	要创建的对象的内容|
 
-**[Example]**
-```
-$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
--T ./ba6610.jpg
-```
-
-> [참고]
-> 요청 헤더에 개체 속성에 맞는 Content-type 항목을 설정해야 합니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+> [参考]
+> 在请求header中设置符合对象属性的Content-type条目。如果请求正确，则返回状态码201。
 
 
-### 멀티파트 업로드
+### 分段上传
 
-5GB를 초과하는 용량을 가진 개체는 5GB 이하의 세그먼트로 나누어 업로드해야 합니다.
+单个对象文件，容量大小不能超过5GB。超过的必须要分割成5GB以下，分段上传。
 
-**[Method, URL]**
+**Method, URL**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}/{Count}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 ```
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	생성할 개체 이름|
-|Count| URL| String| 분할한 개체의 순번|
-|-|	Body|	Plain| Text 분할한 개체의 내용|
+|X-Auth-Token|	Header|	String|	颁发的令牌ID|
+|Account|URL|String|用户账户名，包含在API Endpoint中|
+|Container|	URL|	String|	Bucket名称|
+|Object|	URL|	String|	要创建的对象名称|
+|Count| URL| String| 要分割对象的序列号|
+|-|	Body|	Plain| Text 已分割对象的内容|
 
 
-모든 개체의 세그먼트를 업로드한 다음 매니패스트 개체를 생성하면 하나의 개체처럼 사용할 수 있습니다. 매니패스트 개체는 세그먼트들이 저장된 경로를 가리킵니다.
+上传对象的所有段后，创建manifest对象，可作为一个对象来使用。
+manifest是指保存这些段的路径。
 
-**[Method, URL]**
+**Method, URL**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 X-Object-Manifest: {Container}/{Object}/
 ```
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|X-Object-Manifest| Header| String | 분한 개체들을 업로드한 경로, `{Container}/{Object}/` |
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	생성할 개체 이름|
-|-|	Body|	Plain| Text 분할한 개체의 내용|
+|X-Auth-Token|	Header|	String|颁发的令牌ID|
+|X-Object-Manifest| Header| String | 上传已分割对象的路径, `{Container}/{Object}/` |
+|Account|URL|String|用户账户名，包含在API Endpoint中|
+|Container|	URL|	String|	Bucket名称|
+|Object|	URL|	String|	要创建的对象名称|
+|-|	Body|	Plain| Text 已分割对象的内容|
 
 
-**[Example]**
+**Example**
 ```
-// 200MB 단위로 파일 분할
-$ split -d -b 209715200 large_obj.img large_obj.img.
+// 上传已分割对象
+$ curl -X PUT -H 'X-Auth-Token: *****' http://10.162.50.125/v1/AUTH_*****/con/sample.jpg/001 --data-binary '.....'
+$ curl -X PUT -H 'X-Auth-Token: *****' http://10.162.50.125/v1/AUTH_*****/con/sample.jpg/002 --data-binary '.....'
 
-// 분할된 개체 업로드
-$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
--T large_obj.img.00
+// 上传manifest对象
+$ curl -X PUT -H 'X-Auth-Token: *****' -H 'X-Object-Manifest: con/sample.jpg/' http://10.162.50.125/v1/AUTH_*****/con/sample.jpg --data-binary ''
 
-$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/002 \
--T large_obj.img.01
-
-$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/003 \
--T large_obj.img.02
-
-// 매니패스트 개체 업로드
-$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
--H 'X-Object-Manifest: curl_example/large_obj.img/' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
--d ''
+// 下载对象
+$ curl http://10.162.50.125/v1/AUTH_*****/con/sample.jpg > sample.jpg
 ```
 
-### 개체 내용 수정
+### 修改对象内容
 
-개체 업로드 API와 같지만, 개체가 이미 컨테이너에 있다면 해당 개체의 내용이 수정됩니다.
+与对象上传API一样，Bucket中如果已经存在的对象，则修改该对象的内容。
 
-**[Method, URL]**
+**Method, URL**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	내용을 수정할 개체 이름|
+|X-Auth-Token|	Header|	String|	颁发的令牌ID|
+|Account|URL|String|用户账户名，包含在API Endpoint中|
+|Container|	URL|	String|	Bucket名称|
+|Object|	URL|	String|	需要修改内容的对象名称|
 
-> [참고]
-> 요청 헤더에 개체 속성에 맞는 Content-type 항목을 설정해야 합니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+> [参考]
+> 在请求header中设置符合对象属性的Content-type条目。如果请求正确，则返回状态码201。
 
-### 개체 다운로드
+### 下载对象
 
-**[Method, URL]**
+**Method, URL**
 ```
 GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	다운로드할 개체 이름|
+|X-Auth-Token|	Header|	String|	颁发的令牌ID|
+|Account|URL|String|用户账户名，包含在API Endpoint中|
+|Container|	URL|	String|	Bucket名称|
+|Object|	URL|	String|	要下载的对象名称|
 
-**[Example]**
-```
-$ curl -O -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
+> [参考]
+> 对象的内容以stream的形式返还。如果请求正确，则返回状态代码200。
+### 复制对象
 
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100 17166  100 17166    0     0   566k      0 --:--:-- --:--:-- --:--:--  578k
-```
-
-> [참고]
-> 개체의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
-
-### 개체 복사
-
-**[Method, URL]**
+**Method, URL**
 ```
 COPY   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Destination|	Header|	String|	개체를 복사할 대상, `{컨테이너 이름} / {복사된 개체의 이름}`|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	복사할 개체 이름|
+|X-Auth-Token|	Header|	String|	颁发的令牌ID|
+|Destination|	Header|	String|	复制对象到哪里, `{Bucket名称} / {已复制的对象的名称}`|
+|Account|URL|String|用户账户名，包含在API Endpoint中|
+|Container|	URL|	String|	Bucket名称|
+|Object|	URL|	String|	要复制的对象名称|
 
-**[Example]**
-```
-$ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
--H 'Destination: copy_con/3a45e9.jpg' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/3a45e9.jpg
-```
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+> [参考]
+>此请求不会返回响应正文。要删除的Bucket必须为空。如果请求正确，则返回状态码201。
 
-### 개체 메타데이터 수정
+### 更改对象元数据
 
-**[Method, URL]**
+**Method, URL**
 ```
 POST   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|X-Object-Meta-{Key}|	Header|	String| 변경할 메타데이터 |
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	속성을 수정할 개체 이름|
+|X-Auth-Token|	Header|	String|	颁发的令牌ID|
+|Content-Type|	Header|	String|	要更改的对象形式|
+|Account|URL|String|用户账户名，包含在API Endpoint中|
+|Container|	URL|	String|	Bucket名称|
+|Object|	URL|	String|	要更改属性的对象名称|
 
-**[Example]**
-```
-$ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
--H "X-Object-Meta-Type: photo' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
+> [参考]
+>此请求不会返回响应正文。如果请求正确，则返回状态码202。
 
-$ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
-HTTP/1.1 200 OK
-...
-X-Object-Meta-Type: photo
-...
-```
+### 删除对象
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
-
-### 개체 삭제
-
-**[Method, URL]**
+**Method, URL**
 ```
 DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [令牌ID]
 ```
 
-**[Request Parameters]**
+**Request Parameter**
 
-|이름|	종류|	속성|	설명|
+|名称|	种类|	属性|	说明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	삭제할 개체 이름|
+|X-Auth-Token|	Header|	String|	颁发的令牌ID|
+|Account|URL|String|用户账户名，包含在API Endpoint中|
+|Container|	URL|	String|	Bucket名称|
+|Object|	URL|	String|	要删除的对象名称|
 
-**[Example]**
-```
-$ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
-```
+> [参考]
+> 此请求不会返回响应正文。如果请求正确，则返回状态码204。
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
-
-## References
+## 参考事项
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
