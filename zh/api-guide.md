@@ -15,7 +15,6 @@ API的Endpoint（地域节点）可以在Object Storage页面上点击“API End
 
 | 项目 | API Endpoint | 用途 |
 |---|---|---|
-
 | Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 控制对象存储。|
 | Identity |  https://api-compute.cloud.toast.com/identity/v2.0 | 颁发身份验证令牌。|
 
@@ -156,8 +155,7 @@ X-Container-Write: {Bucket写规则}
 |名称|种类|属性|说明|
 |---|---|---|---|
 |X-Auth-Token|Header|String|颁发的令牌ID|
-|X-Container-Read|Header|String|对Bucket读的访问规则
-指定<br/>.r:* - 允许所有用户的访问<br/>.r:example.com,test.com – 允许特定地址的访问, 以‘,’来分隔<br/>.rlistings. – 允许查询Bucket目录<br/>AUTH_.... – 允许特定账户的访问|
+|X-Container-Read|Header|String|对Bucket读的访问规则指定<br/>.r:* - 允许所有用户的访问<br/>.r:example.com,test.com – 允许特定地址的访问, 以‘,’来分隔<br/>.rlistings. – 允许查询Bucket目录<br/>AUTH_.... – 允许特定账户的访问|
 |X-Container-Write|Header|String|指定对写Bucket的访问规则|
 |Account|URL|String|用户账户名，包含在API Endpoint中|
 |Container|URL|String|要修改的Bucket名称|
