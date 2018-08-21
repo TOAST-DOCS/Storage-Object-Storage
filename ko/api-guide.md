@@ -84,8 +84,11 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 }
 ```
 
+> [주의]
+> 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
 
 **[Example]**
+* cURL
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
 https://api-compute.cloud.toast.com/identity/v2.0/tokens \
@@ -123,10 +126,81 @@ https://api-compute.cloud.toast.com/identity/v2.0/tokens \
   }
 }
 ```
+* Java
+```java
+// AuthService.java
+package com.toast.swift.auth;
 
-> [주의]
-> 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
+// .. import list
 
+@Data
+public class AuthService {
+
+    // Inner class for the request body
+    @Data
+    public class TokenRequest {
+
+        private Auth auth = new Auth();
+
+        @Data
+        public class Auth {
+            private String tenantId;
+            private PasswordCredentials passwordCredentials = new PasswordCredentials();
+        }
+
+        @Data
+        public class PasswordCredentials {
+            private String username;
+            private String password;
+        }
+    }
+
+    private String authUrl;
+    private TokenRequest tokenRequest;
+    private RestTemplate restTemplate;
+
+    public AuthService(String authUrl, String tenantId, String username, String password) {		
+        this.authUrl = authUrl;		
+
+        // 요청 본문 생성
+        this.tokenRequest = new TokenRequest();
+        this.tokenRequest.getAuth().setTenantId(tenantId);
+        this.tokenRequest.getAuth().getPasswordCredentials().setUsername(username);
+        this.tokenRequest.getAuth().getPasswordCredentials().setPassword(password);
+
+        this.restTemplate = new RestTemplate();
+    }
+
+    public String requestToken() {
+        String identityUrl = this.authUrl + "/tokens";
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+
+        HttpEntity<TokenRequest> httpEntity
+            = new HttpEntity<TokenRequest>(this.tokenRequest, headers);
+
+        // 토큰 요청
+        ResponseEntity<String> response
+            = this.restTemplate.exchange(identityUrl, HttpMethod.POST, httpEntity, String.class);
+
+        return response.getBody();
+    }
+
+    public static void main(String[] args) {
+        final String authUrl = "https://api-compute.cloud.toast.com/identity/v2.0";
+        final String tenantId = "{Tenant ID}";
+        final String username = "{TOAST Account}";
+        final String password = "{API Password}";
+
+        AuthService authService = new AuthService(authUrl, tenantId, username, password);
+        String token = authService.requestToken();
+
+        System.out.println(token);
+    }
+}
+```
 
 ## 컨테이너
 
@@ -151,9 +225,65 @@ X-Auth-Token: [토큰 ID]
 > 이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
 
 **[Example]**
+* cURL
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
+```
+
+* Java
+```java
+// ContainerService.java
+package com.toast.swift.service;
+
+// .. import list
+
+@Data
+public class ContainerService {
+
+    private String tokenId;
+    private String storageUrl;
+    private RestTemplate restTemplate;
+
+    public ContainerService(String storageUrl, String tokenId) {
+        this.setStorageUrl(storageUrl);
+        this.setTokenId(tokenId);
+
+        this.restTemplate = new RestTemplate();
+    }
+
+    private String getUrl(@NonNull String containerName) {
+        return this.getStorageUrl() + "/" + containerName;
+    }
+
+    public void createContainer(String containerName) {
+        String url = this.getUrl(containerName);
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API 호출
+        this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String containerName = "test";
+
+        ContainerService containerService = new ContainerService(storageUrl, tokenId);
+
+        try {
+            containerService.createContainer(containerName);
+            System.out.println("Container " + containerName + " created");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
 ```
 
 ### 컨테이너 조회
@@ -178,6 +308,7 @@ X-Auth-Token: [토큰 ID]
 ```
 
 **[Example]**
+* cURL
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
@@ -186,7 +317,60 @@ ba6610.jpg
 31466f.jpg
 ```
 
-#### 질의
+* Java
+```java
+// ContainerService.java
+package com.toast.swift.service;
+
+// .. import list
+
+public class ContainerService {
+
+    // ...
+
+    public List<String> getObjectList(String conatinerName) {
+        return this.getList(this.getUrl(conatinerName));
+    }
+
+    public List<String> getList(String url) {
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API 호출
+        ResponseEntity<String>response
+            = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, String.class);
+
+        List<String> objectList = null;
+        if (response.getStatusCode() == HttpStatus.OK) {
+            // String으로 받은 목록을 배열로 변환
+            objectList = Arrays.asList(response.getBody().split("\\r?\\n"));
+        }
+        // 배열을 List로 변환하여 반환
+        return new ArrayList<String>(objectList);
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String containerName = "test";
+
+        ContainerService containerService = new ContainerService(storageUrl, tokenId);
+
+        List<String> objectList = containerService.getObjectList(containerName);
+
+        if (objectList != null) {
+            for (String object : objectList) {
+                System.out.println(object);
+            }
+        }
+    }
+}
+```
+
+### 컨테이너 조회 질의
 컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
 
 ##### 1만 개 이상의 개체 목록 조회
@@ -212,11 +396,49 @@ X-Auth-Token: [토큰 ID]
 ```
 
 **[Example]**
+* cURL
 ```
 // `20d33f.jpg` 이후의 개체 목록 조회
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
 {지정한 개체(20d33f.jpg) 이후의 목록}
+```
+
+* Java
+```java
+// ContainerService.java
+package com.toast.swift.service;
+
+// ... import list
+
+public class ContainerService {
+
+    public List<String> getObjectList(String conatinerName, String prevLastObject) {
+        // 지정한 개체 이름을 이용하여 질의 URL 생성
+        String url = this.getUrl(conatinerName) + "?marker=" + prevLastObject;
+        // 컨테이너 조회 예제의 getList() 메소드 호출
+        return this.getList(url);
+    }
+
+    public List<String> getObjectList(String conatinerName) {
+        final int LIMIT_COUNT = 10000;
+
+        String url = this.getUrl(conatinerName);
+
+        // 개체 목록 조회
+        List<String> objectList = this.getList(url);
+        while ((objectList.size() % LIMIT_COUNT) == 0) {
+            // 개체 목록의 길이가 1만개의 배수라면 목록의 마지막 개체를 지정하여 이후의 목록 조회
+            String lastObject = objectList.get(objectList.size() - 1);
+            List<String> nextObjList = this.getObjectList(conatinerName, lastObject);
+            objectList.addAll(nextObjList);			
+        }		
+
+        return objectList;
+    }
+
+    // getObjectList() 사용 예제는 컨테이너 조회와 동일
+}
 ```
 
 ##### 폴더 단위의 개체 목록 조회
@@ -241,12 +463,33 @@ GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?path={Path}
 ```
 
 **[Example]**
+* cURL
 ```
 // ex 폴더의 개체 목록 조회
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?path=ex
 ex/20d33f.jpg
 ex/31466f.jpg
+```
+
+* Java
+```java
+// ContainerService.java
+package com.toast.swift.service;
+
+// ... import list
+
+public class ContainerService {
+
+    public List<String> getObjectListOfFolder(String conatinerName, String folderName) {
+        // 지정한 폴더 이름을 이용하여 질의 URL 생성
+        String url = this.getUrl(conatinerName) + "?path=" + folderName;
+        // 컨테이너 조회 예제의 getList() 메소드 호출
+        return this.getList(url);
+    }
+
+    // getObjectListOfFolder() 사용 예제는 컨테이너 조회와 동일
+}
 ```
 
 ##### 접두어로 시작하는 개체 목록 조회
@@ -272,6 +515,7 @@ X-Auth-Token: [토큰 ID]
 ```
 
 **[Example]**
+* cURL
 ```
 // 314로 시작하는 개체 목록 조회
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -280,6 +524,27 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
 3147a6.jpg
 31486f.jpg
 ```
+
+* Java
+```java
+// ContainerService.java
+package com.toast.swift.service;
+
+// ... import list
+
+public class ContainerService {
+
+    public List<String> getObjectListWithPrefix(String conatinerName, String prefix) {
+        // 지정한 접두어를 이용하여 질의 URL 생성
+        String url = this.getUrl(conatinerName) + "?prefix=" + prefix;
+        // 컨테이너 조회 예제의 getList() 메소드 호출
+        return this.getList(url);
+    }
+
+    // getObjectListWithPrefix() 사용 예제는 컨테이너 조회 예제와 동일
+}
+```
+
 
 ##### 목록의 최대 개체 수 지정
 `limit` 질의를 사용하면 반환할 개체 목록의 최대 개체 수를 지정할 수 있습니다.
@@ -312,6 +577,25 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?limit=10
 31466f0.jpg
 ```
 
+```java
+// ContainerService.java
+package com.toast.swift.service;
+
+// ... import list
+
+public class ContainerService {
+
+    public List<String> getObjectList(String conatinerName, int limit) {
+        // 지정한 최대 개체 수를 이용하여 질의 URL 생성
+        String url = this.getUrl(conatinerName) + "?limit=" + limit;
+        // 컨테이너 조회 예제의 getList() 메소드 호출
+        return this.getList(url);
+    }
+
+    // getObjectListWithPrefix() 사용 예제는 컨테이너 조회 예제와 동일
+}
+```
+
 ### 컨테이너 수정
 
 컨테이너의 메타데이터를 변경하여 접근 규칙을 지정할 수 있습니다.
@@ -334,7 +618,11 @@ X-Container-Write: {컨테이너 쓰기 정책}
 |Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|URL|String|수정할 컨테이너 이름|
 
+> [참고]
+> 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+
 **[Example]**
+* cURL
 ```
 // 모든 사용자에게 읽기/쓰기 허용
 $ curl -X POST \
@@ -344,8 +632,51 @@ $ curl -X POST \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
 
-> [참고]
-> 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+* Java
+```java
+// ContainerService.java
+
+package com.toast.swift.service;
+
+// ... import list
+
+public class ContainerService {
+
+    public void setContainerReadACL(String containerName, boolean isPublic) {
+        final String PUBLIC_ACL = ".r:*";
+        final String PRIVATE_ACL = "";
+
+        String permission = isPublic ? PUBLIC_ACL : PRIVATE_ACL;
+
+        String url = this.getUrl(containerName);
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+        headers.add("X-Container-Read", permission);    // 헤더에 권한 추가
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API 호출
+        this.restTemplate.exchange(url, HttpMethod.POST, requestHttpEntity, String.class);
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String containerName = "test";
+
+        ContainerService containerService = new ContainerService(storageUrl, tokenId);
+
+        try {
+            containerService.setContainerReadACL(containerName, true);
+            System.out.println("Container " + containerName + " became to public.");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
 
 읽기 권한을 공개로 설정한 후에는 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
 
@@ -374,14 +705,55 @@ X-Auth-Token: [토큰 ID]
 |Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|	URL|	String|	삭제할 컨테이너 이름|
 
+> [참고]
+> 이 요청은 응답 본문을 반환하지 않습니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+
 **[Example]**
+* cURL
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+* Java
+```java
+// ContainerService.java
+
+package com.toast.swift.service;
+
+// ... import list
+
+public class ContainerService {
+
+    public void deleteContainer(String containerName){
+        String url = this.getUrl(containerName);
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API 호출        
+        this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String containerName = "test";
+
+        ContainerService containerService = new ContainerService(storageUrl, tokenId);
+
+        try {
+            containerService.deleteContainer(containerName);
+            System.out.println("Container " + containerName + " deleted.");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
 
 ## 개체
 
@@ -405,12 +777,6 @@ X-Auth-Token: [토큰 ID]
 |Object|	URL|	String|	생성할 개체 이름|
 |-|	Body|	Plain| Text	생성할 개체의 내용|
 
-**[Example]**
-```
-$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
--T ./ba6610.jpg
-```
 
 > [참고]
 > 요청 헤더에 개체 속성에 맞는 Content-type 항목을 설정해야 합니다. 요청이 올바르면 상태 코드 201을 반환합니다.
@@ -420,6 +786,87 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 > 개체의 이름이 `./` 또는 `../`으로 시작한다면 브라우저가 이를 경로 문자로 인식하여 웹콘솔에서 접근할 수 없습니다.
 > API를 이용하여 이러한 이름의 개체를 업로드했다면 API를 통해 접근해야 합니다.
 
+
+**[Example]**
+* cURL
+```
+$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
+-T ./ba6610.jpg
+```
+
+* Java
+```java
+// ObjectService.java
+package com.toast.swift.service;
+
+// ... import list
+
+@Data
+public class ObjectService {
+
+    private String tokenId;
+    private String storageUrl;
+    private RestTemplate restTemplate;
+
+    public ObjectService(String storageUrl, String tokenId) {
+        this.setStorageUrl(storageUrl);
+        this.setTokenId(tokenId);
+
+        this.restTemplate = new RestTemplate();
+    }
+
+    private String getUrl(@NonNull String containerName, @NonNull String objectName) {
+        return this.getStorageUrl() + "/" + containerName + "/" + objectName;
+    }
+
+    public void uploadObject(String containerName, String objectName, final InputStream inputStream) {
+        String url = this.getUrl(containerName, objectName);
+
+        // InputStream을 요청 본문에 추가할 수 있도록 RequestCallback 오버라이드
+        final RequestCallback requestCallback = new RequestCallback() {
+            public void doWithRequest(final ClientHttpRequest request) throws IOException {
+                request.getHeaders().add("X-Auth-Token", tokenId);
+                IOUtils.copy(inputStream, request.getBody());
+            }
+        };
+
+        // 오버라이드한 RequestCallback을 사용할 수 있도록 설정
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setBufferRequestBody(false);
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+
+        HttpMessageConverterExtractor<String> responseExtractor
+            = new HttpMessageConverterExtractor<String>(String.class, restTemplate.getMessageConverters());
+
+        // API 호출
+        restTemplate.execute(url, HttpMethod.PUT, requestCallback, responseExtractor);
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String containerName = "test";
+        final String objectPath = "/home/example/";
+        final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
+
+        ObjectService objectService = new ObjectService(storageUrl, tokenId);
+
+        try {
+            // 파일로 부터 InputStream 생성
+            File objFile = new File(objectPath + "/" + objectName);            
+            InputStream inputStream = FileUtils.openInputStream(objFile);
+
+            // 업로드
+            objectService.uploadObject(containerName, objectName, inputStream);
+            System.out.println("\nUpload OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+```
 
 ### 멀티파트 업로드
 
@@ -461,6 +908,7 @@ X-Object-Manifest: {Container}/{Object}/
 
 
 **[Example]**
+* cURL
 ```
 // 200MB 단위로 파일 분할
 $ split -d -b 209715200 large_obj.img large_obj.img.
@@ -483,6 +931,85 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Object-Manifest: curl_example/large_obj.img/' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
 -d ''
+```
+
+* Java
+```java
+// ObjectService.java
+package com.toast.swift.service;
+
+// ... import list
+
+@Data
+public class ObjectService {
+
+    // 매니패스트 개체 업로드
+    public void uploadManifestObject(String containerName, String objectName) {
+        String url = this.getUrl(containerName, objectName);        
+        String manifestName = containerName + "/" + objectName + "/"; // 매니페스트 이름 생성
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+        headers.add("X-Object-Manifest", manifestName);  // 헤더에 매니페스트 표기
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API 호출
+        this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String containerName = "test";
+        final String objectPath = "/home/example/";
+        final String objectName = "46432aa503ab715f288c4922911d2035.jpg";        
+
+        ObjectService objectService = new ObjectService(storageUrl, tokenId);
+
+        File objFile = new File(objectPath + "/" + objectName);
+        int fileSize = (int)objFile.length();
+
+        final int defaultChunkSize = 100 * 1024; // 100 KB 단위로 분할
+        int chunkSize = defaultChunkSize;
+        int chunkNo = 0;  // 분할 개체의 이름을 만들기 위한 청크 번호
+        int totalBytesRead = 0;
+
+        try {
+            // 파일로부터 InputStream 생성
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(objFile));			
+            while(totalBytesRead < fileSize) {
+
+                // 남은 데이터 크기 계산
+                int remainedBytes = fileSize - totalBytesRead;
+                if(remainedBytes < chunkSize) {
+                    chunkSize = remainedBytes;
+                }
+
+                // 바이트 버퍼에 청크 크기만큼 데이터를 읽음
+                byte[] chunkBuffer = new byte[chunkSize];
+                int bytesRead = inputStream.read(chunkBuffer, 0, chunkSize);
+
+                if(bytesRead > 0) {
+                    // 버퍼의 데이터를 InputStream으로 만들어 업로드, 개체 업로드 예제의 uploadObject() 메서드 사용
+                    String objPartName = String.format("%s/%03d", objectName, ++chunkNo);
+                    InputStream chunkInputStream = new ByteArrayInputStream(chunkBuffer);
+                    objectService.uploadObject(containerName, objPartName, chunkInputStream);
+
+                    totalBytesRead += bytesRead;
+                }
+            }
+
+            // 매니패스트 파일을 업로드
+            objectService.uploadManifestObject(containerName, objectName);
+
+            System.out.println("Upload OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
 ```
 
 ### 개체 내용 수정
@@ -524,7 +1051,11 @@ X-Auth-Token: [토큰 ID]
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	다운로드할 개체 이름|
 
+> [참고]
+> 개체의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+
 **[Example]**
+* cURL
 ```
 $ curl -O -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
@@ -534,8 +1065,65 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 100 17166  100 17166    0     0   566k      0 --:--:-- --:--:-- --:--:--  578k
 ```
 
-> [참고]
-> 개체의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+* Java
+```java
+// ObjectService.java
+package com.toast.swift.service;
+
+// ... import list
+
+@Data
+public class ObjectService {
+
+    public InputStream downloadObject(String containerName, String objectName) {
+        String url = this.getUrl(containerName, objectName);
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API 호출, 데이터를 바이트 배열로 받음
+        ResponseEntity<byte[]> response
+            = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, byte[].class);
+
+        // 바이트 배열 데이터를 InputStream으로 만들어 반환
+        return new ByteArrayInputStream(response.getBody());
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String containerName = "test";
+        final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
+        final String downloadPath = "/home/example/download";
+
+        ObjectService objectService = new ObjectService(storageUrl, tokenId);
+
+        try {
+            // 개체 다운로드
+            InputStream inputStream = objectService.downloadObject(containerName, objectName);
+
+            // 다운로드한 데이터를 바이트 버퍼로 읽어 들임
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+
+            // 버퍼의 데이터를 파일에 기록
+            File target = new File(downloadPath + "/" + objectName);
+            OutputStream outputStream = new FileOutputStream(target);
+            outputStream.write(buffer);
+            outputStream.close();
+
+            System.out.println("\nDownload OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+```
 
 ### 개체 복사
 
@@ -543,6 +1131,13 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 ```
 COPY   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 X-Auth-Token: [토큰 ID]
+Destination: [개체를 복사할 대상]
+```
+또는
+```
+PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+X-Auth-Token: [토큰 ID]
+X-Copy-From: [원본 개체]
 ```
 
 **[Request Parameters]**
@@ -550,20 +1145,71 @@ X-Auth-Token: [토큰 ID]
 |이름|	종류|	속성|	설명|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Destination|	Header|	String|	개체를 복사할 대상, `{컨테이너 이름} / {복사된 개체의 이름}`|
+|Destination|	Header|	String|	개체를 복사할 대상, `{컨테이너 이름} / {복사된 개체의 이름}`<br/>COPY 메소드를 사용할 때 필요|
+|X-Copy-From|	Header|	String|	원본 개체, `{컨테이너 이름} / {복사된 개체의 이름}`<br/>PUT 메소드를 사용할 때 필요|
 |Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
+|Container|	URL|	String|	컨테이너 이름<br/>COPY 메소드: 원본의 컨테이너<br/>PUT 메소드: 복사할 컨테이너|
 |Object|	URL|	String|	복사할 개체 이름|
-
-**[Example]**
-```
-$ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
--H 'Destination: copy_con/3a45e9.jpg' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/3a45e9.jpg
-```
 
 > [참고]
 > 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+
+**[Example]**
+* cURL
+```
+// COPY method
+$ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+-H 'Destination: copy_con/3a45e9.jpg' \
+https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/3a45e9.jpg
+
+// PUT method
+$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+-H 'X-Copy-From: curl_example/3a45e9.jpg' \
+https://api-storage.cloud.toast.com/v1/AUTH_*****/copy_con/3a45e9.jpg
+```
+
+* Java
+```java
+// ObjectService.java
+package com.toast.swift.service;
+
+// ... import list
+
+@Data
+public class ObjectService {
+
+    public void copyObject(String srcContainerName, String objectName, String destContainerName) {
+        String url = this.getUrl(destContainerName, objectName);
+        String srcObject = "/" + srcContainerName + "/" + objectName;
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+        headers.add("X-Copy-From", srcObject);    // 원본 개체 지정
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // HttpMethod는 COPY 메서드를 지원하지 않아 PUT 메서드를 사용하는 대체 API를 호출한다.
+        this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);			
+    }    
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String srcContainerName = "test";
+        final String destContainerName = "test2";
+        final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
+
+        ObjectService objectService = new ObjectService(storageUrl, tokenId);
+
+        try {
+            objectService.copyObject(srcContainerName, objectName, destContainerName);
+            System.out.println("Copy OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
 
 ### 개체 메타데이터 수정
 
@@ -583,12 +1229,18 @@ X-Auth-Token: [토큰 ID]
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	속성을 수정할 개체 이름|
 
+> [참고]
+> 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
+
 **[Example]**
+* cURL
 ```
+// 개체에 메타 데이터 추가
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
+// 개체 헤더에서 추가한 메타데이터 확인
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
@@ -597,8 +1249,52 @@ X-Object-Meta-Type: photo
 ...
 ```
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
+* Java
+```java
+// ObjectService.java
+package com.toast.swift.service;
+
+// ... import list
+
+@Data
+public class ObjectService {
+
+    public void setObjectMetadata(String containerName, String objectName, String key, String value) {
+        String url = this.getUrl(containerName, objectName);
+
+        // 메타데이터 키 생성
+        String metaKey = "X-Object-Meta-" + key;
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+        headers.add(metaKey, value);    // 헤더에 메타데이터 설정
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API 호출
+        this.restTemplate.exchange(url, HttpMethod.POST, requestHttpEntity, String.class);
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String containerName = "test";
+        final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
+        final String key = "Type";
+        final String value = "photo";
+
+        ObjectService objectService = new ObjectService(storageUrl, tokenId);
+
+        try {
+            objectService.setObjectMetadata(containerName, objectName, key, value);
+            System.out.println("Set metadata OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }    
+}
+```
 
 ### 개체 삭제
 
@@ -617,14 +1313,55 @@ X-Auth-Token: [토큰 ID]
 |Container|	URL|	String|	컨테이너 이름|
 |Object|	URL|	String|	삭제할 개체 이름|
 
+> [참고]
+> 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+
 **[Example]**
+* cURL
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 ```
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+* Java
+```java
+// ObjectService.java
+package com.toast.swift.service;
+
+// ... import list
+
+@Data
+public class ObjectService {
+
+    public void deleteObject(String containerName, String objectName) {
+        String url = this.getUrl(containerName, objectName);
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);		
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API 호출
+        this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);			
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String containerName = "test";
+        final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
+
+        ObjectService objectService = new ObjectService(storageUrl, tokenId);
+
+        try {
+            objectService.deleteObject(containerName, objectName);
+            System.out.println("Delete OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
 
 ## References
 
