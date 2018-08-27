@@ -1,477 +1,387 @@
-## Storage > Object Storage > API 가이드
+## Storage > Object Storage > APIガイド
 
-## 사전 준비
+## 事前準備
 
-### 테넌트 이름(tenant name) 확인
+### Tenant Nameの確認
 
-API를 이용할 때 테넌트 이름을 파라미터로 입력해야 합니다. 테넌트 이름은 프로젝트 설정 페이지에서 확인할 수 있는 **프로젝트 ID**입니다.
+APIを利用する時、Tenant Nameをパラメータとして入力する必要があります。Tenant Nameはプロジェクト設定ページで確認できる[プロジェクトID]です。
 
-1. 웹 콘솔 왼쪽 영역의 조직(ORGANIZATION) 이름 아래에서 톱니바퀴 모양의 **프로젝트 설정** 버튼을 클릭합니다.
-2. **프로젝트 ID** 값을 확인합니다.
+1. WEBコンソールのプロジェクト設定ボタンをクリック
+2. プロジェクトのID値を確認
 
-### API Endpoint 확인
+### API Endpointの確認
 
-API의 엔드포인트(endpoint)는 Object Storage 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
+APIのエンドポイントは、Object Storageサービスのページの`[API Endpoint設定]`ボタンをクリックして確認できます。
 
-| 항목 | API Endpoint | 용도 |
+| 項目 | API Endpoint | 用途 |
 |---|---|---|
-| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 오브젝트 스토리지 제어 |
-| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | 인증 토큰 발급 |
+| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | 認証トークンの発行 |
+| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | オブジェクトストレージの制御 |
 
-> [참고]  
-> API에 사용되는 사용자의 계정은(account) `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
+> [参考]  
+> APIで使用されるユーザーのAccountは`AUTH_***`形式の文字列です。Object-Store APIエンドポイントに含まれています。
 
-### API 비밀번호 설정
+### APIのパスワードの設定
 
-API 비밀번호는 Object Storage 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭한 다음 설정할 수 있습니다.
+APIのパスワードはObject Storageサービスページの`[API Endpoint設定]`ボタンをクリックして設定できます。
 
-1. **API Endpoint 설정** 버튼을 클릭합니다.
-2. **API Endpoint 설정** 아래 **API 비밀번호 설정** 입력 상자에 토큰 발급 시 사용할 비밀번호를 입력합니다.
-3. **저장** 버튼을 클릭합니다.
+1. [API Endpoint設定]ボタンをクリック
+2. API Endpoint設定 > APIパスワード設定項目に、トークン発行時に使用するパスワードを入力
+3. パスワード入力後、保存ボタンをクリック
 
-## 인증 토큰 발급
+## 認証トークンの発行
 
-인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 개체들에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
+認証トークンは、オブジェクトストレージのRESTful APIを使用する時に必要な認証キーです。外部公開に設定されていないコンテナやオブジェクトにアクセスするには、必ずトークンが必要です。トークンはアカウントごとに管理されます。
 
-**Method, URL**
+**[Method、 URL]**
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|tenantName|	Body or Plain|	String|	TOAST 프로젝트 ID|
-|username|	Plain|	String|	TOAST 계정 ID(이메일) 입력|
-|password|	Plain|	String|	**API Endpoint 설정**에서 저장한 비밀번호|
+|tenantId|	Body or Plain|	String|	Tenant ID. API Endpoint設定ダイアログウィンドウで確認可能。|
+|username|	Plain|	String|	TOASTアカウントID(Email)を入力|
+|password|	Plain|	String|	API Endpoint設定会話ウィンドウで保存したパスワード|
 
-**Request Body**
+**[Request Body Example]**
 ```
 {
   "auth": {
-    "tenantName": "{Project ID}",
+    "tenantId": "{Tenant ID}"、
     "passwordCredentials": {
-      "username": "{TOAST ID}",
+      "username": "{TOAST ID}"、
       "password": "{API Password}"
     }
   }
 }
 ```
 
-**Response Parameter**
+**[Response Parameters]**
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|access.token.id|	Body or Plain|	String|	발급된 토큰 ID|
-|access.token.tenant.id|	Plain|	String|	토큰을 요청한 프로젝트에 대응하는 Tenant ID|
-|access.token.expires|	Plain|	String|	발급된 토큰이 만료되는 시간, <br/> 토큰 발급 시간으로부터 1시간|
+|access.token.id|	Body or Plain|	String|	発行されたトークンID|
+|access.token.tenant.id|	Plain|	String|	トークンをリクエストしたプロジェクトに対応するTenant ID|
+|access.token.expires|	Plain|	String|	発行されたトークンが満了する時間、 <br/> トークン発行時間から1時間|
 
-**Response Body Example**
+**[Response Body Example]**
 ```
 {
     "access": {
         "token": {
-            "expires": "2018-01-15T08:05:05Z",
-            "id": "b587ae461278419da6ecd21a2344c8aa",
+            "expires": "2018-01-15T08:05:05Z"、
+            "id": "b587ae461278419da6ecd21a2344c8aa"、
             "tenant": {
-                "description": "",
-                "enabled": true,
-                "id": "c6439197d5e74e4593ca37a62bbc09a6",
-                "name": "9AD5KRlH",
-                "groupId": "XEj2zkHrbA7modGU",
-                "project_domain": "NORMAL",
+                "description": ""、
+                "enabled": true、
+                "id": "c6439197d5e74e4593ca37a62bbc09a6"、
+                "name": "9AD5KRlH"、
+                "groupId": "XEj2zkHrbA7modGU"、
+                "project_domain": "NORMAL"、
                 "swift": true
-            },
+            }、
             "issued_at": "2018-01-15T07:05:05.719672"
-        },
+        }、
         …
     }
 }
 ```
 
-> [주의]  
-> 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
+> [注意]  
+> トークンは有効時間があります。トークン発行リクエストのレスポンスに含まれる"expires"項目は発行されたトークンが満了する時間です。トークンが満了したら、新しいトークンの発行を受ける必要があります。
 
 
-## 컨테이너
+## コンテナ
 
-### 컨테이너 생성
-오브젝트 스토리지에 파일을 올리기 위해서는 반드시 컨테이너를 생성해야 합니다.
+### コンテナ作成
+オブジェクトストレージにファイルをアップロードするには、必ずコンテナを作成する必要があります。
 
-**Method, URL**
+**[Method、 URL]**
 ```
 PUT https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|종류|속성|설명|
+|名前|種類|属性|説明|
 |---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|URL|String|생성할 컨테이너 이름|
+|X-Auth-Token|Header|String|発行されたトークンID|
+|Account|URL|String|ユーザーアカウント名、API Endpointに含まれている|
+|Container|URL|String|作成するコンテナの名前|
 
-> [참고]
-> 이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
+> [参考]
+> このAPIはレスポンス本文を返しません。コンテナが作成されると、状態コード201を返します。
 
-### 컨테이너 조회
-지정한 컨테이너의 정보와 내부에 저장된 개체들의 목록을 조회합니다.
+### コンテナの照会
+指定したコンテナの情報と、内部に保存されたオブジェクトのリストを照会します。
 
-**Method, URL**
+**[Method、 URL]**
 ```
 GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|종류|속성|설명|
+|名前|種類|属性|説明|
 |---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Container|URL|String|조회할 컨테이너 이름|
+|X-Auth-Token|Header|String|発行されたトークンのID|
+|Container|URL|String|照会するコンテナの名前|
 
-**Response Body**
+[Response Body Example]
 ```
-[지정한 컨테이너에 속한 개체 목록]
-```
-
-#### 질의
-컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
-
-##### 1만 개 이상의 개체 목록 조회
-컨테이너 조회 API로 조회할 수 있는 목록의 개체 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 개체 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 개체의 다음 개체부터 최대 1만 개의 목록을 반환합니다.
-
-**Method, URL**
-```
-GET		https://api-storage.cloud.toast.com/v1/{Account}/{Container}?marker={Object}
-X-Auth-Token: [토큰 ID]
+[指定したコンテナに属するオブジェクトのリスト]
 ```
 
-**Request Parameters**
+### コンテナの修正
 
-|이름|종류|속성|설명|
-|---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Container|URL|String|조회할 컨테이너 이름|
-|Object|URL|String|기준 개체 이름|
+コンテナのメタデータを変更して、アクセス規則を指定できます。
 
-**Response Body**
-```
-[지정한 컨테이너에 속한 지정한 개체 다음 개체 목록]
-```
-
-##### 폴더 단위의 개체 목록 조회
-컨테이너에 여러 개의 폴더를 생성하고, 폴더에 개체를 업로드했다면 `path` 질의를 이용해 폴더 단위로 개체 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 개체 목록은 조회할 수 없습니다.
-
-**Method, URL**
-```
-GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?path={Path}
-```
-
-**Request Parameters**
-
-|이름|종류|속성|설명|
-|---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Container|URL|String|조회할 컨테이너 이름|
-|Path|URL|String|조회할 폴더 이름|
-
-**Response Body**
-```
-[지정한 컨테이너에 속한 지정한 폴더의 개체 목록]
-```
-
-##### 접두어로 시작하는 개체 목록 조회
-`prefix` 질의를 사용하면 지정한 접두어로 시작하는 개체들의 목록을 반환합니다. path 질의로는 조회할 수 없는 하위 폴더를 포함한 폴더의 개체 목록을 조회하는데 사용할 수 있습니다.
-
-**Method, URL**
-```
-GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?prefix={Prefix}
-X-Auth-Token: [토큰 ID]
-```
-
-**Request Parameters**
-
-|이름|종류|속성|설명|
-|---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Container|URL|String|조회할 컨테이너 이름|
-|Prefix|URL|String|검색할 접두어|
-
-**Response Body**
-```
-[지정한 컨테이너에 속하고 지정한 접두어로 시작하는 개체 목록]
-```
-
-##### 목록의 최대 개체 수 지정
-`limit` 질의를 사용하면 반환할 개체 목록의 최대 개체 수를 지정할 수 있습니다.
-
-**Method, URL**
-```
-GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}?limit={Number}
-X-Auth-Token: [토큰 ID]
-```
-
-**Request Parameters**
-
-|이름|종류|속성|설명|
-|---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|Container|URL|String|조회할 컨테이너 이름|
-|Number|URL|String|목록에 표시할 개체 수|
-
-**Response Body**
-```
-[지정한 컨테이너에 속한 지정된 수 만큼의 개체 목록]
-```
-
-### 컨테이너 수정
-
-컨테이너의 메타데이터를 변경하여 접근 규칙을 지정할 수 있습니다.
-
-**Method, URL**
+**[Method、 URL]**
 ```
 POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: {토큰 ID}
-X-Container-Read: {컨테이너 읽기 정책}
-X-Container-Write: {컨테이너 쓰기 정책}
+X-Auth-Token: {トークンID}
+X-Container-Read: {コンテナ読み取りポリシー}
+X-Container-Write: {コンテナ書き込みポリシー}
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|종류|속성|설명|
+|名前|種類|属性|説明|
 |---|---|---|---|
-|X-Auth-Token|Header|String|발급받은 토큰 ID|
-|X-Container-Read|Header|String|컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에 대해 접근 허용<br/>.r:example.com,test.com – 특정 주소에 대해 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에 대해 접근 허용|
-|X-Container-Write|Header|String|컨테이너 쓰기에 대한 접근 규칙 지정|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|URL|String|수정할 컨테이너 이름|
+|X-Auth-Token|Header|String|発行されたトークンのID|
+|X-Container-Read|Header|String|コンテナの読み取りに対するアクセス規則指定<br/>.r:* - 全てのユーザーに対してアクセス許容<br/>.r:example.com、test.com – 特定アドレスに対してアクセス許容、 ‘,’で区分<br/>.rlistings. – コンテナリストの照会を許容<br/>AUTH_.... – 特定アカウントに対してアクセス許容|
+|X-Container-Write|Header|String|コンテナの書き込みに対するアクセス規則指定|
+|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Container|URL|String|修正するコンテナの名前|
 
-**Request Example**
+**[Request Example]**
 ```
-$ curl -X POST https://api-storage.cloud.toast.com/v1/{Account}/{Container} \
-  -H 'X-Auth-Token: [토큰 ID]' \
-  -H 'X-Container-Read: .r:*'
+POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
+X-Auth-Token: [トークンID]
+X-Container-Read: .r:*
 ```
 
-> [참고]
-> 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+> [参考]
+> このAPIはレスポンス本文を返しません。リクエストが正しければ、状態コード204を返します。
 
-읽기 권한을 공개로 설정한 후에는 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
+読み取り権限を公開に設定した後は`curl`、 `wget`などのツールを使用したり、ブラウザを通してトークンなしで照会されるか確認できます。
 
-**Verification Example**
+**[Verification Example]**
 ```
 $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 
-{개체의 내용}
+{オブジェクトの内容}
 ```
 
-### 컨테이너 삭제
+### コンテナの削除
 
-지정한 컨테이너를 삭제합니다.
+指定したコンテナを削除します。
 
-**Method, URL**
+**[Method、 URL]**
 ```
 DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	삭제할 컨테이너 이름|
+|X-Auth-Token|	Header|	String|	発行されたトークンのID|
+|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Container|	URL|	String|	削除するコンテナの名前|
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+> [参考]
+> このリクエストはレスポンス本文を返しません。削除するコンテナは必ず空になっている必要があります。リクエストが正しければ、状態コード204を返します。
 
-## 개체
+## オブジェクト
 
-### 개체 업로드
+### オブジェクトのアップロード
 
-지정한 컨테이너에 새로운 개체를 업로드합니다.
+指定したコンテナに新しいオブジェクトをアップロードします。
 
-**Method, URL**
+**[Method、 URL]**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	생성할 개체 이름|
-|-|	Body|	Plain| Text	생성할 개체의 내용|
+|X-Auth-Token|	Header|	String|	発行されたトークンID|
+|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Container|	URL|	String|	コンテナの名前|
+|Object|	URL|	String|	作成するオブジェクトの名前|
+|-|	Body|	Plain| Text	作成するオブジェクトの内容|
 
-> [참고]
-> 요청 헤더에 개체 속성에 맞는 Content-type 항목을 설정해야 합니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+> [参考]
+> リクエストヘッダに、オブジェクトの属性に合うContent-type項目を設定する必要があります。リクエストが正しければ、状態コード201を返します。
 
 
-### 멀티파트 업로드
+### マルチパートアップロード
 
-5GB를 초과하는 용량을 가진 개체는 5GB 이하의 세그먼트로 나누어 업로드해야 합니다.
+5GBを超える容量のオブジェクトは5GB以下のセグメントに分割してアップロードする必要があります。
 
-**Method, URL**
+**[Method、 URL]**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}/{Count}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 ```
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	생성할 개체 이름|
-|Count| URL| String| 분할한 개체의 순번|
-|-|	Body|	Plain| Text 분할한 개체의 내용|
+|X-Auth-Token|	Header|	String|	発行されたークンID|
+|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Container|	URL|	String|	コンテナの名前|
+|Object|	URL|	String|	作成するオブジェクトの名前|
+|Count| URL| String| 分割したオブジェクトの順番|
+|-|	Body|	Plain| Text分割したオブジェクトの内容|
 
 
-모든 개체의 세그먼트를 업로드한 다음 매니패스트 개체를 생성하면 하나의 개체처럼 사용할 수 있습니다. 매니패스트 개체는 세그먼트들이 저장된 경로를 가리킵니다.
+全てのオブジェクトのセグメントをアップロードした後、マニフェストオブジェクトを作成すると、1つのオブジェクトのように使用できます。マニフェストオブジェクトは、セグメントが保存されたパスを指します。
 
-**Method, URL**
+**[Method、 URL]**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 X-Object-Manifest: {Container}/{Object}/
 ```
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|X-Object-Manifest| Header| String | 분한 개체들을 업로드한 경로, `{Container}/{Object}/` |
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	생성할 개체 이름|
-|-|	Body|	Plain| Text 분할한 개체의 내용|
+|X-Auth-Token|	Header|	String|	発行されたトークンのID|
+|X-Object-Manifest| Header| String | 分割したオブジェクトをアップロードしたパス、 `{Container}/{Object}/` |
+|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Container|	URL|	String|	コンテナの名前|
+|Object|	URL|	String|	作成するオブジェクトの名前|
+|-|	Body|	Plain| Text分割したオブジェクトの内容|
 
 
-**Example**
+**[Example]**
 ```
-// 분할된 개체 업로드
+// 分割されたオブジェクトのアップロード
 $ curl -X PUT -H 'X-Auth-Token: *****' http://10.162.50.125/v1/AUTH_*****/con/sample.jpg/001 --data-binary '.....'
 $ curl -X PUT -H 'X-Auth-Token: *****' http://10.162.50.125/v1/AUTH_*****/con/sample.jpg/002 --data-binary '.....'
 
-// 매니패스트 개체 업로드
+// マニフェストオブジェクトアップロード
 $ curl -X PUT -H 'X-Auth-Token: *****' -H 'X-Object-Manifest: con/sample.jpg/' http://10.162.50.125/v1/AUTH_*****/con/sample.jpg --data-binary ''
 
-// 개체 다운로드
+// オブジェクトのダウンロード
 $ curl http://10.162.50.125/v1/AUTH_*****/con/sample.jpg > sample.jpg
 ```
 
-### 개체 내용 수정
+### オブジェクトの内容の修正
 
-개체 업로드 API와 같지만, 개체가 이미 컨테이너에 있다면 해당 개체의 내용이 수정됩니다.
+オブジェクトアップロードAPIと同じですが、オブジェクトが既にコンテナに存在する場合、そのオブジェクトの内容が修正されます。
 
-**Method, URL**
+**[Method、 URL]**
 ```
 PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	내용을 수정할 개체 이름|
+|X-Auth-Token|	Header|	String|	発行されたトークンのID|
+|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Container|	URL|	String|	コンテナの名前|
+|Object|	URL|	String|	内容を修正するオブジェクトの名前|
 
-> [참고]
-> 요청 헤더에 개체 속성에 맞는 Content-type 항목을 설정해야 합니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+> [参考]
+> リクエストヘッダにオブジェクト属性に合うContent-type項目を設定する必要があります。リクエストが正しければ、状態コード201を返します。
 
-### 개체 다운로드
+### オブジェクトのダウンロード
 
-**Method, URL**
+**[Method、 URL]**
 ```
 GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	다운로드할 개체 이름|
+|X-Auth-Token|	Header|	String|	発行されたトークンのID|
+|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Container|	URL|	String|	コンテナの名前|
+|Object|	URL|	String|	ダウンロードするオブジェクトの名前|
 
-> [참고]
-> 개체의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+> [参考]
+> オブジェクトの内容がストリームで返されます。リクエストが正しければ、状態コード200を返します。
 
-### 개체 복사
+### オブジェクトのコピー
 
-**Method, URL**
+**[Method、 URL]**
 ```
 COPY   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Destination|	Header|	String|	개체를 복사할 대상, `{컨테이너 이름} / {복사된 개체의 이름}`|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	복사할 개체 이름|
+|X-Auth-Token|	Header|	String|	発行されたトークンのID|
+|Destination|	Header|	String|	オブジェクトをコピーする対象、 `{コンテナの名前} / {コピーされたオブジェクトの名前}`|
+|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Container|	URL|	String|	コンテナの名前|
+|Object|	URL|	String|	コピーするオブジェクトの名前|
 
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+> [参考]
+> このリクエストはレスポンス本文を返しません。リクエストが正しければ状態コード201を返します。
 
-### 개체 메타데이터 수정
+### オブジェクトのメタデータの修正
 
-**Method, URL**
+**[Method、 URL]**
 ```
 POST   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Content-Type|	Header|	String|	변경할 개체 형식|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	속성을 수정할 개체 이름|
+|X-Auth-Token|	Header|	String|	発行されたトークンのID|
+|Content-Type|	Header|	String|	変更するオブジェクトの形式|
+|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Container|	URL|	String|	コンテナの名前|
+|Object|	URL|	String|	属性を修正するオブジェクトの名前|
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
+> [参考]
+> このリクエストはレスポンス本文を返しません。リクエストが正しければ、状態コード202を返します。
 
-### 개체 삭제
+### オブジェクトの削除
 
-**Method, URL**
+**[Method、 URL]**
 ```
 DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [토큰 ID]
+X-Auth-Token: [トークンID]
 ```
 
-**Request Parameter**
+**[Request Parameters]**
 
-|이름|	종류|	속성|	설명|
+|名前|	種類|	属性|	説明|
 |---|---|---|---|
-|X-Auth-Token|	Header|	String|	발급받은 토큰 ID|
-|Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
-|Container|	URL|	String|	컨테이너 이름|
-|Object|	URL|	String|	삭제할 개체 이름|
+|X-Auth-Token|	Header|	String|	発行されたトークンのID|
+|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Container|	URL|	String|	コンテナの名前|
+|Object|	URL|	String|	削除するオブジェクトの名前|
 
-> [참고]
-> 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+> [参考]
+> このリクエストはレスポンス本文を返しません。リクエストが正しければ、状態コード204を返します。
 
-## 참고 사항
+## References
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
