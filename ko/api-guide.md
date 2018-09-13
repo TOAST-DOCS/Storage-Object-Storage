@@ -442,6 +442,7 @@ $CONTAINER_NAME = 'test';
 $container = new Container($STORAGE_URL, $TOKEN_ID);
 
 $container->create($CONTAINER_NAME);
+?>
 ```
 
 ### 컨테이너 조회
