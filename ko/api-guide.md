@@ -201,6 +201,39 @@ public class AuthService {
     }
 }
 ```
+* python
+```python
+# auth.py
+import json
+import requests
+
+
+def get_token(auth_url, tenant_id, username, password):
+    token_url = auth_url + '/tokens'
+    req_header = {'Content-Type': 'application/json'}
+    req_body = {
+        'auth': {
+            'tenantId': tenant_id,
+            'passwordCredentials': {
+                'username': username,
+                'password': password
+            }
+        }
+    }
+
+    response = requests.post(token_url, headers=req_header, json=req_body)
+    return response.json()
+
+
+if __name__ == '__main__':
+    AUTH_URL = 'https://api-compute.cloud.toast.com/identity/v2.0'
+    TENANT_ID = '{Tenant ID}'
+    USERNAME = '{TOAST Account}'
+    PASSWORD = '{API Password}'
+
+    token = get_token(AUTH_URL, TENANT_ID, USERNAME, PASSWORD)
+    print json.dumps(token, indent=4, separators=(',', ': '))
+```
 
 ## 컨테이너
 
@@ -285,6 +318,40 @@ public class ContainerService {
     }
 }
 ```
+* python
+```python
+# container.py
+import requests
+
+
+class ContainerService:
+    def __init__(self, storage_url, token_id):
+        self.storage_url = storage_url
+        self.token_id = token_id
+
+    def _get_url(self, container):
+        return self.storage_url + '/' + container
+
+    def _get_request_header(self):
+        return {'X-Auth-Token': self.token_id}
+
+    def create(self, container):
+        req_url = self._get_url(container)
+        req_header = self._get_request_header()
+        return requests.put(req_url, headers=req_header)
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+
+    con_service = ContainerService(STORAGE_URL, TOKEN_ID)
+
+    # Create the container
+    new_container = 'test'
+    con_service.create(new_container)
+```
+
 
 ### 컨테이너 조회
 지정한 컨테이너의 정보와 내부에 저장된 개체들의 목록을 조회합니다.
@@ -369,6 +436,33 @@ public class ContainerService {
     }
 }
 ```
+* python
+```python
+class ContainerService:
+    # ...
+
+    def _get_list(self, req_url):
+        req_header = self._get_request_header()
+        response = requests.get(req_url, headers=req_header)
+        return response.content.split('\n')
+
+    def get_object_list(self, container):
+        req_url = self._get_url(container)
+        return self._get_list(req_url)
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    CONTAINER_NAME = 'test'
+
+    con_service = ContainerService(STORAGE_URL, TOKEN_ID)
+
+    object_list = con_service.get_object_list(CONTAINER_NAME)
+    for object in object_list:
+        print object
+```
+
 
 ### 컨테이너 조회 질의
 컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
@@ -443,6 +537,28 @@ public class ContainerService {
 }
 ```
 
+* python
+```python
+# container.py
+class ContainerService:
+    # ...
+    _MAX_LIST_COUNT = 10000
+
+    def get_object_list(self, container, last_object=None):
+        req_url = self._get_url(container)
+        if last_object:
+            req_url += '?marker=' + last_object
+        return self._get_list(req_url)
+
+    def get_all_object_list(self, container):
+        object_list = self.get_object_list(container)
+        while (len(object_list) % self._MAX_LIST_COUNT) == 0:
+            next_object_list = self.get_object_list(container, object_list[-1])
+            object_list.append(next_object_list)
+        return object_list
+
+```
+
 ##### 폴더 단위의 개체 목록 조회
 컨테이너에 여러 개의 폴더를 생성하고, 폴더에 개체를 업로드했다면 `path` 질의를 이용해 폴더 단위로 개체 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 개체 목록은 조회할 수 없습니다.
 
@@ -494,6 +610,16 @@ public class ContainerService {
 
     // getObjectListOfFolder() 사용 예제는 컨테이너 조회와 동일
 }
+```
+* python
+```python
+# container.py
+class ContainerService:
+    # ...
+    def get_object_list_of_folder(self, container, folder):
+        req_url = self._get_url(container) + "?path=" + folder
+        return self._get_list(req_url)
+
 ```
 
 ##### 접두어로 시작하는 개체 목록 조회
@@ -550,6 +676,16 @@ public class ContainerService {
     // getObjectListWithPrefix() 사용 예제는 컨테이너 조회 예제와 동일
 }
 ```
+* python
+```python
+# container.py
+class ContainerService:
+    # ...
+    def get_object_list_of_prefix(self, container, prefix):
+        req_url = self._get_url(container) + "?prefix=" + prefix
+        return self._get_list(req_url)
+
+```
 
 
 ##### 목록의 최대 개체 수 지정
@@ -603,7 +739,16 @@ public class ContainerService {
     // getObjectListWithPrefix() 사용 예제는 컨테이너 조회 예제와 동일
 }
 ```
+* python
+```python
+# container.py
+class ContainerService:
+    # ...
+    def get_object_list_with_limit(self, container, limit=0):
+        req_url = self._get_url(container) + "?limit=%d" % limit
+        return self._get_list(req_url)
 
+```
 ### 컨테이너 수정
 
 컨테이너의 메타데이터를 변경하여 접근 규칙을 지정할 수 있습니다.
@@ -687,6 +832,27 @@ public class ContainerService {
     }
 }
 ```
+* python
+```python
+# container.py
+class ContainerService:
+    # ...
+    def set_read_acl(self, container, is_public):
+        req_url = self._get_url(container)
+        req_header = self._get_request_header()
+        req_header['X-Container-Read'] = '.r:*' if is_public else ''
+        return requests.post(req_url, headers=req_header)
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    CONTAINER_NAME = 'test'
+
+    con_service = ContainerService(STORAGE_URL, TOKEN_ID)
+
+    con_service.set_read_acl(CONTAINER_NAME, True)
+```
+
 
 읽기 권한을 공개로 설정한 후에는 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
 
@@ -765,6 +931,25 @@ public class ContainerService {
         }
     }
 }
+```
+* python
+```python
+# container.py
+class ContainerService:
+    # ...
+    def delete(self, container):
+        req_url = self._get_url(container)
+        req_header = self._get_request_header()
+        return requests.delete(req_url, headers=req_header)
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    CONTAINER_NAME = 'test'
+
+    con_service = ContainerService(STORAGE_URL, TOKEN_ID)
+
+    con_service.delete(CONTAINER_NAME)
 ```
 
 ## 개체
@@ -879,6 +1064,45 @@ public class ObjectService {
 }
 
 ```
+* python
+```python
+# object.py
+import os
+import requests
+
+
+class ObjectService:
+    def __init__(self, storage_url, token_id):
+        self.storage_url = storage_url
+        self.token_id = token_id
+
+    def _get_url(self, container, object):
+        return '/'.join([self.storage_url, container, object])
+
+    def _get_request_header(self):
+        return {'X-Auth-Token': self.token_id}
+
+    def upload(self, container, object, object_path):
+        req_url = self._get_url(container, object)
+        req_header = self._get_request_header()
+
+        path = '/'.join([object_path, object])
+        with open(path, 'rb') as f:
+            requests.put(req_url, headers=req_header, data=f.read())
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    CONTAINER_NAME = 'test'
+    OBJECT_NAME = 'd03bda22ffb649a97958d4a5bf4b6eaf.jpg'
+    OBJECT_PATH = '/home/example/'
+
+    obj_service = ObjectService(STORAGE_URL, TOKEN_ID)
+
+    obj_service.upload(CONTAINER_NAME, OBJECT_NAME, OBJECT_PATH)
+```
+
 
 ### 멀티파트 업로드
 
@@ -1025,7 +1249,56 @@ public class ObjectService {
     }
 }
 ```
+* python
+```python
+# object.py
+class ObjectService:
+    CHUNK_SIZE = 100 * 1024  # 100 KB
+    # ...
 
+    def _create_manifest(self, container, object):
+        req_url = self._get_url(container, object)
+        req_header = self._get_request_header()
+        req_header['X-Object-Manifest'] = '/'.join([container, object])
+        requests.put(req_url, headers=req_header)
+
+    def upload_large_object(self, container, object, object_path):
+        url = self._get_url(container, object)
+        req_header = self._get_request_header()
+
+        path = '/'.join([object_path, object])
+        with open(path, 'rb') as f:
+            chunk_index = 1
+            chunk_size = self.CHUNK_SIZE
+            total_bytes_read = 0
+            obj_size = os.path.getsize(path)
+
+            while total_bytes_read < obj_size:
+                remained_bytes = obj_size - total_bytes_read
+                if remained_bytes < chunk_size:
+                    chunk_size = remained_bytes
+
+                req_url = '%s/%03d' % (url, chunk_index)
+                requests.put(
+                    req_url, headers=req_header, data=f.read(chunk_size))
+                f.seek(chunk_size)
+                total_bytes_read += chunk_size
+                chunk_index += 1
+
+        self._create_manifest(container, object)
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    CONTAINER_NAME = 'test'
+    LARGE_OBJECT = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
+    OBJECT_PATH = '/home/example/'
+
+    obj_service = ObjectService(STORAGE_URL, TOKEN_ID)
+
+    obj_service.upload_large_object(CONTAINER_NAME, LARGE_OBJECT, OBJECT_PATH)
+```
 ### 개체 내용 수정
 
 개체 업로드 API와 같지만, 개체가 이미 컨테이너에 있다면 해당 개체의 내용이 수정됩니다.
@@ -1140,7 +1413,33 @@ public class ObjectService {
 
 }
 ```
+* python
+```python
+# object.py
+class ObjectService:
+    # ...
+    def download(self, container, object, download_path):
+        req_url = self._get_url(container, object)
+        req_header = self._get_request_header()
 
+        response = requests.get(req_url, headers=req_header)
+
+        dn_path = '/'.join([download_path, object])
+        with open(dn_path, 'wb') as f:
+            f.write(response.content)
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    CONTAINER_NAME = 'test'
+    OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
+    DOWNLOAD_PATH = '/home/example/download'
+
+    obj_service = ObjectService(STORAGE_URL, TOKEN_ID)
+
+    obj_service.download(CONTAINER_NAME, OBJECT_NAME, DOWNLOAD_PATH)
+```
 ### 개체 복사
 
 **[Method, URL]**
@@ -1227,6 +1526,29 @@ public class ObjectService {
         }
     }
 }
+```
+* python
+```python
+# object.py
+class ObjectService:
+    # ...
+    def copy(self, src_container, object, dest_container):
+        req_url = self._get_url(dest_container, object)
+        req_header = self._get_request_header()
+        req_header['X-Copy-From'] = '/'.join([src_container, object])
+        requests.put(req_url, headers=req_header)
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    CONTAINER_NAME = 'test'
+    OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
+    DEST_CONTAINER = 'dest'
+
+    obj_service = ObjectService(STORAGE_URL, TOKEN_ID)
+
+    obj_service.copy(CONTAINER_NAME, OBJECT_NAME, DEST_CONTAINER)
 ```
 
 ### 개체 메타데이터 수정
@@ -1315,6 +1637,30 @@ public class ObjectService {
     }    
 }
 ```
+* python
+```python
+# object.py
+class ObjectService:
+    # ...
+    def set_metadata(self, container, object, key, value):
+        req_url = self._get_url(container, object)
+        req_header = self._get_request_header()
+        req_header['X-Object-Meta-' + key] = value
+        requests.post(req_url, headers=req_header)
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    CONTAINER_NAME = 'test'
+    OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
+    META_KEY = 'Type'
+    META_VALUE = 'photo'
+
+    obj_service = ObjectService(STORAGE_URL, TOKEN_ID)
+
+    obj_service.set_metadata(CONTAINER_NAME, OBJECT_NAME, META_KEY, META_VALUE)    
+```
 
 ### 개체 삭제
 
@@ -1384,7 +1730,27 @@ public class ObjectService {
     }
 }
 ```
+* python
+```python
+# object.py
+class ObjectService:
+    # ...
+    def delete(self, container, object):
+        req_url = self._get_url(container, object)
+        req_header = self._get_request_header()
+        requests.delete(req_url, headers=req_header)
 
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    CONTAINER_NAME = 'test'
+    OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
+
+    obj_service = ObjectService(STORAGE_URL, TOKEN_ID)
+
+    obj_service.delete(CONTAINER_NAME, OBJECT_NAME)   
+```
 ## References
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
