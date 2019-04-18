@@ -977,7 +977,7 @@ X-Container-Write: {컨테이너 쓰기 정책}
 |---|---|---|---|
 |X-Auth-Token|Header|String|발급받은 토큰 ID|
 |X-Container-Read|Header|String|컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에 대해 접근 허용<br/>.r:example.com,test.com – 특정 주소에 대해 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에 대해 접근 허용|
-|X-Container-Write|Header|String|컨테이너 쓰기에 대한 접근 규칙 지정|
+|X-Container-Write|Header|String|컨테이너 쓰기에 대한 접근 규칙 지정<br/>*.* - 모든 사용자에 대해 쓰기 허용<br/>AUTH_.... – 특정 계정에 대해 쓰기 허용|
 |Account|URL|String|사용자 계정명, API Endpoint에 포함되어 있음|
 |Container|URL|String|수정할 컨테이너 이름|
 
