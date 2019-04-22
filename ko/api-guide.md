@@ -991,7 +991,7 @@ X-Container-Write: {컨테이너 쓰기 정책}
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
--H 'X-Container-Write: .r:*' \
+-H 'X-Container-Write: *:*' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
 
