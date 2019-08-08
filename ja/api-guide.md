@@ -65,7 +65,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 |---|---|---|---|
 |access.token.id|	Body or Plain|	String|	発行されたトークンID|
 |access.token.tenant.id|	Plain|	String|	トークンをリクエストしたプロジェクトに対応するTenant ID|
-|access.token.expires|	Plain|	String|	発行されたトークンが満了する時間、 <br/> トークン発行時間から1時間|
+|access.token.expires|	Plain|	String|	発行したTokenの満了時間。 yyyy-mm-ddTHH：MM：ssZの形式。例) 2017-05-16T03：17：50Z |
 
 **[Response Body Example]**
 ```
