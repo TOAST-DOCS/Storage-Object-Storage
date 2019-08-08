@@ -64,7 +64,7 @@ POST   https://api-compute.cloud.toast.com/identity/v2.0/tokens
 |---|---|---|---|
 |access.token.id|	Body or Plain|	String|	인증 Token|
 |access.token.tenant.id|	Plain|	String|	Token을 요청한 Project에 대응하는 Tenant ID|
-|access.token.expires|	Plain|	String|	발급받은 Token이 만료되는 시간, <br/> Token 발급 시간으로 부터 1시간으로 설정|
+|access.token.expires|	Plain|	String|	발급한 Token의 만료 시간. yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
 
 [Response Body Example]
 
