@@ -65,7 +65,7 @@ POST    https://gov-api-compute.cloud.toast.com/identity/v2.0/tokens
 |---|---|---|---|
 |access.token.id|	Body or Plain|	String| ID of issued token |
 |access.token.tenant.id|	Plain|	String| Tenant ID in response to the project requesting for a token |
-|access.token.expires|	Plain|	String| Time when issued token is expired, <br/>one hour after token is issued |
+|access.token.expires|	Plain|	String| Expiration time of an issued token in the format of yyyy-mm-ddTHH:MM:ssZ. e.g) 2017-05-16T03:17:50Z |
 
 **[Response Body Example]**
 ```
