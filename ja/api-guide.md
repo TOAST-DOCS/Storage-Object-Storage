@@ -65,7 +65,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 |---|---|---|---|
 |access.token.id|	Body or Plain|	String|	発行されたトークンID|
 |access.token.tenant.id|	Plain|	String|	トークンをリクエストしたプロジェクトに対応するTenant ID|
-|access.token.expires|	Plain|	String|	発行されたトークンが満了する時間、 <br/> トークン発行時間から1時間|
+|access.token.expires|	Plain|	String|	発行したTokenの満了時間。 yyyy-mm-ddTHH：MM：ssZの形式。例) 2017-05-16T03：17：50Z |
 
 **[Response Body Example]**
 ```
@@ -98,6 +98,10 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 
 ### コンテナ作成
 オブジェクトストレージにファイルをアップロードするには、必ずコンテナを作成する必要があります。
+
+> [参考]
+> コンテナまたはオブジェクト名に特殊文字`! * ' ( ) ; : @ & = + $ , / ? # [ ]`が含まれている場合、APIを使用する時、必ずURLエンコード(パーセントエンコーディング)をする必要があります。この文字はURLで使用される重要な予約文字です。この文字が含まれるパスをURLエンコードしないでAPIリクエストを送った場合、望んだレスポンスが得られない場合があります。
+
 
 **[Method、 URL]**
 ```

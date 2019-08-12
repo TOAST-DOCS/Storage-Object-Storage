@@ -59,7 +59,7 @@ Token is a verification key issued to use RESTful API of Object Storage. Contain
 |------------------------|---------------|----------|-----------------------------------------------------------------------|
 | access.token.id        | Body or Plain | String   | Verification Token                                                    |
 | access.token.tenant.id | Plain         | String   | Tenant ID that corresponds to Project which requested Token           |
-| access.token.expires   | Plain         | String   | Expiration time of issued Token. Describe &lt;Time set as default&gt; |
+| access.token.expires   | Plain         | String   | Expiration time of an issued token in the format of yyyy-mm-ddTHH:MM:ssZ. e.g) 2017-05-16T03:17:50Z |
 
 \[Example of a request\]
 

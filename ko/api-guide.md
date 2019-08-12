@@ -59,7 +59,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 |---|---|---|---|
 |access.token.id|	Body or Plain|	String|	발급된 토큰 ID|
 |access.token.tenant.id|	Plain|	String|	토큰을 요청한 프로젝트에 대응하는 Tenant ID|
-|access.token.expires|	Plain|	String|	발급된 토큰이 만료되는 시간, <br/> 토큰 발급 시간으로부터 1시간|
+|access.token.expires|	Plain|	String|	발급한 Token의 만료 시간. yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
 
 **[Response Body]**
 ```
@@ -280,6 +280,10 @@ printf("%s\n", $token);
 
 ### 컨테이너 생성
 오브젝트 스토리지에 파일을 올리기 위해서는 반드시 컨테이너를 생성해야 합니다.
+
+> [참고]
+> 컨테이너 또는 오브젝트 이름에 특수 문자 `! * ' ( ) ; : @ & = + $ , / ? # [ ]`가 포함되어 있다면 API를 사용할 때 반드시 URL 인코딩(퍼센트 인코딩)을 해야 합니다. 이 문자들은 URL에서 중요하게 사용되는 예약 문자입니다. 이 문자들이 포함된 경로를 URL 인코딩하지 않고 API 요청을 보낸다면 원하는 응답을 받을 수 없습니다.
+
 
 **[Method, URL]**
 ```
