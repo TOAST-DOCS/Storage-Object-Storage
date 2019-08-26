@@ -1939,7 +1939,7 @@ X-Copy-From: [원본 개체]
 * cURL
 ```
 // COPY method
-$ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+$ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/3a45e9.jpg' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/3a45e9.jpg
 
