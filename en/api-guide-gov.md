@@ -99,6 +99,10 @@ POST    https://gov-api-compute.cloud.toast.com/identity/v2.0/tokens
 ### Create Containers
 To upload files to object storage, containers must be created.
 
+> [Note]
+> If a container or object name includes special characters, such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, URL encoding (percent encoding) is a must to be applied for APIs. They are important reservation characters for URL. Unless the path of these characters are requested to an API without URL encoded, you may not be returned with a response you need
+
+
 **[Method, URL]**
 ```
 PUT https://gov-api-storage.cloud.toast.com/v1/{Account}/{Container}
