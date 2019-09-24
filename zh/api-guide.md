@@ -100,6 +100,10 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ### 创建Bucket
 为了上传对象文件到对象存储中，需要您先要创建一个Bucket。
 
+> [参考]
+> 若容器或对象名中存在特殊字符 `! * ' ( ) ; : @ & = + $ , / ? # [ ]`时， 则使用API时必须进行URL编码（百分号编码）。   这些字符是URL中有重要作用的备用字符。若不对含有这些字符的路径进行URL编码就发送API请求，则无法收到所需响应。
+
+
 **Method, URL**
 ```
 PUT https://api-storage.cloud.toast.com/v1/{Account}/{Container}
