@@ -6,14 +6,14 @@
 
 APIを利用する時、Tenant Nameをパラメータとして入力する必要があります。Tenant Nameはプロジェクト設定ページで確認できる[プロジェクトID]です。
 
-1. WEBコンソールのプロジェクト設定ボタンをクリック
-2. プロジェクトのID値を確認
+1. ウェブコンソールのプロジェクト設定ボタンをクリック
+2. プロジェクトのIDの値を確認
 
-### API Endpointの確認
+### APIエンドポイントの確認
 
-APIのエンドポイントは、Object Storageサービスのページの`[API Endpoint設定]`ボタンをクリックして確認できます。
+APIのエンドポイントは、Object Storageサービスのページの`[APIエンドポイントの設定]`ボタンをクリックして確認できます。
 
-| 項目 | API Endpoint | 用途 |
+| 項目 | APIエンドポイント | 用途 |
 |---|---|---|
 | Identity | https://api-compute.cloud.toast.com/identity/v2.0 | 認証トークンの発行 |
 | Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | オブジェクトストレージの制御 |
@@ -23,10 +23,10 @@ APIのエンドポイントは、Object Storageサービスのページの`[API 
 
 ### APIのパスワードの設定
 
-APIのパスワードはObject Storageサービスページの`[API Endpoint設定]`ボタンをクリックして設定できます。
+APIのパスワードはObject Storageサービスページの`[APIエンドポイントの設定]`ボタンをクリックして設定できます。
 
-1. [API Endpoint設定]ボタンをクリック
-2. API Endpoint設定 > APIパスワード設定項目に、トークン発行時に使用するパスワードを入力
+1. [APIエンドポイントの設定]ボタンをクリック
+2. APIエンドポイントの設定 > APIパスワードの設定項目に、トークン発行時に使用するパスワードを入力
 3. パスワード入力後、保存ボタンをクリック
 
 ## 認証トークンの発行
@@ -42,9 +42,9 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 
 |名前|	種類|	属性|	説明|
 |---|---|---|---|
-|tenantId|	Body or Plain|	String|	Tenant ID. API Endpoint設定ダイアログウィンドウで確認可能。|
+|tenantId|	Body or Plain|	String|	Tenant ID. APIエンドポイントの設定ウィンドウで確認可能。|
 |username|	Plain|	String|	TOASTアカウントID(Email)を入力|
-|password|	Plain|	String|	API Endpoint設定会話ウィンドウで保存したパスワード|
+|password|	Plain|	String|	APIエンドポイントの設定ウィンドウで保存したパスワード|
 
 **[Request Body Example]**
 ```
@@ -91,7 +91,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 ```
 
 > [注意]  
-> トークンは有効時間があります。トークン発行リクエストのレスポンスに含まれる"expires"項目は発行されたトークンが満了する時間です。トークンが満了したら、新しいトークンの発行を受ける必要があります。
+> トークンには有効期限が設定されます。トークン発行リクエストのレスポンスに含まれる"expires"項目は発行されたトークンが満了する時間です。トークンが満了したら、新しいトークンの発行を受ける必要があります。
 
 
 ## コンテナ
@@ -114,7 +114,7 @@ X-Auth-Token: [トークンID]
 |名前|種類|属性|説明|
 |---|---|---|---|
 |X-Auth-Token|Header|String|発行されたトークンID|
-|Account|URL|String|ユーザーアカウント名、API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、APIエンドポイントに含まれている|
 |Container|URL|String|作成するコンテナの名前|
 
 > [参考]
@@ -160,7 +160,7 @@ X-Container-Write: {コンテナ書き込みポリシー}
 |X-Auth-Token|Header|String|発行されたトークンのID|
 |X-Container-Read|Header|String|コンテナの読み取りに対するアクセス規則指定<br/>.r:* - 全てのユーザーに対してアクセス許容<br/>.r:example.com、test.com – 特定アドレスに対してアクセス許容、 ‘,’で区分<br/>.rlistings. – コンテナリストの照会を許容<br/>AUTH_.... – 特定アカウントに対してアクセス許容|
 |X-Container-Write|Header|String|コンテナの書き込みに対するアクセス規則指定|
-|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、 APIエンドポイントに含まれている|
 |Container|URL|String|修正するコンテナの名前|
 
 **[Request Example]**
@@ -197,7 +197,7 @@ X-Auth-Token: [トークンID]
 |名前|	種類|	属性|	説明|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	発行されたトークンのID|
-|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、 APIエンドポイントに含まれている|
 |Container|	URL|	String|	削除するコンテナの名前|
 
 > [参考]
@@ -220,7 +220,7 @@ X-Auth-Token: [トークンID]
 |名前|	種類|	属性|	説明|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	発行されたトークンID|
-|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、 APIエンドポイントに含まれている|
 |Container|	URL|	String|	コンテナの名前|
 |Object|	URL|	String|	作成するオブジェクトの名前|
 |-|	Body|	Plain| Text	作成するオブジェクトの内容|
@@ -242,7 +242,7 @@ X-Auth-Token: [トークンID]
 |名前|	種類|	属性|	説明|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	発行されたークンID|
-|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、 APIエンドポイントに含まれている|
 |Container|	URL|	String|	コンテナの名前|
 |Object|	URL|	String|	作成するオブジェクトの名前|
 |Count| URL| String| 分割したオブジェクトの順番|
@@ -262,7 +262,7 @@ X-Object-Manifest: {Container}/{Object}/
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	発行されたトークンのID|
 |X-Object-Manifest| Header| String | 分割したオブジェクトをアップロードしたパス、 `{Container}/{Object}/` |
-|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、 APIエンドポイントに含まれている|
 |Container|	URL|	String|	コンテナの名前|
 |Object|	URL|	String|	作成するオブジェクトの名前|
 |-|	Body|	Plain| Text分割したオブジェクトの内容|
@@ -296,7 +296,7 @@ X-Auth-Token: [トークンID]
 |名前|	種類|	属性|	説明|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	発行されたトークンのID|
-|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、 APIエンドポイントに含まれている|
 |Container|	URL|	String|	コンテナの名前|
 |Object|	URL|	String|	内容を修正するオブジェクトの名前|
 
@@ -316,7 +316,7 @@ X-Auth-Token: [トークンID]
 |名前|	種類|	属性|	説明|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	発行されたトークンのID|
-|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、 APIエンドポイントに含まれている|
 |Container|	URL|	String|	コンテナの名前|
 |Object|	URL|	String|	ダウンロードするオブジェクトの名前|
 
@@ -337,7 +337,7 @@ X-Auth-Token: [トークンID]
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	発行されたトークンのID|
 |Destination|	Header|	String|	オブジェクトをコピーする対象、 `{コンテナの名前} / {コピーされたオブジェクトの名前}`|
-|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、 APIエンドポイントに含まれている|
 |Container|	URL|	String|	コンテナの名前|
 |Object|	URL|	String|	コピーするオブジェクトの名前|
 
@@ -359,7 +359,7 @@ X-Auth-Token: [トークンID]
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	発行されたトークンのID|
 |Content-Type|	Header|	String|	変更するオブジェクトの形式|
-|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、 APIエンドポイントに含まれている|
 |Container|	URL|	String|	コンテナの名前|
 |Object|	URL|	String|	属性を修正するオブジェクトの名前|
 
@@ -379,13 +379,13 @@ X-Auth-Token: [トークンID]
 |名前|	種類|	属性|	説明|
 |---|---|---|---|
 |X-Auth-Token|	Header|	String|	発行されたトークンのID|
-|Account|URL|String|ユーザーアカウント名、 API Endpointに含まれている|
+|Account|URL|String|ユーザーアカウント名、 APIエンドポイントに含まれている|
 |Container|	URL|	String|	コンテナの名前|
 |Object|	URL|	String|	削除するオブジェクトの名前|
 
 > [参考]
 > このリクエストはレスポンス本文を返しません。リクエストが正しければ、状態コード204を返します。
 
-## References
+## 参考サイト
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
