@@ -1,11 +1,11 @@
 ## Storage > Object Storage > AWS S3 호환 API 가이드
-오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3가 제공하는 API 형태의 호환 API를 제공합니다. AWS S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다. 또한 AWS SDK를 사용할 수 도 있습니다.
+오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3가 제공하는 API 형태의 호환 API를 제공합니다. AWS S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
 
 제공하는 S3 호환 API는 다음과 같습니다.
 
 | S3 API Method | 용도 |
 | --- | --- |
-| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | 버킷(컨테이너) 생성 |
+| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | 버킷 생성 |
 | [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | 버킷 정보 조회 |
 | [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | 버킷 삭제 |
 | [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | 버킷 ACL 설정 |
@@ -50,7 +50,7 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | Tenant ID. API Endpoint 설정 대화창에서 확인 가능 |
 
 > [주의]
-> 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급시 확인할 수 있습니다.
+> 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
 
 **[Request Body]**
 ```json
@@ -86,7 +86,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-GET https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2
+GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -124,7 +124,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-GET https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
