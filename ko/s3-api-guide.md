@@ -36,6 +36,7 @@ S3 호환 API를 사용하기 위해서는 먼저 AWS EC2 형태의 자격 증�
 **[Method, URL]**
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/users/{User ID}/credentials/OS-EC2
+
 Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
@@ -49,10 +50,10 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | Tenant ID. API Endpoint 설정 대화창에서 확인 가능 |
 
 > [주의]
-> 자격 증명 등록에 사용하는 사용자 UUID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급시 확인할 수 있습니다.
+> 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급시 확인할 수 있습니다.
 
 **[Request Body]**
-```
+```json
 {
   "tenant_id": "{tenant_id}"
 }
@@ -66,7 +67,7 @@ X-Auth-Token: {token-id}
 | secret | Plain | String | 자격 증명 비밀 키 |
 
 **[Response Body]**
-```
+```json
 {
   "credentials": [
     {
@@ -86,6 +87,7 @@ X-Auth-Token: {token-id}
 **[Method, URL]**
 ```
 GET https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2
+
 X-Auth-Token: {token-id}
 ```
 **[Request Parameters]**
@@ -103,7 +105,7 @@ X-Auth-Token: {token-id}
 | secret | Plain | String | 자격 증명 비밀 키 |
 
 **[Response Body]**
-```
+```json
 {
   "credentials": [
     {
@@ -123,6 +125,7 @@ X-Auth-Token: {token-id}
 **[Method, URL]**
 ```
 GET https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+
 X-Auth-Token: {token-id}
 ```
 **[Request Parameters]**
@@ -318,6 +321,7 @@ Authorization: AWS {access}:{signature}
 
 ## 개체
 ### 개체 업로드
+지정한 버킷에 개체를 업로드 합니다.
 ```
 PUT /{bucket}/{obj}
 
@@ -370,6 +374,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 ### 개체 다운로드
+개체를 다운로드 합니다.
 ```
 PUT /{bucket}/{obj}
 
