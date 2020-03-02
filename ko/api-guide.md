@@ -30,6 +30,7 @@ API 비밀번호는 Object Storage 서비스 페이지의 **API Endpoint 설정*
 **[Method, URL]**
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
+Content-Type: application/json
 ```
 
 **[Request Parameters]**
@@ -79,7 +80,11 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
       },
       "issued_at": "{Token Issued Time}"
     },
-    "serviceCatalog" : []
+    "serviceCatalog" : [],
+    "user" : {
+      "id": "{User UUID}",
+      "name": "{User Name}"
+    }
   }
 }
 ```
