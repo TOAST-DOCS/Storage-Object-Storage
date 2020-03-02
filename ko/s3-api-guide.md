@@ -3,7 +3,7 @@
 
 제공하는 S3 호환 API는 다음과 같습니다.
 
-| S3 API Method | 용도 |
+| S3 API 메서드 | 용도 |
 | --- | --- |
 | [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | 버킷 생성 |
 | [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | 버킷 정보 조회 |
@@ -33,7 +33,6 @@
 ### 자격 증명 등록
 S3 호환 API를 사용하기 위해서는 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명 등록은 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참조하십시오.
 
-**[Method, URL]**
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/users/{User ID}/credentials/OS-EC2
 
@@ -41,7 +40,7 @@ Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
-**[Request Parameters]**
+#### 요청
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -52,21 +51,20 @@ X-Auth-Token: {token-id}
 > [주의]
 > 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
 
-**[Request Body]**
 ```json
 {
   "tenant_id": "{tenant_id}"
 }
 ```
 
-**[Response Parameters]**
+#### 응답
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
 | access | Plain | String | 자격 증명 접근 키 |
 | secret | Plain | String | 자격 증명 비밀 키 |
 
-**[Response Body]**
+
 ```json
 {
   "credentials": [
@@ -90,21 +88,21 @@ GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credenti
 
 X-Auth-Token: {token-id}
 ```
-**[Request Parameters]**
+#### 요청
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
 | X-Auth-Token | Header | String | 발급받은 토큰 ID |
 | user-id | URL | String | 사용자 ID, 인증 토큰에 포함되어 있음 |
 
-**[Response Parameters]**
+#### 응답
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
 | access | Plain | String | 자격 증명 접근 키 |
 | secret | Plain | String | 자격 증명 비밀 키 |
 
-**[Response Body]**
+
 ```json
 {
   "credentials": [
@@ -128,7 +126,7 @@ GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credenti
 
 X-Auth-Token: {token-id}
 ```
-**[Request Parameters]**
+#### 요청
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -159,14 +157,14 @@ S3 API를 사용하기 위해서는 자격 증명 키를 이용해 서명을 생
 ### 버킷 생성
 버킷(컨테이너)을 생성합니다.
 
-**[Method, URL]**
 ```
 PUT /{bucket}
 
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
-**[Request Parameters]**
+
+#### 요청
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -174,13 +172,12 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | 요청 시각 |
 | Authorization | Header | String | 자격 증명 접근 키와 서명으로 구성 |
 
-**[Response Parameters]**
+#### 응답
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
 | Location | Plain | String | 생성한 버킷 경로 |
 
-**[Response Body]**
 ```json
 {
     "ResponseMetadata": {
@@ -210,14 +207,14 @@ GET /
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
-**[Request Parameters]**
+#### 요청
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
 | Date | Header | String | 요청 시각 |
 | Authorization | Header | String | 자격 증명 접근 키와 서명으로 구성 |
 
-**[Response Parameters]**
+#### 응답
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -248,7 +245,7 @@ GET /{bucket}
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
-**[Request Parameters]**
+#### 요청
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -256,7 +253,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | 요청 시각 |
 | Authorization | Header | String | 자격 증명 접근 키와 서명으로 구성 |
 
-**[Response Parameters]**
+#### 응답
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -300,7 +297,7 @@ DELETE /{bucket}
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
-**[Request Parameters]**
+#### 요청
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -308,7 +305,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | 요청 시각 |
 | Authorization | Header | String | 자격 증명 접근 키와 서명으로 구성 |
 
-**[Response Parameters]**
+#### 응답
 
 ```json
 {
@@ -328,7 +325,7 @@ PUT /{bucket}/{obj}
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
-**[Request Parameters]**
+#### 요청
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -337,7 +334,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | 요청 시각 |
 | Authorization | Header | String | 자격 증명 접근 키와 서명으로 구성 |
 
-**[Response Parameters]**
+#### 응답
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -381,7 +378,7 @@ PUT /{bucket}/{obj}
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
-**[Request Parameters]**
+#### 요청
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -390,7 +387,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | 요청 시각 |
 | Authorization | Header | String | 자격 증명 접근 키와 서명으로 구성 |
 
-**[Response Parameters]**
+#### 응답
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -422,7 +419,7 @@ DELETE /{bucket}/{obj}
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
-**[Request Parameters]**
+#### 요청
 
 | 이름 | 종류 | 속성 | 설명 |
 |---|---|---|---|
@@ -431,7 +428,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | 요청 시각 |
 | Authorization | Header | String | 자격 증명 접근 키와 서명으로 구성 |
 
-**[Response Parameters]**
+#### 응답
 
 ```json
 {
