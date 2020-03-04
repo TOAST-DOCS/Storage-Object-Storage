@@ -1,5 +1,10 @@
 ## Storage > Object Storage > release notes
 
+### 2020. 02. 25.
+
+#### 기능 추가
+* AWS S3 호환 API 제공
+
 ### 2018. 04. 24.
 
 #### 기능 수정
