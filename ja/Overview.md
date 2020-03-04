@@ -25,10 +25,6 @@
 コンテナとオブジェクトを制御できるHTTP(s)基盤のREST APIを提供します。 APIを利用するとユーザーのアプリケーションからオブジェクトストレージを使用できます。
 
 
-## サービスの構造
-![オブジェクトストレージサービスの構造](http://static.toastoven.net/prod_infrastructure/object_storage/overview/obs_structure.jpg)
-
-
 ## 用語
 #### オブジェクト(object)
 保存するデータを意味するオブジェクトストレージの基本的な管理単位です。一般的にファイルをオブジェクトとして使用します。

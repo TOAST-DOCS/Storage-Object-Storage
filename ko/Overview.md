@@ -25,10 +25,6 @@
 컨테이너와 오브젝트를 제어할 수 있는 HTTP(s) 기반의 REST API를 제공합니다. API를 이용하면 사용자의 애플리케이션에서 오브젝트 스토리지를 사용할 수 있습니다.
 
 
-## 서비스 구조
-![오브젝트 스토리지 서비스 구조](http://static.toastoven.net/prod_infrastructure/object_storage/overview/obs_structure.jpg)
-
-
 ## 용어
 #### 오브젝트(object)
 저장할 데이터를 의미하는 오브젝트 스토리지의 기본적인 관리 단위입니다. 일반적으로 파일을 오브젝트로 사용합니다.
