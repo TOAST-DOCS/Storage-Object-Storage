@@ -42,7 +42,6 @@ Content-Type: application/json
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -56,7 +55,6 @@ Content-Type: application/json
 }
 ```
 
-</p>
 </details>
 
 ### 응답
@@ -72,7 +70,6 @@ Content-Type: application/json
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -100,13 +97,12 @@ Content-Type: application/json
 }
 ```
 
-</p>
 </details>
 
 ### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
@@ -146,12 +142,10 @@ https://gov-api-compute.cloud.toast.com/identity/v2.0/tokens \
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // AuthService.java
@@ -228,12 +222,10 @@ public class AuthService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # auth.py
@@ -268,12 +260,10 @@ if __name__ == '__main__':
     print json.dumps(token, indent=4, separators=(',', ': '))
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // auth.php
@@ -316,7 +306,6 @@ printf("%s\n", $token);
 ?>
 ```
 
-</p>
 </details>
 
 ## 컨테이너
@@ -345,21 +334,19 @@ X-Auth-Token: {token-id}
 이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
 
 #### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ContainerService.java
@@ -415,12 +402,10 @@ public class ContainerService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # container.py
@@ -455,12 +440,10 @@ if __name__ == '__main__':
     con_service.create(new_container)
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // container.php
@@ -514,7 +497,6 @@ $container->create($CONTAINER_NAME);
 ?>
 ```
 
-</p>
 </details>
 
 
@@ -542,9 +524,9 @@ X-Auth-Token: {token-id}
 ```
 
 #### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -554,12 +536,10 @@ ba6610.jpg
 31466f.jpg
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ContainerService.java
@@ -613,12 +593,10 @@ public class ContainerService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 class ContainerService:
@@ -646,12 +624,10 @@ if __name__ == '__main__':
         print object
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // container.php
@@ -692,7 +668,6 @@ foreach ($object_list as $obj){
 ?>
 ```
 
-</p>
 </details>
 
 ### 컨테이너 조회 질의
@@ -722,9 +697,9 @@ X-Auth-Token: {token-id}
 ```
 
 ##### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 // `20d33f.jpg` 이후의 오브젝트 목록 조회
@@ -733,12 +708,10 @@ https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?maker=20d33f.
 [지정한 오브젝트(20d33f.jpg) 이후의 목록]
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ContainerService.java
@@ -778,12 +751,10 @@ public class ContainerService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # container.py
@@ -806,12 +777,10 @@ class ContainerService:
 
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // container.php
@@ -854,7 +823,6 @@ foreach ($object_list as $obj){
 ?>
 ```
 
-</p>
 </details>
 
 #### 폴더 단위의 오브젝트 목록 조회
@@ -881,9 +849,9 @@ X-Auth-Token: {token-id}
 ```
 
 ##### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 // ex 폴더의 오브젝트 목록 조회
@@ -893,12 +861,10 @@ ex/20d33f.jpg
 ex/31466f.jpg
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ContainerService.java
@@ -921,12 +887,10 @@ public class ContainerService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # container.py
@@ -938,12 +902,10 @@ class ContainerService:
 
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // container.php
@@ -958,7 +920,6 @@ class Container {
 ?>
 ```
 
-</p>
 </details>
 
 #### 접두어로 시작하는 오브젝트 목록 조회
@@ -985,9 +946,9 @@ X-Auth-Token: {token-id}
 ```
 
 ##### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 // 314로 시작하는 오브젝트 목록 조회
@@ -998,12 +959,10 @@ https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
 31486f.jpg
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ContainerService.java
@@ -1026,12 +985,10 @@ public class ContainerService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # container.py
@@ -1043,12 +1000,10 @@ class ContainerService:
 
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // container.php
@@ -1063,7 +1018,6 @@ class Container {
 ?>
 ```
 
-</p>
 </details>
 
 #### 목록의 최대 오브젝트 수 지정
@@ -1093,7 +1047,6 @@ X-Auth-Token: {token-id}
 
 <details>
 <summary>cURL</summary>
-<p>
 
 ```curl
 // 10개의 오브젝트만 조회
@@ -1103,12 +1056,10 @@ https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?limit=10
 31466f0.jpg
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ContainerService.java
@@ -1131,12 +1082,10 @@ public class ContainerService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # container.py
@@ -1148,12 +1097,10 @@ class ContainerService:
 
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // container.php
@@ -1168,7 +1115,6 @@ class Container {
 ?>
 ```
 
-</p>
 </details>
 
 
@@ -1198,9 +1144,9 @@ X-Container-Write: {컨테이너 쓰기 정책}
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 #### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 // 모든 사용자에게 읽기/쓰기 허용
@@ -1211,12 +1157,10 @@ $ curl -X POST \
 https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ContainerService.java
@@ -1265,12 +1209,10 @@ public class ContainerService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # container.py
@@ -1292,12 +1234,10 @@ if __name__ == '__main__':
     con_service.set_read_acl(CONTAINER_NAME, True)
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // container.php
@@ -1337,7 +1277,6 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 ?>
 ```
 
-</p>
 </details>
 
 #### ACL 확인
@@ -1345,7 +1284,6 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```
 $ curl https://gov-api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
@@ -1353,7 +1291,6 @@ $ curl https://gov-api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 {오브젝트의 내용}
 ```
 
-</p>
 </details>
 
 ### 컨테이너 삭제
@@ -1378,21 +1315,19 @@ X-Auth-Token: {token-id}
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 #### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ContainerService.java
@@ -1435,12 +1370,10 @@ public class ContainerService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # container.py
@@ -1461,12 +1394,10 @@ if __name__ == '__main__':
     con_service.delete(CONTAINER_NAME)
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // container.php
@@ -1499,7 +1430,6 @@ $container->delete($CONTAINER_NAME);
 ?>
 ```
 
-</p>
 </details>
 
 ## 오브젝트
@@ -1534,9 +1464,9 @@ Content-Type: {content-type}
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 #### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -1544,12 +1474,10 @@ https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 -T ./ba6610.jpg
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ObjectService.java
@@ -1623,12 +1551,10 @@ public class ObjectService {
 
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # object.py
@@ -1668,12 +1594,10 @@ if __name__ == '__main__':
     obj_service.upload(CONTAINER_NAME, OBJECT_NAME, OBJECT_PATH)
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // object.php
@@ -1733,7 +1657,6 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ?>
 ```
 
-</p>
 </details>
 
 ### 멀티파트 업로드
@@ -1787,9 +1710,9 @@ X-Object-Manifest: {Container}/{Object}/
 
 
 #### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 // 200MB 단위로 파일 분할
@@ -1815,12 +1738,10 @@ https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img
 -d ''
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ObjectService.java
@@ -1902,12 +1823,10 @@ public class ObjectService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # object.py
@@ -1959,12 +1878,10 @@ if __name__ == '__main__':
     obj_service.upload_large_object(CONTAINER_NAME, LARGE_OBJECT, OBJECT_PATH)
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // object.php
@@ -2053,7 +1970,6 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 ?>
 ```
 
-</p>
 </details>
 
 ### 오브젝트 내용 수정
@@ -2103,9 +2019,9 @@ X-Auth-Token: {token-id}
 오브젝트의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
 #### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 $ curl -O -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -2116,12 +2032,10 @@ https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 100 17166  100 17166    0     0   566k      0 --:--:-- --:--:-- --:--:--  578k
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ObjectService.java
@@ -2184,12 +2098,10 @@ public class ObjectService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # object.py
@@ -2218,12 +2130,10 @@ if __name__ == '__main__':
     obj_service.download(CONTAINER_NAME, OBJECT_NAME, DOWNLOAD_PATH)
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // object.php
@@ -2264,7 +2174,6 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ?>
 ```
 
-</p>
 </details>
 
 ### 오브젝트 복사
@@ -2298,9 +2207,9 @@ X-Copy-From: {원본 오브젝트}
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 #### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 // COPY method
@@ -2314,12 +2223,10 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/copy_con/3a45e9.jpg
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ObjectService.java
@@ -2365,12 +2272,10 @@ public class ObjectService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # object.py
@@ -2395,12 +2300,10 @@ if __name__ == '__main__':
     obj_service.copy(CONTAINER_NAME, OBJECT_NAME, DEST_CONTAINER)
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 // object.php
@@ -2438,7 +2341,6 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 ?>
 ```
 
-</p>
 </details>
 
 ### 오브젝트 메타데이터 수정
@@ -2465,9 +2367,9 @@ X-Object-Meta-{Key}: {Value}
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
 
 #### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 // 오브젝트에 메타 데이터 추가
@@ -2484,12 +2386,10 @@ X-Object-Meta-Type: photo
 ...
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ObjectService.java
@@ -2539,12 +2439,10 @@ public class ObjectService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # object.py
@@ -2570,12 +2468,10 @@ if __name__ == '__main__':
     obj_service.set_metadata(CONTAINER_NAME, OBJECT_NAME, META_KEY, META_VALUE)    
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
 
 ```php
 <?php
@@ -2610,7 +2506,6 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 ?>
 ```
 
-</p>
 </details>
 
 ### 오브젝트 삭제
@@ -2643,21 +2538,19 @@ X-Auth-Token: {token-id}
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 #### 코드 예시
+
 <details>
 <summary>cURL</summary>
-<p>
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Java</summary>
-<p>
 
 ```java
 // ObjectService.java
@@ -2700,12 +2593,10 @@ public class ObjectService {
 }
 ```
 
-</p>
 </details>
 
 <details>
 <summary>Python</summary>
-<p>
 
 ```python
 # object.py
@@ -2728,12 +2619,11 @@ if __name__ == '__main__':
     obj_service.delete(CONTAINER_NAME, OBJECT_NAME)   
 ```
 
-</p>
 </details>
 
 <details>
 <summary>PHP</summary>
-<p>
+
 
 ```php
 // object.php
@@ -2767,7 +2657,6 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 ?>
 ```
 
-</p>
 </details>
 
 ## References
