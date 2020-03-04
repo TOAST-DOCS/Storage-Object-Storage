@@ -1,8 +1,8 @@
-## Storage > 오브젝트 스토리지 > API 가이드
+## Storage > Object Storage > API 가이드
 
 ## 사전 준비
 
-오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(Token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트들에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
+오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(Token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
 
 ### 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
 
@@ -40,10 +40,10 @@ Content-Type: application/json
 | username | Body | String | O | TOAST 계정 ID(이메일) 입력 |
 | password | Body | String | O | API Endpoint 설정 대화창에서 저장한 비밀번호 |
 
-
 <details>
 <summary>예시</summary>
 <p>
+
 ```json
 {
   "auth": {
@@ -55,6 +55,7 @@ Content-Type: application/json
   }
 }
 ```
+
 </p>
 </details>
 
@@ -66,10 +67,14 @@ Content-Type: application/json
 | access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 Tenant ID |
 | access.token.expires | Body | String | 발급한 Token의 만료 시간 <br/>yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
 
+> [주의]
+> 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
+
 <details>
 <summary>예시</summary>
 <p>
-```
+
+```json
 {
   "access": {
     "token": {
@@ -94,16 +99,15 @@ Content-Type: application/json
   }
 }
 ```
+
 </p>
 </details>
-
-> [주의]
-> 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
 
 ### 코드 예시
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
 https://api-compute.cloud.toast.com/identity/v2.0/tokens \
@@ -141,12 +145,14 @@ https://api-compute.cloud.toast.com/identity/v2.0/tokens \
   }
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // AuthService.java
 package com.toast.swift.auth;
@@ -221,12 +227,14 @@ public class AuthService {
     }
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # auth.py
 import json
@@ -259,12 +267,14 @@ if __name__ == '__main__':
     token = get_token(AUTH_URL, TENANT_ID, USERNAME, PASSWORD)
     print json.dumps(token, indent=4, separators=(',', ': '))
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // auth.php
 <?php
@@ -305,6 +315,7 @@ $token = get_token($AUTH_URL, $TENANT_ID, $USERNAME, $PASSWORD);
 printf("%s\n", $token);
 ?>
 ```
+
 </p>
 </details>
 
@@ -317,7 +328,7 @@ printf("%s\n", $token);
 > 컨테이너 또는 오브젝트 이름에 특수 문자 `! * ' ( ) ; : @ & = + $ , / ? # [ ]`가 포함되어 있다면 API를 사용할 때 반드시 URL 인코딩(퍼센트 인코딩)을 해야 합니다. 이 문자들은 URL에서 중요하게 사용되는 예약 문자입니다. 이 문자들이 포함된 경로를 URL 인코딩하지 않고 API 요청을 보낸다면 원하는 응답을 받을 수 없습니다.
 
 ```
-PUT https://api-storage.cloud.toast.com/v1/{Account}/{Container}
+PUT  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
@@ -337,16 +348,19 @@ X-Auth-Token: {token-id}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ContainerService.java
 package com.toast.swift.service;
@@ -400,12 +414,14 @@ public class ContainerService {
     }
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # container.py
 import requests
@@ -438,12 +454,14 @@ if __name__ == '__main__':
     new_container = 'test'
     con_service.create(new_container)
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // container.php
 <?php
@@ -495,6 +513,7 @@ $container = new Container($STORAGE_URL, $TOKEN_ID);
 $container->create($CONTAINER_NAME);
 ?>
 ```
+
 </p>
 </details>
 
@@ -526,6 +545,7 @@ X-Auth-Token: {token-id}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
@@ -533,12 +553,14 @@ ba6610.jpg
 20d33f.jpg
 31466f.jpg
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ContainerService.java
 package com.toast.swift.service;
@@ -590,12 +612,14 @@ public class ContainerService {
     }
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 class ContainerService:
     # ...
@@ -621,12 +645,14 @@ if __name__ == '__main__':
     for object in object_list:
         print object
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // container.php
 <?php
@@ -665,6 +691,7 @@ foreach ($object_list as $obj){
 }
 ?>
 ```
+
 </p>
 </details>
 
@@ -698,18 +725,21 @@ X-Auth-Token: {token-id}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 // `20d33f.jpg` 이후의 오브젝트 목록 조회
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
 [지정한 오브젝트(20d33f.jpg) 이후의 목록]
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ContainerService.java
 package com.toast.swift.service;
@@ -747,12 +777,14 @@ public class ContainerService {
     // getObjectList() 사용 예제는 컨테이너 조회와 동일
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # container.py
 class ContainerService:
@@ -773,12 +805,14 @@ class ContainerService:
         return object_list
 
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // container.php
 <?php
@@ -819,6 +853,7 @@ foreach ($object_list as $obj){
 }
 ?>
 ```
+
 </p>
 </details>
 
@@ -831,6 +866,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### 요청
+이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -848,6 +884,7 @@ X-Auth-Token: {token-id}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 // ex 폴더의 오브젝트 목록 조회
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -855,12 +892,14 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?path=ex
 ex/20d33f.jpg
 ex/31466f.jpg
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ContainerService.java
 package com.toast.swift.service;
@@ -881,12 +920,14 @@ public class ContainerService {
     // getObjectListOfFolder() 사용 예제는 컨테이너 조회와 동일
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # container.py
 class ContainerService:
@@ -896,12 +937,14 @@ class ContainerService:
         return self._get_list(req_url)
 
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // container.php
 <?php
@@ -914,6 +957,7 @@ class Container {
 }
 ?>
 ```
+
 </p>
 </details>
 
@@ -926,6 +970,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### 요청
+이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -943,6 +988,7 @@ X-Auth-Token: {token-id}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 // 314로 시작하는 오브젝트 목록 조회
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -951,12 +997,14 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
 3147a6.jpg
 31486f.jpg
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ContainerService.java
 package com.toast.swift.service;
@@ -977,12 +1025,14 @@ public class ContainerService {
     // getObjectListWithPrefix() 사용 예제는 컨테이너 조회 예제와 동일
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # container.py
 class ContainerService:
@@ -992,12 +1042,14 @@ class ContainerService:
         return self._get_list(req_url)
 
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // container.php
 <?php
@@ -1010,6 +1062,7 @@ class Container {
 }
 ?>
 ```
+
 </p>
 </details>
 
@@ -1022,6 +1075,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### 요청
+이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -1040,6 +1094,7 @@ X-Auth-Token: {token-id}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```curl
 // 10개의 오브젝트만 조회
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -1047,12 +1102,14 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?limit=10
 ...{9개의 오브젝트}...
 31466f0.jpg
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ContainerService.java
 package com.toast.swift.service;
@@ -1073,12 +1130,14 @@ public class ContainerService {
     // getObjectListWithPrefix() 사용 예제는 컨테이너 조회 예제와 동일
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # container.py
 class ContainerService:
@@ -1088,12 +1147,14 @@ class ContainerService:
         return self._get_list(req_url)
 
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // container.php
 <?php
@@ -1106,6 +1167,7 @@ class Container {
 }
 ?>
 ```
+
 </p>
 </details>
 
@@ -1122,6 +1184,7 @@ X-Container-Write: {컨테이너 쓰기 정책}
 ```
 
 #### 요청
+이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -1138,6 +1201,7 @@ X-Container-Write: {컨테이너 쓰기 정책}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 // 모든 사용자에게 읽기/쓰기 허용
 $ curl -X POST \
@@ -1146,12 +1210,14 @@ $ curl -X POST \
 -H 'X-Container-Write: *:*' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ContainerService.java
 
@@ -1198,12 +1264,14 @@ public class ContainerService {
     }
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # container.py
 class ContainerService:
@@ -1223,12 +1291,14 @@ if __name__ == '__main__':
 
     con_service.set_read_acl(CONTAINER_NAME, True)
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // container.php
 <?php
@@ -1266,6 +1336,7 @@ $container = new Container($STORAGE_URL, $TOKEN_ID);
 $container->set_acl($CONTAINER_NAME, TRUE);
 ?>
 ```
+
 </p>
 </details>
 
@@ -1275,11 +1346,13 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 <details>
 <summary>예시</summary>
 <p>
+
 ```
 $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 
 {오브젝트의 내용}
 ```
+
 </p>
 </details>
 
@@ -1293,6 +1366,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### 요청
+이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -1307,16 +1381,19 @@ X-Auth-Token: {token-id}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ContainerService.java
 
@@ -1357,12 +1434,14 @@ public class ContainerService {
     }
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # container.py
 class ContainerService:
@@ -1381,12 +1460,14 @@ if __name__ == '__main__':
 
     con_service.delete(CONTAINER_NAME)
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // container.php
 <?php
@@ -1417,6 +1498,7 @@ $container = new Container($STORAGE_URL, $TOKEN_ID);
 $container->delete($CONTAINER_NAME);
 ?>
 ```
+
 </p>
 </details>
 
@@ -1455,17 +1537,20 @@ Content-Type: {content-type}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 -T ./ba6610.jpg
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ObjectService.java
 package com.toast.swift.service;
@@ -1537,12 +1622,14 @@ public class ObjectService {
 }
 
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # object.py
 import os
@@ -1580,12 +1667,14 @@ if __name__ == '__main__':
 
     obj_service.upload(CONTAINER_NAME, OBJECT_NAME, OBJECT_PATH)
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // object.php
 <?php
@@ -1643,6 +1732,7 @@ $filename = $OBJ_PATH.'/'.$OBJECT_NAME;
 $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ?>
 ```
+
 </p>
 </details>
 
@@ -1692,14 +1782,15 @@ X-Object-Manifest: {Container}/{Object}/
 | Object |	URL | String | O | 생성할 매니패스트 오브젝트 이름 |
 | - | Body| Binary | O | 빈 데이터 |
 
-#### 응답
+##### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 
-### 코드 예시
+#### 코드 예시
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 // 200MB 단위로 파일 분할
 $ split -d -b 209715200 large_obj.img large_obj.img.
@@ -1723,12 +1814,14 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
 -d ''
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ObjectService.java
 package com.toast.swift.service;
@@ -1808,12 +1901,14 @@ public class ObjectService {
     }
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # object.py
 class ObjectService:
@@ -1863,12 +1958,14 @@ if __name__ == '__main__':
 
     obj_service.upload_large_object(CONTAINER_NAME, LARGE_OBJECT, OBJECT_PATH)
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // object.php
 <?php
@@ -1955,6 +2052,7 @@ $filename = $OBJ_PATH.'/'.$LARGE_OBJECT;
 $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 ?>
 ```
+
 </p>
 </details>
 
@@ -1968,6 +2066,7 @@ Content-Type: {content-type}
 ```
 
 #### 요청
+이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -1991,6 +2090,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### 요청
+이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -2006,6 +2106,7 @@ X-Auth-Token: {token-id}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 $ curl -O -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
@@ -2014,12 +2115,14 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
                                  Dload  Upload   Total   Spent    Left  Speed
 100 17166  100 17166    0     0   566k      0 --:--:-- --:--:-- --:--:--  578k
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ObjectService.java
 package com.toast.swift.service;
@@ -2080,12 +2183,14 @@ public class ObjectService {
 
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # object.py
 class ObjectService:
@@ -2112,12 +2217,14 @@ if __name__ == '__main__':
 
     obj_service.download(CONTAINER_NAME, OBJECT_NAME, DOWNLOAD_PATH)
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // object.php
 <?php
@@ -2156,6 +2263,7 @@ $filename = $DOWNLOAD_PATH.'/'.$OBJECT_NAME;
 $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ?>
 ```
+
 </p>
 </details>
 
@@ -2175,6 +2283,7 @@ X-Copy-From: {원본 오브젝트}
 ```
 
 #### 요청
+이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -2188,10 +2297,11 @@ X-Copy-From: {원본 오브젝트}
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
-### 코드 예시
+#### 코드 예시
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 // COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -2203,12 +2313,14 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/3a45e9.jpg' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/copy_con/3a45e9.jpg
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ObjectService.java
 package com.toast.swift.service;
@@ -2252,12 +2364,14 @@ public class ObjectService {
     }
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # object.py
 class ObjectService:
@@ -2280,12 +2394,14 @@ if __name__ == '__main__':
 
     obj_service.copy(CONTAINER_NAME, OBJECT_NAME, DEST_CONTAINER)
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // object.php
 <?php
@@ -2321,6 +2437,7 @@ $META_VALUE = 'photo';
 $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 ?>
 ```
+
 </p>
 </details>
 
@@ -2334,6 +2451,7 @@ X-Object-Meta-{Key}: {Value}
 ```
 
 #### 요청
+이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -2350,6 +2468,7 @@ X-Object-Meta-{Key}: {Value}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 // 오브젝트에 메타 데이터 추가
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
@@ -2364,12 +2483,14 @@ HTTP/1.1 200 OK
 X-Object-Meta-Type: photo
 ...
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ObjectService.java
 package com.toast.swift.service;
@@ -2417,12 +2538,14 @@ public class ObjectService {
     }    
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # object.py
 class ObjectService:
@@ -2446,12 +2569,14 @@ if __name__ == '__main__':
 
     obj_service.set_metadata(CONTAINER_NAME, OBJECT_NAME, META_KEY, META_VALUE)    
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 <?php
 class Object {
@@ -2484,6 +2609,7 @@ $object = new Object($STORAGE_URL, $TOKEN_ID);
 $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 ?>
 ```
+
 </p>
 </details>
 
@@ -2504,6 +2630,7 @@ X-Auth-Token: {token-id}
 | Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
 
 #### 요청
+이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -2519,16 +2646,19 @@ X-Auth-Token: {token-id}
 <details>
 <summary>cURL</summary>
 <p>
+
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Java</summary>
 <p>
+
 ```java
 // ObjectService.java
 package com.toast.swift.service;
@@ -2569,12 +2699,14 @@ public class ObjectService {
     }
 }
 ```
+
 </p>
 </details>
 
 <details>
 <summary>Python</summary>
 <p>
+
 ```python
 # object.py
 class ObjectService:
@@ -2595,12 +2727,14 @@ if __name__ == '__main__':
 
     obj_service.delete(CONTAINER_NAME, OBJECT_NAME)   
 ```
+
 </p>
 </details>
 
 <details>
 <summary>PHP</summary>
 <p>
+
 ```php
 // object.php
 <?php
@@ -2632,6 +2766,7 @@ $object = new Object($STORAGE_URL, $TOKEN_ID);
 $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 ?>
 ```
+
 </p>
 </details>
 
