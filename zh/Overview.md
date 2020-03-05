@@ -25,10 +25,6 @@
 提供基于HTTP(s)的REST API控制Bucket和对象。使用API可以在用户的APP中使用对象存储。
 
 
-## 服务构造
-![对象存储服务构造](http://static.toastoven.net/prod_infrastructure/object_storage/overview/obs_structure.jpg)
-
-
 ## 用语
 #### 对象(object)
 是对象存储的基本管理单位。通常把文件当作对象。

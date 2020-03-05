@@ -34,7 +34,7 @@
 S3 호환 API를 사용하기 위해서는 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명 등록은 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참조하십시오.
 
 ```
-POST    https://api-compute.cloud.toast.com/identity/v2.0/users/{User ID}/credentials/OS-EC2
+POST    https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{User ID}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -53,7 +53,6 @@ X-Auth-Token: {token-id}
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -61,7 +60,6 @@ X-Auth-Token: {token-id}
 }
 ```
 
-</p>
 </details>
 
 #### 응답
@@ -73,7 +71,6 @@ X-Auth-Token: {token-id}
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -89,7 +86,6 @@ X-Auth-Token: {token-id}
 }
 ```
 
-</p>
 </details>
 
 ### EC2 자격 증명 조회
@@ -97,7 +93,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2
+GET   https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -118,7 +114,6 @@ X-Auth-Token: {token-id}
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -134,7 +129,6 @@ X-Auth-Token: {token-id}
 }
 ```
 
-</p>
 </details>
 
 ### EC2 자격 증명 삭제
@@ -142,7 +136,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+GET   https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
@@ -204,7 +198,6 @@ Authorization: AWS {access}:{signature}
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -228,7 +221,6 @@ Authorization: AWS {access}:{signature}
 }
 ```
 
-</p>
 </details>
 
 ### 버킷 목록 조회
@@ -259,7 +251,6 @@ Authorization: AWS {access}:{signature}
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -288,7 +279,6 @@ Authorization: AWS {access}:{signature}
 }
 ```
 
-</p>
 </details>
 
 ### 버킷 조회
@@ -326,7 +316,6 @@ Authorization: AWS {access}:{signature}
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -363,7 +352,6 @@ Authorization: AWS {access}:{signature}
 }
 ```
 
-</p>
 </details>
 
 ### 버킷 삭제
@@ -393,7 +381,6 @@ Authorization: AWS {access}:{signature}
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -415,7 +402,6 @@ Authorization: AWS {access}:{signature}
 }
 ```
 
-</p>
 </details>
 
 ## 오브젝트
@@ -448,7 +434,6 @@ Authorization: AWS {access}:{signature}
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -473,7 +458,6 @@ Authorization: AWS {access}:{signature}
 }
 ```
 
-</p>
 </details>
 
 ### 오브젝트 다운로드
@@ -509,7 +493,6 @@ Authorization: AWS {access}:{signature}
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -538,7 +521,6 @@ Authorization: AWS {access}:{signature}
 }
 ```
 
-</p>
 </details>
 
 ### 오브젝트 삭제
@@ -570,7 +552,6 @@ Authorization: AWS {access}:{signature}
 
 <details>
 <summary>예시</summary>
-<p>
 
 ```json
 {
@@ -592,5 +573,4 @@ Authorization: AWS {access}:{signature}
 }
 ```
 
-</p>
 </details>
