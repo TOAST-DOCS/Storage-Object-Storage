@@ -1,5 +1,5 @@
 ## Storage > Object Storage > AWS S3 호환 API 가이드
-오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3가 제공하는 API 형태의 호환 API를 제공합니다. AWS S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
+오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 AWS S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
 
 제공하는 S3 호환 API는 다음과 같습니다.
 
@@ -26,12 +26,12 @@
 | [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 업로드 진행 중인 멀티 파트 오브젝트의 파트 오브젝트 리스트 |
 | [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | 멀티 파트 오브젝트 삭제 |
 
-이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하기 위해서는 [AWS S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
+이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [AWS S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
 
 ## EC2 자격 증명(EC2 Credential)
 
 ### 자격 증명 등록
-S3 호환 API를 사용하기 위해서는 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명 등록은 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참조하십시오.
+S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명을 등록하려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참고하십시오.
 
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/users/{User ID}/credentials/OS-EC2
@@ -46,7 +46,7 @@ X-Auth-Token: {token-id}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
 | user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
-| tenant_id | Body | String | O | 사용자 Tenant ID. API Endpoint 설정 대화창에서 확인 가능 |
+| tenant_id | Body | String | O | 사용자 Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
 
 > [주의]
 > 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
@@ -153,7 +153,7 @@ X-Auth-Token: {token-id}
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## 서명(signature) 생성
-S3 API를 사용하기 위해서는 자격 증명 키를 이용해 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참조하십시오.
+S3 API를 사용하려면 자격 증명 키를 이용해 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
 
 서명 생성에 필요한 정보는 다음과 같습니다.
 
@@ -166,7 +166,7 @@ S3 API를 사용하기 위해서는 자격 증명 키를 이용해 서명을 생
 | 비밀 키 | 자격 증명 비밀 키 |
 
 > [참고]
-> S3 호환 API는 현재 한국(판교)리전에서만 제공되고 있습니다.
+> S3 호환 API는 2020년 3월 현재 한국(판교)리전에서만 제공됩니다.
 
 ## 버킷(Bucket)
 ### 버킷 생성
@@ -308,7 +308,7 @@ Authorization: AWS {access}:{signature}
 | Contents | Body | Object | 오브젝트 목록 객체 |  
 | Contents.Key | Body | String | 오브젝트 이름 |
 | Contents.LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| Contents.ETag | Body | String | 오브젝트의 MD5 해시 값 |
+| Contents.ETag | Body | String | 오브젝트의 MD5 해시값 |
 | Contents.Size | Body | String | 오브젝트의 크기 |
 | Contents.StorageClass | Body | String | 오브젝트가 저장된 저장소 종류 |
 | Name | Body | String | 버킷 이름 |
@@ -355,7 +355,7 @@ Authorization: AWS {access}:{signature}
 </details>
 
 ### 버킷 삭제
-지정한 버킷을 삭제합니다. 삭제할 버킷은 비어있어야 합니다.
+지정한 버킷을 삭제합니다. 삭제할 버킷은 비어 있어야 합니다.
 ```
 DELETE /{bucket}
 
@@ -406,7 +406,7 @@ Authorization: AWS {access}:{signature}
 
 ## 오브젝트
 ### 오브젝트 업로드
-지정한 버킷에 오브젝트를 업로드 합니다.
+지정한 버킷에 오브젝트를 업로드합니다.
 ```
 PUT /{bucket}/{obj}
 
@@ -430,7 +430,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|
 | ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
 | ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| ETag | Body | String | 업로드한 오브젝트의 MD5 해시 값 |
+| ETag | Body | String | 업로드한 오브젝트의 MD5 해시값 |
 
 <details>
 <summary>예시</summary>
@@ -461,7 +461,7 @@ Authorization: AWS {access}:{signature}
 </details>
 
 ### 오브젝트 다운로드
-오브젝트를 다운로드 합니다.
+오브젝트를 다운로드합니다.
 ```
 PUT /{bucket}/{obj}
 
@@ -486,9 +486,9 @@ Authorization: AWS {access}:{signature}
 | ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
 | ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
 | LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| ContentLength | Body | String | 다운로드 한 오브젝트의 크기 |
-| ETag | Body | String | 오브젝트의 MD5 해시 값 |
-| ContentType | Body | String | 오브젝트의 콘텐트 타입 |
+| ContentLength | Body | String | 다운로드한 오브젝트의 크기 |
+| ETag | Body | String | 오브젝트의 MD5 해시값 |
+| ContentType | Body | String | 오브젝트의 콘텐츠 타입 |
 | Metadata | Body | Object | 오브젝트의 메타데이터 객체 |
 
 <details>
