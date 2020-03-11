@@ -2,7 +2,7 @@
 
 ## 사전 준비
 
-오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(Token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
+오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
 
 ### 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
 
@@ -15,7 +15,7 @@
 | Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
 
 > [참고]
-> API에 사용되는 사용자의 계정(Account)은 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
+> API에 사용되는 사용자의 계정(account)은 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
 
 ### API 비밀번호 설정
 
@@ -36,9 +36,9 @@ Content-Type: application/json
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| tenantId | Body | String | O | Tenant ID. API Endpoint 설정 대화창에서 확인 가능 |
+| tenantId | Body | String | O | Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
 | username | Body | String | O | TOAST 계정 ID(이메일) 입력 |
-| password | Body | String | O | API Endpoint 설정 대화창에서 저장한 비밀번호 |
+| password | Body | String | O | API Endpoint 설정 대화 상자에서 저장한 비밀번호 |
 
 <details>
 <summary>예시</summary>
@@ -63,10 +63,10 @@ Content-Type: application/json
 |---|---|---|---|
 | access.token.id | Body | String |	발급된 토큰 ID |
 | access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 Tenant ID |
-| access.token.expires | Body | String | 발급한 Token의 만료 시간 <br/>yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
+| access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
 
 > [주의]
-> 토큰은 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 "expires" 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
+> 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
 
 <details>
 <summary>예시</summary>
@@ -310,7 +310,7 @@ printf("%s\n", $token);
 ## 컨테이너
 
 ### 컨테이너 생성
-컨테이너를 생성합니다. 오브젝트 스토리지에 파일을 올리기 위해서는 반드시 컨테이너를 생성해야 합니다.
+컨테이너를 생성합니다. 오브젝트 스토리지에 파일을 업로드하려면 반드시 컨테이너를 생성해야 합니다.
 
 > [참고]
 > 컨테이너 또는 오브젝트 이름에 특수 문자 `! * ' ( ) ; : @ & = + $ , / ? # [ ]`가 포함되어 있다면 API를 사용할 때 반드시 URL 인코딩(퍼센트 인코딩)을 해야 합니다. 이 문자들은 URL에서 중요하게 사용되는 예약 문자입니다. 이 문자들이 포함된 경로를 URL 인코딩하지 않고 API 요청을 보낸다면 원하는 응답을 받을 수 없습니다.
@@ -326,7 +326,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 생성할 컨테이너 이름 |
 
 #### 응답
@@ -512,7 +512,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 
 #### 응답
@@ -684,7 +684,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | Object | Query | String | O | 기준 오브젝트 이름 |
 
@@ -835,7 +835,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | Path | Query | String | O | 조회할 폴더 이름 |
 
@@ -918,7 +918,7 @@ class Container {
 </details>
 
 #### 접두어로 시작하는 오브젝트 목록 조회
-`prefix` 질의를 사용하면 지정한 접두어로 시작하는 오브젝트들의 목록을 반환합니다. path 질의로는 조회할 수 없는 하위 폴더의 오브젝트 목록을 조회하는데 사용할 수 있습니다.
+`prefix` 질의를 사용하면 지정한 접두어로 시작하는 오브젝트들의 목록을 반환합니다. path 질의로는 조회할 수 없는 하위 폴더의 오브젝트 목록을 조회하는 데 사용할 수 있습니다.
 
 ```
 GET   /v1/{Account}/{Container}?prefix={Prefix}
@@ -931,7 +931,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | Prefix | Query | String | O | 검색할 접두어 |
 
@@ -1028,7 +1028,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | limit | Query | Integer | O | 목록에 표시할 오브젝트 수 |
 
@@ -1129,9 +1129,9 @@ X-Container-Write: {컨테이너 쓰기 정책}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에 대해 접근 허용<br/>.r:example.com,test.com – 특정 주소에 대해 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에 대해 접근 허용 |
-| X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 접근 규칙 지정<br/>\*:\* - 모든 사용자에 대해 쓰기 허용<br/>AUTH_.... – 특정 계정에 대해 쓰기 허용 |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에게 접근 허용<br/>.r:example.com,test.com – 특정 주소에만 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에만 접근 허용 |
+| X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 접근 규칙 지정<br/>\*:\* - 모든 사용자에게 쓰기 허용<br/>AUTH_.... – 특정 계정에만 쓰기 허용 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 
 #### 응답
@@ -1301,7 +1301,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	O | 삭제할 컨테이너 이름 |
 
 #### 응답
@@ -1440,16 +1440,16 @@ Content-Type: {content-type}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Content-type | Header | String | O | 오브젝트의 콘텐트 타입 |
-| X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간 (초) |
-| X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간 (초) |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
+| X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
+| X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String |	O | 생성할 오브젝트 이름 |
 | - |	Body | Binary | O | 생성할 오브젝트의 내용 |
 
 > [주의]
-> 오브젝트의 이름이 `./` 또는 `../`으로 시작한다면 브라우저가 이를 경로 문자로 인식해 웹콘솔에서 접근할 수 없습니다.
+> 오브젝트의 이름이 `./` 또는 `../`으로 시작한다면 브라우저가 이를 경로 문자로 인식해 웹 콘솔에서 접근할 수 없습니다.
 > API를 이용하여 이러한 이름의 오브젝트를 업로드했다면 API를 통해 접근해야 합니다.
 
 #### 응답
@@ -1650,8 +1650,8 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 </details>
 
-### 멀티파트 업로드
-5GB를 초과하는 용량을 가진 오브젝트는 5GB 이하의 세그먼트로 나누어 업로드해야 합니다.
+### 멀티 파트 업로드
+5GB를 초과하는 용량을 가진 오브젝트는 5GB 이하의 세그먼트로 분할해 업로드해야 합니다.
 
 #### 세그먼트 업로드
 
@@ -1666,8 +1666,8 @@ Content-Type: {content-type}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Content-type | Header | String | O | 오브젝트의 콘텐트 타입 |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 오브젝트 이름 |
 | Count | URL | Integer | O | 분할한 오브젝트의 순번, 예) 001, 002 |
@@ -1676,8 +1676,8 @@ Content-Type: {content-type}
 ##### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
-#### 매니패스트 생성
-모든 오브젝트의 세그먼트를 업로드한 다음 매니패스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다. 매니패스트 오브젝트는 세그먼트들이 저장된 경로를 가리킵니다.
+#### 매니페스트 생성
+모든 오브젝트의 세그먼트를 업로드한 다음 매니페스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다. 매니페스트 오브젝트는 세그먼트들이 저장된 경로를 가리킵니다.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1691,9 +1691,9 @@ X-Object-Manifest: {Container}/{Object}/
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | 토큰 ID |
 | X-Object-Manifest | Header| String | O | 분할한 오브젝트들을 업로드한 경로, `{Container}/{Object}/` |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
-| Object |	URL | String | O | 생성할 매니패스트 오브젝트 이름 |
+| Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
 | - | Body| Binary | O | 빈 데이터 |
 
 ##### 응답
@@ -1721,7 +1721,7 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/003 \
 -T large_obj.img.02
 
-// 매니패스트 오브젝트 업로드
+// 매니페스트 오브젝트 업로드
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Object-Manifest: curl_example/large_obj.img/' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
@@ -1744,7 +1744,7 @@ public class ObjectService {
 
     // ObjectService Class ...
 
-    // 매니패스트 오브젝트 업로드
+    // 매니페스트 오브젝트 업로드
     public void uploadManifestObject(String containerName, String objectName) {
         String url = this.getUrl(containerName, objectName);        
         String manifestName = containerName + "/" + objectName + "/"; // 매니페스트 이름 생성
@@ -1802,7 +1802,7 @@ public class ObjectService {
                 }
             }
 
-            // 매니패스트 파일을 업로드
+            // 매니페스트 파일을 업로드
             objectService.uploadManifestObject(containerName, objectName);
 
             System.out.println("Upload OK");
@@ -1977,10 +1977,10 @@ Content-Type: {content-type}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Content-type | Header | String | O | 오브젝트의 콘텐트 타입 |
-| X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간 (초) |
-| X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간 (초) |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
+| X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
+| X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
 
@@ -1988,7 +1988,7 @@ Content-Type: {content-type}
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 ### 오브젝트 다운로드
-오브젝트를 다운로드 합니다.
+오브젝트를 다운로드합니다.
 
 ```
 GET   /v1/{Account}/{Container}/{Object}
@@ -2001,7 +2001,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
 
@@ -2188,7 +2188,7 @@ X-Copy-From: {원본 오브젝트}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Destination | Header | String |	- | 오브젝트를 복사할 대상, `{컨테이너} / {오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
 | X-Copy-From | Header | String |	- | 원본 오브젝트, `{컨테이너} / {오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O |	컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 복사할 컨테이너 |
 | Object | URL | String |	복사할 오브젝트 이름 |
 
@@ -2347,7 +2347,7 @@ X-Object-Meta-{Key}: {Value}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | X-Object-Meta-{Key} | Header | String | - | 변경할 메타데이터 |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
 
@@ -2507,7 +2507,7 @@ X-Auth-Token: {token-id}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | X-Object-Meta-{Key} | Header | String | - | 변경할 메타데이터 |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
 
@@ -2517,7 +2517,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화창에서 확인 |
+| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 삭제할 오브젝트 이름 |
 
