@@ -192,7 +192,7 @@ Authorization: AWS {access}:{signature}
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 오브젝트 |
+| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
 | ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
 | Location | Body | String | 생성한 버킷 경로 |
 
@@ -244,7 +244,7 @@ Authorization: AWS {access}:{signature}
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 오브젝트 |
+| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
 | ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
 | Buckets.Name | Body | String | 버킷 이름 |
 | Buckets.CreationDate | Body | String | 생성 시각 |
