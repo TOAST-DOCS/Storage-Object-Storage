@@ -1,21 +1,21 @@
-## Storage > Object Storage > API 가이드
+## Storage > Object Storage > API Guide
 
-## 사전 준비
+## Prerequities
 
-오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
+To enable Object Storage API, certificate token must be issued first. A certificate token is required to use REST API of object storage: a token is a must to access container or object which is not open to public. Tokens are managed by each account. 오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
 
-### 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
+### Check Tenant ID and API Endpoint 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
 
-토큰 발급을 위한 테넌트 아이디와 API의 엔드포인트는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
+Click **API Endpoint Setting** on the object storage service page to check tenant ID and API endpoint to issue a token. 토큰 발급을 위한 테넌트 아이디와 API의 엔드포인트는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
 
-| 항목 | API 엔드포인트 | 용도 |
+| Item | API Endpoint | Usage |
 |---|---|---|
-| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | 인증 토큰 발급 |
-| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 오브젝트 스토리지 제어, 리전에 따라 다름 |
-| Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
+| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | Issue Certificate Token 인증 토큰 발급 |
+| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | Control Object Storage: depends on each region 오브젝트 스토리지 제어, 리전에 따라 다름 |
+| Tenant ID | Character strings composed of 32 length in combination of numbers and alphabets 숫자 + 영문자로 구성된 32자 길이의 문자열 | Issue Certificate Token 인증 토큰 발급 |
 
-> [참고]
-> API에 사용되는 사용자의 계정(account)은 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
+> [Note]
+> User account for API is character strings in the format of 에 사용되는 사용자의 계정(account)은 `AUTH_***` 형태의 문자열입니다., which is included to Object-Store API endpoint.  엔드포인트에 포함되어 있습니다.
 
 ### API 비밀번호 설정
 
