@@ -15,15 +15,15 @@ Click **API Endpoint Setting** on the object storage service page to check tenan
 | Tenant ID | Character strings composed of 32 length in combination of numbers and alphabets 숫자 + 영문자로 구성된 32자 길이의 문자열 | Issue Certificate Token 인증 토큰 발급 |
 
 > [Note]
-> User account for API is character strings in the format of 에 사용되는 사용자의 계정(account)은 `AUTH_***` 형태의 문자열입니다., which is included to Object-Store API endpoint.  엔드포인트에 포함되어 있습니다.
+> User account for API is character strings in the format of 에 사용되는 사용자의 계정(account)은 `AUTH_***` 형태의 문자열입니다., which is included in Object-Store API endpoint.  엔드포인트에 포함되어 있습니다.
 
-### API 비밀번호 설정
+### Setting API Password 비밀번호 설정
 
 API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 설정할 수 있습니다.
 
-1. **API Endpoint 설정** 버튼을 클릭합니다.
-2. **API Endpoint 설정** 아래 **API 비밀번호 설정** 입력 상자에 토큰 발급 시 사용할 비밀번호를 입력합니다.
-3. **저장** 버튼을 클릭합니다.
+1. Click **API Endpoint Setting** 버튼을 클릭합니다.
+2. Go to **API Endpoint 설정** 아래 **API Password Setting비밀번호 설정** under **API Endpoint Setting** to enter password to issue a token. 입력 상자에 토큰 발급 시 사용할 비밀번호를 입력합니다.
+3. Click **Save**. 버튼을 클릭합니다.
 
 ## 인증 토큰 발급
 
@@ -32,16 +32,16 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 Content-Type: application/json
 ```
 
-### 요청
+### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name  | Type | Format | Required | Description |
 |---|---|---|---|---|
 | tenantId | Body | String | O | Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
-| username | Body | String | O | TOAST 계정 ID(이메일) 입력 |
+| username | Body | String | O | Enter ID (email) of TOAST Account |
 | password | Body | String | O | API Endpoint 설정 대화 상자에서 저장한 비밀번호 |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -57,15 +57,15 @@ Content-Type: application/json
 
 </details>
 
-### 응답
+### Response
 
-| 이름 | 종류 | 형식 | 설명 |
+| Name | Type | Format | Description |
 |---|---|---|---|
-| access.token.id | Body | String |	발급된 토큰 ID |
+| access.token.id | Body | String |	ID of issued token |
 | access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 Tenant ID |
 | access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
 
-> [주의]
+> [Caution]
 > 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
 
 <details>
