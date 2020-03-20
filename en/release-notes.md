@@ -11,7 +11,7 @@
 * Restricts special characters for a folder name
     * Added slash (/) onto the list of special characters not allowed for the name of container or folder
 
-### Oct.26, 2017
+### Oct. 26, 2017
 
 #### Feature Updates
 * Restricts special characters for a folder name
@@ -24,7 +24,7 @@
 * Specifies the size of uploadable files 
 	* Up to 5GB can be uploaded. 
 
-### Dec.22, 2016
+### Dec. 22, 2016
 
 #### Bug Fixes 
 * [Console] Fixed an issue in which folders starting with "/" in the name were not properly shown when created 
@@ -33,7 +33,7 @@
 * [Console] Fixed the inoperability of the copy button on the pop-up for API Endpoint Setting
 * [Console] Fixed the inavailability of downloading 0 byte files 
 
-### Dec.08, 2016 
+### Dec. 08, 2016 
 
 #### Bug Fixes 
 * [Console] Modified the message guided when service is closed while resources remain
