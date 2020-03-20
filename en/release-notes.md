@@ -1,14 +1,14 @@
-## Storage > Object Storage > release notes
+## Storage > Object Storage > Release Notes
 
-### 2020. 02. 25.
+### 2020. 02. 25. Feb. 25, 2020
 
-#### 기능 추가
-* AWS S3 호환 API 제공
+#### 기능 추가 More Features
+* AWS S3 호환 API 제공 Provides APIs compatible with AWS S3
 
-### 2018. 04. 24.
+### 2018. 04. 24. April 24, 2018 
 
-#### 기능 수정
-* 폴더명 특수문자 제한
+#### 기능 수정 Feature Updates
+* 폴더명 특수문자 제한 
     * 컨테이너 및 폴더 이름으로 사용할 수 없는 특수 문자 목록에 슬래시(/) 추가
 
 ### 2017. 10. 26.
