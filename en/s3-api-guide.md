@@ -3,7 +3,7 @@ Object storage provides APIs that are compatible with S3 API of AWS object stora
 
 제공하는 S3 호환 API는 다음과 같습니다. APIs that are compatible with S3 are provided as follows.  
 
-| S3 API Method서드 | Usage용도 |
+| S3 API Method | Usage |
 | --- | --- |
 | [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | Create bucket버킷 생성 |
 | [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | Query bucket information버킷 정보 조회 |
@@ -26,12 +26,12 @@ Object storage provides APIs that are compatible with S3 API of AWS object stora
 | [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 업로드 진행 중인 멀티 파트 오브젝트의 파트 오브젝트 리스트 |
 | [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | Delete multi-part object멀티 파트 오브젝트 삭제 |
 
-This document describes only the basic API  이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [AWS S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
+This document describes only the basic usage of API. To use advanced features, see 이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [API Guide for AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html) or 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) is recommended. 사용을 권장합니다.
 
-## EC2 자격 증명(EC2 Credential)
+## EC2 Credentials 자격 증명(EC2 Credential)
 
-### 자격 증명 등록
-S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명을 등록하려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참고하십시오.
+### 자격 증명 등록 Register Credentials
+To use APIs compatible with S3, first register AWS EC2-type credential. To that end, a certificate token is required. To get a token, see 호환 API를 사용하려면 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명을 등록하려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [API Guide for Object Storage오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참고하십시오.
 
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/users/{User ID}/credentials/OS-EC2
@@ -45,11 +45,11 @@ X-Auth-Token: {token-id}
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Issued token ID발급받은 토큰 ID |
-| user-id | URL | String | O | User ID, included in 인증 토큰에 포함되어 있음 |
-| tenant_id | Body | String | O | User Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
+| user-id | URL | String | O | User ID, included in certificate token 인증 토큰에 포함되어 있음 |
+| tenant_id | Body | String | O | User Tenant ID: available on the setup dialogue for API Endpoint 설정 대화 상자에서 확인 가능 |
 
 > [Caution]
-> 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
+> User ID for credential registration is not an email-type TOAST account. Find this, when you get a certificate token issued.  자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
 
 <details>
 <summary>Example</summary>
@@ -61,6 +61,49 @@ X-Auth-Token: {token-id}
 ```
 
 </details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|---|---|---|---|
+| access | Body | String | Access key for credential 자격 증명 접근 키 |
+| secret | Body | String | Secret key for credential 자격 증명 비밀 키 |
+
+<details>
+<summary>Example</summary>
+
+```json
+{
+  "credentials": [
+    {
+      "access": "253a3c7ca27f4731a9c757addfac29ca",
+      "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
+      "secret": "be057f235abf45ee8e2ba14edc5fb253",
+      "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
+      "trust_id": null
+    }
+  ]
+}
+```
+
+</details>
+
+### EC2 자격 증명 조회 Query EC2 Credentials 
+등록한 EC2 자격 증명을 조회합니다.
+
+**[Method, URL]**
+```
+GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2
+
+X-Auth-Token: {token-id}
+```
+#### Request
+이 API는 요청 본문을 요구하지 않습니다. This API does not require request body. 
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| X-Auth-Token | Header | String | O |발급받은 토큰 ID |
+| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
 
 #### Response
 
@@ -88,50 +131,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
-### EC2 자격 증명 조회
-등록한 EC2 자격 증명을 조회합니다.
-
-**[Method, URL]**
-```
-GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2
-
-X-Auth-Token: {token-id}
-```
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O |발급받은 토큰 ID |
-| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
-
-#### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| access | Body | String | 자격 증명 접근 키 |
-| secret | Body | String | 자격 증명 비밀 키 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-  "credentials": [
-    {
-      "access": "253a3c7ca27f4731a9c757addfac29ca",
-      "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
-      "secret": "be057f235abf45ee8e2ba14edc5fb253",
-      "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-      "trust_id": null
-    }
-  ]
-}
-```
-
-</details>
-
-### EC2 자격 증명 삭제
+### EC2 자격 증명 삭제 Delete EC2 Credentials
 등록한 EC2 자격 증명을 삭제합니다.
 
 **[Method, URL]**
@@ -140,7 +140,7 @@ GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credenti
 
 X-Auth-Token: {token-id}
 ```
-#### 요청
+#### Request
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -149,15 +149,15 @@ X-Auth-Token: {token-id}
 | user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
 | access | URL | String | O | 자격 증명 접근 키 |
 
-#### 응답
+#### Response
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
-## 서명(signature) 생성
+## 서명(signature) 생성 Creat Signature
 S3 API를 사용하려면 자격 증명 키를 이용해 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
 
 서명 생성에 필요한 정보는 다음과 같습니다.
 
-| 이름 | 값 |
+| Name | Value |
 |---|---|
 | 알고리즘 | AWS4-HMAC-SHA256 |
 | 서명 시각 | YYYYMMDDThhmmssZ 형태 |
@@ -169,7 +169,7 @@ S3 API를 사용하려면 자격 증명 키를 이용해 서명을 생성해야 
 > S3 호환 API는 2020년 3월 현재 한국(판교)리전에서만 제공됩니다.
 
 ## 버킷(Bucket)
-### 버킷 생성
+### 버킷 Create 
 버킷(컨테이너)을 생성합니다.
 
 ```
@@ -179,7 +179,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
+#### Request
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -188,7 +188,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | O | String | 자격 증명 접근 키와 서명으로 구성 |
 
-#### 응답
+#### Response
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
@@ -223,7 +223,7 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 버킷 목록 조회
+### 버킷 목록 조회 Query Bucket List 
 버킷 목록을 조회합니다.
 ```
 GET /
@@ -232,7 +232,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
+#### Request
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -240,7 +240,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
 
-#### 응답
+#### Response
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
@@ -281,7 +281,7 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 버킷 조회
+### 버킷 조회 Query Bucket
 지정한 버킷의 정보와 내부에 저장된 오브젝트 목록을 조회합니다.
 ```
 GET /{bucket}
@@ -290,7 +290,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
+#### Request
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -299,7 +299,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
 
-#### 응답
+#### Response
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
@@ -315,7 +315,7 @@ Authorization: AWS {access}:{signature}
 | KeyCount | Body | Integer | 목록의 오브젝트 수 |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -354,7 +354,7 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 버킷 삭제
+### Delete Bucket 버킷 삭제
 지정한 버킷을 삭제합니다. 삭제할 버킷은 비어 있어야 합니다.
 ```
 DELETE /{bucket}
@@ -363,24 +363,24 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
+#### Request
 이 API는 요청 본문을 요구하지 않습니다.
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | O | Bucket name버킷 이름 |
+| Date | Header | String | O | Requested time 시각 |
+| Authorization | Header | String | O | Comprised of credential access key and signature 자격 증명 접근 키와 서명으로 구성 |
 
-#### 응답
+#### Response
 
-| 이름 | 종류 | 형식 | 설명 |
+| Name | Type | Format | Description |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
+| ResponseMetadata | Body | Object | Object of response metadata 응답 메타데이터 객체 |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code 응답 상태 코드 |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -404,8 +404,8 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-## 오브젝트
-### 오브젝트 업로드
+## Object
+### Upload 오브젝트 업로드
 지정한 버킷에 오브젝트를 업로드합니다.
 ```
 PUT /{bucket}/{obj}
@@ -414,7 +414,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
+#### Request
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -424,16 +424,16 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
 
-#### 응답
+#### Response
 
-| 이름d | 종류 | 형식 | 설명 |
+| Name | Type | Format | Description |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| ETag | Body | String | 업로드한 오브젝트의 MD5 해시값 |
+| ResponseMetadata | Body | Object | Object of response metadata응답 메타데이터 객체 |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code |
+| ETag | Body | String | MD5 hash of uploaded object 업로드한 오브젝트의 MD5 해시값 |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -460,7 +460,7 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 오브젝트 다운로드
+### 오브젝트 다운로드 Download
 오브젝트를 다운로드합니다.
 ```
 PUT /{bucket}/{obj}
@@ -469,7 +469,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
+#### Request
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -479,17 +479,17 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
 
-#### 응답
+#### Response
 
-| 이름 | 종류 | 형식 | 설명 |
+| Name | Type | Format | Description |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| ContentLength | Body | String | 다운로드한 오브젝트의 크기 |
-| ETag | Body | String | 오브젝트의 MD5 해시값 |
-| ContentType | Body | String | 오브젝트의 콘텐츠 타입 |
-| Metadata | Body | Object | 오브젝트의 메타데이터 객체 |
+| ResponseMetadata | Body | Object | Object of response metadata 응답 메타데이터 객체 |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code 답 상태 코드 |
+| LastModified | Body | String | Recent modified time of object 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
+| ContentLength | Body | String | Size of downloaded object 다운로드한 오브젝트의 크기 |
+| ETag | Body | String | MD5 hash of object 오브젝트의 MD5 해시값 |
+| ContentType | Body | String | Content type of object 오브젝트의 콘텐츠 타입 |
+| Metadata | Body | Object | Metadata of object 오브젝트의 메타데이터 객체 |
 
 <details>
 <summary>예시</summary>
@@ -523,7 +523,7 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 오브젝트 삭제
+### Delete 오브젝트 삭제
 지정한 오브젝트를 삭제합니다.
 
 ```
@@ -533,25 +533,25 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
+이 API는 요청 본문을 요구하지 않습니다. This API does not require a request body. 
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| obj | URL | String | O | 오브젝트 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | O | Bucket name |
+| obj | URL | String | O | Object name |
+| Date | Header | String | O | Requested time |
+| Authorization | Header | String | O | Comprised of credential access key and signature 자격 증명 접근 키와 서명으로 구성 |
 
-#### 응답
+#### Response
 
-| 이름 | 종류 | 형식 | 설명 |
+| Name | Type | Format | Description |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
+| ResponseMetadata | Body | Object | Object of response metadata 응답 메타데이터 객체 |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code  상태 코드 |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
