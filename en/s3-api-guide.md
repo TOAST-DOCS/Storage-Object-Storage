@@ -1,32 +1,32 @@
 ## Storage > Object Storage > API Guide for AWS S3 Compatibility 호환 API 가이드
-Object storage provides APIs that are compatible with S3 API of AWS object storage. 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 AWS S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
+Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API. 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 AWS S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
 
-제공하는 S3 호환 API는 다음과 같습니다.
+제공하는 S3 호환 API는 다음과 같습니다. APIs that are compatible with S3 are provided as follows.  
 
-| S3 API 메서드 | 용도 |
+| S3 API Method서드 | Usage용도 |
 | --- | --- |
-| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | 버킷 생성 |
-| [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | 버킷 정보 조회 |
-| [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | 버킷 삭제 |
-| [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | 버킷 ACL 설정 |
-| [GET Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html) | 버킷 ACL 조회 |
-| [GET Bucket Location](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html) | 버킷이 있는 리전 조회 |
-| [GET Bucket List Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html) | 버킷의 오브젝트 목록 조회 |
-| [GET Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html) | 오브젝트 다운로드 |
-| [HEAD Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html) | 오브젝트 정보 조회 |
-| [PUT Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html) | 오브젝트 업로드 |
-| [PUT Object Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html) | 오브젝트 복사 |
-| [DELETE Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html) | 오브젝트 삭제 |
-| [Initiate Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html) | 멀티 파트 업로드 초기화 |
-| [Upload Part](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html) | 파트 업로드 |
-| [Upload Part Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html) | 파트 복사 |
-| [Complete Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html) | 멀티 파트 업로드 완료 |
+| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | Create bucket버킷 생성 |
+| [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | Query bucket information버킷 정보 조회 |
+| [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | Delete bucket버킷 삭제 |
+| [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | Set bucket ACL버킷 ACL 설정 |
+| [GET Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html) | Query bucket ACL 버킷 ACL 조회 |
+| [GET Bucket Location](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html) | Query region with bucket 버킷이 있는 리전 조회 |
+| [GET Bucket List Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html) | List bucket object 버킷의 오브젝트 목록 조회 |
+| [GET Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html) | Download object 오브젝트 다운로드 |
+| [HEAD Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html) | Query object information오브젝트 정보 조회 |
+| [PUT Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html) | Upload object 오브젝트 업로드 |
+| [PUT Object Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html) | Copy object 오브젝트 복사 |
+| [DELETE Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html) | Delete object 오브젝트 삭제 |
+| [Initiate Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html) | Initialize multi-part upload 멀티 파트 업로드 초기화 |
+| [Upload Part](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html) | Upload part 파트 업로드 |
+| [Upload Part Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html) | Copy part 파트 복사 |
+| [Complete Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html) | Complete multi-part upload멀티 파트 업로드 완료 |
 | [Abort Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html) | 멀티 파트 업로드 중단 |
-| [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 멀티 파트 오브젝트의 파트 오브젝트 리스트 |
+| [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | List of multi-part objects멀티 파트 오브젝트의 파트 오브젝트 리스트 |
 | [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 업로드 진행 중인 멀티 파트 오브젝트의 파트 오브젝트 리스트 |
-| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | 멀티 파트 오브젝트 삭제 |
+| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | Delete multi-part object멀티 파트 오브젝트 삭제 |
 
-이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [AWS S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
+This document describes only the basic API  이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [AWS S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
 
 ## EC2 자격 증명(EC2 Credential)
 
@@ -40,19 +40,19 @@ Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
-| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
-| tenant_id | Body | String | O | 사용자 Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
+| X-Auth-Token | Header | String | O | Issued token ID발급받은 토큰 ID |
+| user-id | URL | String | O | User ID, included in 인증 토큰에 포함되어 있음 |
+| tenant_id | Body | String | O | User Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
 
-> [주의]
+> [Caution]
 > 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -62,9 +62,9 @@ X-Auth-Token: {token-id}
 
 </details>
 
-#### 응답
+#### Response
 
-| 이름 | 종류 | 형식 | 설명 |
+| Name | Type | Format | Description |
 |---|---|---|---|
 | access | Body | String | 자격 증명 접근 키 |
 | secret | Body | String | 자격 증명 비밀 키 |
