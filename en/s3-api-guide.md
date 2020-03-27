@@ -301,7 +301,7 @@ Authorization: AWS {access}:{signature}
 
 #### Response
 
-| 이름 | 종류 | 형식 | 설명 |
+| Name | Type | Format | Description |
 |---|---|---|---|
 | ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
 | ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
