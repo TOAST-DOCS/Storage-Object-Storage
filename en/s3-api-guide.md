@@ -1,34 +1,34 @@
-## Storage > Object Storage > API Guide for AWS S3 Compatibility 호환 API 가이드
-Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API. 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 AWS S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
+## Storage > Object Storage > API Guide for AWS S3 Compatibility 
+Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API. 
 
-제공하는 S3 호환 API는 다음과 같습니다. APIs that are compatible with S3 are provided as follows.  
+APIs that are compatible with S3 are provided as follows.  
 
 | S3 API Method | Usage |
 | --- | --- |
-| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | Create bucket버킷 생성 |
-| [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | Query bucket information버킷 정보 조회 |
-| [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | Delete bucket버킷 삭제 |
-| [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | Set bucket ACL버킷 ACL 설정 |
-| [GET Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html) | Query bucket ACL 버킷 ACL 조회 |
-| [GET Bucket Location](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html) | Query region with bucket 버킷이 있는 리전 조회 |
-| [GET Bucket List Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html) | List bucket object 버킷의 오브젝트 목록 조회 |
-| [GET Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html) | Download object 오브젝트 다운로드 |
-| [HEAD Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html) | Query object information오브젝트 정보 조회 |
-| [PUT Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html) | Upload object 오브젝트 업로드 |
-| [PUT Object Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html) | Copy object 오브젝트 복사 |
-| [DELETE Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html) | Delete object 오브젝트 삭제 |
-| [Initiate Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html) | Initialize multi-part upload 멀티 파트 업로드 초기화 |
-| [Upload Part](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html) | Upload part 파트 업로드 |
-| [Upload Part Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html) | Copy part 파트 복사 |
-| [Complete Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html) | Complete multi-part upload멀티 파트 업로드 완료 |
-| [Abort Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html) | 멀티 파트 업로드 중단 |
-| [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | List of multi-part objects멀티 파트 오브젝트의 파트 오브젝트 리스트 |
-| [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 업로드 진행 중인 멀티 파트 오브젝트의 파트 오브젝트 리스트 |
-| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | Delete multi-part object멀티 파트 오브젝트 삭제 |
+| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | Create bucket |
+| [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | Query bucket information |
+| [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | Delete bucket |
+| [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | Set bucket ACL |
+| [GET Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html) | Query bucket ACL |
+| [GET Bucket Location](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html) | Query region with bucket  |
+| [GET Bucket List Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html) | List bucket object  |
+| [GET Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html) | Download object  |
+| [HEAD Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html) | Query object information |
+| [PUT Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html) | Upload object  |
+| [PUT Object Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html) | Copy object  |
+| [DELETE Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html) | Delete object |
+| [Initiate Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html) | Initialize multi-part upload |
+| [Upload Part](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html) | Upload part  |
+| [Upload Part Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html) | Copy part |
+| [Complete Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html) | Complete multi-part upload |
+| [Abort Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html) | Abort multi-part upload |
+| [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | List of multi-part objects |
+| [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | List of part objects of multi-part object under uploading |
+| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | Delete multi-part objec |
 
-This document describes only the basic usage of API. To use advanced features, see 이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [API Guide for AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html) or 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) is recommended. 사용을 권장합니다.
+This document describes only the basic usage of API. To use advanced features, see [API Guide for AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html), or [AWS SDK](https://aws.amazon.com/ko/tools) is recommended. 
 
-## EC2 Credentials 자격 증명(EC2 Credential)
+## EC2 Credentials
 
 ### 자격 증명 등록 Register Credentials
 To use APIs compatible with S3, first register AWS EC2-type credential. To that end, a certificate token is required. To get a token, see 호환 API를 사용하려면 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명을 등록하려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [API Guide for Object Storage오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참고하십시오.
@@ -44,12 +44,12 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | Issued token ID발급받은 토큰 ID |
-| user-id | URL | String | O | User ID, included in certificate token 인증 토큰에 포함되어 있음 |
-| tenant_id | Body | String | O | User Tenant ID: available on the setup dialogue for API Endpoint 설정 대화 상자에서 확인 가능 |
+| X-Auth-Token | Header | String | O | Issued token ID |
+| user-id | URL | String | O | User ID, included in certificate token  |
+| tenant_id | Body | String | O | User Tenant ID: available on the setup dialogue for API Endpoint  |
 
 > [Caution]
-> User ID for credential registration is not an email-type TOAST account. Find this, when you get a certificate token issued.  자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
+> User ID for credential registration is not an email-type TOAST account. Find this, when you get a certificate token issued. 
 
 <details>
 <summary>Example</summary>
@@ -66,8 +66,8 @@ X-Auth-Token: {token-id}
 
 | Name | Type | Format | Description |
 |---|---|---|---|
-| access | Body | String | Access key for credential 자격 증명 접근 키 |
-| secret | Body | String | Secret key for credential 자격 증명 비밀 키 |
+| access | Body | String | Credential access key 자격 증명 접근 키 |
+| secret | Body | String | Credential secret key 자격 증명 비밀 키 |
 
 <details>
 <summary>Example</summary>
@@ -88,7 +88,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
-### EC2 자격 증명 조회 Query EC2 Credentials 
+### Query EC2 Credentials 
 등록한 EC2 자격 증명을 조회합니다.
 
 **[Method, URL]**
@@ -98,7 +98,7 @@ GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credenti
 X-Auth-Token: {token-id}
 ```
 #### Request
-이 API는 요청 본문을 요구하지 않습니다. This API does not require request body. 
+This API does not require a request body. 
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -483,13 +483,13 @@ Authorization: AWS {access}:{signature}
 
 | Name | Type | Format | Description |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | Object of response metadata 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code 답 상태 코드 |
-| LastModified | Body | String | Recent modified time of object 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| ContentLength | Body | String | Size of downloaded object 다운로드한 오브젝트의 크기 |
-| ETag | Body | String | MD5 hash of object 오브젝트의 MD5 해시값 |
-| ContentType | Body | String | Content type of object 오브젝트의 콘텐츠 타입 |
-| Metadata | Body | Object | Metadata of object 오브젝트의 메타데이터 객체 |
+| ResponseMetadata | Body | Object | Object of response metadata  |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code  |
+| LastModified | Body | String | Recent modified time of object, ssZ:mm:Thh DD-MM-YYYY|
+| ContentLength | Body | String | Size of downloaded object  |
+| ETag | Body | String | MD5 hash of object |
+| ContentType | Body | String | Content type of object  |
+| Metadata | Body | Object | Metadata of object |
 
 <details>
 <summary>예시</summary>
@@ -523,8 +523,8 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### Delete 오브젝트 삭제
-지정한 오브젝트를 삭제합니다.
+### Delete Object오브젝트 삭제
+Delete objects as specified. 
 
 ```
 DELETE /{bucket}/{obj}
@@ -534,21 +534,21 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-이 API는 요청 본문을 요구하지 않습니다. This API does not require a request body. 
+This API does not require a request body. 
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | bucket | URL | String | O | Bucket name |
 | obj | URL | String | O | Object name |
 | Date | Header | String | O | Requested time |
-| Authorization | Header | String | O | Comprised of credential access key and signature 자격 증명 접근 키와 서명으로 구성 |
+| Authorization | Header | String | O | Comprised of credential access key and signature  |
 
 #### Response
 
 | Name | Type | Format | Description |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | Object of response metadata 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code  상태 코드 |
+| ResponseMetadata | Body | Object | Object of response metadata  |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code  |
 
 <details>
 <summary>Example</summary>
