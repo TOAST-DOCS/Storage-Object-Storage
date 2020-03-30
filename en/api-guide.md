@@ -18,14 +18,14 @@ Click **API Endpoint Setting** on the object storage service page to check tenan
 
 | Item | API Endpoint | Usage |
 |---|---|---|
-| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | Issue Certificate Token 인증 토큰 발급 |
+| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | Issue Certificate Token |
 | Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | Control Object Storage: depends on each region 오브젝트 스토리지 제어, 리전에 따라 다름 |
 | Tenant ID | Character strings composed of 32 length in combination of numbers and alphabets 숫자 + 영문자로 구성된 32자 길이의 문자열 | Issue Certificate Token 인증 토큰 발급 |
 
 > [Note]
 > User account for API is character strings in the format of 에 사용되는 사용자의 계정(account)은 `AUTH_***` 형태의 문자열입니다., which is included in Object-Store API endpoint.  엔드포인트에 포함되어 있습니다.
 
-### Setting API Password 비밀번호 설정
+### Set API Password 비밀번호 설정
 
 API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 설정할 수 있습니다.
 
@@ -33,7 +33,7 @@ API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpo
 2. Go to **API Endpoint 설정** 아래 **API Password Setting비밀번호 설정** under **API Endpoint Setting** to enter password to issue a token. 입력 상자에 토큰 발급 시 사용할 비밀번호를 입력합니다.
 3. Click **Save**. 버튼을 클릭합니다.
 
-## 인증 토큰 발급
+## 인증 토큰 발급 Certificate Token Issuance
 
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
@@ -77,7 +77,7 @@ Content-Type: application/json
 > 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -107,7 +107,7 @@ Content-Type: application/json
 
 </details>
 
-### 코드 예시
+### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -315,12 +315,12 @@ printf("%s\n", $token);
 
 </details>
 
-## 컨테이너
+## 컨테이너 Container
 
-### 컨테이너 생성
+### 컨테이너 생성 Create Container
 컨테이너를 생성합니다. 오브젝트 스토리지에 파일을 업로드하려면 반드시 컨테이너를 생성해야 합니다.
 
-> [참고]
+> [Note]
 > 컨테이너 또는 오브젝트 이름에 특수 문자 `! * ' ( ) ; : @ & = + $ , / ? # [ ]`가 포함되어 있다면 API를 사용할 때 반드시 URL 인코딩(퍼센트 인코딩)을 해야 합니다. 이 문자들은 URL에서 중요하게 사용되는 예약 문자입니다. 이 문자들이 포함된 경로를 URL 인코딩하지 않고 API 요청을 보낸다면 원하는 응답을 받을 수 없습니다.
 
 ```
@@ -328,19 +328,19 @@ PUT  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
+This API does not require a request body. 는 요청 본문을 요구하지 않습니다.
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
+| X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 생성할 컨테이너 이름 |
 
-#### 응답
+#### Response
 이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
 
-#### 코드 예시
+#### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -506,7 +506,7 @@ $container->create($CONTAINER_NAME);
 </details>
 
 
-### 컨테이너 조회
+### 컨테이너 조회 Get Container
 지정한 컨테이너의 정보와 내부에 저장된 오브젝트들의 목록을 조회합니다.
 
 ```
@@ -514,22 +514,22 @@ GET   /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
+This API does not require a request body. 
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | 조회할 컨테이너 이름 |
+| X-Auth-Token | Header | String | O | Token ID |
+| Account | URL | String | O | User account name, to be found on the setup dialogue for API Endpoint |
+| Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
 
-#### 응답
+#### Response
 
 ```
-[지정한 컨테이너에 속한 오브젝트 목록]
+[List of objects included to a specified container 지정한 컨테이너에 속한 오브젝트 목록]
 ```
 
-#### 코드 예시
+#### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -678,7 +678,7 @@ foreach ($object_list as $obj){
 ### 컨테이너 조회 질의
 컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
 
-#### 1만 개 이상의 오브젝트 목록 조회
+#### 1만 개 이상의 오브젝트 목록 조회 List More than 10,000 Objects
 컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다.
 
 ```
@@ -686,22 +686,22 @@ GET    /v1/{Account}/{Container}?marker={Object}
 X-Auth-Token: {token-id}
 ```
 
-##### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+##### Request
+This API does not require a request body. 이 API는 요청 본문을 요구하지 않습니다.
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
+| X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | Object | Query | String | O | 기준 오브젝트 이름 |
 
-##### 응답
+##### Response
 ```
 [지정한 컨테이너에 속한 지정한 오브젝트 다음 오브젝트 목록]
 ```
 
-##### 코드 예시
+##### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -829,7 +829,7 @@ foreach ($object_list as $obj){
 
 </details>
 
-#### 폴더 단위의 오브젝트 목록 조회
+#### 폴더 단위의 오브젝트 목록 조회 List Objects by Folder 
 컨테이너에 여러 개의 폴더를 만들어 사용하고 있다면 `path` 질의를 이용해 폴더 단위로 오브젝트 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 오브젝트 목록은 조회할 수 없습니다.
 
 ```
@@ -837,22 +837,22 @@ GET   /v1/{Account}/{Container}?path={Path}
 X-Auth-Token: {token-id}
 ```
 
-##### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+##### Request
+This API does not require a request body. 는 요청 본문을 요구하지 않습니다.
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
+| X-Auth-Token | Header | String | O | Token ID |
+| Account | URL | String | O | User account name, to be found on the API Endpoint setup window 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | Path | Query | String | O | 조회할 폴더 이름 |
 
-##### 응답
+##### Response
 ```
 [지정한 컨테이너에 속한 지정한 폴더의 오브젝트 목록]
 ```
 
-##### 코드 예시
+##### Code Example
 <details>
 <summary>cURL</summary>
 
