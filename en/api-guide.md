@@ -933,22 +933,22 @@ GET   /v1/{Account}/{Container}?prefix={Prefix}
 X-Auth-Token: {token-id}
 ```
 
-##### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+##### Request
+This API does not require a request body. 는 요청 본문을 요구하지 않습니다.
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | Prefix | Query | String | O | 검색할 접두어 |
 
-##### 응답
+##### Response
 ```
 [지정한 컨테이너에 속하고 지정한 접두어로 시작하는 오브젝트 목록]
 ```
 
-##### 코드 예시
+##### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -1030,22 +1030,22 @@ GET   /v1/{Account}/{Container}?limit={limit}
 X-Auth-Token: {token-id}
 ```
 
-##### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+##### Request
+This API does not require a request body. 
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | limit | Query | Integer | O | 목록에 표시할 오브젝트 수 |
 
-##### 응답
+##### Response
 ```
 [지정한 컨테이너에 속한 지정된 수 만큼의 오브젝트 목록]
 ```
 
-##### 코드 예시
+##### Code Example
 
 <details>
 <summary>cURL</summary>
@@ -1120,7 +1120,7 @@ class Container {
 </details>
 
 
-### 컨테이너 수정
+### 컨테이너 수정 Modify Container
 
 컨테이너의 메타데이터를 변경하여 접근 규칙을 지정할 수 있습니다.
 
@@ -1131,10 +1131,10 @@ X-Container-Read: {컨테이너 읽기 정책}
 X-Container-Write: {컨테이너 쓰기 정책}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
+This API does not require a request body.  API는 요청 본문을 요구하지 않습니다.
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에게 접근 허용<br/>.r:example.com,test.com – 특정 주소에만 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에만 접근 허용 |
@@ -1142,10 +1142,10 @@ X-Container-Write: {컨테이너 쓰기 정책}
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 
-#### 응답
+#### Response
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
-#### 코드 예시
+#### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -1284,7 +1284,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 읽기 권한을 공개로 설정한 후에는 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```
 $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
@@ -1294,7 +1294,7 @@ $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 
 </details>
 
-### 컨테이너 삭제
+### 컨테이너 삭제 Delete Container
 
 지정한 컨테이너를 삭제합니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다.
 
@@ -1303,19 +1303,19 @@ DELETE   /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
+This API does not require a request body. 
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	O | 삭제할 컨테이너 이름 |
 
-#### 응답
-이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+#### Response
+This request does not return response body. When request is appropriate, return status code 204. 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
-#### 코드 예시
+#### Code Example
 <details>
 <summary>cURL</summary>
 
