@@ -10,7 +10,7 @@ To use API, enter tenant name in parameters. Tenant name refers to **Project ID*
 
 ## Prerequities
 
-To enable Object Storage API, a certificate token must be issued first. A certificate token is required to use REST API of object storage: it is a must to access container or object which is not open to public. Tokens are managed by each account. 
+To enable object storage API, an authentication token must be issued first. Authentication token is required to use REST API of object storage: it is a must to access container or object which is not open to public. Tokens are managed by each account. 
 
 ### Check Tenant ID and API Endpoint 
 
@@ -33,7 +33,7 @@ To set API password, go to the object storage service page and click **API Endpo
 2. Go to **API Password Setting** under **API Endpoint Setting** and enter password to issue a token. 
 3. Click **Save**. 
 
-## 인증 토큰 발급 Certificate Token Issuance
+## Certificate Token Issuance
 
 ```
 POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
@@ -70,11 +70,11 @@ Content-Type: application/json
 | Name | Type | Format | Description |
 |---|---|---|---|
 | access.token.id | Body | String |	ID of issued token |
-| access.token.tenant.id | Body | String | Tenant ID for a project requesting token 토큰을 요청한 프로젝트에 대응하는 Tenant ID |
-| access.token.expires | Body | String | Expiration time of issued token 발급한 토큰의 만료 시간 <br/> in the ssZ:MM:HHTdd-mm-yyyy format. e.g.) 50Z:17:03T16-05-2017 |
+| access.token.tenant.id | Body | String | Tenant ID for a project requesting for token |
+| access.token.expires | Body | String | Expiration time of issued token <br/> in the ssZ:MM:HHTdd-mm-yyyy format. e.g.) 50Z:17:03T16-05-2017 |
 
 > [Caution]
-> A token includes 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
+> A token includes expiration. The 'expires' item included in the reponse of request for token issuance refers to token expiration time. When a token is expired, a new token must be issued.  토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
 
 <details>
 <summary>Example</summary>
@@ -189,7 +189,7 @@ public class AuthService {
     public AuthService(String authUrl, String tenantId, String username, String password) {		
         this.authUrl = authUrl;		
 
-        // 요청 본문 생성
+        // Create a request body 요청 본문 생성
         this.tokenRequest = new TokenRequest();
         this.tokenRequest.getAuth().setTenantId(tenantId);
         this.tokenRequest.getAuth().getPasswordCredentials().setUsername(username);
@@ -201,14 +201,14 @@ public class AuthService {
     public String requestToken() {
         String identityUrl = this.authUrl + "/tokens";
 
-        // 헤더 생성
+        // Create a header 헤더 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
         HttpEntity<TokenRequest> httpEntity
             = new HttpEntity<TokenRequest>(this.tokenRequest, headers);
 
-        // 토큰 요청
+        // Request for a token 토큰 요청
         ResponseEntity<String> response
             = this.restTemplate.exchange(identityUrl, HttpMethod.POST, httpEntity, String.class);
 
@@ -285,19 +285,19 @@ function get_token($auth_url, $tenant_id, $username, $password) {
               'password' => $password
           )
       )
-  );  // 요청 본문 생성
+  );  // 요청 본문 생성 Create a request body 
   $req_header = array(
     'Content-Type: application/json'
-  );  // 요청 헤더 생성
+  );  // 요청 헤더 생성 Create a request header
 
-  $curl  = curl_init($url); // curl 초기화
+  $curl  = curl_init($url); // Initialize curl 초기화
   curl_setopt_array($curl, array(
     CURLOPT_POST => TRUE,
     CURLOPT_RETURNTRANSFER => TRUE,
     CURLOPT_HTTPHEADER => $req_header,
     CURLOPT_POSTFIELDS => json_encode($req_body)
-  )); // 파라미터 설정
-  $response = curl_exec($curl); // API 호출
+  )); // Set parameters 파라미터 설정
+  $response = curl_exec($curl); // All API 호출
   curl_close($curl);
 
   return $response;
@@ -318,10 +318,10 @@ printf("%s\n", $token);
 ## 컨테이너 Container
 
 ### 컨테이너 생성 Create Container
-컨테이너를 생성합니다. 오브젝트 스토리지에 파일을 업로드하려면 반드시 컨테이너를 생성해야 합니다.
+Create a container. To upload files to object storage, a container must be created. 컨테이너를 생성합니다. 오브젝트 스토리지에 파일을 업로드하려면 반드시 컨테이너를 생성해야 합니다. 
 
 > [Note]
-> 컨테이너 또는 오브젝트 이름에 특수 문자 `! * ' ( ) ; : @ & = + $ , / ? # [ ]`가 포함되어 있다면 API를 사용할 때 반드시 URL 인코딩(퍼센트 인코딩)을 해야 합니다. 이 문자들은 URL에서 중요하게 사용되는 예약 문자입니다. 이 문자들이 포함된 경로를 URL 인코딩하지 않고 API 요청을 보낸다면 원하는 응답을 받을 수 없습니다.
+> If a container or object name includes special characters컨테이너 또는 오브젝트 이름에 특수 문자 `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL encoded (percent-encoding). These are reserved characters that are considered important for URL. Unless the paths including the characters are encoded before sending an API request, you may not receive responses as needed.  가 포함되어 있다면 API를 사용할 때 반드시 URL 인코딩(퍼센트 인코딩)을 해야 합니다. 이 문자들은 URL에서 중요하게 사용되는 예약 문자입니다. 이 문자들이 포함된 경로를 URL 인코딩하지 않고 API 요청을 보낸다면 원하는 응답을 받을 수 없습니다.
 
 ```
 PUT  /v1/{Account}/{Container}
@@ -334,11 +334,11 @@ This API does not require a request body. 는 요청 본문을 요구하지 않�
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | 생성할 컨테이너 이름 |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Container | URL | String | O | Name of container to be created 생성할 컨테이너 이름 |
 
 #### Response
-이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
+This API does not return response body. When a container is created, return status code 201. 이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
 
 #### Code Example
 <details>
