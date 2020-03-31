@@ -1022,7 +1022,7 @@ class Container {
 
 </details>
 
-#### 목록의 최대 오브젝트 수 지정
+#### 목록의 최대 오브젝트 수 지정 Specify the Maximum Object Count on List 
 `limit` 질의를 사용하면 반환할 오브젝트 목록의 최대 오브젝트 수를 지정할 수 있습니다.
 
 ```
@@ -1136,7 +1136,7 @@ This API does not require a request body.  API는 요청 본문을 요구하지 
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
+| X-Auth-Token | Header | String | O | Token ID |
 | X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에게 접근 허용<br/>.r:example.com,test.com – 특정 주소에만 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에만 접근 허용 |
 | X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 접근 규칙 지정<br/>\*:\* - 모든 사용자에게 쓰기 허용<br/>AUTH_.... – 특정 계정에만 쓰기 허용 |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
@@ -1443,27 +1443,27 @@ X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
-#### 요청
+#### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
-| X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
+| X-Auth-Token | Header | String | O | Token ID |
+| Content-type | Header | String | O | Content type of object 오브젝트의 콘텐츠 타입 |
+| X-Delete-At | Header | Timestamp | - | Unix time (seconds) to delete object (오브젝트를 삭제할 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String |	O | 생성할 오브젝트 이름 |
 | - |	Body | Binary | O | 생성할 오브젝트의 내용 |
 
-> [주의]
+> [Caution]
 > 오브젝트의 이름이 `./` 또는 `../`으로 시작한다면 브라우저가 이를 경로 문자로 인식해 웹 콘솔에서 접근할 수 없습니다.
 > API를 이용하여 이러한 이름의 오브젝트를 업로드했다면 API를 통해 접근해야 합니다.
 
-#### 응답
+#### Response
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
-#### 코드 예시
+#### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -1669,19 +1669,19 @@ X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
-##### 요청
+##### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
+| X-Auth-Token | Header | String | O | Token ID |
+| Content-type | Header | String | O | Content type of object 오브젝트의 콘텐츠 타입 |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container |	URL | String | O | 컨테이너 이름 |
+| Container |	URL | String | O | Container name |
 | Object |	URL | String | O | 생성할 오브젝트 이름 |
 | Count | URL | Integer | O | 분할한 오브젝트의 순번, 예) 001, 002 |
 | - |	Body | Binary | O | 분할한 오브젝트의 내용 |
 
-##### 응답
+##### Response
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 #### 매니페스트 생성
@@ -1693,22 +1693,22 @@ X-Auth-Token: {token-id}
 X-Object-Manifest: {Container}/{Object}/
 ```
 
-##### 요청
+##### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header| String |	O | 토큰 ID |
+| X-Auth-Token | Header| String |	O | Token ID |
 | X-Object-Manifest | Header| String | O | 분할한 오브젝트들을 업로드한 경로, `{Container}/{Object}/` |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
 | - | Body| Binary | O | 빈 데이터 |
 
-##### 응답
+##### Response
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 
-#### 코드 예시
+#### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -1979,10 +1979,10 @@ X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
+This API does not require a request body.
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
@@ -1992,7 +1992,7 @@ Content-Type: {content-type}
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
 
-#### 응답
+#### Response
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 ### 오브젝트 다운로드
@@ -2003,7 +2003,7 @@ GET   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### Request
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -2013,10 +2013,10 @@ X-Auth-Token: {token-id}
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
 
-#### 응답
+#### Response
 오브젝트의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
-#### 코드 예시
+#### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -2188,7 +2188,7 @@ X-Auth-Token: {token-id}
 X-Copy-From: {원본 오브젝트}
 ```
 
-#### 요청
+#### Request
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -2200,10 +2200,10 @@ X-Copy-From: {원본 오브젝트}
 | Container | URL | String | O |	컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 복사할 컨테이너 |
 | Object | URL | String |	복사할 오브젝트 이름 |
 
-#### 응답
+#### Response
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
-#### 코드 예시
+#### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -2348,8 +2348,8 @@ X-Auth-Token: {token-id}
 X-Object-Meta-{Key}: {Value}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
+This API does not require a request body.  요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
