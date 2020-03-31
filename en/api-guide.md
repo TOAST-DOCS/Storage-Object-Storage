@@ -10,28 +10,28 @@ To use API, enter tenant name in parameters. Tenant name refers to **Project ID*
 
 ## Prerequities
 
-To enable Object Storage API, certificate token must be issued first. A certificate token is required to use REST API of object storage: a token is a must to access container or object which is not open to public. Tokens are managed by each account. 오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
+To enable Object Storage API, a certificate token must be issued first. A certificate token is required to use REST API of object storage: it is a must to access container or object which is not open to public. Tokens are managed by each account. 
 
-### Check Tenant ID and API Endpoint 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
+### Check Tenant ID and API Endpoint 
 
-Click **API Endpoint Setting** on the object storage service page to check tenant ID and API endpoint to issue a token. 토큰 발급을 위한 테넌트 아이디와 API의 엔드포인트는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
+Click **API Endpoint Setting** on the object storage service page to check tenant ID and API endpoint to issue a token. 
 
 | Item | API Endpoint | Usage |
 |---|---|---|
-| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | Issue Certificate Token |
-| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | Control Object Storage: depends on each region 오브젝트 스토리지 제어, 리전에 따라 다름 |
-| Tenant ID | Character strings composed of 32 length in combination of numbers and alphabets 숫자 + 영문자로 구성된 32자 길이의 문자열 | Issue Certificate Token 인증 토큰 발급 |
+| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | Issue certificate token |
+| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | Control object storage: depends on each region  |
+| Tenant ID | Character strings composed of 32 characters in combination of numbers and alphabets | Issue certificate token  |
 
 > [Note]
-> User account for API is character strings in the format of 에 사용되는 사용자의 계정(account)은 `AUTH_***` 형태의 문자열입니다., which is included in Object-Store API endpoint.  엔드포인트에 포함되어 있습니다.
+> User account for API refers to character strings in the format of `AUTH_***`, which is included in Object-Store API endpoint.
 
-### Set API Password 비밀번호 설정
+### Set API Password 
 
-API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 설정할 수 있습니다.
+To set API password, go to the object storage service page and click **API Endpoint Setting**. 
 
-1. Click **API Endpoint Setting** 버튼을 클릭합니다.
-2. Go to **API Endpoint 설정** 아래 **API Password Setting비밀번호 설정** under **API Endpoint Setting** to enter password to issue a token. 입력 상자에 토큰 발급 시 사용할 비밀번호를 입력합니다.
-3. Click **Save**. 버튼을 클릭합니다.
+1. Click **API Endpoint Setting**.
+2. Go to **API Password Setting** under **API Endpoint Setting** and enter password to issue a token. 
+3. Click **Save**. 
 
 ## 인증 토큰 발급 Certificate Token Issuance
 
@@ -44,9 +44,9 @@ Content-Type: application/json
 
 | Name  | Type | Format | Required | Description |
 |---|---|---|---|---|
-| tenantId | Body | String | O | Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
+| tenantId | Body | String | O | Tenant ID, to be found on the setup box for API Endpoint |
 | username | Body | String | O | Enter ID (email) of TOAST Account |
-| password | Body | String | O | API Endpoint 설정 대화 상자에서 저장한 비밀번호 |
+| password | Body | String | O | Password saved on the setup box for API Endpoint  |
 
 <details>
 <summary>Example</summary>
@@ -70,11 +70,11 @@ Content-Type: application/json
 | Name | Type | Format | Description |
 |---|---|---|---|
 | access.token.id | Body | String |	ID of issued token |
-| access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 Tenant ID |
-| access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
+| access.token.tenant.id | Body | String | Tenant ID for a project requesting token 토큰을 요청한 프로젝트에 대응하는 Tenant ID |
+| access.token.expires | Body | String | Expiration time of issued token 발급한 토큰의 만료 시간 <br/> in the ssZ:MM:HHTdd-mm-yyyy format. e.g.) 50Z:17:03T16-05-2017 |
 
 > [Caution]
-> 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
+> A token includes 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
 
 <details>
 <summary>Example</summary>
@@ -520,7 +520,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account name, to be found on the setup dialogue for API Endpoint |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
 | Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
 
 #### Response
@@ -843,7 +843,7 @@ This API does not require a request body. 는 요청 본문을 요구하지 않�
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account name, to be found on the API Endpoint setup window 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | User account name for Windows, to be found on the setup box for API Endpoint  |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | Path | Query | String | O | 조회할 폴더 이름 |
 
@@ -2670,7 +2670,7 @@ To check API endpoint, click **API Endpoint Setting** on the Object Storage serv
 > [Note]  
 > User account for API is composed of character strings in the `AUTH_***` format: included in the Object-Store API endpoint.
 
-### Set API Passwords
+### Set API Password
 
 To set API password, click **API Endpoint Setting** on the Object Storage service page.
 
@@ -2678,9 +2678,9 @@ To set API password, click **API Endpoint Setting** on the Object Storage servic
 2. Enter password to issue a token in **API Password Setting** under **API Endpoint Setting**.
 3. Click **Save**.
 
-## Issue Authentication Tokens
+## Certificate Token Issuance
 
-An authentication token is an authentication key required to use REST API of object storage. To access containers or entities which are not set public, token is a necessity. Token is managed by each account.   
+A certificate token is required to use REST API of object storage: it is a must to access container or object which is not open to public. Tokens are managed by each account.
 
 **[Method, URL]**
 ```
@@ -2745,7 +2745,7 @@ POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
 
 ## Containers
 
-### Create Containers
+### Create Container
 To upload files to object storage, containers must be created.
 
 > [Note]
@@ -2831,7 +2831,7 @@ $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 {content of object}
 ```
 
-### Delete Containers
+### Delete Container
 
 Delete containers as specified.
 
@@ -2854,7 +2854,7 @@ X-Auth-Token: [Token ID]
 
 ## Object
 
-### Upload Objects
+### Upload Object
 
 Upload new objects to containers as specified.
 
