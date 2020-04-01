@@ -679,7 +679,7 @@ foreach ($object_list as $obj){
 Get Container API provides some queries as follows. All queries can be connected with '&' for common use. 컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다. 
 
 #### 1만 개 이상의 오브젝트 목록 조회 List More than 10,000 Objects
-컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다. No more than 10,000 objects can be listed with Get Container API. To list more than 10,000 objects, use the 'marker' query.   
+컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다. No more than 10,000 objects can be listed with Get Container API. To list more than 10,000 objects, use the 'marker' query. The marker query returns up to 10,000 object lists from the next object after a specified object. 
 
 ```
 GET    /v1/{Account}/{Container}?marker={Object}
@@ -739,10 +739,10 @@ public class ContainerService {
 
         String url = this.getUrl(conatinerName);
 
-        // 오브젝트 목록 조회
+        // 오브젝트 목록 조회 List objects 
         List<String> objectList = this.getList(url);
         while ((objectList.size() % LIMIT_COUNT) == 0) {
-            // 오브젝트 목록의 길이가 1만개의 배수라면 목록의 마지막 오브젝트를 지정하여 이후의 목록 조회
+            // If the length of object list is the multiples of 10,000, specify the last object on the list to list  오브젝트 목록의 길이가 1만개의 배수라면 목록의 마지막 오브젝트를 지정하여 이후의 목록 조회
             String lastObject = objectList.get(objectList.size() - 1);
             List<String> nextObjList = this.getObjectList(conatinerName, lastObject);
             objectList.addAll(nextObjList);			
@@ -751,7 +751,7 @@ public class ContainerService {
         return objectList;
     }
 
-    // getObjectList() 사용 예제는 컨테이너 조회와 동일
+    // The usage example of getObjectList() is same as get container  사용 예제는 컨테이너 조회와 동일
 }
 ```
 
@@ -830,7 +830,7 @@ foreach ($object_list as $obj){
 </details>
 
 #### 폴더 단위의 오브젝트 목록 조회 List Objects by Folder 
-컨테이너에 여러 개의 폴더를 만들어 사용하고 있다면 `path` 질의를 이용해 폴더 단위로 오브젝트 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 오브젝트 목록은 조회할 수 없습니다.
+컨테이너에 여러 개의 폴더를 만들어 사용하고 있다면 `path` 질의를 이용해 폴더 단위로 오브젝트 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 오브젝트 목록은 조회할 수 없습니다. If a container has many folders, use the 'path' query to list objects by folder. The path query cannot list objects of the lower-level folder. 
 
 ```
 GET   /v1/{Account}/{Container}?path={Path}
@@ -857,7 +857,7 @@ This API does not require a request body.
 <summary>cURL</summary>
 
 ```
-// ex 폴더의 오브젝트 목록 조회
+// ex 폴더의 오브젝트 목록 조회 List objects of the ex folder 
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?path=ex
 ex/20d33f.jpg
@@ -882,11 +882,11 @@ public class ContainerService {
     public List<String> getObjectListOfFolder(String conatinerName, String folderName) {
         // Create query URL by using specified folder name 지정한 폴더 이름을 이용하여 질의 URL 생성
         String url = this.getUrl(conatinerName) + "?path=" + folderName;
-        // Call 컨테이너 조회 예제의 getList() 메서드 호출
+        // Call the 컨테이너 조회 예제의 getList() method from the get container example 메서드 호출
         return this.getList(url);
     }
 
-    // getObjectListOfFolder() 사용 예제는 컨테이너 조회와 동일
+    // The getObjectListOfFolder() usage example is same as get container 사용 예제는 컨테이너 조회와 동일
 }
 ```
 
@@ -925,7 +925,7 @@ class Container {
 
 </details>
 
-#### 접두어로 시작하는 오브젝트 목록 조회
+#### 접두어로 시작하는 오브젝트 목록 조회 List Objects starting with Prefix 
 `prefix` 질의를 사용하면 지정한 접두어로 시작하는 오브젝트들의 목록을 반환합니다. path 질의로는 조회할 수 없는 하위 폴더의 오브젝트 목록을 조회하는 데 사용할 수 있습니다.
 
 ```
@@ -938,10 +938,10 @@ This API does not require a request body. 는 요청 본문을 요구하지 않�
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | 조회할 컨테이너 이름 |
-| Prefix | Query | String | O | 검색할 접두어 |
+| X-Auth-Token | Header | String | O | Toekn ID |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
+| Prefix | Query | String | O | Prefix to search 검색할 접두어 |
 
 ##### Response
 ```
@@ -953,7 +953,7 @@ This API does not require a request body. 는 요청 본문을 요구하지 않�
 <summary>cURL</summary>
 
 ```
-// 314로 시작하는 오브젝트 목록 조회
+// 314로 시작하는 오브젝트 목록 조회 List objects starting with 314 
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
 3146f0.jpg
@@ -977,13 +977,13 @@ public class ContainerService {
     // ContainerService Class ...
 
     public List<String> getObjectListWithPrefix(String conatinerName, String prefix) {
-        // 지정한 접두어를 이용하여 질의 URL 생성
+        // 지정한 접두어를 이용하여 질의 URL 생성 Create query URL by using specified prefix 
         String url = this.getUrl(conatinerName) + "?prefix=" + prefix;
-        // 컨테이너 조회 예제의 getList() 메서드 호출
+        // Call 컨테이너 조회 예제의 getList() method of the get container example 메서드 호출 
         return this.getList(url);
     }
 
-    // getObjectListWithPrefix() 사용 예제는 컨테이너 조회 예제와 동일
+    // Usage example of getObjectListWithPrefix() is same as get container example 사용 예제는 컨테이너 조회 예제와 동일
 }
 ```
 
@@ -1023,7 +1023,7 @@ class Container {
 </details>
 
 #### 목록의 최대 오브젝트 수 지정 Specify the Maximum Object Count on List 
-`limit` 질의를 사용하면 반환할 오브젝트 목록의 최대 오브젝트 수를 지정할 수 있습니다.
+`limit` 질의를 사용하면 반환할 오브젝트 목록의 최대 오브젝트 수를 지정할 수 있습니다. Use the 'limit' query to specify the maximum object count of the list to return 
 
 ```
 GET   /v1/{Account}/{Container}?limit={limit}
@@ -1035,10 +1035,10 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | 조회할 컨테이너 이름 |
-| limit | Query | Integer | O | 목록에 표시할 오브젝트 수 |
+| X-Auth-Token | Header | String | O | Token ID |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
+| limit | Query | Integer | O | Object count to show on the list 목록에 표시할 오브젝트 수 |
 
 ##### Response
 ```
