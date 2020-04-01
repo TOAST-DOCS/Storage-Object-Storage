@@ -74,7 +74,7 @@ Content-Type: application/json
 | access.token.expires | Body | String | Expiration time of issued token <br/> in the ssZ:MM:HHTdd-mm-yyyy format. e.g.) 50Z:17:03T16-05-2017 |
 
 > [Caution]
-> A token includes expiration. The 'expires' item included in the reponse of request for token issuance refers to token expiration time. When a token is expired, a new token must be issued.  토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
+> A token includes expiration. The 'expires' item included in the reponse to request for token issuance refers to token expiration time. When a token is expired, a new token must be issued.  
 
 <details>
 <summary>Example</summary>
@@ -315,13 +315,13 @@ printf("%s\n", $token);
 
 </details>
 
-## 컨테이너 Container
+## Container
 
 ### 컨테이너 생성 Create Container
-Create a container. To upload files to object storage, a container must be created. 컨테이너를 생성합니다. 오브젝트 스토리지에 파일을 업로드하려면 반드시 컨테이너를 생성해야 합니다. 
+Create a container. To upload files to object storage, a container must be created. 
 
 > [Note]
-> If a container or object name includes special characters컨테이너 또는 오브젝트 이름에 특수 문자 `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL encoded (percent-encoding). These are reserved characters that are considered important for URL. Unless the paths including the characters are encoded before sending an API request, you may not receive responses as needed.  가 포함되어 있다면 API를 사용할 때 반드시 URL 인코딩(퍼센트 인코딩)을 해야 합니다. 이 문자들은 URL에서 중요하게 사용되는 예약 문자입니다. 이 문자들이 포함된 경로를 URL 인코딩하지 않고 API 요청을 보낸다면 원하는 응답을 받을 수 없습니다.
+> If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL encoded (percent-encoding). These are reserved characters that are considered important for URL. Unless the paths including the characters are encoded before sending an API request, you may not receive response as needed. 
 
 ```
 PUT  /v1/{Account}/{Container}
@@ -329,16 +329,16 @@ X-Auth-Token: {token-id}
 ```
 
 #### Request
-This API does not require a request body. 는 요청 본문을 요구하지 않습니다.
+This API does not require a request body. 
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
-| Container | URL | String | O | Name of container to be created 생성할 컨테이너 이름 |
+| Container | URL | String | O | Name of container to be created  |
 
 #### Response
-This API does not return response body. When a container is created, return status code 201. 이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
+This API does not return response body. When a container is created, return status code 201. 
 
 #### Code Example
 <details>
@@ -381,13 +381,13 @@ public class ContainerService {
     public void createContainer(String containerName) {
         String url = this.getUrl(containerName);
 
-        // 헤더 생성
+        // Create a header 헤더 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출
+        // Call API 호출
         this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
     }
 
@@ -506,8 +506,8 @@ $container->create($CONTAINER_NAME);
 </details>
 
 
-### 컨테이너 조회 Get Container
-지정한 컨테이너의 정보와 내부에 저장된 오브젝트들의 목록을 조회합니다.
+### Get Container
+Get container information as specified and list objects that are saved within. 
 
 ```
 GET   /v1/{Account}/{Container}
@@ -521,12 +521,12 @@ This API does not require a request body.
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
-| Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
+| Container | URL | String | O | Container name to get |
 
 #### Response
 
 ```
-[List of objects included to a specified container 지정한 컨테이너에 속한 오브젝트 목록]
+[List of objects included to a specified container]
 ```
 
 #### Code Example
@@ -561,22 +561,22 @@ public class ContainerService {
     }
 
     public List<String> getList(String url) {
-        // 헤더 생성
+        // 헤더 생성 Create a header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출
+        // Call API 호출
         ResponseEntity<String>response
             = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, String.class);
 
         List<String> objectList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
-            // String으로 받은 목록을 배열로 변환
+            // Convert list on the string into sequence 으로 받은 목록을 배열로 변환
             objectList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
-        // 배열을 List로 변환하여 반환
+        // 배열을 List로 변환하여 반환 Convert the sequence into list and return 
         return new ArrayList<String>(objectList);
     }
 
@@ -675,7 +675,7 @@ foreach ($object_list as $obj){
 
 </details>
 
-### 컨테이너 조회 질의
+### 컨테이너 조회 질의 Query for Getting Container 
 컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
 
 #### 1만 개 이상의 오브젝트 목록 조회 List More than 10,000 Objects
@@ -687,18 +687,18 @@ X-Auth-Token: {token-id}
 ```
 
 ##### Request
-This API does not require a request body. 이 API는 요청 본문을 요구하지 않습니다.
+This API does not require a request body. 
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | 조회할 컨테이너 이름 |
+| Account | URL | String | O | User account name, 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
+| Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
 | Object | Query | String | O | 기준 오브젝트 이름 |
 
 ##### Response
 ```
-[지정한 컨테이너에 속한 지정한 오브젝트 다음 오브젝트 목록]
+[Object list next to a specified object which is included to a specified container  지정한 컨테이너에 속한 지정한 오브젝트 다음 오브젝트 목록]
 ```
 
 ##### Code Example
@@ -706,7 +706,7 @@ This API does not require a request body. 이 API는 요청 본문을 요구하�
 <summary>cURL</summary>
 
 ```
-// `20d33f.jpg` 이후의 오브젝트 목록 조회
+// `20d33f.jpg` 이후의 오브젝트 목록 조회 List objects after '20d33f.jpg'
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
 [지정한 오브젝트(20d33f.jpg) 이후의 목록]
@@ -838,18 +838,18 @@ X-Auth-Token: {token-id}
 ```
 
 ##### Request
-This API does not require a request body. 는 요청 본문을 요구하지 않습니다.
+This API does not require a request body. 
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | User account name for Windows, to be found on the setup box for API Endpoint  |
-| Container | URL | String | O | 조회할 컨테이너 이름 |
-| Path | Query | String | O | 조회할 폴더 이름 |
+| Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
+| Path | Query | String | O | Folder name to query 조회할 폴더 이름 |
 
 ##### Response
 ```
-[지정한 컨테이너에 속한 지정한 폴더의 오브젝트 목록]
+[Object list of a specified folder which is included to a specified container 지정한 컨테이너에 속한 지정한 폴더의 오브젝트 목록]
 ```
 
 ##### Code Example
@@ -880,9 +880,9 @@ public class ContainerService {
     // ContainerService Class ...
 
     public List<String> getObjectListOfFolder(String conatinerName, String folderName) {
-        // 지정한 폴더 이름을 이용하여 질의 URL 생성
+        // Create query URL by using specified folder name 지정한 폴더 이름을 이용하여 질의 URL 생성
         String url = this.getUrl(conatinerName) + "?path=" + folderName;
-        // 컨테이너 조회 예제의 getList() 메서드 호출
+        // Call 컨테이너 조회 예제의 getList() 메서드 호출
         return this.getList(url);
     }
 
@@ -1143,14 +1143,14 @@ This API does not require a request body.  API는 요청 본문을 요구하지 
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 
 #### Response
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+This API does not return response body. When the request is appropriate, return status code 204. 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 #### Code Example
 <details>
 <summary>cURL</summary>
 
 ```
-// 모든 사용자에게 읽기/쓰기 허용
+// 모든 사용자에게 읽기/쓰기 허용 Allow Read/Wrote for all users 
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
@@ -1182,14 +1182,14 @@ public class ContainerService {
 
         String url = this.getUrl(containerName);
 
-        // 헤더 생성
+        // 헤더 생성 Create a header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Container-Read", permission);    // 헤더에 권한 추가
+        headers.add("X-Container-Read", permission);    // 헤더에 권한 추가 Add authority to header 
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출
+        // Call API 호출
         this.restTemplate.exchange(url, HttpMethod.POST, requestHttpEntity, String.class);
     }
 
@@ -1705,7 +1705,7 @@ X-Object-Manifest: {Container}/{Object}/
 | - | Body| Binary | O | 빈 데이터 |
 
 ##### Response
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+This API does not return response body. When the request is appropriate, return status code 201. 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 
 #### Code Example
