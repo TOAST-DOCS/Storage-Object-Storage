@@ -675,11 +675,11 @@ foreach ($object_list as $obj){
 
 </details>
 
-### 컨테이너 조회 질의 Query for Getting Container 
-컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
+### 컨테이너 조회 질의 Query for Get Container 
+Get Container API provides some queries as follows. All queries can be connected with '&' for common use. 컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다. 
 
 #### 1만 개 이상의 오브젝트 목록 조회 List More than 10,000 Objects
-컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다.
+컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다. No more than 10,000 objects can be listed with Get Container API. To list more than 10,000 objects, use the 'marker' query.   
 
 ```
 GET    /v1/{Account}/{Container}?marker={Object}
@@ -692,8 +692,8 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account name, 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
+| Account | URL | String | O | User account name, to be found on the set up box for API Endpoint |
+| Container | URL | String | O | Container name to query |
 | Object | Query | String | O | 기준 오브젝트 이름 |
 
 ##### Response
