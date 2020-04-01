@@ -205,7 +205,7 @@ public class AuthService {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
-        HttpEntity<TokenRequest> httpEntity
+        HttpEntity<TokenRequest> httpEntity 
             = new HttpEntity<TokenRequest>(this.tokenRequest, headers);
 
         // Request for a token 토큰 요청
