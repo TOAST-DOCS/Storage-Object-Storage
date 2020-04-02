@@ -189,7 +189,7 @@ public class AuthService {
     public AuthService(String authUrl, String tenantId, String username, String password) {		
         this.authUrl = authUrl;		
 
-        // Create a request body 요청 본문 생성
+        // Create a request body 
         this.tokenRequest = new TokenRequest();
         this.tokenRequest.getAuth().setTenantId(tenantId);
         this.tokenRequest.getAuth().getPasswordCredentials().setUsername(username);
@@ -201,14 +201,14 @@ public class AuthService {
     public String requestToken() {
         String identityUrl = this.authUrl + "/tokens";
 
-        // Create a header 헤더 생성
+        // Create a header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
         HttpEntity<TokenRequest> httpEntity 
             = new HttpEntity<TokenRequest>(this.tokenRequest, headers);
 
-        // Request for a token 토큰 요청
+        // Request for a token 
         ResponseEntity<String> response
             = this.restTemplate.exchange(identityUrl, HttpMethod.POST, httpEntity, String.class);
 
@@ -285,19 +285,19 @@ function get_token($auth_url, $tenant_id, $username, $password) {
               'password' => $password
           )
       )
-  );  // 요청 본문 생성 Create a request body 
+  );  // Create a request body 
   $req_header = array(
     'Content-Type: application/json'
-  );  // 요청 헤더 생성 Create a request header
+  );  // Create a request header
 
-  $curl  = curl_init($url); // Initialize curl 초기화
+  $curl  = curl_init($url); // Initialize curl 
   curl_setopt_array($curl, array(
     CURLOPT_POST => TRUE,
     CURLOPT_RETURNTRANSFER => TRUE,
     CURLOPT_HTTPHEADER => $req_header,
     CURLOPT_POSTFIELDS => json_encode($req_body)
-  )); // Set parameters 파라미터 설정
-  $response = curl_exec($curl); // All API 호출
+  )); // Set parameters 
+  $response = curl_exec($curl); // Call API 
   curl_close($curl);
 
   return $response;
@@ -315,9 +315,9 @@ printf("%s\n", $token);
 
 </details>
 
-## Container
+## Containers
 
-### 컨테이너 생성 Create Container
+### Create 
 Create a container. To upload files to object storage, a container must be created. 
 
 > [Note]
@@ -381,13 +381,13 @@ public class ContainerService {
     public void createContainer(String containerName) {
         String url = this.getUrl(containerName);
 
-        // Create a header 헤더 생성
+        // Create a header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call API 호출
+        // Call API 
         this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
     }
 
@@ -506,7 +506,7 @@ $container->create($CONTAINER_NAME);
 </details>
 
 
-### Get Container
+### Get 
 Get container information as specified and list objects that are saved within. 
 
 ```
@@ -561,22 +561,22 @@ public class ContainerService {
     }
 
     public List<String> getList(String url) {
-        // 헤더 생성 Create a header 
+        // Create a header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call API 호출
+        // Call API 
         ResponseEntity<String>response
             = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, String.class);
 
         List<String> objectList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
-            // Convert list on the string into sequence 으로 받은 목록을 배열로 변환
+            // Convert list on the string into sequence 
             objectList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
-        // 배열을 List로 변환하여 반환 Convert the sequence into list and return 
+        // Convert the sequence into list and return 
         return new ArrayList<String>(objectList);
     }
 
@@ -706,7 +706,7 @@ This API does not require a request body.
 <summary>cURL</summary>
 
 ```
-// `20d33f.jpg` 이후의 오브젝트 목록 조회 List objects after '20d33f.jpg'
+// List objects after '20d33f.jpg'
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
 [지정한 오브젝트(20d33f.jpg) 이후의 목록]
@@ -857,7 +857,7 @@ This API does not require a request body.
 <summary>cURL</summary>
 
 ```
-// ex 폴더의 오브젝트 목록 조회 List objects of the ex folder 
+// List objects of the ex folder 
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?path=ex
 ex/20d33f.jpg
@@ -880,9 +880,9 @@ public class ContainerService {
     // ContainerService Class ...
 
     public List<String> getObjectListOfFolder(String conatinerName, String folderName) {
-        // Create query URL by using specified folder name 지정한 폴더 이름을 이용하여 질의 URL 생성
+        // Create query URL by using specified folder name 
         String url = this.getUrl(conatinerName) + "?path=" + folderName;
-        // Call the 컨테이너 조회 예제의 getList() method from the get container example 메서드 호출
+        // Call the getList() method from the get container example 메서드 호출
         return this.getList(url);
     }
 
@@ -953,7 +953,7 @@ This API does not require a request body. 는 요청 본문을 요구하지 않�
 <summary>cURL</summary>
 
 ```
-// 314로 시작하는 오브젝트 목록 조회 List objects starting with 314 
+// List objects starting with 314 
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
 3146f0.jpg
