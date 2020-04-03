@@ -70,7 +70,7 @@ Content-Type: application/json
 | Name | Type | Format | Description |
 |---|---|---|---|
 | access.token.id | Body | String |	ID of issued token |
-| access.token.tenant.id | Body | String | Tenant ID for a project requesting for token |
+| access.token.tenant.id | Body | String | Tenant ID of a project requesting for token |
 | access.token.expires | Body | String | Expiration time of issued token <br/> in the ssZ:MM:HHTdd-mm-yyyy format. e.g.) 50Z:17:03T16-05-2017 |
 
 > [Caution]
@@ -189,7 +189,7 @@ public class AuthService {
     public AuthService(String authUrl, String tenantId, String username, String password) {		
         this.authUrl = authUrl;		
 
-        // Create a request body 
+        // Create request body 
         this.tokenRequest = new TokenRequest();
         this.tokenRequest.getAuth().setTenantId(tenantId);
         this.tokenRequest.getAuth().getPasswordCredentials().setUsername(username);
@@ -201,14 +201,14 @@ public class AuthService {
     public String requestToken() {
         String identityUrl = this.authUrl + "/tokens";
 
-        // Create a header 
+        // Create header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
         HttpEntity<TokenRequest> httpEntity 
             = new HttpEntity<TokenRequest>(this.tokenRequest, headers);
 
-        // Request for a token 
+        // Request for token 
         ResponseEntity<String> response
             = this.restTemplate.exchange(identityUrl, HttpMethod.POST, httpEntity, String.class);
 
@@ -285,7 +285,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
               'password' => $password
           )
       )
-  );  // Create a request body 
+  );  // Create request body 
   $req_header = array(
     'Content-Type: application/json'
   );  // Create a request header
@@ -381,7 +381,7 @@ public class ContainerService {
     public void createContainer(String containerName) {
         String url = this.getUrl(containerName);
 
-        // Create a header 
+        // Create header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
@@ -576,7 +576,7 @@ public class ContainerService {
             // Convert list on the string into sequence 
             objectList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
-        // Convert the sequence into list and return 
+        // Convert sequence into list and return 
         return new ArrayList<String>(objectList);
     }
 
@@ -675,10 +675,10 @@ foreach ($object_list as $obj){
 
 </details>
 
-### Query for Get Container 
+### Query  
 Get Container API provides some queries as follows. All queries can be connected with '&' for common use. 
 
-#### List More than 10,000 Objects
+#### List of More than 10,000 Objects
 No more than 10,000 objects can be listed with Get Container API. To list more than 10,000 objects, use the 'marker' query. The marker query returns up to 10,000 object lists from the next object after a specified object. 
 
 ```
@@ -829,7 +829,7 @@ foreach ($object_list as $obj){
 
 </details>
 
-#### 폴더 단위의 오브젝트 목록 조회 List Objects by Folder 
+#### List of Objects by Folder 
 If a container has many folders, use the 'path' query to list objects by folder. The path query cannot list objects of the lower-level folder. 
 
 ```
@@ -925,7 +925,7 @@ class Container {
 
 </details>
 
-#### List Objects Starting with Prefix 
+#### List of Objects Starting with Prefix 
 The 'prefix' query can return list of objects starting with a specified prefix. It can be applied to list objects of the lower-level folder which cannot be listed with the path query.  
 
 ```
@@ -1022,7 +1022,7 @@ class Container {
 
 </details>
 
-#### Specify the Maximum Object Count on List 
+#### Specify Maximum Object Count on List 
 Use the 'limit' query to specify the maximum object count of the list to return 
 
 ```
@@ -1120,7 +1120,7 @@ class Container {
 </details>
 
 
-### Modify Container
+### Modify 
 
 Access rules can be specified by changing container metadata. 
 
@@ -1137,8 +1137,8 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| X-Container-Read | Header | String | - | Specify access rules for reading a container <br/>.r:* - Allow access for all users <br/>.r:example.com,test.com – Access allowed to particular address only, to be delimited by ‘,’<br/>.rlistings. – Allow listing containers <br/>AUTH_.... – Allow access to particular accounts only |
-| X-Container-Write | Header | String | - | Specify access rules for writing a container <br/>\*:\* - Allow reading for all users <br/>AUTH_.... – Allow reading to particular accounts only |
+| X-Container-Read | Header | String | - | Specify access rules for reading container <br/>.r:* - Allow access for all users <br/>.r:example.com,test.com – Access allowed to particular address only, to be delimited by ‘,’<br/>.rlistings. – Allow listing containers <br/>AUTH_.... – Allow access to particular accounts only |
+| X-Container-Write | Header | String | - | Specify access rules for writing container <br/>\*:\* - Allow reading for all users <br/>AUTH_.... – Allow reading to particular accounts only |
 | Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
 | Container | URL | String | O | Container name to modify |
 
@@ -1182,7 +1182,7 @@ public class ContainerService {
 
         String url = this.getUrl(containerName);
 
-        // Create a header 
+        // Create header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
         headers.add("X-Container-Read", permission);    // Add authority to header 
@@ -1281,7 +1281,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 </details>
 
 #### Check ACL 
-After setting public for  authority 읽기 권한을 공개로 설정한 후에는 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
+After setting public for the authority to read, you may use tools such as 'curl' or 'wget', or check whether to get without token via browser.   
 
 <details>
 <summary>Example</summary>
@@ -1294,9 +1294,9 @@ $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 
 </details>
 
-### 컨테이너 삭제 Delete Container
+### Delete 
 
-지정한 컨테이너를 삭제합니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다.
+Delete specified containers. To be deleted, containers must be empty. 
 
 ```
 DELETE   /v1/{Account}/{Container}
@@ -1343,7 +1343,7 @@ public class ContainerService {
     public void deleteContainer(String containerName){
         String url = this.getUrl(containerName);
 
-        // Create a header 
+        // Create header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
@@ -1434,7 +1434,7 @@ $container->delete($CONTAINER_NAME);
 
 ## Objects
 
-### Upload 오브젝트 업로드
+### Upload 
 Upload new objects to a specified container. 
 
 ```
@@ -1535,7 +1535,7 @@ public class ObjectService {
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
 
         try {
-            // Create InputStream from the file 
+            // Create InputStream from file 
             File objFile = new File(objectPath + "/" + objectName);            
             InputStream inputStream = FileUtils.openInputStream(objFile);
 
@@ -1658,8 +1658,8 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 </details>
 
-### 멀티 파트 업로드 Upload Multiple Parts 
-Objects that are over 5GB must be segmented into less than 5GB-parts before uploaded. 를 초과하는 용량을 가진 오브젝트는 5GB 이하의 세그먼트로 분할해 업로드해야 합니다.
+### Upload Multiple Parts 
+Objects that are over 5GB must be segmented into less than 5GB-parts before uploaded. 
 
 #### Segment Uploading  
 
@@ -1684,8 +1684,8 @@ Content-Type: {content-type}
 ##### Response
 This API does not return request body. When the request is appropriate, return status code 201.
 
-#### 매니페스트 생성 Manifest Creation 
-모든 오브젝트의 세그먼트를 업로드한 다음 매니페스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다. 매니페스트 오브젝트는 세그먼트들이 저장된 경로를 가리킵니다. Upload all segments of an object, and then create manifest object; then you can use it as one object. The manifest object refers to the path in which segments are saved. 
+#### Manifest Creation 
+Upload all segments of an object, and then create manifest object; then you can use it as one object. The manifest object refers to the path in which segments are saved. 
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1801,7 +1801,7 @@ public class ObjectService {
                 int bytesRead = inputStream.read(chunkBuffer, 0, chunkSize);
 
                 if(bytesRead > 0) {
-                    // Create buffered data 버퍼의 데이터를 InputStream으로 만들어 업로드, 오브젝트 업로드 예제의 uploadObject() 메서드 사용
+                    // Create buffered data as InputStream to be uploaded, by using the uploadObject() method from upload object example 
                     String objPartName = String.format("%s/%03d", objectName, ++chunkNo);
                     InputStream chunkInputStream = new ByteArrayInputStream(chunkBuffer);
                     objectService.uploadObject(containerName, objPartName, chunkInputStream);
@@ -1914,17 +1914,17 @@ class Object {
       $obj_size = filesize($filename);
 
       while($total_bytes_read < $obj_size){
-          // Calculate volume to segment 분할할 용량 계산
+          // Calculate volume to segment 
           $remained_bytes = $obj_size - $total_bytes_read;
           if ($remained_bytes < $chunk_size){
               $chunk_size = $remained_bytes;
           }
           $chunk = fread($fd, $chunk_size);
-          // Create a part name 파트 이름 생성
+          // Create part names
           $temp_file = sprintf("./multipart-%03d", $chunk_index);
           $req_url = sprintf("%s/%03d", $url, $chunk_index);
 
-          // 파트 임시 파일 생성 Create a temporary part file 
+          // Create temporary part files 
           $part_fd = fopen($temp_file, 'w+');
           fwrite($part_fd, $chunk);
           fseek($part_fd, 0);
@@ -1934,14 +1934,14 @@ class Object {
               CURLOPT_PUT => TRUE,
               CURLOPT_HEADER => TRUE,
               CURLOPT_RETURNTRANSFER => TRUE,
-              CURLOPT_INFILE => $part_fd,  // 파트 파일 스트림을 매개 변수로 입력
+              CURLOPT_INFILE => $part_fd,  // Enter part filestream as parameter 
               CURLOPT_HTTPHEADER => $req_header
           ));
           $response = curl_exec($curl);
           curl_close($curl);
           printf("$response");
 
-          // 임시 파일 삭제
+          // Delete temporary files
           fclose($part_fd);
           unlink($temp_file);
 
@@ -1970,8 +1970,8 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 </details>
 
-### 오브젝트 내용 수정
-오브젝트 업로드 API와 같지만, 오브젝트가 이미 컨테이너에 있다면 해당 오브젝트의 내용이 수정됩니다.
+### Modify Object Details 
+Same as Upload Object API, but if object is already located in the container, the object details are to be modified. 
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1987,16 +1987,16 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Content-type | Header | String | O | Content type of object |
 | X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
-| X-Delete-After | Header | Timestamp | - | Valid object time, unitx time (seconds) 오브젝트 유효 시간, 유닉스 시간(초) |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint 설정 대화 상자에서 확인 |
+| X-Delete-After | Header | Timestamp | - | Valid object time, unitx time (seconds) |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint  |
 | Container |	URL | String | O | Container name |
-| Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
+| Object | URL | String | O | Object name of which details are to be modified |
 
 #### Response
-This API does not return는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+This API does not return response body. When the request is appropriate, return status code 201. 
 
-### 오브젝트 다운로드
-Download objects 오브젝트를 다운로드합니다.
+### Download 
+Download objects.
 
 ```
 GET   /v1/{Account}/{Container}/{Object}
@@ -2014,7 +2014,7 @@ This API does not require a request body.
 | Object | URL | String | O | Object name of which the detail is to be modified  |
 
 #### Response
-오브젝트의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+Object details are returned to stream. When the request is appropriate, return status code 200. 
 
 #### Code Example
 <details>
@@ -2048,18 +2048,18 @@ public class ObjectService {
     public InputStream downloadObject(String containerName, String objectName) {
         String url = this.getUrl(containerName, objectName);
 
-        // 헤더 생성
+        // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출, 데이터를 바이트 배열로 받음
+        // Call API, with data received as byte sequence
         ResponseEntity<byte[]> response
             = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, byte[].class);
 
-        // 바이트 배열 데이터를 InputStream으로 만들어 반환
+        // Create byte sequence data as InputStream to be returned
         return new ByteArrayInputStream(response.getBody());
     }
 
@@ -2073,14 +2073,14 @@ public class ObjectService {
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
 
         try {
-            // 오브젝트 다운로드
+            // Download object
             InputStream inputStream = objectService.downloadObject(containerName, objectName);
 
-            // 다운로드한 데이터를 바이트 버퍼로 읽어 들임
+            // Read downloaded data as byte buffer
             byte[] buffer = new byte[inputStream.available()];
             inputStream.read(buffer);
 
-            // 버퍼의 데이터를 파일에 기록
+            // Record buffered data onto file
             File target = new File(downloadPath + "/" + objectName);
             OutputStream outputStream = new FileOutputStream(target);
             outputStream.write(buffer);
@@ -2173,19 +2173,19 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 </details>
 
-### 오브젝트 복사
-오브젝트를 다른 컨테이너로 복사합니다.
+### Copy 
+Copy object to another container. 
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
-Destination: {오브젝트를 복사할 대상}
+Destination: {Target to copy objects}
 ```
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
-X-Copy-From: {원본 오브젝트}
+X-Copy-From: {Original object}
 ```
 
 #### Request
@@ -2194,11 +2194,11 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Destination | Header | String |	- | 오브젝트를 복사할 대상, `{컨테이너} / {오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
-| X-Copy-From | Header | String |	- | 원본 오브젝트, `{컨테이너} / {오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O |	컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 복사할 컨테이너 |
-| Object | URL | String |	복사할 오브젝트 이름 |
+| Destination | Header | String |	- | Target to copy object, `{Container} / {Object}`<br/>Required to use the COPY method |
+| X-Copy-From | Header | String |	- | Original object, `{Container} / {Object}`<br/>Required to use the PUT method |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Container | URL | String | O |	Container name<br/>COPY Method: Original container<br/>PUT Method: Container to copy |
+| Object | URL | String |	Object name to copy |
 
 #### Response
 This request does not return response body. When the request is appropriate, return status code 201. 
@@ -2239,10 +2239,10 @@ public class ObjectService {
         String url = this.getUrl(destContainerName, objectName);
         String srcObject = "/" + srcContainerName + "/" + objectName;
 
-        // 헤더 생성
+        // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Copy-From", srcObject);    // Specify original object 원본 오브젝트 지정
+        headers.add("X-Copy-From", srcObject);    // Specify original object 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
         // HttpMethod는 COPY 메서드를 지원하지 않아 PUT 메서드를 사용하는 대체 API를 호출한다.
@@ -2339,8 +2339,8 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 
 </details>
 
-### 오브젝트 메타데이터 수정
-지정한 오브젝트의 메타데이터를 수정합니다.
+### Modify Object Metadata
+Modify metadata of a specified object. 
 
 ```
 POST   /v1/{Account}/{Container}/{Object}
@@ -2349,30 +2349,30 @@ X-Object-Meta-{Key}: {Value}
 ```
 
 #### Request
-This API does not require a request body.  요청 본문을 요구하지 않습니다.
+This API does not require a request body.  
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| X-Object-Meta-{Key} | Header | String | - | 변경할 메타데이터 |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL| String |	 O | 컨테이너 이름 |
-| Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
+| X-Auth-Token | Header | String | O | Token ID |
+| X-Object-Meta-{Key} | Header | String | - | Metadata to change |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Container | URL| String |	 O | Container name |
+| Object | URL| String |  O | Object name of which metadata is to be modified |
 
-#### 응답
-이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
+#### Response
+This request does not return response body. When the request is appropriate, return status code 202. 
 
-#### 코드 예시
+#### Code Example
 <details>
 <summary>cURL</summary>
 
 ```
-// 오브젝트에 메타 데이터 추가
+// Add metada to object
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
-// 오브젝트 헤더에서 추가한 메타데이터 확인
+// Check metadata added to object header 
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
@@ -2400,17 +2400,17 @@ public class ObjectService {
     public void setObjectMetadata(String containerName, String objectName, String key, String value) {
         String url = this.getUrl(containerName, objectName);
 
-        // 메타데이터 키 생성
+        // Create metadata key 
         String metaKey = "X-Object-Meta-" + key;
 
-        // 헤더 생성
+        // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add(metaKey, value);    // 헤더에 메타데이터 설정
+        headers.add(metaKey, value);    // Set metadata at the header
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출
+        // Call API 
         this.restTemplate.exchange(url, HttpMethod.POST, requestHttpEntity, String.class);
     }
 
@@ -2475,7 +2475,7 @@ class Object {
   function set_metadata($container, $object, $key, $value){
       $req_url = $this->get_url($container, $object);
       $req_header = $this->get_request_header();
-      $req_header[] = 'X-Object-Meta-'.$key.': '.$value;  // 헤더에 메타데이터 추가
+      $req_header[] = 'X-Object-Meta-'.$key.': '.$value;  // Add metadata to the header
 
       $curl  = curl_init($req_url);
       curl_setopt_array($curl, array(
@@ -2503,36 +2503,36 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 
 </details>
 
-### 오브젝트 삭제
-지정한 오브젝트를 삭제합니다.
+### Delete 
+Delete specified object. 
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| X-Object-Meta-{Key} | Header | String | - | 변경할 메타데이터 |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL| String |	 O | 컨테이너 이름 |
-| Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
+| X-Auth-Token | Header | String | O | Token ID |
+| X-Object-Meta-{Key} | Header | String | - | Metadata to change |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Container | URL| String |	 O | Container name |
+| Object | URL| String |  O | Object name of which metadata is to be modified |
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
+This API does not require a request body. 
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL| String |	 O | 컨테이너 이름 |
-| Object | URL| String |  O | 삭제할 오브젝트 이름 |
+| X-Auth-Token | Header | String | O | Token ID |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Container | URL| String |	 O | Container name |
+| Object | URL| String |  O | Object name to delete |
 
-#### 응답
-이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+#### Response
+This request does not return response body. When the request is appropriate, return status code 204. 
 
-#### 코드 예시
+#### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -2560,12 +2560,12 @@ public class ObjectService {
     public void deleteObject(String containerName, String objectName) {
         String url = this.getUrl(containerName, objectName);
 
-        // 헤더 생성
+        // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);		
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출
+        // Call API 
         this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);			
     }
 
@@ -2856,7 +2856,7 @@ X-Auth-Token: [Token ID]
 
 ### Upload Object
 
-Upload new objects to containers as specified.
+Upload new objects to specified container.
 
 **[Method, URL]**
 ```
@@ -2911,10 +2911,10 @@ X-Object-Manifest: {Container}/{Object}/
 |---|---|---|---|
 |X-Auth-Token|	Header|	String| ID of issued token |
 |X-Object-Manifest| Header| String | Uploaded route for segmented objects, `{Container}/{Object}/` |
-|Account|URL|String|User account name: included in API Endpoint|
+|Account|URL|String|User account name, included in API Endpoint|
 |Container|	URL|	String| Container name |
 |Object|	URL|	String| Object name to create |
-|-|	Body|	Plain| Content of object of which text is segmented Text |
+|-|	Body|	Plain| Content of object of which text is segmented |
 
 
 **[Example]**
