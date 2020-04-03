@@ -675,11 +675,11 @@ foreach ($object_list as $obj){
 
 </details>
 
-### 컨테이너 조회 질의 Query for Get Container 
-Get Container API provides some queries as follows. All queries can be connected with '&' for common use. 컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다. 
+### Query for Get Container 
+Get Container API provides some queries as follows. All queries can be connected with '&' for common use. 
 
-#### 1만 개 이상의 오브젝트 목록 조회 List More than 10,000 Objects
-컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다. No more than 10,000 objects can be listed with Get Container API. To list more than 10,000 objects, use the 'marker' query. The marker query returns up to 10,000 object lists from the next object after a specified object. 
+#### List More than 10,000 Objects
+No more than 10,000 objects can be listed with Get Container API. To list more than 10,000 objects, use the 'marker' query. The marker query returns up to 10,000 object lists from the next object after a specified object. 
 
 ```
 GET    /v1/{Account}/{Container}?marker={Object}
@@ -694,11 +694,11 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | User account name, to be found on the set up box for API Endpoint |
 | Container | URL | String | O | Container name to query |
-| Object | Query | String | O | 기준 오브젝트 이름 |
+| Object | Query | String | O | Criteria object name |
 
 ##### Response
 ```
-[Object list next to a specified object which is included to a specified container  지정한 컨테이너에 속한 지정한 오브젝트 다음 오브젝트 목록]
+[Object list next to a specified object which is included to a specified container]
 ```
 
 ##### Code Example
@@ -709,7 +709,7 @@ This API does not require a request body.
 // List objects after '20d33f.jpg'
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
-[지정한 오브젝트(20d33f.jpg) 이후의 목록]
+[List after specified object (20d33f.jpg)]
 ```
 
 </details>
@@ -728,9 +728,9 @@ public class ContainerService {
     // ContainerService Class ...
 
     public List<String> getObjectList(String conatinerName, String prevLastObject) {
-        // 지정한 오브젝트 이름을 이용하여 질의 URL 생성
+        // Create query URL by using specified object name  
         String url = this.getUrl(conatinerName) + "?marker=" + prevLastObject;
-        // 컨테이너 조회 예제의 getList() 메서드 호출
+        // Call getList() method from the get container example 
         return this.getList(url);
     }
 
@@ -739,10 +739,10 @@ public class ContainerService {
 
         String url = this.getUrl(conatinerName);
 
-        // 오브젝트 목록 조회 List objects 
+        // List objects 
         List<String> objectList = this.getList(url);
         while ((objectList.size() % LIMIT_COUNT) == 0) {
-            // If the length of object list is the multiples of 10,000, specify the last object on the list to list  오브젝트 목록의 길이가 1만개의 배수라면 목록의 마지막 오브젝트를 지정하여 이후의 목록 조회
+            // If the length of object list is a multiple of 10,000, specify the last object on the list to list  
             String lastObject = objectList.get(objectList.size() - 1);
             List<String> nextObjList = this.getObjectList(conatinerName, lastObject);
             objectList.addAll(nextObjList);			
@@ -751,7 +751,7 @@ public class ContainerService {
         return objectList;
     }
 
-    // The usage example of getObjectList() is same as get container  사용 예제는 컨테이너 조회와 동일
+    // The usage example of getObjectList() is same as get container
 }
 ```
 
@@ -830,7 +830,7 @@ foreach ($object_list as $obj){
 </details>
 
 #### 폴더 단위의 오브젝트 목록 조회 List Objects by Folder 
-컨테이너에 여러 개의 폴더를 만들어 사용하고 있다면 `path` 질의를 이용해 폴더 단위로 오브젝트 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 오브젝트 목록은 조회할 수 없습니다. If a container has many folders, use the 'path' query to list objects by folder. The path query cannot list objects of the lower-level folder. 
+If a container has many folders, use the 'path' query to list objects by folder. The path query cannot list objects of the lower-level folder. 
 
 ```
 GET   /v1/{Account}/{Container}?path={Path}
@@ -844,12 +844,12 @@ This API does not require a request body.
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | User account name for Windows, to be found on the setup box for API Endpoint  |
-| Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
-| Path | Query | String | O | Folder name to query 조회할 폴더 이름 |
+| Container | URL | String | O | Container name to query |
+| Path | Query | String | O | Folder name to query |
 
 ##### Response
 ```
-[Object list of a specified folder which is included to a specified container 지정한 컨테이너에 속한 지정한 폴더의 오브젝트 목록]
+[Object list of a specified folder which is included to a specified container]
 ```
 
 ##### Code Example
@@ -882,11 +882,11 @@ public class ContainerService {
     public List<String> getObjectListOfFolder(String conatinerName, String folderName) {
         // Create query URL by using specified folder name 
         String url = this.getUrl(conatinerName) + "?path=" + folderName;
-        // Call the getList() method from the get container example 메서드 호출
+        // Call getList() method from the get container example 
         return this.getList(url);
     }
 
-    // The getObjectListOfFolder() usage example is same as get container 사용 예제는 컨테이너 조회와 동일
+    // The usage example of getObjectListOfFolder() is same as get container 
 }
 ```
 
@@ -925,8 +925,8 @@ class Container {
 
 </details>
 
-#### 접두어로 시작하는 오브젝트 목록 조회 List Objects starting with Prefix 
-`prefix` 질의를 사용하면 지정한 접두어로 시작하는 오브젝트들의 목록을 반환합니다. path 질의로는 조회할 수 없는 하위 폴더의 오브젝트 목록을 조회하는 데 사용할 수 있습니다.
+#### List Objects Starting with Prefix 
+The 'prefix' query can return list of objects starting with a specified prefix. It can be applied to list objects of the lower-level folder which cannot be listed with the path query.  
 
 ```
 GET   /v1/{Account}/{Container}?prefix={Prefix}
@@ -934,18 +934,18 @@ X-Auth-Token: {token-id}
 ```
 
 ##### Request
-This API does not require a request body. 는 요청 본문을 요구하지 않습니다.
+This API does not require a request body. 
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Toekn ID |
 | Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
-| Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
-| Prefix | Query | String | O | Prefix to search 검색할 접두어 |
+| Container | URL | String | O | Container name to query |
+| Prefix | Query | String | O | Prefix to search |
 
 ##### Response
 ```
-[지정한 컨테이너에 속하고 지정한 접두어로 시작하는 오브젝트 목록]
+[Object list which belongs to a specified container and starts with a specified prefix]
 ```
 
 ##### Code Example
@@ -977,13 +977,13 @@ public class ContainerService {
     // ContainerService Class ...
 
     public List<String> getObjectListWithPrefix(String conatinerName, String prefix) {
-        // 지정한 접두어를 이용하여 질의 URL 생성 Create query URL by using specified prefix 
+        // Create query URL by using a specified prefix 
         String url = this.getUrl(conatinerName) + "?prefix=" + prefix;
-        // Call 컨테이너 조회 예제의 getList() method of the get container example 메서드 호출 
+        // Call getList() method from the get container example  
         return this.getList(url);
     }
 
-    // Usage example of getObjectListWithPrefix() is same as get container example 사용 예제는 컨테이너 조회 예제와 동일
+    // The usage example of getObjectListWithPrefix() is same as get container example 
 }
 ```
 
@@ -1022,8 +1022,8 @@ class Container {
 
 </details>
 
-#### 목록의 최대 오브젝트 수 지정 Specify the Maximum Object Count on List 
-`limit` 질의를 사용하면 반환할 오브젝트 목록의 최대 오브젝트 수를 지정할 수 있습니다. Use the 'limit' query to specify the maximum object count of the list to return 
+#### Specify the Maximum Object Count on List 
+Use the 'limit' query to specify the maximum object count of the list to return 
 
 ```
 GET   /v1/{Account}/{Container}?limit={limit}
@@ -1037,12 +1037,12 @@ This API does not require a request body.
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
-| Container | URL | String | O | Container name to query 조회할 컨테이너 이름 |
-| limit | Query | Integer | O | Object count to show on the list 목록에 표시할 오브젝트 수 |
+| Container | URL | String | O | Container name to query  |
+| limit | Query | Integer | O | Object count to show on the list |
 
 ##### Response
 ```
-[Object list as much as specified for a specified container 지정한 컨테이너에 속한 지정된 수 만큼의 오브젝트 목록]
+[Object list as much as specified for a specified container]
 ```
 
 ##### Code Example
@@ -1051,7 +1051,7 @@ This API does not require a request body.
 <summary>cURL</summary>
 
 ```curl
-// 10개의 오브젝트만 조회 Get only 10 objects 
+// Get only 10 objects 
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?limit=10
 ...{9 objects}...
@@ -1074,13 +1074,13 @@ public class ContainerService {
     // ContainerService Class ...
 
     public List<String> getObjectList(String conatinerName, int limit) {
-        // 지정한 최대 오브젝트 수를 이용하여 질의 URL 생성 Create query URL by using the maximum number of specified objects
+        // Create query URL by using the maximum number of specified objects
         String url = this.getUrl(conatinerName) + "?limit=" + limit;
-        // Call 컨테이너 조회 예제의 getList() method from the get container example 메서드 호출
+        // Call getList() method from the get container example 
         return this.getList(url);
     }
 
-    // The usage example for getObjectListWithPrefix() is same as get container example 사용 예제는 컨테이너 조회 예제와 동일
+    // The usage example of getObjectListWithPrefix() is same as get container example 
 }
 ```
 
@@ -1120,15 +1120,15 @@ class Container {
 </details>
 
 
-### 컨테이너 수정 Modify Container
+### Modify Container
 
-컨테이너의 메타데이터를 변경하여 접근 규칙을 지정할 수 있습니다. Access rules can be specified by changing container metadata. 
+Access rules can be specified by changing container metadata. 
 
 ```
 POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
-X-Container-Read: {Read container policy 컨테이너 읽기 정책}
-X-Container-Write: {Write container policy 컨테이너 쓰기 정책}
+X-Container-Read: {Read-container policy}
+X-Container-Write: {Write-container policy}
 ```
 
 #### Request
@@ -1137,10 +1137,10 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| X-Container-Read | Header | String | - | Set access rules for reading container 컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - Allow access for all users 모든 사용자에게 접근 허용<br/>.r:example.com,test.com – Access allowed to particular address only, to be delimited by  특정 주소에만 접근 허용, ‘,’로 구분<br/>.rlistings. – Allow listing containers 컨테이너 목록 조회 허용<br/>AUTH_.... – Allow access to particular accounts only특정 계정에만 접근 허용 |
-| X-Container-Write | Header | String | - | Set access rules for writing container 컨테이너 쓰기에 대한 접근 규칙 지정<br/>\*:\* - Allow reading for all users 모든 사용자에게 쓰기 허용<br/>AUTH_.... – Allow reading to particular accounts only특정 계정에만 쓰기 허용 |
+| X-Container-Read | Header | String | - | Specify access rules for reading a container <br/>.r:* - Allow access for all users <br/>.r:example.com,test.com – Access allowed to particular address only, to be delimited by ‘,’<br/>.rlistings. – Allow listing containers <br/>AUTH_.... – Allow access to particular accounts only |
+| X-Container-Write | Header | String | - | Specify access rules for writing a container <br/>\*:\* - Allow reading for all users <br/>AUTH_.... – Allow reading to particular accounts only |
 | Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
-| Container | URL | String | O | Container name to modify 수정할 컨테이너 이름 |
+| Container | URL | String | O | Container name to modify |
 
 #### Response
 This API does not return response body. When the request is appropriate, return status code 204. 
@@ -1150,7 +1150,7 @@ This API does not return response body. When the request is appropriate, return 
 <summary>cURL</summary>
 
 ```
-// 모든 사용자에게 읽기/쓰기 허용 Allow Read/Write for all users 
+// Allow Read/Write for all users 
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
@@ -1182,10 +1182,10 @@ public class ContainerService {
 
         String url = this.getUrl(containerName);
 
-        // 헤더 생성 Create a header 
+        // Create a header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Container-Read", permission);    // 헤더에 권한 추가 Add authority to header 
+        headers.add("X-Container-Read", permission);    // Add authority to header 
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
@@ -1252,7 +1252,7 @@ class Container {
 
     $permission = $is_public ? self::PUBLIC_ACL : self::PRIVATE_ACL;
     $req_header = $this->get_request_header();
-    $req_header[] = 'X-Container-Read: ' . $permission;  // Add authority to header 헤더에 권한 추가
+    $req_header[] = 'X-Container-Read: ' . $permission;  // Add authority to header 
 
     $curl  = curl_init($req_url);
     curl_setopt_array($curl, array(
@@ -1280,8 +1280,8 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 
 </details>
 
-#### Check ACL 확인
-After setting read authority 읽기 권한을 공개로 설정한 후에는 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
+#### Check ACL 
+After setting public for  authority 읽기 권한을 공개로 설정한 후에는 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
 
 <details>
 <summary>Example</summary>
@@ -1289,7 +1289,7 @@ After setting read authority 읽기 권한을 공개로 설정한 후에는 `cur
 ```
 $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 
-{Object Details오브젝트의 내용}
+{Object Details}
 ```
 
 </details>
@@ -1310,7 +1310,7 @@ This API does not require a request body.
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
-| Container | URL| String |	O | Container name to delete 삭제할 컨테이너 이름 |
+| Container | URL| String |	O | Container name to delete |
 
 #### Response
 This request does not return response body. When the request is appropriate, return status code 204. 
@@ -1435,7 +1435,7 @@ $container->delete($CONTAINER_NAME);
 ## Objects
 
 ### Upload 오브젝트 업로드
-지정한 컨테이너에 새로운 오브젝트를 업로드합니다. Upload new objects to a specified container. 
+Upload new objects to a specified container. 
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1448,20 +1448,20 @@ Content-Type: {content-type}
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Content-type | Header | String | O | Content type of object 오브젝트의 콘텐츠 타입 |
-| X-Delete-At | Header | Timestamp | - | Unix time (seconds) to delete object (오브젝트를 삭제할 유닉스 시간(초) |
+| Content-type | Header | String | O | Content type of object |
+| X-Delete-At | Header | Timestamp | - | Unix time (seconds) to delete object |
 | X-Delete-After | Header | Timestamp | - | Valid object time, unix time (seconds)  |
 | Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
-| Container |	URL | String | O | Container name 컨테이너 이름 |
-| Object | URL | String |	O | Object name to create생성할 오브젝트 이름 |
-| - |	Body | Binary | O | Object details to create 생성할 오브젝트의 내용 |
+| Container |	URL | String | O | Container name  |
+| Object | URL | String |	O | Object name to create |
+| - |	Body | Binary | O | Object details to create  |
 
 > [Caution]
-> If an object name starts with 오브젝트의 이름이 `./` or `../`, the browser regards it as path character and access is unavailable on web console. 으로 시작한다면 브라우저가 이를 경로 문자로 인식해 웹 콘솔에서 접근할 수 없습니다.
-> If you have uploaded an object of such name via API, it must also be accessed via API. 를 이용하여 이러한 이름의 오브젝트를 업로드했다면 API를 통해 접근해야 합니다.
+> If an object name starts with `./` or `../`, the browser regards it as path character and access is unavailable on web console. 
+> If you have uploaded an object of such name via API, it must also be accessed via API. 
 
 #### Response
-This API does not return response body. When the request is appropriate, return status code 201. 는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+This API does not return response body. When the request is appropriate, return status code 201. 
 
 #### Code Example
 <details>
@@ -1505,7 +1505,7 @@ public class ObjectService {
     public void uploadObject(String containerName, String objectName, final InputStream inputStream) {
         String url = this.getUrl(containerName, objectName);
 
-        // InputStream을 요청 본문에 추가할 수 있도록 Override RequestCallback to add InputStream to the request body 오버라이드
+        // Override RequestCallback to add InputStream to the request body 
         final RequestCallback requestCallback = new RequestCallback() {
             public void doWithRequest(final ClientHttpRequest request) throws IOException {
                 request.getHeaders().add("X-Auth-Token", tokenId);
@@ -1513,7 +1513,7 @@ public class ObjectService {
             }
         };
 
-        // Set to enable the override 오버라이드한 RequestCallback을 사용할 수 있도록 설정
+        // Set to enable the override RequestCallback
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setBufferRequestBody(false);
         RestTemplate restTemplate = new RestTemplate(requestFactory);
@@ -1521,7 +1521,7 @@ public class ObjectService {
         HttpMessageConverterExtractor<String> responseExtractor
             = new HttpMessageConverterExtractor<String>(String.class, restTemplate.getMessageConverters());
 
-        // Call API 호출
+        // Call API
         restTemplate.execute(url, HttpMethod.PUT, requestCallback, responseExtractor);
     }
 
@@ -1535,11 +1535,11 @@ public class ObjectService {
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
 
         try {
-            // 파일로 부터 Create InputStream from the file 생성
+            // Create InputStream from the file 
             File objFile = new File(objectPath + "/" + objectName);            
             InputStream inputStream = FileUtils.openInputStream(objFile);
 
-            // Upload 업로드
+            // Upload 
             objectService.uploadObject(containerName, objectName, inputStream);
             System.out.println("\nUpload OK");
         } catch (Exception e) {
@@ -1625,13 +1625,13 @@ class Object {
 
       $req_header = $this->get_request_header();
 
-      $fd = fopen($filename, 'r');  // Open the file. 파일을 연다.
+      $fd = fopen($filename, 'r');  // Open file. 
 
       $curl  = curl_init($req_url);
       curl_setopt_array($curl, array(
           CURLOPT_PUT => TRUE,
           CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_INFILE => $fd,  // Put FileStream as parameter 파일 스트림을 매개변수로 넣는다.
+          CURLOPT_INFILE => $fd,  // Put FileStream as parameter.
           CURLOPT_HTTPHEADER => $req_header
       ));
       $response = curl_exec($curl);
@@ -1659,9 +1659,9 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 </details>
 
 ### 멀티 파트 업로드 Upload Multiple Parts 
-5GB를 초과하는 용량을 가진 오브젝트는 5GB 이하의 세그먼트로 분할해 업로드해야 합니다.
+Objects that are over 5GB must be segmented into less than 5GB-parts before uploaded. 를 초과하는 용량을 가진 오브젝트는 5GB 이하의 세그먼트로 분할해 업로드해야 합니다.
 
-#### 세그먼트 업로드 Segment Uploading  
+#### Segment Uploading  
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}/{Count}
@@ -1674,18 +1674,18 @@ Content-Type: {content-type}
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Content-type | Header | String | O | Content type of object 오브젝트의 콘텐츠 타입 |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
+| Content-type | Header | String | O | Content type of object |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
 | Container |	URL | String | O | Container name |
-| Object |	URL | String | O | 생성할 오브젝트 이름 |
-| Count | URL | Integer | O | 분할한 오브젝트의 순번, 예) 001, 002 |
-| - |	Body | Binary | O | 분할한 오브젝트의 내용 |
+| Object |	URL | String | O | Object name to create |
+| Count | URL | Integer | O | Sequence of segmented objects, e.g.) 001, 002 |
+| - |	Body | Binary | O | Segmented object details |
 
 ##### Response
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+This API does not return request body. When the request is appropriate, return status code 201.
 
 #### 매니페스트 생성 Manifest Creation 
-모든 오브젝트의 세그먼트를 업로드한 다음 매니페스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다. 매니페스트 오브젝트는 세그먼트들이 저장된 경로를 가리킵니다.
+모든 오브젝트의 세그먼트를 업로드한 다음 매니페스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다. 매니페스트 오브젝트는 세그먼트들이 저장된 경로를 가리킵니다. Upload all segments of an object, and then create manifest object; then you can use it as one object. The manifest object refers to the path in which segments are saved. 
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1698,14 +1698,14 @@ X-Object-Manifest: {Container}/{Object}/
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | Token ID |
-| X-Object-Manifest | Header| String | O | 분할한 오브젝트들을 업로드한 경로, `{Container}/{Object}/` |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container |	URL | String | O | 컨테이너 이름 |
-| Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
-| - | Body| Binary | O | 빈 데이터 |
+| X-Object-Manifest | Header| String | O | Upload path for segmented objects, `{Container}/{Object}/` |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Container |	URL | String | O | Container name |
+| Object |	URL | String | O | Manifest object name to create |
+| - | Body| Binary | O | Empty data |
 
 ##### Response
-This API does not return response body. When the request is appropriate, return status code 201. 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+This API does not return response body. When the request is appropriate, return status code 201. 
 
 
 #### Code Example
@@ -1713,10 +1713,10 @@ This API does not return response body. When the request is appropriate, return 
 <summary>cURL</summary>
 
 ```
-// 200MB 단위로 파일 분할
+// Segment file by 200MB 
 $ split -d -b 209715200 large_obj.img large_obj.img.
 
-// 분할된 오브젝트 업로드
+// Upload segmented object 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
 -T large_obj.img.00
@@ -1729,7 +1729,7 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/003 \
 -T large_obj.img.02
 
-// 매니페스트 오브젝트 업로드
+// Upload manifest object 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Object-Manifest: curl_example/large_obj.img/' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
@@ -1752,19 +1752,19 @@ public class ObjectService {
 
     // ObjectService Class ...
 
-    // 매니페스트 오브젝트 업로드
+    // Upload manifest object
     public void uploadManifestObject(String containerName, String objectName) {
         String url = this.getUrl(containerName, objectName);        
-        String manifestName = containerName + "/" + objectName + "/"; // 매니페스트 이름 생성
+        String manifestName = containerName + "/" + objectName + "/"; // Create manifest name 
 
-        // 헤더 생성
+        // Create a header 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Object-Manifest", manifestName);  // 헤더에 매니페스트 표기
+        headers.add("X-Object-Manifest", manifestName);  // Show manifest at the header 
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출
+        // Call API 
         this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
     }
 
@@ -1780,28 +1780,28 @@ public class ObjectService {
         File objFile = new File(objectPath + "/" + objectName);
         int fileSize = (int)objFile.length();
 
-        final int defaultChunkSize = 100 * 1024; // 100 KB 단위로 분할
+        final int defaultChunkSize = 100 * 1024; // Segment by 100 KB 
         int chunkSize = defaultChunkSize;
-        int chunkNo = 0;  // 분할 오브젝트의 이름을 만들기 위한 청크 번호
+        int chunkNo = 0;  // Chunk number to create names for segmented objects  
         int totalBytesRead = 0;
 
         try {
-            // 파일로부터 InputStream 생성
+            // Create InputStream from file  
             InputStream inputStream = new BufferedInputStream(new FileInputStream(objFile));			
             while(totalBytesRead < fileSize) {
 
-                // 남은 데이터 크기 계산
+                // Calculate remaining data size 
                 int remainedBytes = fileSize - totalBytesRead;
                 if(remainedBytes < chunkSize) {
                     chunkSize = remainedBytes;
                 }
 
-                // 바이트 버퍼에 청크 크기만큼 데이터를 읽음
+                // Read data as much as the chunk size for byte buffer 
                 byte[] chunkBuffer = new byte[chunkSize];
                 int bytesRead = inputStream.read(chunkBuffer, 0, chunkSize);
 
                 if(bytesRead > 0) {
-                    // 버퍼의 데이터를 InputStream으로 만들어 업로드, 오브젝트 업로드 예제의 uploadObject() 메서드 사용
+                    // Create buffered data 버퍼의 데이터를 InputStream으로 만들어 업로드, 오브젝트 업로드 예제의 uploadObject() 메서드 사용
                     String objPartName = String.format("%s/%03d", objectName, ++chunkNo);
                     InputStream chunkInputStream = new ByteArrayInputStream(chunkBuffer);
                     objectService.uploadObject(containerName, objPartName, chunkInputStream);
@@ -1810,7 +1810,7 @@ public class ObjectService {
                 }
             }
 
-            // 매니페스트 파일을 업로드
+            // Upload manifest file 
             objectService.uploadManifestObject(containerName, objectName);
 
             System.out.println("Upload OK");
@@ -1910,21 +1910,21 @@ class Object {
       $chunk_index = 1;
       $chunk_size = self::CHUNK_SIZE;
       $total_bytes_read = 0;
-      $fd = fopen($filename, 'r');  // 파일을 연다.
+      $fd = fopen($filename, 'r');  // Open file.
       $obj_size = filesize($filename);
 
       while($total_bytes_read < $obj_size){
-          // 분할할 용량 계산
+          // Calculate volume to segment 분할할 용량 계산
           $remained_bytes = $obj_size - $total_bytes_read;
           if ($remained_bytes < $chunk_size){
               $chunk_size = $remained_bytes;
           }
           $chunk = fread($fd, $chunk_size);
-          // 파트 이름 생성
+          // Create a part name 파트 이름 생성
           $temp_file = sprintf("./multipart-%03d", $chunk_index);
           $req_url = sprintf("%s/%03d", $url, $chunk_index);
 
-          // 파트 임시 파일 생성
+          // 파트 임시 파일 생성 Create a temporary part file 
           $part_fd = fopen($temp_file, 'w+');
           fwrite($part_fd, $chunk);
           fseek($part_fd, 0);
@@ -1984,19 +1984,19 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
-| X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
-| X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
-| Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
-| Container |	URL | String | O | 컨테이너 이름 |
+| X-Auth-Token | Header | String | O | Token ID |
+| Content-type | Header | String | O | Content type of object |
+| X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
+| X-Delete-After | Header | Timestamp | - | Valid object time, unitx time (seconds) 오브젝트 유효 시간, 유닉스 시간(초) |
+| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint 설정 대화 상자에서 확인 |
+| Container |	URL | String | O | Container name |
 | Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
 
 #### Response
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+This API does not return는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 ### 오브젝트 다운로드
-오브젝트를 다운로드합니다.
+Download objects 오브젝트를 다운로드합니다.
 
 ```
 GET   /v1/{Account}/{Container}/{Object}
@@ -2004,14 +2004,14 @@ X-Auth-Token: {token-id}
 ```
 
 #### Request
-이 API는 요청 본문을 요구하지 않습니다. This API does not require a request body. 
+This API does not require a request body. 
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | User account ID, to be found on the setup box for API Endpoint |
 | Container |	URL | String | O | Container name |
-| Object | URL | String | O | Object name of which the detail is to be modified 내용을 수정할 오브젝트 이름 |
+| Object | URL | String | O | Object name of which the detail is to be modified  |
 
 #### Response
 오브젝트의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
