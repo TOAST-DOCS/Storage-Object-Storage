@@ -2,19 +2,11 @@
 
 ## Prerequisites
 
-### Check Tenant Name
+To enable object storage API, an authentication token must be issued first. Authentication token is required to use REST API of object storage: it is a must to access container or object which is not open to public. Tokens are managed by each account.
 
-To use API, enter tenant name in parameters. Tenant name refers to **Project ID** which is available on the Project Setting page.  
+### Check Tenant ID and API Endpoint
 
-1. Click **Project Setting** under the organiz## Storage > Object Storage > API Guide
-
-## Prerequities
-
-To enable object storage API, an authentication token must be issued first. Authentication token is required to use REST API of object storage: it is a must to access container or object which is not open to public. Tokens are managed by each account. 
-
-### Check Tenant ID and API Endpoint 
-
-Click **API Endpoint Setting** on the object storage service page to check tenant ID and API endpoint to issue a token. 
+Click **API Endpoint Setting** on the object storage service page to check tenant ID and API endpoint to issue a token.
 
 | Item | API Endpoint | Usage |
 |---|---|---|
@@ -25,13 +17,13 @@ Click **API Endpoint Setting** on the object storage service page to check tenan
 > [Note]
 > User account for API refers to character strings in the format of `AUTH_***`, which is included in Object-Store API endpoint.
 
-### Set API Password 
+### Set API Password
 
-To set API password, go to the object storage service page and click **API Endpoint Setting**. 
+To set API password, go to the object storage service page and click **API Endpoint Setting**.
 
 1. Click **API Endpoint Setting**.
-2. Go to **API Password Setting** under **API Endpoint Setting** and enter password to issue a token. 
-3. Click **Save**. 
+2. Go to **API Password Setting** under **API Endpoint Setting** and enter password to issue a token.
+3. Click **Save**.
 
 ## Certificate Token Issuance
 
@@ -189,7 +181,7 @@ public class AuthService {
     public AuthService(String authUrl, String tenantId, String username, String password) {		
         this.authUrl = authUrl;		
 
-        // Create request body 
+        // Create request body
         this.tokenRequest = new TokenRequest();
         this.tokenRequest.getAuth().setTenantId(tenantId);
         this.tokenRequest.getAuth().getPasswordCredentials().setUsername(username);
@@ -201,14 +193,14 @@ public class AuthService {
     public String requestToken() {
         String identityUrl = this.authUrl + "/tokens";
 
-        // Create header 
+        // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
-        HttpEntity<TokenRequest> httpEntity 
+        HttpEntity<TokenRequest> httpEntity
             = new HttpEntity<TokenRequest>(this.tokenRequest, headers);
 
-        // Request for token 
+        // Request for token
         ResponseEntity<String> response
             = this.restTemplate.exchange(identityUrl, HttpMethod.POST, httpEntity, String.class);
 
@@ -285,19 +277,19 @@ function get_token($auth_url, $tenant_id, $username, $password) {
               'password' => $password
           )
       )
-  );  // Create request body 
+  );  // Create request body
   $req_header = array(
     'Content-Type: application/json'
   );  // Create a request header
 
-  $curl  = curl_init($url); // Initialize curl 
+  $curl  = curl_init($url); // Initialize curl
   curl_setopt_array($curl, array(
     CURLOPT_POST => TRUE,
     CURLOPT_RETURNTRANSFER => TRUE,
     CURLOPT_HTTPHEADER => $req_header,
     CURLOPT_POSTFIELDS => json_encode($req_body)
-  )); // Set parameters 
-  $response = curl_exec($curl); // Call API 
+  )); // Set parameters
+  $response = curl_exec($curl); // Call API
   curl_close($curl);
 
   return $response;
@@ -317,11 +309,11 @@ printf("%s\n", $token);
 
 ## Containers
 
-### Create 
-Create a container. To upload files to object storage, a container must be created. 
+### Create
+Create a container. To upload files to object storage, a container must be created.
 
 > [Note]
-> If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL encoded (percent-encoding). These are reserved characters that are considered important for URL. Unless the paths including the characters are encoded before sending an API request, you may not receive response as needed. 
+> If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL encoded (percent-encoding). These are reserved characters that are considered important for URL. Unless the paths including the characters are encoded before sending an API request, you may not receive response as needed.
 
 ```
 PUT  /v1/{Account}/{Container}
@@ -329,7 +321,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -338,7 +330,7 @@ This API does not require a request body.
 | Container | URL | String | O | Name of container to be created  |
 
 #### Response
-This API does not return response body. When a container is created, return status code 201. 
+This API does not return response body. When a container is created, return status code 201.
 
 #### Code Example
 <details>
@@ -381,13 +373,13 @@ public class ContainerService {
     public void createContainer(String containerName) {
         String url = this.getUrl(containerName);
 
-        // Create header 
+        // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call API 
+        // Call API
         this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
     }
 
@@ -506,8 +498,8 @@ $container->create($CONTAINER_NAME);
 </details>
 
 
-### Get 
-Get container information as specified and list objects that are saved within. 
+### Get
+Get container information as specified and list objects that are saved within.
 
 ```
 GET   /v1/{Account}/{Container}
@@ -515,7 +507,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -561,22 +553,22 @@ public class ContainerService {
     }
 
     public List<String> getList(String url) {
-        // Create a header 
+        // Create a header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call API 
+        // Call API
         ResponseEntity<String>response
             = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, String.class);
 
         List<String> objectList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
-            // Convert list on the string into sequence 
+            // Convert list on the string into sequence
             objectList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
-        // Convert sequence into list and return 
+        // Convert sequence into list and return
         return new ArrayList<String>(objectList);
     }
 
@@ -676,10 +668,10 @@ foreach ($object_list as $obj){
 </details>
 
 ### Query  
-Get Container API provides some queries as follows. All queries can be connected with '&' for common use. 
+Get Container API provides some queries as follows. All queries can be connected with '&' for common use.
 
 #### List of More than 10,000 Objects
-No more than 10,000 objects can be listed with Get Container API. To list more than 10,000 objects, use the 'marker' query. The marker query returns up to 10,000 object lists from the next object after a specified object. 
+No more than 10,000 objects can be listed with Get Container API. To list more than 10,000 objects, use the `marker` query. The marker query returns up to 10,000 object lists from the next object after a specified object.
 
 ```
 GET    /v1/{Account}/{Container}?marker={Object}
@@ -687,7 +679,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -730,7 +722,7 @@ public class ContainerService {
     public List<String> getObjectList(String conatinerName, String prevLastObject) {
         // Create query URL by using specified object name  
         String url = this.getUrl(conatinerName) + "?marker=" + prevLastObject;
-        // Call getList() method from the get container example 
+        // Call getList() method from the get container example
         return this.getList(url);
     }
 
@@ -739,7 +731,7 @@ public class ContainerService {
 
         String url = this.getUrl(conatinerName);
 
-        // List objects 
+        // List objects
         List<String> objectList = this.getList(url);
         while ((objectList.size() % LIMIT_COUNT) == 0) {
             // If the length of object list is a multiple of 10,000, specify the last object on the list to list  
@@ -829,8 +821,8 @@ foreach ($object_list as $obj){
 
 </details>
 
-#### List of Objects by Folder 
-If a container has many folders, use the 'path' query to list objects by folder. The path query cannot list objects of the lower-level folder. 
+#### List of Objects by Folder
+If a container has many folders, use the `path` query to list objects by folder. The path query cannot list objects of the lower-level folder.
 
 ```
 GET   /v1/{Account}/{Container}?path={Path}
@@ -838,7 +830,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -857,7 +849,7 @@ This API does not require a request body.
 <summary>cURL</summary>
 
 ```
-// List objects of the ex folder 
+// List objects of the ex folder
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?path=ex
 ex/20d33f.jpg
@@ -880,13 +872,13 @@ public class ContainerService {
     // ContainerService Class ...
 
     public List<String> getObjectListOfFolder(String conatinerName, String folderName) {
-        // Create query URL by using specified folder name 
+        // Create query URL by using specified folder name
         String url = this.getUrl(conatinerName) + "?path=" + folderName;
-        // Call getList() method from the get container example 
+        // Call getList() method from the get container example
         return this.getList(url);
     }
 
-    // The usage example of getObjectListOfFolder() is same as get container 
+    // The usage example of getObjectListOfFolder() is same as get container
 }
 ```
 
@@ -925,8 +917,8 @@ class Container {
 
 </details>
 
-#### List of Objects Starting with Prefix 
-The 'prefix' query can return list of objects starting with a specified prefix. It can be applied to list objects of the lower-level folder which cannot be listed with the path query.  
+#### List of Objects Starting with Prefix
+The `prefix` query can return list of objects starting with a specified prefix. It can be applied to list objects of the lower-level folder which cannot be listed with the path query.  
 
 ```
 GET   /v1/{Account}/{Container}?prefix={Prefix}
@@ -934,7 +926,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -953,7 +945,7 @@ This API does not require a request body.
 <summary>cURL</summary>
 
 ```
-// List objects starting with 314 
+// List objects starting with 314
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
 3146f0.jpg
@@ -977,13 +969,13 @@ public class ContainerService {
     // ContainerService Class ...
 
     public List<String> getObjectListWithPrefix(String conatinerName, String prefix) {
-        // Create query URL by using a specified prefix 
+        // Create query URL by using a specified prefix
         String url = this.getUrl(conatinerName) + "?prefix=" + prefix;
         // Call getList() method from the get container example  
         return this.getList(url);
     }
 
-    // The usage example of getObjectListWithPrefix() is same as get container example 
+    // The usage example of getObjectListWithPrefix() is same as get container example
 }
 ```
 
@@ -1022,8 +1014,8 @@ class Container {
 
 </details>
 
-#### Specify Maximum Object Count on List 
-Use the 'limit' query to specify the maximum object count of the list to return 
+#### Specify Maximum Object Count on List
+Use the `limit` query to specify the maximum object count of the list to return
 
 ```
 GET   /v1/{Account}/{Container}?limit={limit}
@@ -1031,7 +1023,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -1051,7 +1043,7 @@ This API does not require a request body.
 <summary>cURL</summary>
 
 ```curl
-// Get only 10 objects 
+// Get only 10 objects
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?limit=10
 ...{9 objects}...
@@ -1076,11 +1068,11 @@ public class ContainerService {
     public List<String> getObjectList(String conatinerName, int limit) {
         // Create query URL by using the maximum number of specified objects
         String url = this.getUrl(conatinerName) + "?limit=" + limit;
-        // Call getList() method from the get container example 
+        // Call getList() method from the get container example
         return this.getList(url);
     }
 
-    // The usage example of getObjectListWithPrefix() is same as get container example 
+    // The usage example of getObjectListWithPrefix() is same as get container example
 }
 ```
 
@@ -1120,9 +1112,9 @@ class Container {
 </details>
 
 
-### Modify 
+### Modify
 
-Access rules can be specified by changing container metadata. 
+Access rules can be specified by changing container metadata.
 
 ```
 POST  /v1/{Account}/{Container}
@@ -1132,7 +1124,7 @@ X-Container-Write: {Write-container policy}
 ```
 
 #### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -1143,14 +1135,14 @@ This API does not require a request body.
 | Container | URL | String | O | Container name to modify |
 
 #### Response
-This API does not return response body. When the request is appropriate, return status code 204. 
+This API does not return response body. When the request is appropriate, return status code 204.
 
 #### Code Example
 <details>
 <summary>cURL</summary>
 
 ```
-// Allow Read/Write for all users 
+// Allow Read/Write for all users
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
@@ -1182,14 +1174,14 @@ public class ContainerService {
 
         String url = this.getUrl(containerName);
 
-        // Create header 
+        // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Container-Read", permission);    // Add authority to header 
+        headers.add("X-Container-Read", permission);    // Add authority to header
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call API 
+        // Call API
         this.restTemplate.exchange(url, HttpMethod.POST, requestHttpEntity, String.class);
     }
 
@@ -1252,7 +1244,7 @@ class Container {
 
     $permission = $is_public ? self::PUBLIC_ACL : self::PRIVATE_ACL;
     $req_header = $this->get_request_header();
-    $req_header[] = 'X-Container-Read: ' . $permission;  // Add authority to header 
+    $req_header[] = 'X-Container-Read: ' . $permission;  // Add authority to header
 
     $curl  = curl_init($req_url);
     curl_setopt_array($curl, array(
@@ -1280,8 +1272,8 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 
 </details>
 
-#### Check ACL 
-After setting public for the authority to read, you may use tools such as 'curl' or 'wget', or check whether to get without token via browser.   
+#### Check ACL
+After setting public for the authority to read, you may use tools such as `curl` or `wget`, or check whether to get without token via browser.   
 
 <details>
 <summary>Example</summary>
@@ -1294,9 +1286,9 @@ $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 
 </details>
 
-### Delete 
+### Delete
 
-Delete specified containers. To be deleted, containers must be empty. 
+Delete specified containers. To be deleted, containers must be empty.
 
 ```
 DELETE   /v1/{Account}/{Container}
@@ -1304,7 +1296,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -1313,7 +1305,7 @@ This API does not require a request body.
 | Container | URL| String |	O | Container name to delete |
 
 #### Response
-This request does not return response body. When the request is appropriate, return status code 204. 
+This request does not return response body. When the request is appropriate, return status code 204.
 
 #### Code Example
 <details>
@@ -1343,7 +1335,7 @@ public class ContainerService {
     public void deleteContainer(String containerName){
         String url = this.getUrl(containerName);
 
-        // Create header 
+        // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
@@ -1434,8 +1426,8 @@ $container->delete($CONTAINER_NAME);
 
 ## Objects
 
-### Upload 
-Upload new objects to a specified container. 
+### Upload
+Upload new objects to a specified container.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1457,11 +1449,11 @@ Content-Type: {content-type}
 | - |	Body | Binary | O | Object details to create  |
 
 > [Caution]
-> If an object name starts with `./` or `../`, the browser regards it as path character and access is unavailable on web console. 
-> If you have uploaded an object of such name via API, it must also be accessed via API. 
+> If an object name starts with `./` or `../`, the browser regards it as path character and access is unavailable on web console.
+> If you have uploaded an object of such name via API, it must also be accessed via API.
 
 #### Response
-This API does not return response body. When the request is appropriate, return status code 201. 
+This API does not return response body. When the request is appropriate, return status code 201.
 
 #### Code Example
 <details>
@@ -1505,7 +1497,7 @@ public class ObjectService {
     public void uploadObject(String containerName, String objectName, final InputStream inputStream) {
         String url = this.getUrl(containerName, objectName);
 
-        // Override RequestCallback to add InputStream to the request body 
+        // Override RequestCallback to add InputStream to the request body
         final RequestCallback requestCallback = new RequestCallback() {
             public void doWithRequest(final ClientHttpRequest request) throws IOException {
                 request.getHeaders().add("X-Auth-Token", tokenId);
@@ -1535,11 +1527,11 @@ public class ObjectService {
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
 
         try {
-            // Create InputStream from file 
+            // Create InputStream from file
             File objFile = new File(objectPath + "/" + objectName);            
             InputStream inputStream = FileUtils.openInputStream(objFile);
 
-            // Upload 
+            // Upload
             objectService.uploadObject(containerName, objectName, inputStream);
             System.out.println("\nUpload OK");
         } catch (Exception e) {
@@ -1625,7 +1617,7 @@ class Object {
 
       $req_header = $this->get_request_header();
 
-      $fd = fopen($filename, 'r');  // Open file. 
+      $fd = fopen($filename, 'r');  // Open file.
 
       $curl  = curl_init($req_url);
       curl_setopt_array($curl, array(
@@ -1658,8 +1650,8 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 </details>
 
-### Upload Multiple Parts 
-Objects that are over 5GB must be segmented into less than 5GB-parts before uploaded. 
+### Upload Multiple Parts
+Objects that are over 5GB must be segmented into less than 5GB-parts before uploaded.
 
 #### Segment Uploading  
 
@@ -1684,8 +1676,8 @@ Content-Type: {content-type}
 ##### Response
 This API does not return request body. When the request is appropriate, return status code 201.
 
-#### Manifest Creation 
-Upload all segments of an object, and then create manifest object; then you can use it as one object. The manifest object refers to the path in which segments are saved. 
+#### Manifest Creation
+Upload all segments of an object, and then create manifest object; then you can use it as one object. The manifest object refers to the path in which segments are saved.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1705,7 +1697,7 @@ X-Object-Manifest: {Container}/{Object}/
 | - | Body| Binary | O | Empty data |
 
 ##### Response
-This API does not return response body. When the request is appropriate, return status code 201. 
+This API does not return response body. When the request is appropriate, return status code 201.
 
 
 #### Code Example
@@ -1713,10 +1705,10 @@ This API does not return response body. When the request is appropriate, return 
 <summary>cURL</summary>
 
 ```
-// Segment file by 200MB 
+// Segment file by 200MB
 $ split -d -b 209715200 large_obj.img large_obj.img.
 
-// Upload segmented object 
+// Upload segmented object
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
 -T large_obj.img.00
@@ -1729,7 +1721,7 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/003 \
 -T large_obj.img.02
 
-// Upload manifest object 
+// Upload manifest object
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Object-Manifest: curl_example/large_obj.img/' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
@@ -1755,16 +1747,16 @@ public class ObjectService {
     // Upload manifest object
     public void uploadManifestObject(String containerName, String objectName) {
         String url = this.getUrl(containerName, objectName);        
-        String manifestName = containerName + "/" + objectName + "/"; // Create manifest name 
+        String manifestName = containerName + "/" + objectName + "/"; // Create manifest name
 
-        // Create a header 
+        // Create a header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Object-Manifest", manifestName);  // Show manifest at the header 
+        headers.add("X-Object-Manifest", manifestName);  // Show manifest at the header
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call API 
+        // Call API
         this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
     }
 
@@ -1780,7 +1772,7 @@ public class ObjectService {
         File objFile = new File(objectPath + "/" + objectName);
         int fileSize = (int)objFile.length();
 
-        final int defaultChunkSize = 100 * 1024; // Segment by 100 KB 
+        final int defaultChunkSize = 100 * 1024; // Segment by 100 KB
         int chunkSize = defaultChunkSize;
         int chunkNo = 0;  // Chunk number to create names for segmented objects  
         int totalBytesRead = 0;
@@ -1790,18 +1782,18 @@ public class ObjectService {
             InputStream inputStream = new BufferedInputStream(new FileInputStream(objFile));			
             while(totalBytesRead < fileSize) {
 
-                // Calculate remaining data size 
+                // Calculate remaining data size
                 int remainedBytes = fileSize - totalBytesRead;
                 if(remainedBytes < chunkSize) {
                     chunkSize = remainedBytes;
                 }
 
-                // Read data as much as the chunk size for byte buffer 
+                // Read data as much as the chunk size for byte buffer
                 byte[] chunkBuffer = new byte[chunkSize];
                 int bytesRead = inputStream.read(chunkBuffer, 0, chunkSize);
 
                 if(bytesRead > 0) {
-                    // Create buffered data as InputStream to be uploaded, by using the uploadObject() method from upload object example 
+                    // Create buffered data as InputStream to be uploaded, by using the uploadObject() method from upload object example
                     String objPartName = String.format("%s/%03d", objectName, ++chunkNo);
                     InputStream chunkInputStream = new ByteArrayInputStream(chunkBuffer);
                     objectService.uploadObject(containerName, objPartName, chunkInputStream);
@@ -1810,7 +1802,7 @@ public class ObjectService {
                 }
             }
 
-            // Upload manifest file 
+            // Upload manifest file
             objectService.uploadManifestObject(containerName, objectName);
 
             System.out.println("Upload OK");
@@ -1914,7 +1906,7 @@ class Object {
       $obj_size = filesize($filename);
 
       while($total_bytes_read < $obj_size){
-          // Calculate volume to segment 
+          // Calculate volume to segment
           $remained_bytes = $obj_size - $total_bytes_read;
           if ($remained_bytes < $chunk_size){
               $chunk_size = $remained_bytes;
@@ -1924,7 +1916,7 @@ class Object {
           $temp_file = sprintf("./multipart-%03d", $chunk_index);
           $req_url = sprintf("%s/%03d", $url, $chunk_index);
 
-          // Create temporary part files 
+          // Create temporary part files
           $part_fd = fopen($temp_file, 'w+');
           fwrite($part_fd, $chunk);
           fseek($part_fd, 0);
@@ -1934,7 +1926,7 @@ class Object {
               CURLOPT_PUT => TRUE,
               CURLOPT_HEADER => TRUE,
               CURLOPT_RETURNTRANSFER => TRUE,
-              CURLOPT_INFILE => $part_fd,  // Enter part filestream as parameter 
+              CURLOPT_INFILE => $part_fd,  // Enter part filestream as parameter
               CURLOPT_HTTPHEADER => $req_header
           ));
           $response = curl_exec($curl);
@@ -1970,8 +1962,8 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 </details>
 
-### Modify Object Details 
-Same as Upload Object API, but if object is already located in the container, the object details are to be modified. 
+### Modify Object Details
+Same as Upload Object API, but if object is already located in the container, the object details are to be modified.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1993,9 +1985,9 @@ This API does not require a request body.
 | Object | URL | String | O | Object name of which details are to be modified |
 
 #### Response
-This API does not return response body. When the request is appropriate, return status code 201. 
+This API does not return response body. When the request is appropriate, return status code 201.
 
-### Download 
+### Download
 Download objects.
 
 ```
@@ -2004,7 +1996,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -2014,7 +2006,7 @@ This API does not require a request body.
 | Object | URL | String | O | Object name of which the detail is to be modified  |
 
 #### Response
-Object details are returned to stream. When the request is appropriate, return status code 200. 
+Object details are returned to stream. When the request is appropriate, return status code 200.
 
 #### Code Example
 <details>
@@ -2173,8 +2165,8 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 </details>
 
-### Copy 
-Copy object to another container. 
+### Copy
+Copy object to another container.
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
@@ -2189,7 +2181,7 @@ X-Copy-From: {Original object}
 ```
 
 #### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -2201,7 +2193,7 @@ This API does not require a request body.
 | Object | URL | String |	Object name to copy |
 
 #### Response
-This request does not return response body. When the request is appropriate, return status code 201. 
+This request does not return response body. When the request is appropriate, return status code 201.
 
 #### Code Example
 <details>
@@ -2242,7 +2234,7 @@ public class ObjectService {
         // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Copy-From", srcObject);    // Specify original object 
+        headers.add("X-Copy-From", srcObject);    // Specify original object
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
         // HttpMethod는 COPY 메서드를 지원하지 않아 PUT 메서드를 사용하는 대체 API를 호출한다.
@@ -2340,7 +2332,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 </details>
 
 ### Modify Object Metadata
-Modify metadata of a specified object. 
+Modify metadata of a specified object.
 
 ```
 POST   /v1/{Account}/{Container}/{Object}
@@ -2360,7 +2352,7 @@ This API does not require a request body.
 | Object | URL| String |  O | Object name of which metadata is to be modified |
 
 #### Response
-This request does not return response body. When the request is appropriate, return status code 202. 
+This request does not return response body. When the request is appropriate, return status code 202.
 
 #### Code Example
 <details>
@@ -2372,7 +2364,7 @@ $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
-// Check metadata added to object header 
+// Check metadata added to object header
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
@@ -2400,7 +2392,7 @@ public class ObjectService {
     public void setObjectMetadata(String containerName, String objectName, String key, String value) {
         String url = this.getUrl(containerName, objectName);
 
-        // Create metadata key 
+        // Create metadata key
         String metaKey = "X-Object-Meta-" + key;
 
         // Create header
@@ -2410,7 +2402,7 @@ public class ObjectService {
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call API 
+        // Call API
         this.restTemplate.exchange(url, HttpMethod.POST, requestHttpEntity, String.class);
     }
 
@@ -2503,8 +2495,8 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 
 </details>
 
-### Delete 
-Delete specified object. 
+### Delete
+Delete specified object.
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}
@@ -2520,7 +2512,7 @@ X-Auth-Token: {token-id}
 | Object | URL| String |  O | Object name of which metadata is to be modified |
 
 #### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -2530,7 +2522,7 @@ This API does not require a request body.
 | Object | URL| String |  O | Object name to delete |
 
 #### Response
-This request does not return response body. When the request is appropriate, return status code 204. 
+This request does not return response body. When the request is appropriate, return status code 204.
 
 #### Code Example
 <details>
@@ -2565,7 +2557,7 @@ public class ObjectService {
         headers.add("X-Auth-Token", tokenId);		
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call API 
+        // Call API
         this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);			
     }
 
@@ -2653,388 +2645,5 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 </details>
 
 ## References
-
-Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
-ation name on the left of the web console.
-2. Check **Project ID**.
-
-### Check API Endpoint
-
-To check API endpoint, click **API Endpoint Setting** on the Object Storage service page.
-
-| Item | API Endpoint | Usage |
-|---|---|---|
-| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | Control object storage |
-| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | Issue authentication token |
-
-> [Note]  
-> User account for API is composed of character strings in the `AUTH_***` format: included in the Object-Store API endpoint.
-
-### Set API Password
-
-To set API password, click **API Endpoint Setting** on the Object Storage service page.
-
-1. Click **API Endpoint Setting**.
-2. Enter password to issue a token in **API Password Setting** under **API Endpoint Setting**.
-3. Click **Save**.
-
-## Certificate Token Issuance
-
-A certificate token is required to use REST API of object storage: it is a must to access container or object which is not open to public. Tokens are managed by each account.
-
-**[Method, URL]**
-```
-POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
-```
-
-**[Request Parameters]**
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|tenantName|	Body or Plain|	String| TOAST Project ID |
-|username|	Plain|	String| Enter TOAST account ID (email) |
-|password|	Plain|	String| Password saved in **API Endpoint Setting** |
-
-**[Request Body]**
-```
-{
-  "auth": {
-    "tenantName": "{Project ID}",
-    "passwordCredentials": {
-      "username": "{TOAST ID}",
-      "password": "{API Password}"
-    }
-  }
-}
-```
-
-**[Response Parameters]**
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|access.token.id|	Body or Plain|	String| ID of issued token |
-|access.token.tenant.id|	Plain|	String| Tenant ID in response to the project requesting for a token |
-|access.token.expires|	Plain|	String| Expiration time of an issued token in the format of yyyy-mm-ddTHH:MM:ssZ. e.g) 2017-05-16T03:17:50Z |
-
-**[Response Body Example]**
-```
-{
-    "access": {
-        "token": {
-            "expires": "2018-01-15T08:05:05Z",
-            "id": "b587ae461278419da6ecd21a2344c8aa",
-            "tenant": {
-                "description": "",
-                "enabled": true,
-                "id": "c6439197d5e74e4593ca37a62bbc09a6",
-                "name": "9AD5KRlH",
-                "groupId": "XEj2zkHrbA7modGU",
-                "project_domain": "NORMAL",
-                "swift": true
-            },
-            "issued_at": "2018-01-15T07:05:05.719672"
-        },
-        …
-    }
-}
-```
-
-> [Note]  
-> Token expires after valid period. "expires" included in the response to request for token issuance refers to token expiration time. If a token is expired, a new token needs to get issued.
-
-
-## Containers
-
-### Create Container
-To upload files to object storage, containers must be created.
-
-> [Note]
-> If a container or object name includes special characters, such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, URL encoding (percent encoding) is a must to be applied for APIs. They are important reservation characters for URL. Unless the path of these characters are requested to an API without URL encoded, you may not be returned with a response you need
-
-
-**[Method, URL]**
-```
-PUT https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [Token ID]
-```
-
-**[Request Parameters]**
-
-|Name|Type|Attribute|Description|
-|---|---|---|---|
-|X-Auth-Token|Header|String|ID of issued token|
-|Account|URL|String|User account name: included in API Endpoint|
-|Container|URL|String|Container name to create|
-
-> [Note]
-> The API does not return response body: return status code 201, if a container has been created.
-
-### Retrieve Containers
-Retrieve information of a specified container along with the list of objects saved in it.
-
-**[Method, URL]**
-```
-GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [Token ID]
-```
-
-**[Request Parameters]**
-
-|Name|Type|Attribute|Description|
-|---|---|---|---|
-|X-Auth-Token|Header|String|ID of issued token|
-|Container|URL|String|Container name to retrieve|
-
-**[Response Body]**
-```
-[List of objects included in a specified container]
-```
-
-### Modify Containers
-
-Specify access rules by changing meta data of a container.
-
-**[Method, URL]**
-```
-POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: {Token ID}
-X-Container-Read: {Read Container Policy}
-X-Container-Write: {Write Container Policy}
-```
-
-**[Request Parameters]**
-
-|Name|Type|Attribute|Description|
-|---|---|---|---|
-|X-Auth-Token|Header|String|ID of issued token|
-|X-Container-Read|Header|String|Specify access rules to read container <br/>.r:* - Allow access for all users <br/>.r:example.com,test.com – Allow access for particular address, delimited by ',' <br/>.rlistings. – Allow retrieval of container list <br/>AUTH_.... – Allow access for particular accounts|
-|X-Container-Write|Header|String|Specify access rules for write containers|
-|Account|URL|String|User account name: included in API Endpoint|
-|Container|URL|String|Container name to modify|
-
-**[Request Example]**
-```
-POST  https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [Token ID]
-X-Container-Read: .r:*
-```
-
-> [Note]
-> This API does not return response body: return status code 204 if properly requested.
-
-After read authority is set public, check if retrieval without token is available by using tools, like `curl`and `wget`, or browser.
-
-**[Verification Example]**
-```
-$ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-
-{content of object}
-```
-
-### Delete Container
-
-Delete containers as specified.
-
-**[Method, URL]**
-```
-DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}
-X-Auth-Token: [Token ID]
-```
-
-**[Request Parameters]**
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|X-Auth-Token|	Header|	String| ID of issued token |
-|Account|URL|String|User account name: included in API Endpoint|
-|Container|	URL|	String| Container name to delete |
-
-> [Note]
-> This request does not return response body. Container to delete must be empty. Return status code 204 if properly requested.
-
-## Object
-
-### Upload Object
-
-Upload new objects to specified container.
-
-**[Method, URL]**
-```
-PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [Token ID]
-```
-
-**[Request Parameters]**
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|X-Auth-Token|	Header|	String| ID of issued token |
-|Account|URL|String|User account name: included in API Endpoint|
-|Container|	URL|	String| Container name |
-|Object|	URL|	String| Object name to create |
-|-|	Body|	Plain| Content of object to which text is to be created |
-
-> [Note]
-> Set appropriate content-type items for parameter attributes, at the request header. Return status code 201, if properly requested.   
-
-
-### Upload Multiple Parts
-
-Objects exceeding 5GB must be uploaded in segments with less than 5GB .
-
-**[Method, URL]**
-```
-PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}/{Count}
-X-Auth-Token: [Token ID]
-```
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|X-Auth-Token|	Header|	String| ID of issued token |
-|Account|URL|String|User account name: included in API Endpoint.|
-|Container|	URL|	String| Container name |
-|Object|	URL|	String| Object name to create |
-|Count| URL| String| Order of segmented objects |
-|-|	Body|	Plain| Content of objects of which text is segmented |
-
-
-Upload segments of all objects and create a manifest object, so as to apply as one object. Manifest object refers to the route where segments are saved.
-
-**[Method, URL]**
-```
-PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [Token ID]
-X-Object-Manifest: {Container}/{Object}/
-```
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|X-Auth-Token|	Header|	String| ID of issued token |
-|X-Object-Manifest| Header| String | Uploaded route for segmented objects, `{Container}/{Object}/` |
-|Account|URL|String|User account name, included in API Endpoint|
-|Container|	URL|	String| Container name |
-|Object|	URL|	String| Object name to create |
-|-|	Body|	Plain| Content of object of which text is segmented |
-
-
-**[Example]**
-```
-// Upload Segmented Objects
-$ curl -X PUT -H 'X-Auth-Token: *****' http://10.162.50.125/v1/AUTH_*****/con/sample.jpg/001 --data-binary '.....'
-$ curl -X PUT -H 'X-Auth-Token: *****' http://10.162.50.125/v1/AUTH_*****/con/sample.jpg/002 --data-binary '.....'
-
-// Upload Manifest Objects
-$ curl -X PUT -H 'X-Auth-Token: *****' -H 'X-Object-Manifest: con/sample.jpg/' http://10.162.50.125/v1/AUTH_*****/con/sample.jpg --data-binary ''
-
-// Download Objects
-$ curl http://10.162.50.125/v1/AUTH_*****/con/sample.jpg > sample.jpg
-```
-
-### Modify Objects
-
-If an object is already in a container, although its upload API is the same, the content shall change.
-
-**[Method, URL]**
-```
-PUT   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [Token ID]
-```
-
-**[Request Parameters]**
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|X-Auth-Token|	Header|	String| ID of issued token |
-|Account|URL|String|User account name: included in API Endpoint|
-|Container|	URL|	String| Container name |
-|Object|	URL|	String| Name of object of which content is to be modified |
-
-> [Note]
-> Content-type item appropriate for an object attribute must be set at the request header: return status code 201 if properly requested.  
-
-### Download Objects
-
-**[Method, URL]**
-```
-GET   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [Token ID]
-```
-
-**[Request Parameters]**
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|X-Auth-Token|	Header|	String| ID of issued token |
-|Account|URL|String|User account name: included in API Endpoint|
-|Container|	URL|	String| Container name |
-|Object|	URL|	String| Object name to download |
-
-> [Note]
-> Object content is returned to stream: return status code 200 if properly requested.
-
-### Copy Objects
-
-**[Method, URL]**
-```
-COPY   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [Token ID]
-```
-
-**[Request Parameters]**
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|X-Auth-Token|	Header|	String| ID of issued token |
-|Destination|	Header|	String| Target of copying for object, `{Container name} / {Name of copied object}` |
-|Account|URL|String|User account name: included in API Endpoint|
-|Container|	URL|	String| Container name |
-|Object|	URL|	String| Object name to copy |
-
-
-> [Note]
-> This request does not return response body: return status code 201 if properly requested.
-
-### Modify Object Meta Data
-
-**[Method, URL]**
-```
-POST   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [Token ID]
-```
-
-**[Request Parameters]**
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|X-Auth-Token|	Header|	String| ID of issued token |
-|Content-Type|	Header|	String| Object format to change |
-|Account|URL|String|User account name: included in API Endpoint|
-|Container|	URL|	String| Container name |
-|Object|	URL|	String| Object name of which attribute is to be modified |
-
-> [Note]
-> This request does not return response body: return status code 202 if properly requested.
-
-### Delete Objects
-
-**[Method, URL]**
-```
-DELETE   https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-X-Auth-Token: [Token ID]
-```
-
-**[Request Parameters]**
-
-|Name| Type | Attribute | Description |
-|---|---|---|---|
-|X-Auth-Token|	Header|	String| ID of issued token |
-|Account|URL|String|User account name: included in API Endpoint|
-|Container|	URL|	String| Container name |
-|Object|	URL|	String| Object name to delete |
-
-> [Note]
-> This request does not return response body: return status code 204 if properly requested.
-
-## Reference
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
