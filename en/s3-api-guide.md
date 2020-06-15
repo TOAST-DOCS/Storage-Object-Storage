@@ -1,6 +1,6 @@
-## Storage > Object Storage > API Guide for AWS S3 Compatibility 
+## Storage > Object Storage > API Guide for AWS S3 Compatibility
 
-Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API. 
+Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
 
 APIs that are compatible with S3 are provided as follows.  
 
@@ -51,7 +51,7 @@ X-Auth-Token: {token-id}
 | tenant_id    | Body   | String | O        | User Tenant ID, to be found on the setup box for API Endpoint |
 
 > [Caution]
-> User ID for credential registration is not an email-type TOAST account. Find this, when you get a token issued. 
+> User ID for credential registration is not an email-type TOAST account. Find this, when you get a token issued.
 
 <details>
 <summary>Example</summary>
@@ -90,9 +90,10 @@ X-Auth-Token: {token-id}
 
 </details>
 
-### Get 
+### Get
 
-Get registered EC2 credential. 
+Get registered EC2 credential.
+
 **[Method, URL]**
 
 ```
@@ -103,7 +104,7 @@ X-Auth-Token: {token-id}
 
 #### Request
 
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name         | Type   | Format | Required | Description                               |
 | ------------ | ------ | ------ | -------- | ----------------------------------------- |
@@ -136,9 +137,9 @@ This API does not require a request body.
 
 </details>
 
-### Delete 
+### Delete
 
-Delete registered EC2 credential. 
+Delete registered EC2 credential.
 
 **[Method, URL]**
 
@@ -150,7 +151,7 @@ X-Auth-Token: {token-id}
 
 #### Request
 
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name         | Type   | Format | Required | Description                               |
 | ------------ | ------ | ------ | -------- | ----------------------------------------- |
@@ -160,13 +161,13 @@ This API does not require a request body.
 
 #### Response
 
-This API does not return request body. When the request is appropriate, return status code 204. 
+This API does not return request body. When the request is appropriate, return status code 204.
 
 ## Signatures
 
-To enable S3 APIs, use credential to create a signature. See [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) regarding how to sign. 
+To enable S3 APIs, use credential to create a signature. See [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) regarding how to sign.
 
-Following information is required to create a signature. 
+Following information is required to create a signature.
 
 | Name          | Value                          |
 | ------------- | ------------------------------ |
@@ -177,24 +178,24 @@ Following information is required to create a signature.
 | Secret Key 키 | Credential secret key          |
 
 > [Note]
-> APIs compatible with S3 are provided only within Korea (Pangyo) region as of March 2020. 
+> APIs compatible with S3 are provided only within Korea (Pangyo) region as of March 2020.
 
 ## Buckets
 
 ### Create  
 
-Create a bucket (container). 
+Create a bucket (container).
 
 ```
 PUT /{bucket}
 
-Date: 22:22:22 +0000, Sat, 22 Feb 2020 
+Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
 #### Request
 
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
@@ -239,7 +240,7 @@ This API does not require a request body.
 
 ### List  
 
-List buckets. 
+List buckets.
 
 ```
 GET /
@@ -250,7 +251,7 @@ Authorization: AWS {access}:{signature}
 
 #### Request
 
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
@@ -298,20 +299,20 @@ This API does not require a request body.
 
 </details>
 
-### Get 
+### Get
 
 Get bucket information as specified and list objects that are saved within.
 
 ```
 GET /{bucket}
 
-Date: 22:22:22 +0000, 22 Feb 2020 
+Date: 22:22:22 +0000, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
 #### Request
 
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
@@ -374,14 +375,14 @@ This API does not require a request body.
 
 </details>
 
-### Delete 
+### Delete
 
-Delete buckets as specified. To be deleted, buckets must be empty. 
+Delete buckets as specified. To be deleted, buckets must be empty.
 
 ```
 DELETE /{bucket}
 
-Date: 22:22:22 +0000, Sat, 22 Feb 2020 
+Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
@@ -429,20 +430,20 @@ This API does not require a request body.
 
 ## Objects
 
-### Upload 
+### Upload
 
-Upload objects to a specified bucket. 
+Upload objects to a specified bucket.
 
 ```
 PUT /{bucket}/{obj}
 
-Date: 22:22:22 +0000, Sat, 22 Feb 2020 
+Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
 #### Request
 
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
@@ -489,18 +490,18 @@ This API does not require a request body.
 
 ### Download
 
-Download objects. 
+Download objects.
 
 ```
 PUT /{bucket}/{obj}
 
-Date: 22:22:22 +0000, Sat, 22 Feb 2020 
+Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
 #### Request
 
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
@@ -553,20 +554,20 @@ This API does not require a request body.
 
 </details>
 
-### Delete 
+### Delete
 
-Delete objects as specified. 
+Delete objects as specified.
 
 ```
 DELETE /{bucket}/{obj}
 
-Date: 22:22:22 +0000 Sat, 22 Feb 2020 
+Date: 22:22:22 +0000 Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
 #### Request
 
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
