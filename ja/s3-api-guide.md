@@ -1,58 +1,58 @@
-## Storage > Object Storage > AWS S3 호환 API 가이드
-오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 AWS S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
+## Storage > Object Storage > AWS S3互換APIガイド
+オブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
 
-제공하는 S3 호환 API는 다음과 같습니다.
+提供するS3互換APIは次のとおりです。
 
-| S3 API 메서드 | 용도 |
+| S3 APIメソッド | 用途 |
 | --- | --- |
-| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | 버킷 생성 |
-| [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | 버킷 정보 조회 |
-| [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | 버킷 삭제 |
-| [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | 버킷 ACL 설정 |
-| [GET Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html) | 버킷 ACL 조회 |
-| [GET Bucket Location](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html) | 버킷이 있는 리전 조회 |
-| [GET Bucket List Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html) | 버킷의 오브젝트 목록 조회 |
-| [GET Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html) | 오브젝트 다운로드 |
-| [HEAD Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html) | 오브젝트 정보 조회 |
-| [PUT Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html) | 오브젝트 업로드 |
-| [PUT Object Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html) | 오브젝트 복사 |
-| [DELETE Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html) | 오브젝트 삭제 |
-| [Initiate Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html) | 멀티 파트 업로드 초기화 |
-| [Upload Part](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html) | 파트 업로드 |
-| [Upload Part Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html) | 파트 복사 |
-| [Complete Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html) | 멀티 파트 업로드 완료 |
-| [Abort Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html) | 멀티 파트 업로드 중단 |
-| [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 멀티 파트 오브젝트의 파트 오브젝트 리스트 |
-| [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 업로드 진행 중인 멀티 파트 오브젝트의 파트 오브젝트 리스트 |
-| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | 멀티 파트 오브젝트 삭제 |
+| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | バケット作成 |
+| [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | バケット情報を照会 |
+| [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | バケットを削除 |
+| [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | バケットACLを設定 |
+| [GET Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html) | バケットACLを照会 |
+| [GET Bucket Location](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html) | バケットがあるリージョンを照会 |
+| [GET Bucket List Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html) | バケットのオブジェクトリストを照会 |
+| [GET Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html) | オブジェクトをダウンロード |
+| [HEAD Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html) | オブジェクト情報を照会 |
+| [PUT Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html) | オブジェクトをアップロード |
+| [PUT Object Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html) | オブジェクトをコピー |
+| [DELETE Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html) | オブジェクトを削除 |
+| [Initiate Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html) | マルチパートアップロードを初期化 |
+| [Upload Part](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html) | パートをアップロード |
+| [Upload Part Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html) | パートをコピー |
+| [Complete Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html) | マルチパートアップロード完了 |
+| [Abort Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html) | マルチパートアップロードを中断 |
+| [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | マルチパートオブジェクトのパートオブジェクトリスト |
+| [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | アップロード進行中のマルチパートオブジェクトのパートオブジェクトリスト |
+| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | マルチパートオブジェクトを削除 |
 
-이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [AWS S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
+この文書はAPI使用方法の基礎的な部分のみを説明します。高度な機能を使用するには[AWS S3 APIガイド](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)を参照するか、[AWS SDK](https://aws.amazon.com/jp/tools)を使用することを推奨します。
 
-## EC2 자격 증명(EC2 Credential)
+## EC2認証情報(EC2 Credential)
 
-### 자격 증명 등록
-S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명을 등록하려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참고하십시오.
+### 認証情報を登録
+S3と互換性のあるAPIを使用するには、先にAWS EC2の形式の認証情報を登録する必要があります。認証情報を登録するには認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](/Storage/Object%20Storage/ja/api-guide/#tenant-id-api-endpoint)を参照してください。
 
 ```
-POST    https://api-compute.cloud.toast.com/identity/v2.0/users/{User ID}/credentials/OS-EC2
+POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{User ID}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### リクエスト
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
-| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
-| tenant_id | Body | String | O | 사용자 Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
+| X-Auth-Token | Header | String | O | 発行されたトークンID |
+| user-id | URL | String | O | ユーザーID、認証トークンに含まれている |
+| tenant_id | Body | String | O | ユーザーTenant ID。API Endpoint設定ダイアログボックスで確認可能 |
 
-> [주의]
-> 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
+> [注意]
+> 認証情報の登録に使用するユーザーIDはメール形式のTOASTアカウントIDではありません。認証トークン発行時に確認できます。
 
 <details>
-<summary>예시</summary>
+<summary>例</summary>
 
 ```json
 {
@@ -62,15 +62,15 @@ X-Auth-Token: {token-id}
 
 </details>
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| access | Body | String | 자격 증명 접근 키 |
-| secret | Body | String | 자격 증명 비밀 키 |
+| access | Body | String | 認証情報アクセスキー |
+| secret | Body | String | 認証情報シークレットキー |
 
 <details>
-<summary>예시</summary>
+<summary>例</summary>
 
 ```json
 {
@@ -88,32 +88,32 @@ X-Auth-Token: {token-id}
 
 </details>
 
-### EC2 자격 증명 조회
-등록한 EC2 자격 증명을 조회합니다.
+### EC2認証情報照会
+登録したEC2認証情報を照会します。
 
 **[Method, URL]**
 ```
-GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2
+GET   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O |발급받은 토큰 ID |
-| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
+| X-Auth-Token | Header | String | O |発行されたトークンID |
+| user-id | URL | String | O | ユーザーID。認証トークンに含まれている |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| access | Body | String | 자격 증명 접근 키 |
-| secret | Body | String | 자격 증명 비밀 키 |
+| access | Body | String | 認証情報アクセスキー |
+| secret | Body | String | 認証情報シークレットキー |
 
 <details>
-<summary>예시</summary>
+<summary>例</summary>
 
 ```json
 {
@@ -131,46 +131,46 @@ X-Auth-Token: {token-id}
 
 </details>
 
-### EC2 자격 증명 삭제
-등록한 EC2 자격 증명을 삭제합니다.
+### EC2認証情報を削除
+登録したEC2認証情報を削除します。
 
 **[Method, URL]**
 ```
-GET   https://api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
-| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
-| access | URL | String | O | 자격 증명 접근 키 |
+| X-Auth-Token | Header | String | O | 発行されたトークンID |
+| user-id | URL | String | O | ユーザーID。認証トークンに含まれている |
+| access | URL | String | O | 認証情報アクセスキー |
 
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+#### レスポンス
+このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 
-## 서명(signature) 생성
-S3 API를 사용하려면 자격 증명 키를 이용해 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
+## 署名(signature)作成
+S3 APIを使用するには、認証情報キーを利用して署名を作成する必要があります。署名の作成方法は[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html)文書を参照してください。
 
-서명 생성에 필요한 정보는 다음과 같습니다.
+署名の作成に必要な情報は次のとおりです。
 
-| 이름 | 값 |
+| 名前 | 値 |
 |---|---|
-| 알고리즘 | AWS4-HMAC-SHA256 |
-| 서명 시각 | YYYYMMDDThhmmssZ 형태 |
-| 서비스 이름 | s3 |
-| 리전 이름 | KR1 - 한국(판교)리전 |
-| 비밀 키 | 자격 증명 비밀 키 |
+| アルゴリズム | AWS4-HMAC-SHA256 |
+| 署名時刻 | YYYYMMDDThhmmssZ形式 |
+| サービス名 | s3 |
+| リージョン名 | KR1 - 韓国(パンギョ)リージョン |
+| シークレットキー | 認証情報シークレットキー |
 
-> [참고]
-> S3 호환 API는 2020년 3월 현재 한국(판교)리전에서만 제공됩니다.
+> [参考]
+> S3互換APIは、2020年3月現在、韓国(パンギョ)リージョンでのみ提供されます。
 
-## 버킷(Bucket)
-### 버킷 생성
-버킷(컨테이너)을 생성합니다.
+## バケット(Bucket)
+### バケット作成
+バケット(コンテナ)を作成します。
 
 ```
 PUT /{bucket}
@@ -179,25 +179,25 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | O | String | 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | O | バケット名 |
+| Date | Header | String | O | リクエスト時刻 |
+| Authorization | Header | O | String | 認証情報アクセスキーと署名で構成 |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Location | Body | String | 생성한 버킷 경로 |
+| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
+| Location | Body | String | 作成したバケットのパス |
 
 <details>
-<summary>예시</summary>
+<summary>例</summary>
 
 ```json
 {
@@ -223,8 +223,8 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 버킷 목록 조회
-버킷 목록을 조회합니다.
+### バケットリスト照会
+バケットリストを照会します。
 ```
 GET /
 
@@ -232,25 +232,25 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| Date | Header | String | O | リクエスト時刻 |
+| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Buckets.Name | Body | String | 버킷 이름 |
-| Buckets.CreationDate | Body | String | 생성 시각 |
+| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
+| Buckets.Name | Body | String | バケット名 |
+| Buckets.CreationDate | Body | String | 作成時刻 |
 
 <details>
-<summary>예시</summary>
+<summary>例</summary>
 
 ```json
 {
@@ -281,8 +281,8 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 버킷 조회
-지정한 버킷의 정보와 내부에 저장된 오브젝트 목록을 조회합니다.
+### バケット照会
+指定したバケットの情報と内部に保存されたオブジェクトリストを照会します。
 ```
 GET /{bucket}
 
@@ -290,32 +290,32 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | O | バケット名 |
+| Date | Header | String | O | リクエスト時刻 |
+| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Contents | Body | Object | 오브젝트 목록 객체 |  
-| Contents.Key | Body | String | 오브젝트 이름 |
-| Contents.LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| Contents.ETag | Body | String | 오브젝트의 MD5 해시값 |
-| Contents.Size | Body | String | 오브젝트의 크기 |
-| Contents.StorageClass | Body | String | 오브젝트가 저장된 저장소 종류 |
-| Name | Body | String | 버킷 이름 |
-| KeyCount | Body | Integer | 목록의 오브젝트 수 |
+| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
+| Contents | Body | Object | オブジェクトリストオブジェクト |  
+| Contents.Key | Body | String | オブジェクト名 |
+| Contents.LastModified | Body | String | オブジェクトの最終修正時刻、 YYYY-MM-DDThh:mm:ssZ |
+| Contents.ETag | Body | String | オブジェクトのMD5ハッシュ値 |
+| Contents.Size | Body | String | オブジェクトのサイズ |
+| Contents.StorageClass | Body | String | オブジェクトが保存された場所の種類 |
+| Name | Body | String | バケット名 |
+| KeyCount | Body | Integer | リストのオブジェクト数 |
 
 <details>
-<summary>예시</summary>
+<summary>例</summary>
 
 ```json
 {
@@ -354,8 +354,8 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 버킷 삭제
-지정한 버킷을 삭제합니다. 삭제할 버킷은 비어 있어야 합니다.
+### バケットの削除
+指定したバケットを削除します。削除するバケットは空になっている必要があります。
 ```
 DELETE /{bucket}
 
@@ -363,24 +363,24 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | O | バケット名 |
+| Date | Header | String | O | リクエスト時刻 |
+| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
+| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
 
 <details>
-<summary>예시</summary>
+<summary>例</summary>
 
 ```json
 {
@@ -404,9 +404,9 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-## 오브젝트
-### 오브젝트 업로드
-지정한 버킷에 오브젝트를 업로드합니다.
+## オブジェクト
+### オブジェクトのアップロード
+指定したバケットにオブジェクトをアップロードします。
 ```
 PUT /{bucket}/{obj}
 
@@ -414,26 +414,26 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| obj | URL | String | O | 오브젝트 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | O | バケット名 |
+| obj | URL | String | O | オブジェクト名 |
+| Date | Header | String | O | リクエスト時刻 |
+| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| ETag | Body | String | 업로드한 오브젝트의 MD5 해시값 |
+| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
+| ETag | Body | String | アップロードしたオブジェクトのMD5ハッシュ値 |
 
 <details>
-<summary>예시</summary>
+<summary>例</summary>
 
 ```json
 {
@@ -460,8 +460,8 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 오브젝트 다운로드
-오브젝트를 다운로드합니다.
+### オブジェクトのダウンロード
+オブジェクトをダウンロードします。
 ```
 PUT /{bucket}/{obj}
 
@@ -469,30 +469,30 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| obj | URL | String | O | 오브젝트 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | O | バケット名 |
+| obj | URL | String | O | オブジェクト名 |
+| Date | Header | String | O | リクエスト時刻 |
+| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| ContentLength | Body | String | 다운로드한 오브젝트의 크기 |
-| ETag | Body | String | 오브젝트의 MD5 해시값 |
-| ContentType | Body | String | 오브젝트의 콘텐츠 타입 |
-| Metadata | Body | Object | 오브젝트의 메타데이터 객체 |
+| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
+| LastModified | Body | String | オブジェクトの最終修正時刻、 YYYY-MM-DDThh:mm:ssZ |
+| ContentLength | Body | String | ダウンロードしたオブジェクトのサイズ |
+| ETag | Body | String | オブジェクトのMD5ハッシュ値 |
+| ContentType | Body | String | オブジェクトのコンテンツタイプ |
+| Metadata | Body | Object | オブジェクトのメタデータオブジェクト |
 
 <details>
-<summary>예시</summary>
+<summary>例</summary>
 
 ```json
 {
@@ -523,8 +523,8 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 오브젝트 삭제
-지정한 오브젝트를 삭제합니다.
+### オブジェクトの削除
+指定したオブジェクトを削除します。
 
 ```
 DELETE /{bucket}/{obj}
@@ -533,25 +533,25 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### リクエスト
+このAPIはリクエスト本文を要求しません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| obj | URL | String | O | 오브젝트 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | O | バケット名 |
+| obj | URL | String | O | オブジェクト名 |
+| Date | Header | String | O | リクエスト時刻 |
+| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
 
-#### 응답
+#### レスポンス
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
+| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
 
 <details>
-<summary>예시</summary>
+<summary>例</summary>
 
 ```json
 {

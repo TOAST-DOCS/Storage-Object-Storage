@@ -1,39 +1,39 @@
-## Storage > Object Storage > release notes
+## Storage > Object Storage > Release Notes
 
-### 2020. 02. 25.
+### Feb. 25, 2020
 
-#### 기능 추가
-* AWS S3 호환 API 제공
+#### More Features
+* Provides APIs compatible with AWS S3
 
-### 2018. 04. 24.
+### April 24, 2018 
 
-#### 기능 수정
-* 폴더명 특수문자 제한
-    * 컨테이너 및 폴더 이름으로 사용할 수 없는 특수 문자 목록에 슬래시(/) 추가
+#### Feature Updates
+* Restricts special characters for a folder name
+    * Added slash (/) onto the list of special characters not allowed for the name of container or folder
 
-### 2017. 10. 26.
+### Oct. 26, 2017
 
-#### 기능 수정
-* 폴더명 특수문자 제한
-    * 컨테이너 및 폴더 이름에 일부 특수 문자(., .., &, <, >, ", ', ;)와 공백 문자는 사용할 수 없도록 수정
+#### Feature Updates
+* Restricts special characters for a folder name
+    * Modified not to allow some special characters (e.g.., .., &, <, >, ", ', ;) and space characters for the name of container or folder
 
-### 2017. 03. 23.
+### March 23, 2017
 
-#### 기능 개선
+#### Feature Updates
 
-* 업로드 가능한 파일 사이즈를 명시합니다.
-	* 최대 5GB까지 업로드가 가능합니다.
+* Specifies the size of uploadable files 
+	* Up to 5GB can be uploaded. 
 
-### 2016. 12. 22.
+### Dec. 22, 2016
 
-#### 버그 수정
-* [Console] 폴더명이 "/"로 시작되는 폴더 생성시 폴더가 노출되지 않던 문제 수정
-* [Console] 폴더명과 파일명이 동일할 때 파일 삭제가 불가능하던 문제 수정
-* [Console] “#” 문자가 제목으로 들어간 파일 다운로드 불가 문제 수정
-* [Console] API Endpoint 설정 팝업의 복사버튼 미동작 문제 수정
-* [Console] 0Byte 파일 다운로드 불가 현상 수정
+#### Bug Fixes 
+* [Console] Fixed an issue in which folders starting with "/" in the name were not properly shown when created 
+* [Console] Fixed an issue in which files that are named same as the folder name could not be deleted 
+* [Console] Fixed the inavailability of downloading files with "#" as part of the title 
+* [Console] Fixed the inoperability of the copy button on the pop-up for API Endpoint Setting
+* [Console] Fixed the inavailability of downloading 0 byte files 
 
-### 2016. 12. 08.
+### Dec. 08, 2016 
 
-#### 버그 수정
-* [Console] 리소스 남아있는 상태에서 상품 이용종료 시 안내 문구 수정
+#### Bug Fixes 
+* [Console] Modified the message guided when service is closed while resources remain
