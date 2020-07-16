@@ -30,7 +30,7 @@
 
 ## EC2 자격 증명(EC2 Credential)
 
-### 자격 증명 등록
+### EC2 자격 증명 등록
 S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명을 등록하려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참고하십시오.
 
 ```
