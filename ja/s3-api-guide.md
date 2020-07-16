@@ -30,7 +30,7 @@
 
 ## EC2認証情報(EC2 Credential)
 
-### 認証情報を登録
+### EC2認証情報を登録
 S3と互換性のあるAPIを使用するには、先にAWS EC2の形式の認証情報を登録する必要があります。認証情報を登録するには認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](/Storage/Object%20Storage/ja/api-guide/#tenant-id-api-endpoint)を参照してください。
 
 ```
