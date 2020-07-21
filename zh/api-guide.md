@@ -16,7 +16,7 @@ API的Endpoint（地域节点）可以在Object Storage页面上点击“API End
 | 项目 | API Endpoint | 用途 |
 |---|---|---|
 | Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 控制对象存储。|
-| Identity |  https://api-compute.cloud.toast.com/identity/v2.0 | 颁发身份验证令牌。|
+| Identity |  https://api-identity.infrastructure.cloud.toast.com/v2.0 | 颁发身份验证令牌。|
 
 > [参考]
 > 用在API的用户帐户(account)是“AUTH_***”形式的字符串。它包含在Object-Store API Endpoint中。
@@ -36,7 +36,7 @@ API的Endpoint（地域节点）可以在Object Storage页面上点击“API End
 
 **Method, URL**
 ```
-POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
+POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens
 ```
 
 **Request Parameter**
