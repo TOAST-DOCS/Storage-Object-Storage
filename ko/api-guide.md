@@ -10,7 +10,7 @@
 
 | 항목 | API 엔드포인트 | 용도 |
 |---|---|---|
-| Identity | https://api-compute.cloud.toast.com/identity/v2.0 | 인증 토큰 발급 |
+| Identity | https://api-identity.infrastructure.cloud.toast.com/v2.0 | 인증 토큰 발급 |
 | Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 오브젝트 스토리지 제어, 리전에 따라 다름 |
 | Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
 
@@ -28,7 +28,7 @@ API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpo
 ## 인증 토큰 발급
 
 ```
-POST    https://api-compute.cloud.toast.com/identity/v2.0/tokens
+POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens
 Content-Type: application/json
 ```
 
@@ -105,7 +105,7 @@ Content-Type: application/json
 
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
-https://api-compute.cloud.toast.com/identity/v2.0/tokens \
+https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
 -d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
@@ -208,7 +208,7 @@ public class AuthService {
     }
 
     public static void main(String[] args) {
-        final String authUrl = "https://api-compute.cloud.toast.com/identity/v2.0";
+        final String authUrl = "https://api-identity.infrastructure.cloud.toast.com/v2.0";
         final String tenantId = "{Tenant ID}";
         final String username = "{TOAST Account}";
         final String password = "{API Password}";
@@ -250,7 +250,7 @@ def get_token(auth_url, tenant_id, username, password):
 
 
 if __name__ == '__main__':
-    AUTH_URL = 'https://api-compute.cloud.toast.com/identity/v2.0'
+    AUTH_URL = 'https://api-identity.infrastructure.cloud.toast.com/v2.0'
     TENANT_ID = '{Tenant ID}'
     USERNAME = '{TOAST Account}'
     PASSWORD = '{API Password}'
@@ -295,7 +295,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
   return $response;
 }
 
-$AUTH_URL = 'https://api-compute.cloud.toast.com/identity/v2.0';
+$AUTH_URL = 'https://api-identity.infrastructure.cloud.toast.com/v2.0';
 $TENANT_ID = '{Tenant ID}';
 $USERNAME = '{TOAST Account}';
 $PASSWORD = '{API Password}';

@@ -74,15 +74,13 @@ X-Auth-Token: {token-id}
 
 ```json
 {
-  "credentials": [
-    {
-      "access": "253a3c7ca27f4731a9c757addfac29ca",
-      "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
-      "secret": "be057f235abf45ee8e2ba14edc5fb253",
-      "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-      "trust_id": null
-    }
-  ]
+  "credential": {
+    "access": "253a3c7ca27f4731a9c757addfac29ca",
+    "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
+    "secret": "be057f235abf45ee8e2ba14edc5fb253",
+    "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
+    "trust_id": null
+  }
 }
 ```
 
@@ -136,7 +134,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-GET   https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE   https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
