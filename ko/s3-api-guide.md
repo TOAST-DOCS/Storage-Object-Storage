@@ -168,7 +168,15 @@ S3 API를 사용하려면 자격 증명 키를 이용해 서명을 생성해야 
 
 ## 버킷(Bucket)
 ### 버킷 생성
-버킷(컨테이너)을 생성합니다.
+버킷(컨테이너)을 생성합니다. 버킷 이름은 다음과 같은 AWS S3의 버킷 명명 규칙을 따라야 합니다.
+
+* 버킷 이름은 3자에서 63자 사이여야 합니다.
+* 버킷 이름은 소문자, 숫자, 점(.) 및 하이픈(-)으로만 구성될 수 있습니다.
+* 버킷 이름은 문자 또는 숫자로 시작하고 끝나야 합니다.
+* 버킷 이름은 IP 주소 형식(예: 192.168.5.4)을 사용하지 않습니다.
+* 버킷 이름은 xn--으로 시작할 수 없습니다.
+
+자세한 내용은 [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html) 문서를 참조하세요.
 
 ```
 PUT /{bucket}
@@ -176,6 +184,9 @@ PUT /{bucket}
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
+
+> [참고]
+> 웹 콘솔 또는 OBS API를 통해 만든 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
