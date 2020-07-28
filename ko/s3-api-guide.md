@@ -151,7 +151,7 @@ X-Auth-Token: {token-id}
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## 서명(signature) 생성
-S3 API를 사용하려면 자격 증명 키를 이용해 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
+S3 API를 사용하려면 자격 증명을 이용해 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
 
 서명 생성에 필요한 정보는 다음과 같습니다.
 
@@ -195,7 +195,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|---|
 | bucket | URL | String | O | 버킷 이름 |
 | Date | Header | String | O | 요청 시각 |
-| Authorization | Header | O | String | 자격 증명 접근 키와 서명으로 구성 |
+| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
 
@@ -472,7 +472,7 @@ Authorization: AWS {access}:{signature}
 ### 오브젝트 다운로드
 오브젝트를 다운로드합니다.
 ```
-PUT /{bucket}/{obj}
+GET /{bucket}/{obj}
 
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
@@ -585,10 +585,10 @@ Authorization: AWS {access}:{signature}
 </details>
 
 ## AWS 명령줄 인터페이스(CLI)
-S3 호환 API를 통해 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 TOAST OBS를 사용할 수 있습니다.
+S3 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 TOAST OBS를 사용할 수 있습니다.
 
 ### 설치
-AWS 명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 통해 설치합니다.
+AWS 명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 이용해 설치합니다.
 
 ```
 $ sudo pip install awscli
@@ -625,7 +625,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 
 > [참고]
-> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 TAOST OBS를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
+> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 TAOST OBS를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
 > AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
 
 <details>
@@ -703,12 +703,10 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 통해 [AWS SDK](https://aws.amazon.com/ko/tools/)로 TOAST OBS를 사용할 수 있습니다.
+AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 TOAST OBS를 사용할 수 있습니다.
 
 > [참고]
-> 이 문서에서는 Python과 Java SDK의 간단한 사용 예시만 설명합니다. 자세한 내용은 각 SDK 문서를 참조하세요.
-> [Python용 AWS SDK(Boto3)](https://aws.amazon.com/ko/sdk-for-python/)
-> [Java용 AWS SDK](https://aws.amazon.com/ko/sdk-for-java/)
+> 이 문서에서는 Python과 Java SDK의 간단한 사용 예시만 설명합니다. 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
 
 
 AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
