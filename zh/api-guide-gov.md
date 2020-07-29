@@ -15,7 +15,7 @@ API的Endpoint（地域节点）可以在Object Storage页面上点击“API End
 
 | 项目 | API Endpoint | 用途 |
 |---|---|---|
-| Identity |  https://gov-api-compute.cloud.toast.com/identity/v2.0 | 颁发身份验证令牌。|
+| Identity |  https://gov-api-identity.infrastructure.cloud.toast.com/v2.0 | 颁发身份验证令牌。|
 | Object-Store | https://gov-api-storage.cloud.toast.com/v1/{Account} | 控制对象存储。|
 
 > [参考]
@@ -36,7 +36,7 @@ API的Endpoint（地域节点）可以在Object Storage页面上点击“API End
 
 **Method, URL**
 ```
-POST    https://gov-api-compute.cloud.toast.com/identity/v2.0/tokens
+POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/tokens
 ```
 
 **Request Parameter**
