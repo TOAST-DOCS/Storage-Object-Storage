@@ -160,11 +160,9 @@ S3 API를 사용하려면 자격 증명을 이용해 서명을 생성해야 합�
 | 알고리즘 | AWS4-HMAC-SHA256 |
 | 서명 시각 | YYYYMMDDThhmmssZ 형태 |
 | 서비스 이름 | s3 |
-| 리전 이름 | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전 |
+| 리전 이름 | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
 | 비밀 키 | 자격 증명 비밀 키 |
 
-> [참고]
-> S3 호환 API는 2020년 8월 현재 한국(판교)리전, 한국(평촌)리전에서 제공됩니다.
 
 ## 버킷(Bucket)
 ### 버킷 생성
@@ -609,7 +607,7 @@ Default output format [None]: json
 |---|---|
 | access | 자격 증명 접근 키 |
 | secret | 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전 |
+| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
 
 ### S3 명령 사용 방법
 
@@ -619,7 +617,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | 이름 | 설명 |
 |---|---|
-| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전 |
+| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 |
 | command | AWS 명령줄 인터페이스 명령 |
 | bucket | 버킷 이름 |
 
@@ -715,8 +713,8 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 |---|---|
 | access | 자격 증명 접근 키 |
 | secret | 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전 |
-| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전 |
+| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
+| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 |
 
 
 ### Boto3 - Python SDK
