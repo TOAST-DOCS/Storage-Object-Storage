@@ -1,5 +1,5 @@
 ## Storage > Object Storage > AWS S3互換APIガイド
-オブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
+TOAST オブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
 
 提供するS3互換APIは次のとおりです。
 
@@ -183,7 +183,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 > [참고]
-> 웹 콘솔 또는 OBS API를 통해 만든 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
+> 웹 콘솔 또는 오브젝트 스토리지 API를 통해 만든 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
@@ -583,7 +583,7 @@ Authorization: AWS {access}:{signature}
 
 
 ## AWS 명령줄 인터페이스(CLI)
-S3 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 TOAST OBS를 사용할 수 있습니다.
+S3 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 TOAST 오브젝트 스토리지를 사용할 수 있습니다.
 
 ### 설치
 AWS 명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 이용해 설치합니다.
@@ -623,7 +623,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 
 > [참고]
-> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 TAOST OBS를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
+> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 TAOST 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
 > AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
 
 <details>
@@ -700,7 +700,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 </details>
 
 ## AWS SDK
-AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 TOAST OBS를 사용할 수 있습니다.
+AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 TOAST 오브젝트 스토리지를 사용할 수 있습니다.
 
 > [참고]
 > 이 문서에서는 Python과 Java SDK의 간단한 사용 예시만 설명합니다. 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
