@@ -304,11 +304,11 @@ printf("%s\n", $token);
 
 </details>
 
-## 어카운트
-오브젝트 스토리지 어카운트(account)는 `AUTH_*****` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
+## 스토리지 계정
+스토리지 계정(account)은 `AUTH_*****` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
 
-### 어카운트 조회
-어카운트의 사용 현황을 조회합니다.
+### 스토리지 계정 조회
+스토리지 계정의 사용 현황을 조회합니다.
 
 ```
 HEAD  /v1/{Account}
@@ -321,7 +321,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 오브젝트 스토리지 어카운트 이름, **API Endpoint 설정** 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, **API Endpoint 설정** 대화 상자에서 확인 |
 
 #### 응답
 응답 본문을 반환하지 않습니다. 사용 현황은 헤더에 포함되어 있습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
@@ -502,7 +502,7 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 </details>
 
 ### 컨테이너 목록 조회
-어카운트의 컨테이너 목록을 조회합니다.
+스토리지 계정의 컨테이너 목록을 조회합니다.
 
 ```
 GET  /v1/{Account}
@@ -515,11 +515,11 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 오브젝트 스토리지 어카운트 이름, **API Endpoint 설정** 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, **API Endpoint 설정** 대화 상자에서 확인 |
 
 #### 응답
 ```
-[어카운트에 속한 컨테이너 목록]
+[스토리지 계정에 속한 컨테이너 목록]
 ```
 
 #### 코드 예시

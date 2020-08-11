@@ -25,14 +25,14 @@ For user's convenience, web console is provided to manage data in the hierarchic
 HTTP(s)-based REST API is provided to control containers and objects. With APIs, object storage becomes available on user's applications.
 
 
-## Glossary 
+## Glossary
 #### Object
 Data to be saved, as a basic management unit of object storage: generally refers to a file.
 #### Folder
 A virtual unit that binds many objects: helps to manage objects in hierarchy, similar to folder of Windows or directory of Linux.
 #### Container
 Folder in the highest order, which serves as the basic unit for access authority setting. All objects must exist in a container.
-#### Account
+#### Storage Account
 Refers to user's account for object storage. TOAST Object Storage is classified by the account unit.
 #### API Endpoint
 Refers to HTTP URL which is provided to access object storage via REST API. When requested with the URL, access is allowed to object storage.   
