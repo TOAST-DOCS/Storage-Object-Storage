@@ -1,5 +1,5 @@
 ## Storage > Object Storage > AWS S3互換APIガイド
-オブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
+TOASTオブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
 
 提供するS3互換APIは次のとおりです。
 
@@ -34,7 +34,7 @@
 S3と互換性のあるAPIを使用するには、先にAWS EC2の形式の認証情報を登録する必要があります。認証情報を登録するには認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](/Storage/Object%20Storage/ja/api-guide/#tenant-id-api-endpoint)を参照してください。
 
 ```
-POST    https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{User ID}/credentials/OS-EC2
+POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{User ID}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -91,7 +91,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-GET   https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2
+GET   https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -134,7 +134,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-DELETE   https://gov-api-compute.cloud.toast.com/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE   https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
@@ -151,7 +151,7 @@ X-Auth-Token: {token-id}
 このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 
 ## 署名(signature)作成
-S3 APIを使用するには、認証情報キーを利用して署名を作成する必要があります。署名の作成方法は[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html)文書を参照してください。
+S3 APIを使用するには、認証情報を利用して署名を作成する必要があります。署名の作成方法は[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html)文書を参照してください。
 
 署名の作成に必要な情報は次のとおりです。
 
@@ -160,15 +160,23 @@ S3 APIを使用するには、認証情報キーを利用して署名を作成�
 | アルゴリズム | AWS4-HMAC-SHA256 |
 | 署名時刻 | YYYYMMDDThhmmssZ形式 |
 | サービス名 | s3 |
-| リージョン名 | KR1 - 韓国(パンギョ)リージョン |
+| リージョン名 | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
 | シークレットキー | 認証情報シークレットキー |
 
 > [参考]
-> S3互換APIは、2020年3月現在、韓国(パンギョ)リージョンでのみ提供されます。
+> 2020年8月現在、パブリッククラウドではS3互換APIを提供していません。
 
 ## バケット(Bucket)
 ### バケット作成
-バケット(コンテナ)を作成します。
+バケット(コンテナ)を作成します。バケット名は次のようにAWS S3のバケット命名ルールに従う必要があります。
+
+* バケット名は3文字から63文字にする必要があります。
+* バケット名は英字(小文字)、数字、ドット(.)およびハイフン(-)のみ使用できます。
+* バケット名の最初と最後の文字は英数字のみ使用できます。
+* バケット名はIPアドレス形式(例：192.168.5.4)を使用しません。
+* バケット名の最初の文字にxn--は使用できません。
+
+詳細な内容は[Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html)文書を参照してください。
 
 ```
 PUT /{bucket}
@@ -177,6 +185,9 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+> [参考]
+> WebコンソールまたはオブジェクトストレージAPIを通して作ったコンテナの名前がバケット命名ルールに違反している場合、S3互換APIにアクセスできません。
+
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -184,7 +195,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|---|
 | bucket | URL | String | O | バケット名 |
 | Date | Header | String | O | リクエスト時刻 |
-| Authorization | Header | O | String | 認証情報アクセスキーと署名で構成 |
+| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
 
@@ -461,7 +472,7 @@ Authorization: AWS {access}:{signature}
 ### オブジェクトのダウンロード
 オブジェクトをダウンロードします。
 ```
-PUT /{bucket}/{obj}
+GET /{bucket}/{obj}
 
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
@@ -569,6 +580,358 @@ Authorization: AWS {access}:{signature}
         "RetryAttempts": 0
     }
 }
+```
+
+</details>
+
+## AWSコマンドラインインターフェイス(CLI)
+S3互換APIを利用して[AWSコマンドラインインターフェイス](https://aws.amazon.com/ko/cli/)でTOASTオブジェクトストレージを使用できます。
+
+### インストール
+AWSコマンドラインインターフェイスはPythonパッケージで提供されます。Pythonパッケージ管理者(pip)を利用してインストールします。
+
+```
+$ sudo pip install awscli
+```
+
+### 設定
+AWSコマンドラインインターフェイスを使用するには、先に認証情報と環境を設定する必要があります。
+
+```
+$ aws configure
+AWS Access Key ID [None]: {access}
+AWS Secret Access Key [None]: {secret}
+Default region name [None]: {region name}
+Default output format [None]: json
+```
+
+| 名前 | 説明 |
+|---|---|
+| access | 認証情報アクセスキー |
+| secret | 認証情報シークレットキー |
+| region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
+
+### S3コマンド使用方法
+
+```
+aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
+```
+
+| 名前 | 説明 |
+|---|---|
+| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(坪村)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン |
+| command | AWSコマンドラインインターフェイスコマンド |
+| bucket | バケット名 |
+
+
+> [参考]
+> AWSコマンドラインインターフェイスはAWSを使用するために提供されるツールのため、AWSドメインを使用するように設定されています。したがってTAOSTオブジェクトストレージを使用するには必ずコマンドごとにエンドポイントを指定する必要があります。
+> AWSコマンドラインインターフェイスコマンドは[AWS CLIで高レベル(s3)コマンド使用](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html)文書を参照してください。
+
+<details>
+<summary>バケット作成</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
+make_bucket: example-bucket
+```
+
+</details>
+
+<details>
+<summary>バケットリスト照会</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
+2020-07-13 10:07:13 example-bucket
+```
+
+</details>
+
+
+<details>
+<summary>バケット照会</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
+2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
+```
+
+</details>
+
+<details>
+<summary>バケット削除</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
+2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
+```
+
+</details>
+
+<details>
+<summary>オブジェクトアップロード</summary>
+
+```
+$  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```
+
+</details>
+
+<details>
+<summary>オブジェクトダウンロード</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
+```
+
+</details>
+
+<details>
+<summary>オブジェクト削除</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```
+
+</details>
+
+
+## AWS SDK
+AWSは多くのプログラミング言語用のSDKを提供しています。S3互換APIを利用してAWS SDKでTOASTオブジェクトストレージを使用できます。
+
+> [参考]
+> この文書ではPythonとJava SDKの簡単な使用例のみ説明します。詳細な内容は[AWS SDK](https://aws.amazon.com/ko/tools)文書を参照してください。
+
+
+AWS SDKを使用するために必要な主要パラメータは次のとおりです。
+
+| 名前 | 説明 |
+|---|---|
+| access | 認証情報アクセスキー |
+| secret | 認証情報シークレットキー |
+| region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
+| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(坪村)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン |
+
+
+### Boto3 - Python SDK
+
+<details>
+<summary>Boto3クライアントクラス</summary>
+
+```python
+# boto3example.py
+import boto3
+
+class Boto3Example(object):
+    _REGION = '{region name}'
+    _ENDPOINT = '{endpoint}'
+    _ACCESS = '{access}'
+    _SECRET = '{secret}'
+
+    def __init__(self):
+        self.s3 = boto3.client(service_name='s3',
+                               region_name=self._REGION,
+                               endpoint_url=self._ENDPOINT,
+                               aws_access_key_id=self._ACCESS,
+                               aws_secret_access_key=self._SECRET)
+
+```
+
+</details>
+
+<details>
+<summary>バケット作成</summary>
+
+```python
+    def create_bucket(self, bucket_name):
+        return self.s3.create_bucket(Bucket=bucket_name)
+```
+
+</details>
+
+<details>
+<summary>バケットリスト照会</summary>
+
+```python
+    def list_buckets(self):
+        response = self.s3.list_buckets()
+        return response.get('Buckets')
+```
+
+</details>
+
+<details>
+<summary>バケット照会(オブジェクトリスト照会)</summary>
+
+```python
+    def list_objs(self, bucket_name):
+        response = self.s3.list_objects_v2(Bucket=bucket_name)
+        return response.get('Contents')
+```
+
+</details>
+
+<details>
+<summary>バケット削除</summary>
+
+```python
+    def delete_bucket(self, bucket_name):
+        return self.s3.delete_bucket(Bucket=bucket_name)
+```
+
+</details>
+
+<details>
+<summary>オブジェクトアップロード</summary>
+
+```python
+    def upload(self, bucket_name, key, filename):
+        with open(filename, 'rb') as fd:
+            return self.s3.put_object(Bucket=bucket_name, Key=key, Body=fd)
+```
+
+</details>
+
+<details>
+<summary>オブジェクトダウンロード</summary>
+
+```python
+    def download(self, bucket_name, key, filename):
+        response = self.s3.get_object(Bucket=bucket_name, Key=key)
+
+        with io.FileIO(filename, 'w') as fd:
+            for chunk in response['Body']:
+                fd.write(chunk)
+        response.pop('Body')
+
+        return response
+```
+
+</details>
+
+<details>
+<summary>オブジェクト削除</summary>
+
+```python
+    def delete(self, bucket_name, key):
+        return self.s3.delete_object(Bucket=bucket_name, Key=keys)
+```
+
+</details>
+
+
+### Java SDK
+
+<details>
+<summary>Java SDKクライアントクラス</summary>
+
+```java
+// AwsSdkExapmple.java
+public class AwsSdkExapmple {
+    private static final String access = "{access}";
+    private static final String secret = "{secret}";
+    private static final String region = "{region name}";
+    private static final String ednpoint = "{endpoint}";
+
+    private AmazonS3 s3Client;
+
+    public AwsSdkExapmple() {
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(access, secret);
+        s3Client = AmazonS3ClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(ednpoint, region))
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                .enablePathStyleAccess()
+                .disableChunkedEncoding()
+                .build();
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>バケット作成</summary>
+
+```java
+    public String createBucket(String bucketName) {
+        Bucket bucket = s3Client.createBucket(bucketName);
+        return bucket.toString();
+    }
+```
+
+</details>
+
+<details>
+<summary>バケットリスト照会</summary>
+
+```java
+    public List<Bucket> listBuckets() {
+        return s3Client.listBuckets();
+    }
+```
+
+</details>
+
+<details>
+<summary>バケット照会(オブジェクトリスト照会)</summary>
+
+```java
+    public ListObjectsV2Result listObjects(String bucketName) {
+        return s3Client.listObjectsV2(bucketName);
+    }
+```
+
+</details>
+
+<details>
+<summary>バケット削除</summary>
+
+```java
+    public void deleteBucket(String bucketName) {
+        s3Client.deleteBucket(bucketName);
+    }
+```
+
+</details>
+
+<details>
+<summary>オブジェクトアップロード</summary>
+
+```java
+    public String uploadObject(String bucketName, String objKeyName, String filePath) {
+        PutObjectResult result = s3Client.putObject(bucketName, objKeyName, new File(filePath));
+        return result.getETag();
+    }
+```
+
+</details>
+
+<details>
+<summary>オブジェクトダウンロード</summary>
+
+```java
+    public String downloadObject(String bucketName, String objKeyName, String filePath) {
+        GetObjectRequest request = new GetObjectRequest(bucketName, objKeyName);
+        ObjectMetadata metadata = s3Client.getObject(request, new File(filePath));
+        return metadata.getETag();
+    }
+```
+
+</details>
+
+<details>
+<summary>オブジェクト削除</summary>
+
+```java
+    public void deleteObject(String bucketName, String objKeyName) {
+        s3Client.deleteObject(bucketName, objKeyName);
+    }
 ```
 
 </details>
