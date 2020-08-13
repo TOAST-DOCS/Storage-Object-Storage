@@ -14,9 +14,6 @@
 | Object-Store | https://gov-api-storage.cloud.toast.com/v1/{Account} | オブジェクトストレージ制御、リージョンによって異なる |
 | Tenant ID | 数字 + 英字で構成された32文字の文字列 | 認証トークン発行 |
 
-> [参考]
-> APIに使用されるユーザーのアカウント(account)は`AUTH_***`形式の文字列です。Object-Store APIエンドポイントに含まれています。
-
 ### APIパスワード設定
 
 APIパスワードはオブジェクトストレージサービスページの**API Endpoint設定**ボタンをクリックして設定できます。
@@ -307,6 +304,352 @@ printf("%s\n", $token);
 
 </details>
 
+## ストレージアカウント
+ストレージアカウント(account)は`AUTH_*****`形式の文字列です。Object-Store APIエンドポイントに含まれています。
+
+### ストレージアカウント照会
+ストレージアカウントの使用状況を照会します。
+
+```
+HEAD  /v1/{Account}
+X-Auth-Token: {token-id}
+```
+
+#### リクエスト
+リクエスト本文は必要ありません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| X-Auth-Token | Header | String | O | トークンID |
+| Account | URL | String | O | ストレージアカウント。**API Endpoint設定**ダイアログボックスで確認 |
+
+#### レスポンス
+レスポンス本文を返しません。使用状況はヘッダに含まれています。リクエストが正しければステータスコード200を返します。
+
+| 名前 | 種類 | 形式 | 説明 |
+|---|---|---|---|
+| X-Account-Container-Count | Header | String | コンテナ数 |
+| X-Account-Object-Count | Header | String | 保存されたオブジェクト数 |
+| X-Account-Bytes-Used | Header | String | 保存されたデータ容量(バイト) |
+
+#### コード例
+
+<details>
+<summary>cURL</summary>
+
+```
+$ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://gov-api-storage.cloud.toast.com/v1/AUTH_*****
+```
+
+</details>
+
+<details>
+<summary>Java</summary>
+
+```java
+// AccountService.java
+package com.toast.swift.service;
+// .. import list
+
+@Data
+public class AccountService {
+    private String tokenId;
+    private String storageUrl;
+    private RestTemplate restTemplate;
+
+    public AccountService(String storageUrl, String tokenId) {
+        this.setStorageUrl(storageUrl);
+        this.setTokenId(tokenId);
+        this.restTemplate = new RestTemplate();
+    }
+
+    public HashMap<String, String> getStatus() {
+        String url = this.getStorageUrl();
+
+        // ヘッダ作成
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API呼び出し
+        HashMap<String, String> status = new HashMap<String, String>();
+        ResponseEntity<String> response
+            = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
+        if (response.getStatusCode() == HttpStatus.OK) {
+            HttpHeaders responseHeaders = response.getHeaders();
+            status.put("ContainerCount", responseHeaders.getFirst("X-Account-Container-Count"));
+            status.put("ObjectCount", responseHeaders.getFirst("X-Account-Object-Count"));
+            status.put("BytesUsed", responseHeaders.getFirst("X-Account-Bytes-Used"));
+        }
+        return status;
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+
+        AccountService accountService = new AccountService(storageUrl, tokenId);
+        try {
+            HashMap<String, String> status = accountService.getStatus();
+            System.out.println(status.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Python</summary>
+
+```python
+# account.py
+import json
+import requests
+
+
+class AccountService:
+    def __init__(self, storage_url, token_id):
+        self.storage_url = storage_url
+        self.token_id = token_id
+
+    def _get_url(self, container):
+        return self.storage_url
+
+    def _get_request_header(self):
+        return {'X-Auth-Token': self.token_id}
+
+    def get_stat(self):
+        req_header = self._get_request_header()
+        resp = requests.head(self.storage_url, headers=req_header)
+        return resp.headers
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+
+    acc_service = AccountService(STORAGE_URL, TOKEN_ID)
+
+    # Get the account status
+    stat = acc_service.get_stat()
+    print(json.dumps(dict(stat), indent=4))
+```
+
+</details>
+
+<details>
+<summary>PHP</summary>
+
+```php
+// account.php
+<?php
+class Account {
+  private $storage_url;
+  private $token_id;
+
+  function __construct($storage_url,  $token_id) {
+     $this->storage_url = $storage_url;
+     $this->token_id = $token_id;
+  }
+
+  function get_request_header(){
+    return array(
+      'X-Auth-Token: ' . $this->token_id
+    );
+  }
+
+  function get_status() {
+    $req_header = $this->get_request_header();
+
+    $curl = curl_init($this->storage_url); // initialize curl
+    curl_setopt_array($curl, array(
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header,
+      CURLOPT_HEADER => TRUE,
+    )); // set parameters of curl
+    $response = curl_exec($curl); // call api
+    curl_close($curl);  // close curl
+    $data = explode("\n", $response);
+
+    // parse response headers
+    $headers = [];
+    foreach($data as $part){
+        $middle = explode(":", $part, 2);
+        $headers[trim($middle[0])] = trim($middle[1]);
+    }
+    return $headers;
+  }
+}
+
+// main
+$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+
+$account = new Account($STORAGE_URL, $TOKEN_ID);
+$status = $account->get_status();
+
+printf("Container-Count: %d\n", $status["X-Account-Container-Count"]);
+printf("Object-Count: %d\n", $status["X-Account-Object-Count"]);
+printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
+?>
+```
+
+</details>
+
+### コンテナリスト照会
+ストレージアカウントのコンテナリストを照会します。
+
+```
+GET  /v1/{Account}
+X-Auth-Token: {token-id}
+```
+
+#### リクエスト
+リクエスト本文は必要ありません。
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| X-Auth-Token | Header | String | O | トークンID |
+| Account | URL | String | O | ストレージアカウント。**API Endpoint設定**ダイアログボックスで確認 |
+
+#### レスポンス
+```
+[ストレージアカウントに属すコンテナリスト]
+```
+
+#### コード例
+
+<details>
+<summary>cURL</summary>
+
+```
+$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://gov-api-storage.cloud.toast.com/v1/AUTH_*****
+```
+
+</details>
+
+<details>
+<summary>Java</summary>
+
+```java
+// AccountService.java
+package com.toast.swift.service;
+// .. import list
+
+@Data
+public class AccountService {
+    // AccountService Class ...
+    public List<String> getContainerList() {
+        // ヘッダ作成
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API呼び出し
+        ResponseEntity<String>response
+            = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
+
+        List<String> containerList = null;
+        if (response.getStatusCode() == HttpStatus.OK) {
+            // Stringで受け取ったリストを配列に変換
+            containerList = Arrays.asList(response.getBody().split("\\r?\\n"));
+        }
+
+        // 配列をListに変換して返す
+        return new ArrayList<String>(containerList);
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        AccountService accountService = new AccountService(storageUrl, tokenId);
+        try {
+            List<String> containerList = accountService.getContainerList();
+            if (containerList != null) {
+                for (String object : containerList) {
+                    System.out.println(object);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Python</summary>
+
+```python
+# account.py
+class AccountService:
+    # ...
+    def get_container_list(self):
+      req_header = self._get_request_header()
+      resp = requests.get(self.storage_url, headers=req_header)
+      return resp.content.split('\n')
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    acc_service = AccountService(STORAGE_URL, TOKEN_ID)
+
+    # Get the container list
+    container_list = acc_service.get_container_list()
+    for container in container_list:
+        print(container)
+```
+
+</details>
+
+<details>
+<summary>PHP</summary>
+
+```php
+// account.php
+<?php
+class Account {
+  // ...
+  function get_container_list() {
+    $req_header = $this->get_request_header();
+
+    $curl  = curl_init($this->storage_url); // initialize curl
+    curl_setopt_array($curl, array(
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header,
+    )); // set parameters of curl
+    $response = curl_exec($curl); // call api
+    curl_close($curl);  // close curl
+
+    $container_list = explode("\n", $response);
+    return $container_list;
+  }
+}
+
+// main
+$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+
+$account = new Account($STORAGE_URL, $TOKEN_ID);
+$container_list = $account->get_container_list();
+foreach($container_list as $container){
+    printf("%s\n", $container);
+}
+?>
+```
+
+</details>
+
 ## コンテナ
 
 ### コンテナの作成
@@ -321,7 +664,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -330,7 +673,7 @@ X-Auth-Token: {token-id}
 | Container | URL | String | O | 作成するコンテナ名 |
 
 #### レスポンス
-このAPIはレスポンス本文を返しません。コンテナが作成された場合、ステータスコード201を返します。
+レスポンス本文を返しません。コンテナが作成されるとステータスコード201を返します。
 
 #### サンプルコード
 <details>
@@ -507,7 +850,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -679,7 +1022,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -830,7 +1173,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -926,7 +1269,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1023,7 +1366,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1124,7 +1467,7 @@ X-Container-Write: {コンテナ書き込みポリシー}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1135,7 +1478,7 @@ X-Container-Write: {コンテナ書き込みポリシー}
 | Container | URL | String | O | 修正するコンテナ名 |
 
 #### レスポンス
-このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
+レスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 
 #### サンプルコード
 <details>
@@ -1296,7 +1639,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1341,7 +1684,7 @@ public class ContainerService {
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API呼び出し      
+        // API呼び出し    
         this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);
     }
 
@@ -1453,7 +1796,7 @@ Content-Type: {content-type}
 > APIを利用してこのような名前のオブジェクトをアップロードした場合、APIでアクセスする必要があります。
 
 #### レスポンス
-このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
 
 #### サンプルコード
 <details>
@@ -1674,7 +2017,7 @@ Content-Type: {content-type}
 | - |	Body | Binary | O | 分割したオブジェクトの内容 |
 
 ##### レスポンス
-このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
 
 #### マニフェスト作成
 すべてのオブジェクトのセグメントをアップロードしてマニフェストオブジェクトを作成すると、1つのオブジェクトのように使用できます。マニフェストオブジェクトはセグメントが保存されたパスを指し示します。
@@ -1697,7 +2040,7 @@ X-Object-Manifest: {Container}/{Object}/
 | - | Body| Binary | O | 空のデータ |
 
 ##### レスポンス
-このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
 
 
 #### サンプルコード
@@ -1972,7 +2315,7 @@ Content-Type: {content-type}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1985,7 +2328,7 @@ Content-Type: {content-type}
 | Object | URL | String | O | 内容を修正するオブジェクト名 |
 
 #### レスポンス
-このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
 
 ### オブジェクトのダウンロード
 オブジェクトをダウンロードします。
@@ -1996,7 +2339,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -2181,7 +2524,7 @@ X-Copy-From：{原本オブジェクト}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -2341,7 +2684,7 @@ X-Object-Meta-{Key}: {Value}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -2512,7 +2855,7 @@ X-Auth-Token: {token-id}
 | Object | URL| String |  O | メタデータを修正するオブジェクト名 |
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
