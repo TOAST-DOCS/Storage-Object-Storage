@@ -1,5 +1,5 @@
 ## Storage > Object Storage > AWS S3互換APIガイド
-TOAST オブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
+TOASTオブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
 
 提供するS3互換APIは次のとおりです。
 
@@ -160,23 +160,23 @@ S3 APIを使用するには、認証情報を利用して署名を作成する�
 | アルゴリズム | AWS4-HMAC-SHA256 |
 | 署名時刻 | YYYYMMDDThhmmssZ形式 |
 | サービス名 | s3 |
-| リージョン名 | KR1 - 韓国(パンギョ)リージョン<br/>韓国(ピョンチョン)リージョン<br/>JP1 - 日本(東京) リージョン<br/>US1 - 米国(カリフォルニア) リージョン |
+| リージョン名 | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
 | シークレットキー | 認証情報シークレットキー |
 
-> [참고]
-> 2020년 8월 현재 공공 클라우드에서는 S3 호환 API를 제공하고 있지 않습니다.
+> [参考]
+> 2020年8月現在、パブリッククラウドではS3互換APIを提供していません。
 
 ## バケット(Bucket)
 ### バケット作成
-バケット(コンテナ)を作成します。버킷 이름은 다음과 같은 AWS S3의 버킷 명명 규칙을 따라야 합니다.
+バケット(コンテナ)を作成します。バケット名は次のようにAWS S3のバケット命名ルールに従う必要があります。
 
-* 버킷 이름은 3자에서 63자 사이여야 합니다.
-* 버킷 이름은 소문자, 숫자, 점(.) 및 하이픈(-)으로만 구성될 수 있습니다.
-* 버킷 이름은 문자 또는 숫자로 시작하고 끝나야 합니다.
-* 버킷 이름은 IP 주소 형식(예: 192.168.5.4)을 사용하지 않습니다.
-* 버킷 이름은 xn--으로 시작할 수 없습니다.
+* バケット名は3文字から63文字にする必要があります。
+* バケット名は英字(小文字)、数字、ドット(.)およびハイフン(-)のみ使用できます。
+* バケット名の最初と最後の文字は英数字のみ使用できます。
+* バケット名はIPアドレス形式(例：192.168.5.4)を使用しません。
+* バケット名の最初の文字にxn--は使用できません。
 
-자세한 내용은 [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html) 문서를 참조하세요.
+詳細な内容は[Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html)文書を参照してください。
 
 ```
 PUT /{bucket}
@@ -185,8 +185,8 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-> [참고]
-> 웹 콘솔 또는 오브젝트 스토리지 API를 통해 만든 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
+> [参考]
+> WebコンソールまたはオブジェクトストレージAPIを通して作ったコンテナの名前がバケット命名ルールに違反している場合、S3互換APIにアクセスできません。
 
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
@@ -584,18 +584,18 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-## AWS 명령줄 인터페이스(CLI)
-S3 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 TOAST 오브젝트 스토리지를 사용할 수 있습니다.
+## AWSコマンドラインインターフェイス(CLI)
+S3互換APIを利用して[AWSコマンドラインインターフェイス](https://aws.amazon.com/ko/cli/)でTOASTオブジェクトストレージを使用できます。
 
-### 설치
-AWS 명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 이용해 설치합니다.
+### インストール
+AWSコマンドラインインターフェイスはPythonパッケージで提供されます。Pythonパッケージ管理者(pip)を利用してインストールします。
 
 ```
 $ sudo pip install awscli
 ```
 
-### 설정
-AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 자격 증명과 환경을 설정해야 합니다.
+### 設定
+AWSコマンドラインインターフェイスを使用するには、先に認証情報と環境を設定する必要があります。
 
 ```
 $ aws configure
@@ -605,31 +605,31 @@ Default region name [None]: {region name}
 Default output format [None]: json
 ```
 
-| 이름 | 설명 |
+| 名前 | 説明 |
 |---|---|
-| access | 자격 증명 접근 키 |
-| secret | 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
+| access | 認証情報アクセスキー |
+| secret | 認証情報シークレットキー |
+| region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
 
-### S3 명령 사용 방법
+### S3コマンド使用方法
 
 ```
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 ```
 
-| 이름 | 설명 |
+| 名前 | 説明 |
 |---|---|
-| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 |
-| command | AWS 명령줄 인터페이스 명령 |
-| bucket | 버킷 이름 |
+| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(坪村)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン |
+| command | AWSコマンドラインインターフェイスコマンド |
+| bucket | バケット名 |
 
 
-> [참고]
-> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 TAOST 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
-> AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
+> [参考]
+> AWSコマンドラインインターフェイスはAWSを使用するために提供されるツールのため、AWSドメインを使用するように設定されています。したがってTAOSTオブジェクトストレージを使用するには必ずコマンドごとにエンドポイントを指定する必要があります。
+> AWSコマンドラインインターフェイスコマンドは[AWS CLIで高レベル(s3)コマンド使用](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html)文書を参照してください。
 
 <details>
-<summary>버킷 생성</summary>
+<summary>バケット作成</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
@@ -639,7 +639,7 @@ make_bucket: example-bucket
 </details>
 
 <details>
-<summary>버킷 목록 조회</summary>
+<summary>バケットリスト照会</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
@@ -650,7 +650,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 
 
 <details>
-<summary>버킷 조회</summary>
+<summary>バケット照会</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
@@ -661,7 +661,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 </details>
 
 <details>
-<summary>버킷 삭제</summary>
+<summary>バケット削除</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
@@ -672,7 +672,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 </details>
 
 <details>
-<summary>오브젝트 업로드</summary>
+<summary>オブジェクトアップロード</summary>
 
 ```
 $  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -682,7 +682,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 </details>
 
 <details>
-<summary>오브젝트 다운로드</summary>
+<summary>オブジェクトダウンロード</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -692,7 +692,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 </details>
 
 <details>
-<summary>오브젝트 삭제</summary>
+<summary>オブジェクト削除</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -703,26 +703,26 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 TOAST 오브젝트 스토리지를 사용할 수 있습니다.
+AWSは多くのプログラミング言語用のSDKを提供しています。S3互換APIを利用してAWS SDKでTOASTオブジェクトストレージを使用できます。
 
-> [참고]
-> 이 문서에서는 Python과 Java SDK의 간단한 사용 예시만 설명합니다. 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
+> [参考]
+> この文書ではPythonとJava SDKの簡単な使用例のみ説明します。詳細な内容は[AWS SDK](https://aws.amazon.com/ko/tools)文書を参照してください。
 
 
-AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
+AWS SDKを使用するために必要な主要パラメータは次のとおりです。
 
-| 이름 | 설명 |
+| 名前 | 説明 |
 |---|---|
-| access | 자격 증명 접근 키 |
-| secret | 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
-| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 |
+| access | 認証情報アクセスキー |
+| secret | 認証情報シークレットキー |
+| region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
+| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(坪村)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン |
 
 
 ### Boto3 - Python SDK
 
 <details>
-<summary>Boto3 클라이언트 클래스</summary>
+<summary>Boto3クライアントクラス</summary>
 
 ```python
 # boto3example.py
@@ -746,7 +746,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 생성</summary>
+<summary>バケット作成</summary>
 
 ```python
     def create_bucket(self, bucket_name):
@@ -756,7 +756,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 목록 조회</summary>
+<summary>バケットリスト照会</summary>
 
 ```python
     def list_buckets(self):
@@ -767,7 +767,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 조회(오브젝트 목록 조회)</summary>
+<summary>バケット照会(オブジェクトリスト照会)</summary>
 
 ```python
     def list_objs(self, bucket_name):
@@ -778,7 +778,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 삭제</summary>
+<summary>バケット削除</summary>
 
 ```python
     def delete_bucket(self, bucket_name):
@@ -788,7 +788,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>오브젝트 업로드</summary>
+<summary>オブジェクトアップロード</summary>
 
 ```python
     def upload(self, bucket_name, key, filename):
@@ -799,7 +799,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>오브젝트 다운로드</summary>
+<summary>オブジェクトダウンロード</summary>
 
 ```python
     def download(self, bucket_name, key, filename):
@@ -816,7 +816,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>오브젝트 삭제</summary>
+<summary>オブジェクト削除</summary>
 
 ```python
     def delete(self, bucket_name, key):
@@ -829,7 +829,7 @@ class Boto3Example(object):
 ### Java SDK
 
 <details>
-<summary>Java SDK 클라이언트 클래스</summary>
+<summary>Java SDKクライアントクラス</summary>
 
 ```java
 // AwsSdkExapmple.java
@@ -856,7 +856,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 생성</summary>
+<summary>バケット作成</summary>
 
 ```java
     public String createBucket(String bucketName) {
@@ -868,7 +868,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 목록 조회</summary>
+<summary>バケットリスト照会</summary>
 
 ```java
     public List<Bucket> listBuckets() {
@@ -879,7 +879,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 조회(오브젝트 목록 조회)</summary>
+<summary>バケット照会(オブジェクトリスト照会)</summary>
 
 ```java
     public ListObjectsV2Result listObjects(String bucketName) {
@@ -890,7 +890,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 삭제</summary>
+<summary>バケット削除</summary>
 
 ```java
     public void deleteBucket(String bucketName) {
@@ -901,7 +901,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>오브젝트 업로드</summary>
+<summary>オブジェクトアップロード</summary>
 
 ```java
     public String uploadObject(String bucketName, String objKeyName, String filePath) {
@@ -913,7 +913,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>오브젝트 다운로드</summary>
+<summary>オブジェクトダウンロード</summary>
 
 ```java
     public String downloadObject(String bucketName, String objKeyName, String filePath) {
@@ -926,7 +926,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>오브젝트 삭제</summary>
+<summary>オブジェクト削除</summary>
 
 ```java
     public void deleteObject(String bucketName, String objKeyName) {

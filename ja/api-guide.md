@@ -11,6 +11,7 @@
 | 項目 | APIエンドポイント | 用途 |
 |---|---|---|
 | Identity | https://api-identity.infrastructure.cloud.toast.com/v2.0 | 認証トークン発行 |
+| Object-Store | https://api-storage.cloud.toast.com/v1/AUTH_***** | オブジェクトストレージ制御、リージョンによって異なる |
 | Tenant ID | 数字 + 英字で構成された32文字の文字列 | 認証トークン発行 |
 
 ### APIパスワード設定
@@ -303,35 +304,35 @@ printf("%s\n", $token);
 
 </details>
 
-## 스토리지 계정
-스토리지 계정(account)은 `AUTH_*****` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
+## ストレージアカウント
+ストレージアカウント(account)は`AUTH_*****`形式の文字列です。Object-Store APIエンドポイントに含まれています。
 
-### 스토리지 계정 조회
-스토리지 계정의 사용 현황을 조회합니다.
+### ストレージアカウント照会
+ストレージアカウントの使用状況を照会します。
 
 ```
 HEAD  /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
-요청 본문은 필요하지 않습니다.
+#### リクエスト
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, **API Endpoint 설정** 대화 상자에서 확인 |
+| X-Auth-Token | Header | String | O | トークンID |
+| Account | URL | String | O | ストレージアカウント。**API Endpoint設定**ダイアログボックスで確認 |
 
-#### 응답
-응답 본문을 반환하지 않습니다. 사용 현황은 헤더에 포함되어 있습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+#### レスポンス
+レスポンス本文を返しません。使用状況はヘッダに含まれています。リクエストが正しければステータスコード200を返します。
 
-| 이름 | 종류 | 형식 | 설명 |
+| 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| X-Account-Container-Count | Header | String | 컨테이너 개수 |
-| X-Account-Object-Count | Header | String | 저장된 오브젝트 개수 |
-| X-Account-Bytes-Used | Header | String | 저장된 데이터 용량(바이트) |
+| X-Account-Container-Count | Header | String | コンテナ数 |
+| X-Account-Object-Count | Header | String | 保存されたオブジェクト数 |
+| X-Account-Bytes-Used | Header | String | 保存されたデータ容量(バイト) |
 
-#### 코드 예시
+#### コード例
 
 <details>
 <summary>cURL</summary>
@@ -366,13 +367,13 @@ public class AccountService {
     public HashMap<String, String> getStatus() {
         String url = this.getStorageUrl();
 
-        // 헤더 생성
+        // ヘッダ作成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출
+        // API呼び出し
         HashMap<String, String> status = new HashMap<String, String>();
         ResponseEntity<String> response
             = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
@@ -500,28 +501,28 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 
 </details>
 
-### 컨테이너 목록 조회
-스토리지 계정의 컨테이너 목록을 조회합니다.
+### コンテナリスト照会
+ストレージアカウントのコンテナリストを照会します。
 
 ```
 GET  /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
-요청 본문은 필요하지 않습니다.
+#### リクエスト
+リクエスト本文は必要ありません。
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
+| 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, **API Endpoint 설정** 대화 상자에서 확인 |
+| X-Auth-Token | Header | String | O | トークンID |
+| Account | URL | String | O | ストレージアカウント。**API Endpoint設定**ダイアログボックスで確認 |
 
-#### 응답
+#### レスポンス
 ```
-[스토리지 계정에 속한 컨테이너 목록]
+[ストレージアカウントに属すコンテナリスト]
 ```
 
-#### 코드 예시
+#### コード例
 
 <details>
 <summary>cURL</summary>
@@ -545,23 +546,23 @@ package com.toast.swift.service;
 public class AccountService {
     // AccountService Class ...
     public List<String> getContainerList() {
-        // 헤더 생성
+        // ヘッダ作成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출
+        // API呼び出し
         ResponseEntity<String>response
             = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
 
         List<String> containerList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
-            // String으로 받은 목록을 배열로 변환
+            // Stringで受け取ったリストを配列に変換
             containerList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
 
-        // 배열을 List로 변환하여 반환
+        // 配列をListに変換して返す
         return new ArrayList<String>(containerList);
     }
 
@@ -649,6 +650,7 @@ foreach($container_list as $container){
 
 </details>
 
+
 ## コンテナ
 
 ### コンテナの作成
@@ -663,7 +665,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -672,7 +674,7 @@ X-Auth-Token: {token-id}
 | Container | URL | String | O | 作成するコンテナ名 |
 
 #### レスポンス
-このAPIはレスポンス本文を返しません。コンテナが作成された場合、ステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
 
 #### サンプルコード
 <details>
@@ -849,7 +851,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1022,7 +1024,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1173,7 +1175,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1269,7 +1271,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1366,7 +1368,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1467,7 +1469,7 @@ X-Container-Write: {コンテナ書き込みポリシー}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1478,7 +1480,7 @@ X-Container-Write: {コンテナ書き込みポリシー}
 | Container | URL | String | O | 修正するコンテナ名 |
 
 #### レスポンス
-このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
+レスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 
 #### サンプルコード
 <details>
@@ -1639,7 +1641,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -1684,7 +1686,7 @@ public class ContainerService {
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API呼び出し      
+        // API呼び出し    
         this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);
     }
 
@@ -1796,7 +1798,7 @@ Content-Type: {content-type}
 > APIを利用してこのような名前のオブジェクトをアップロードした場合、APIでアクセスする必要があります。
 
 #### レスポンス
-このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
 
 #### サンプルコード
 <details>
@@ -2017,7 +2019,7 @@ Content-Type: {content-type}
 | - |	Body | Binary | O | 分割したオブジェクトの内容 |
 
 ##### レスポンス
-このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
 
 #### マニフェスト作成
 すべてのオブジェクトのセグメントをアップロードしてマニフェストオブジェクトを作成すると、1つのオブジェクトのように使用できます。マニフェストオブジェクトはセグメントが保存されたパスを指し示します。
@@ -2040,7 +2042,7 @@ X-Object-Manifest: {Container}/{Object}/
 | - | Body| Binary | O | 空のデータ |
 
 ##### レスポンス
-このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
 
 
 #### サンプルコード
@@ -2315,7 +2317,7 @@ Content-Type: {content-type}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -2328,7 +2330,7 @@ Content-Type: {content-type}
 | Object | URL | String | O | 内容を修正するオブジェクト名 |
 
 #### レスポンス
-このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
 
 ### オブジェクトのダウンロード
 オブジェクトをダウンロードします。
@@ -2339,7 +2341,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -2524,7 +2526,7 @@ X-Copy-From：{原本オブジェクト}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -2684,7 +2686,7 @@ X-Object-Meta-{Key}: {Value}
 ```
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -2855,7 +2857,7 @@ X-Auth-Token: {token-id}
 | Object | URL| String |  O | メタデータを修正するオブジェクト名 |
 
 #### リクエスト
-このAPIはリクエスト本文を要求しません。
+リクエスト本文は必要ありません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
