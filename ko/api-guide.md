@@ -2,7 +2,7 @@
 
 ## 사전 준비
 
-오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 계정별로 관리됩니다.
+오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 TOAST 계정별로 관리됩니다.
 
 ### 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
 
@@ -11,11 +11,8 @@
 | 항목 | API 엔드포인트 | 용도 |
 |---|---|---|
 | Identity | https://api-identity.infrastructure.cloud.toast.com/v2.0 | 인증 토큰 발급 |
-| Object-Store | https://api-storage.cloud.toast.com/v1/{Account} | 오브젝트 스토리지 제어, 리전에 따라 다름 |
+| Object-Store | https://api-storage.cloud.toast.com/v1/AUTH_***** | 오브젝트 스토리지 제어, 리전에 따라 다름 |
 | Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
-
-> [참고]
-> API에 사용되는 사용자의 계정(account)은 `AUTH_***` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
 
 ### API 비밀번호 설정
 
@@ -256,7 +253,7 @@ if __name__ == '__main__':
     PASSWORD = '{API Password}'
 
     token = get_token(AUTH_URL, TENANT_ID, USERNAME, PASSWORD)
-    print json.dumps(token, indent=4, separators=(',', ': '))
+    print(json.dumps(token, indent=4))
 ```
 
 </details>
@@ -307,6 +304,353 @@ printf("%s\n", $token);
 
 </details>
 
+## 스토리지 계정
+스토리지 계정(account)은 `AUTH_*****` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
+
+### 스토리지 계정 조회
+스토리지 계정의 사용 현황을 조회합니다.
+
+```
+HEAD  /v1/{Account}
+X-Auth-Token: {token-id}
+```
+
+#### 요청
+요청 본문은 필요하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| X-Auth-Token | Header | String | O | 토큰 ID |
+| Account | URL | String | O | 스토리지 계정, **API Endpoint 설정** 대화 상자에서 확인 |
+
+#### 응답
+응답 본문을 반환하지 않습니다. 사용 현황은 헤더에 포함되어 있습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+
+| 이름 | 종류 | 형식 | 설명 |
+|---|---|---|---|
+| X-Account-Container-Count | Header | String | 컨테이너 개수 |
+| X-Account-Object-Count | Header | String | 저장된 오브젝트 개수 |
+| X-Account-Bytes-Used | Header | String | 저장된 데이터 용량(바이트) |
+
+#### 코드 예시
+
+<details>
+<summary>cURL</summary>
+
+```
+$ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://api-storage.cloud.toast.com/v1/AUTH_*****
+```
+
+</details>
+
+<details>
+<summary>Java</summary>
+
+```java
+// AccountService.java
+package com.toast.swift.service;
+// .. import list
+
+@Data
+public class AccountService {
+    private String tokenId;
+    private String storageUrl;
+    private RestTemplate restTemplate;
+
+    public AccountService(String storageUrl, String tokenId) {
+        this.setStorageUrl(storageUrl);
+        this.setTokenId(tokenId);
+        this.restTemplate = new RestTemplate();
+    }
+
+    public HashMap<String, String> getStatus() {
+        String url = this.getStorageUrl();
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API 호출
+        HashMap<String, String> status = new HashMap<String, String>();
+        ResponseEntity<String> response
+            = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
+        if (response.getStatusCode() == HttpStatus.OK) {
+            HttpHeaders responseHeaders = response.getHeaders();
+            status.put("ContainerCount", responseHeaders.getFirst("X-Account-Container-Count"));
+            status.put("ObjectCount", responseHeaders.getFirst("X-Account-Object-Count"));
+            status.put("BytesUsed", responseHeaders.getFirst("X-Account-Bytes-Used"));
+        }
+        return status;
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+
+        AccountService accountService = new AccountService(storageUrl, tokenId);
+        try {
+            HashMap<String, String> status = accountService.getStatus();
+            System.out.println(status.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Python</summary>
+
+```python
+# account.py
+import json
+import requests
+
+
+class AccountService:
+    def __init__(self, storage_url, token_id):
+        self.storage_url = storage_url
+        self.token_id = token_id
+
+    def _get_url(self, container):
+        return self.storage_url
+
+    def _get_request_header(self):
+        return {'X-Auth-Token': self.token_id}
+
+    def get_stat(self):
+        req_header = self._get_request_header()
+        resp = requests.head(self.storage_url, headers=req_header)
+        return resp.headers
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+
+    acc_service = AccountService(STORAGE_URL, TOKEN_ID)
+
+    # Get the account status
+    stat = acc_service.get_stat()
+    print(json.dumps(dict(stat), indent=4))
+```
+
+</details>
+
+<details>
+<summary>PHP</summary>
+
+```php
+// account.php
+<?php
+class Account {
+  private $storage_url;
+  private $token_id;
+
+  function __construct($storage_url,  $token_id) {
+     $this->storage_url = $storage_url;
+     $this->token_id = $token_id;
+  }
+
+  function get_request_header(){
+    return array(
+      'X-Auth-Token: ' . $this->token_id
+    );
+  }
+
+  function get_status() {
+    $req_header = $this->get_request_header();
+
+    $curl = curl_init($this->storage_url); // initialize curl
+    curl_setopt_array($curl, array(
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header,
+      CURLOPT_HEADER => TRUE,
+    )); // set parameters of curl
+    $response = curl_exec($curl); // call api
+    curl_close($curl);  // close curl
+    $data = explode("\n", $response);
+
+    // parse response headers
+    $headers = [];
+    foreach($data as $part){
+        $middle = explode(":", $part, 2);
+        $headers[trim($middle[0])] = trim($middle[1]);
+    }
+    return $headers;
+  }
+}
+
+// main
+$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+
+$account = new Account($STORAGE_URL, $TOKEN_ID);
+$status = $account->get_status();
+
+printf("Container-Count: %d\n", $status["X-Account-Container-Count"]);
+printf("Object-Count: %d\n", $status["X-Account-Object-Count"]);
+printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
+?>
+```
+
+</details>
+
+### 컨테이너 목록 조회
+스토리지 계정의 컨테이너 목록을 조회합니다.
+
+```
+GET  /v1/{Account}
+X-Auth-Token: {token-id}
+```
+
+#### 요청
+요청 본문은 필요하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| X-Auth-Token | Header | String | O | 토큰 ID |
+| Account | URL | String | O | 스토리지 계정, **API Endpoint 설정** 대화 상자에서 확인 |
+
+#### 응답
+```
+[스토리지 계정에 속한 컨테이너 목록]
+```
+
+#### 코드 예시
+
+<details>
+<summary>cURL</summary>
+
+```
+$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://api-storage.cloud.toast.com/v1/AUTH_*****
+```
+
+</details>
+
+<details>
+<summary>Java</summary>
+
+```java
+// AccountService.java
+package com.toast.swift.service;
+// .. import list
+
+@Data
+public class AccountService {
+    // AccountService Class ...
+    public List<String> getContainerList() {
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", tokenId);
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
+        // API 호출
+        ResponseEntity<String>response
+            = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
+
+        List<String> containerList = null;
+        if (response.getStatusCode() == HttpStatus.OK) {
+            // String으로 받은 목록을 배열로 변환
+            containerList = Arrays.asList(response.getBody().split("\\r?\\n"));
+        }
+
+        // 배열을 List로 변환하여 반환
+        return new ArrayList<String>(containerList);
+    }
+
+    public static void main(String[] args) {
+        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        AccountService accountService = new AccountService(storageUrl, tokenId);
+        try {
+            List<String> containerList = accountService.getContainerList();
+            if (containerList != null) {
+                for (String object : containerList) {
+                    System.out.println(object);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Python</summary>
+
+```python
+# account.py
+class AccountService:
+    # ...
+    def get_container_list(self):
+      req_header = self._get_request_header()
+      resp = requests.get(self.storage_url, headers=req_header)
+      return resp.content.split('\n')
+
+
+if __name__ == '__main__':
+    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    acc_service = AccountService(STORAGE_URL, TOKEN_ID)
+
+    # Get the container list
+    container_list = acc_service.get_container_list()
+    for container in container_list:
+        print(container)
+```
+
+</details>
+
+<details>
+<summary>PHP</summary>
+
+```php
+// account.php
+<?php
+class Account {
+  // ...
+  function get_container_list() {
+    $req_header = $this->get_request_header();
+
+    $curl  = curl_init($this->storage_url); // initialize curl
+    curl_setopt_array($curl, array(
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header,
+    )); // set parameters of curl
+    $response = curl_exec($curl); // call api
+    curl_close($curl);  // close curl
+
+    $container_list = explode("\n", $response);
+    return $container_list;
+  }
+}
+
+// main
+$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+
+$account = new Account($STORAGE_URL, $TOKEN_ID);
+$container_list = $account->get_container_list();
+foreach($container_list as $container){
+    printf("%s\n", $container);
+}
+?>
+```
+
+</details>
+
+
 ## 컨테이너
 
 ### 컨테이너 생성
@@ -321,7 +665,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -330,7 +674,7 @@ X-Auth-Token: {token-id}
 | Container | URL | String | O | 생성할 컨테이너 이름 |
 
 #### 응답
-이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
+응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
 
 #### 코드 예시
 <details>
@@ -507,7 +851,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -596,6 +940,7 @@ public class ContainerService {
 <summary>Python</summary>
 
 ```python
+# container.py
 class ContainerService:
     # ...
 
@@ -618,7 +963,7 @@ if __name__ == '__main__':
 
     object_list = con_service.get_object_list(CONTAINER_NAME)
     for object in object_list:
-        print object
+        print(object)
 ```
 
 </details>
@@ -679,7 +1024,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -830,7 +1175,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -926,7 +1271,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -1023,7 +1368,7 @@ X-Auth-Token: {token-id}
 ```
 
 ##### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -1124,7 +1469,7 @@ X-Container-Write: {컨테이너 쓰기 정책}
 ```
 
 #### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -1135,7 +1480,7 @@ X-Container-Write: {컨테이너 쓰기 정책}
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 
 #### 응답
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 #### 코드 예시
 <details>
@@ -1296,7 +1641,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -1453,7 +1798,7 @@ Content-Type: {content-type}
 > API를 이용하여 이러한 이름의 오브젝트를 업로드했다면 API를 통해 접근해야 합니다.
 
 #### 응답
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 #### 코드 예시
 <details>
@@ -1674,7 +2019,7 @@ Content-Type: {content-type}
 | - |	Body | Binary | O | 분할한 오브젝트의 내용 |
 
 ##### 응답
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 #### 매니페스트 생성
 모든 오브젝트의 세그먼트를 업로드한 다음 매니페스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다. 매니페스트 오브젝트는 세그먼트들이 저장된 경로를 가리킵니다.
@@ -1697,7 +2042,7 @@ X-Object-Manifest: {Container}/{Object}/
 | - | Body| Binary | O | 빈 데이터 |
 
 ##### 응답
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 
 #### 코드 예시
@@ -1972,7 +2317,7 @@ Content-Type: {content-type}
 ```
 
 #### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -1985,7 +2330,7 @@ Content-Type: {content-type}
 | Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
 
 #### 응답
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 ### 오브젝트 다운로드
 오브젝트를 다운로드합니다.
@@ -1996,7 +2341,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -2181,7 +2526,7 @@ X-Copy-From: {원본 오브젝트}
 ```
 
 #### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -2341,7 +2686,7 @@ X-Object-Meta-{Key}: {Value}
 ```
 
 #### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -2512,7 +2857,7 @@ X-Auth-Token: {token-id}
 | Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
 
 #### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
