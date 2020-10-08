@@ -2346,7 +2346,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
-| Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
+| Object | URL | String | O | 다운로드할 오브젝트 이름 |
 
 #### 응답
 오브젝트의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
@@ -2690,6 +2690,8 @@ X-Object-Meta-{Key}: {Value}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | X-Object-Meta-{Key} | Header | String | - | 변경할 메타데이터 |
+| X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
+| X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |

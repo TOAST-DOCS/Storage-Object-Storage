@@ -2347,7 +2347,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | User account ID, to be found on the setup box for API Endpoint |
 | Container |	URL | String | O | Container name |
-| Object | URL | String | O | Object name of which the detail is to be modified  |
+| Object | URL | String | O | Object name to download |
 
 #### Response
 Object details are returned to stream. When the request is appropriate, return status code 200.
@@ -2691,6 +2691,8 @@ This API does not require a request body.
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | X-Object-Meta-{Key} | Header | String | - | Metadata to change |
+| X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
+| X-Delete-After | Header | Timestamp | - | Valid object time, unitx time (seconds) |
 | Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
 | Container | URL| String |	 O | Container name |
 | Object | URL| String |  O | Object name of which metadata is to be modified |

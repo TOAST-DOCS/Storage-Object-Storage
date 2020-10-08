@@ -2348,7 +2348,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container |	URL | String | O | コンテナ名 |
-| Object | URL | String | O | 内容を修正するオブジェクト名 |
+| Object | URL | String | O | ダウンロードするオブジェクト名 |
 
 #### レスポンス
 オブジェクトの内容がストリームで返されます。リクエストが正しければステータスコード200を返します。
@@ -2692,6 +2692,8 @@ X-Object-Meta-{Key}: {Value}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
 | X-Object-Meta-{Key} | Header | String | - | 変更するメタデータ |
+| X-Delete-At | Header | Timestamp | - | オブジェクトを削除するUNIX時間(秒) |
+| X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、 UNIX時間(秒) |
 | Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL| String |	 O | コンテナ名 |
 | Object | URL| String |  O | メタデータを修正するオブジェクト名 |
