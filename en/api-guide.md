@@ -307,33 +307,33 @@ printf("%s\n", $token);
 
 </details>
 
-## 스토리지 계정 Storage Account 
-A storage account is a character string in the `AUTH_*****`format, included in the Object-Store API endpoint. 스토리지 계정(account)은 `AUTH_*****` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
+## Storage Account 
+A storage account is a character string in the `AUTH_*****`format, included in the Object-Store API endpoint. 
 
-### 스토리지 계정 조회 Query Storage Account
-스토리지 계정의 사용 현황을 조회합니다. Query usage status of a storage account. 
+### Query Storage Account
+Query usage status of a storage account. 
 
 ```
 HEAD  /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
-#### 요청 Request
-요청 본문은 필요하지 않습니다. A request body is not required. 
+#### Request
+This API does not require a request body. 
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | Storage account, available on the 스토리지 계정, **API Endpoint Setting설정** popup 대화 상자에서 확인 |
+| Account | URL | String | O | Storage account, available on the **API Endpoint Setting** popup |
 
-#### 응답 Response
-Response body is not returned. Usage status is included in the header. For a valid request, return 200 as status code. 응답 본문을 반환하지 않습니다. 사용 현황은 헤더에 포함되어 있습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+#### Response
+This API does not return a response body. Usage status is included in the header. For a valid request, return status code 200. 
 
 | Name | Type | Format | Description |
 |---|---|---|---|
-| X-Account-Container-Count | Header | String | Number of containers 컨테이너 개수 |
-| X-Account-Object-Count | Header | String | Number of saved objects 저장된 오브젝트 개수 |
-| X-Account-Bytes-Used | Header | String | Saved data capacity (bytes) 저장된 데이터 용량(바이트) |
+| X-Account-Container-Count | Header | String | Number of containers |
+| X-Account-Object-Count | Header | String | Number of saved objects |
+| X-Account-Bytes-Used | Header | String | Saved data capacity (bytes) |
 
 #### 코드 예시 Code Example 
 
@@ -479,8 +479,8 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 
 </details>
 
-### List Containers 컨테이너 목록 조회
-List containers of a storage account. 스토리지 계정의 컨테이너 목록을 조회합니다.
+### List Containers 
+List containers of a storage account. 
 
 ```
 GET  /v1/{Account}
@@ -488,19 +488,19 @@ X-Auth-Token: {token-id}
 ```
 
 #### Request
-A request body is not required. 요청 본문은 필요하지 않습니다.
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | Storage account, available on the 스토리지 계정, **API Endpoint Setting** popup. 대화 상자에서 확인 |
+| Account | URL | String | O | Storage account, available on the **API Endpoint Setting** popup |
 
 #### Response
 ```
-[List of containers in a storage account 스토리지 계정에 속한 컨테이너 목록]
+[List of containers in a storage account]
 ```
 
-#### Code Example 코드 예시
+#### Code Example 
 
 <details>
 <summary>cURL</summary>
@@ -532,10 +532,10 @@ public class AccountService {
             = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
         List<String> containerList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
-            // Convert the list of string to a sequence 으로 받은 목록을 배열로 변환
+            // Convert the list of string into sequence 
             containerList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
-        // 배열을 List로 변환하여 반환 Convert sequence to list and return
+        // Convert sequence into list and return
         return new ArrayList<String>(containerList);
     }
     public static void main(String[] args) {
@@ -634,11 +634,11 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container | URL | String | O | Name of container to be created  |
 
 #### Response
-This API does not return response body. When a container is created, return status code 201.
+This API does not return a response body. When a container is created, return status code 201.
 
 #### Code Example
 <details>
@@ -820,7 +820,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container | URL | String | O | Container name to get |
 
 #### Response
@@ -993,7 +993,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account name, to be found on the set up box for API Endpoint |
+| Account | URL | String | O | User account name, availablw on the set up box for API Endpoint |
 | Container | URL | String | O | Container name to query |
 | Object | Query | String | O | Criteria object name |
 
@@ -1043,7 +1043,7 @@ public class ContainerService {
         // List objects
         List<String> objectList = this.getList(url);
         while ((objectList.size() % LIMIT_COUNT) == 0) {
-            // If the length of object list is a multiple of 10,000, specify the last object on the list to list  
+            // If the length of object list is a multiple of 10,000, specify the last object on the list  
             String lastObject = objectList.get(objectList.size() - 1);
             List<String> nextObjList = this.getObjectList(conatinerName, lastObject);
             objectList.addAll(nextObjList);			
@@ -1144,7 +1144,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account name for Windows, to be found on the setup box for API Endpoint  |
+| Account | URL | String | O | User account name for Windows, available on the setup box for API Endpoint  |
 | Container | URL | String | O | Container name to query |
 | Path | Query | String | O | Folder name to query |
 
@@ -1240,7 +1240,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Toekn ID |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container | URL | String | O | Container name to query |
 | Prefix | Query | String | O | Prefix to search |
 
@@ -1337,7 +1337,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container | URL | String | O | Container name to query  |
 | limit | Query | Integer | O | Object count to show on the list |
 
@@ -1440,11 +1440,11 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | X-Container-Read | Header | String | - | Specify access rules for reading container <br/>.r:* - Allow access for all users <br/>.r:example.com,test.com – Access allowed to particular address only, to be delimited by ‘,’<br/>.rlistings. – Allow listing containers <br/>AUTH_.... – Allow access to particular accounts only |
 | X-Container-Write | Header | String | - | Specify access rules for writing container <br/>\*:\* - Allow reading for all users <br/>AUTH_.... – Allow reading to particular accounts only |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container | URL | String | O | Container name to modify |
 
 #### Response
-This API does not return response body. When the request is appropriate, return status code 204.
+This API does not return a response body. For a valid request, return status code 204.
 
 #### Code Example
 <details>
@@ -1610,11 +1610,11 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container | URL| String |	O | Container name to delete |
 
 #### Response
-This request does not return response body. When the request is appropriate, return status code 204.
+This request does not return a response body. For a valid request, return status code 204.
 
 #### Code Example
 <details>
@@ -1752,7 +1752,7 @@ Content-Type: {content-type}
 | Content-type | Header | String | O | Content type of object |
 | X-Delete-At | Header | Timestamp | - | Unix time (seconds) to delete object |
 | X-Delete-After | Header | Timestamp | - | Valid object time, unix time (seconds)  |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container |	URL | String | O | Container name  |
 | Object | URL | String |	O | Object name to create |
 | - |	Body | Binary | O | Object details to create  |
@@ -1762,7 +1762,7 @@ Content-Type: {content-type}
 > If you have uploaded an object of such name via API, it must also be accessed via API.
 
 #### Response
-This API does not return response body. When the request is appropriate, return status code 201.
+This API does not return a response body. For a valid request, return status code 201.
 
 #### Code Example
 <details>
@@ -1976,14 +1976,14 @@ Content-Type: {content-type}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Content-type | Header | String | O | Content type of object |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container |	URL | String | O | Container name |
 | Object |	URL | String | O | Object name to create |
 | Count | URL | Integer | O | Sequence of segmented objects, e.g.) 001, 002 |
 | - |	Body | Binary | O | Segmented object details |
 
 ##### Response
-This API does not return request body. When the request is appropriate, return status code 201.
+This API does not return a request body. For a valid request, return status code 201.
 
 #### Manifest Creation
 Upload all segments of an object, and then create manifest object; then you can use it as one object. The manifest object refers to the path in which segments are saved.
@@ -2000,13 +2000,13 @@ X-Object-Manifest: {Container}/{Object}/
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | Token ID |
 | X-Object-Manifest | Header| String | O | Upload path for segmented objects, `{Container}/{Object}/` |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container |	URL | String | O | Container name |
 | Object |	URL | String | O | Manifest object name to create |
 | - | Body| Binary | O | Empty data |
 
 ##### Response
-This API does not return response body. When the request is appropriate, return status code 201.
+This API does not return a response body. For a valid request, return status code 201.
 
 
 #### Code Example
@@ -2289,12 +2289,12 @@ This API does not require a request body.
 | Content-type | Header | String | O | Content type of object |
 | X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
 | X-Delete-After | Header | Timestamp | - | Valid object time, unitx time (seconds) |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint  |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint  |
 | Container |	URL | String | O | Container name |
 | Object | URL | String | O | Object name of which details are to be modified |
 
 #### Response
-This API does not return response body. When the request is appropriate, return status code 201.
+This API does not return a response body. For a valid request, return status code 201.
 
 ### Download
 Download objects.
@@ -2310,12 +2310,12 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account ID, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account ID, available on the setup box for API Endpoint |
 | Container |	URL | String | O | Container name |
 | Object | URL | String | O | Object name to download |
 
 #### Response
-Object details are returned to stream. When the request is appropriate, return status code 200.
+Object details are returned to stream. For a valid request, return status code 200.
 
 #### Code Example
 <details>
@@ -2497,12 +2497,12 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Destination | Header | String |	- | Target to copy object, `{Container} / {Object}`<br/>Required to use the COPY method |
 | X-Copy-From | Header | String |	- | Original object, `{Container} / {Object}`<br/>Required to use the PUT method |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container | URL | String | O |	Container name<br/>COPY Method: Original container<br/>PUT Method: Container to copy |
 | Object | URL | String |	Object name to copy |
 
 #### Response
-This request does not return response body. When the request is appropriate, return status code 201.
+This request does not return a response body. For a valid request, return status code 201.
 
 #### Code Example
 <details>
@@ -2546,7 +2546,7 @@ public class ObjectService {
         headers.add("X-Copy-From", srcObject);    // Specify original object
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call an alternative API using PUT method, since HttpMethod does not support the COPY method.
+        // Call alternative API since the COPY method is not supported by HttpMethod.
         this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);			
     }    
 
@@ -2658,12 +2658,12 @@ This API does not require a request body.
 | X-Object-Meta-{Key} | Header | String | - | Metadata to change |
 | X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
 | X-Delete-After | Header | Timestamp | - | Valid object time, unitx time (seconds) |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container | URL| String |	 O | Container name |
 | Object | URL| String |  O | Object name of which metadata is to be modified |
 
 #### Response
-This request does not return response body. When the request is appropriate, return status code 202.
+This request does not return a response body. For a valid request, return status code 202.
 
 #### Code Example
 <details>
@@ -2818,7 +2818,7 @@ X-Auth-Token: {token-id}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | X-Object-Meta-{Key} | Header | String | - | Metadata to change |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container | URL| String |	 O | Container name |
 | Object | URL| String |  O | Object name of which metadata is to be modified |
 
@@ -2828,12 +2828,12 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | User account name, to be found on the setup box for API Endpoint |
+| Account | URL | String | O | User account name, available on the setup box for API Endpoint |
 | Container | URL| String |	 O | Container name |
 | Object | URL| String |  O | Object name to delete |
 
 #### Response
-This request does not return response body. When the request is appropriate, return status code 204.
+This request does not return a response body. For a valid request, return status code 204.
 
 #### Code Example
 <details>
