@@ -182,7 +182,7 @@ Following information is required to create a signature.
 
 ### Create  
 
-Create a bucket (container).버킷 이름은 다음과 같은 AWS S3의 버킷 명명 규칙을 따라야 합니다.
+Create a bucket (container). 버킷 이름은 다음과 같은 AWS S3의 버킷 명명 규칙을 따라야 합니다.
 
 * 버킷 이름은 3자에서 63자 사이여야 합니다.
 * 버킷 이름은 소문자, 숫자, 점(.) 및 하이픈(-)으로만 구성될 수 있습니다.
