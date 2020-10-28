@@ -182,15 +182,15 @@ Following information is required to create a signature.
 
 ### Create  
 
-Create a bucket (container). A bucket must be named, following the AWS s3 bucket naming rules like below. 버킷 이름은 다음과 같은 AWS S3의 버킷 명명 규칙을 따라야 합니다.
+Create a bucket (container). A bucket must be named, following the AWS s3 bucket naming rules like below. 
 
-* 버킷 이름은 3자에서 63자 사이여야 합니다. Must have 3 to 63 characters.  
-* 버킷 이름은 소문자, 숫자, 점(.) 및 하이픈(-)으로만 구성될 수 있습니다. Must be comprised of small-case letters, numbers, period (.) or hyphen (-) only.
-* 버킷 이름은 문자 또는 숫자로 시작하고 끝나야 합니다. Must start and end with a letter or number. 
-* 버킷 이름은 IP 주소 형식(예: 192.168.5.4)을 사용하지 않습니다. Unable to adopt an IP address format (e.g.:192.168.5.4).
-* 버킷 이름은 xn--으로 시작할 수 없습니다. Unable to start with xn--. 
+* Must have 3 to 63 characters.  
+* Must be comprised of small-case letters, numbers, period (.) or hyphen (-) only.
+* Must start and end with a letter or number. 
+* Unable to adopt an IP address format (e.g.:192.168.5.4).
+* Unable to start with xn--. 
 
-For more details, see [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html) 문서를 참조하세요.
+For more details, see [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html).
 
 ```
 PUT /{bucket}
@@ -199,7 +199,7 @@ Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 > [Note]
-> If a container name made via web console or object storage API violates any bucket naming rules, it is unavailable to access with s3 compatible APIs.  웹 콘솔 또는 오브젝트 스토리지 API를 통해 만든 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
+> If a container name made via web console or object storage API violates any bucket naming rules, it is unavailable to access with s3 compatible APIs. 
 
 #### Request
 
@@ -616,18 +616,18 @@ This API does not require a request body.
 
 </details>
 
-## AWS Command Line Interface 명령줄 인터페이스(CLI)
-TOAST object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API. 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 TOAST 오브젝트 스토리지를 사용할 수 있습니다.
+## AWS Command Line Interface (CLI)
+TOAST object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API. 
 
-### 설치 Install
-AWS command line interface is prvodied by a Python package, which can be installed by using the Python package manager (pip).  명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 이용해 설치합니다.
+### Install
+AWS command line interface is prvodied by a Python package, which can be installed by using the Python package manager (pip).  
 
 ```
 $ sudo pip install awscli
 ```
 
-### 설정 Configure 
-AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 자격 증명과 환경을 설정해야 합니다. To enable AWS CLI, it is required, first to set up a credential and environment. 
+### Configure 
+To enable AWS CLI, it is required, first to set up a credential and environment. 
 
 ```
 $ aws configure
@@ -639,12 +639,12 @@ Default output format [None]: json
 
 | Name | Description |
 |---|---|
-| access | Access key for credential 자격 증명 접근 키 |
-| secret | Secret key for credential 자격 증명 비밀 키 |
-| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon평촌) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
+| access | Access key for credential |
+| secret | Secret key for credential |
+| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
 
 
-### S3 명령 사용 방법 Enable S3 Commands 
+### Enable S3 Commands 
 
 ```
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
@@ -653,15 +653,14 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 | Name | Description |
 |---|---|
 | endpoint | https://api-storage.cloud.toast.com - Korea (Pangyo) region <br/>https://kr2-api-storage.cloud.toast.com - Korea (Pyeongcheon) region <br/>https://jp1-api-storage.cloud.toast.com - Japan (Tokyo) region <br/>https://us1-api-storage.cloud.toast.com - US (California) region |
-| command | Command for AWS command line interface 명령줄 인터페이스 명령 |
-| bucket | Bucket name 버킷 이름 |
+| command | Command for AWS command line interface |
+| bucket | Bucket name |
 
 
 > [Note]
-> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use TOAST Object Storage, it is required to specify endpoint for every command.  명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 TAOST 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
-> Regarding commands for AWS command line interface 명령줄 인터페이스 명령은 see [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
+> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use TOAST Object Storage, it is required to specify endpoint for every command.  > Regarding commands for AWS command line interface, see [Using Commands for Upper Class Level (s3)](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
 <details>
-<summary>Create Bucket 버킷 생성</summary>
+<summary>Create Bucket</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
@@ -671,7 +670,7 @@ make_bucket: example-bucket
 </details>
 
 <details>
-<summary>List Buckets버킷 목록 조회</summary>
+<summary>List Buckets</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
@@ -682,7 +681,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 
 
 <details>
-<summary>Get Bucket버킷 조회</summary>
+<summary>Get Bucket</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
@@ -693,7 +692,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 </details>
 
 <details>
-<summary>Delete Bucket버킷 삭제</summary>
+<summary>Delete Bucket</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
@@ -704,7 +703,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 </details>
 
 <details>
-<summary>Upload Object오브젝트 업로드</summary>
+<summary>Upload Object</summary>
 
 ```
 $  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -714,7 +713,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 </details>
 
 <details>
-<summary>Download Object 오브젝트 다운로드</summary>
+<summary>Download Object</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -724,7 +723,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 </details>
 
 <details>
-<summary>Delete Object 오브젝트 삭제</summary>
+<summary>Delete Object</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -735,18 +734,18 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, TOAST object storage becomes available. 는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 TOAST 오브젝트 스토리지를 사용할 수 있습니다. provide
+AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, TOAST object storage becomes available. 
 
 > [Note]
-> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools). 이 문서에서는 Python과 Java SDK의 간단한 사용 예시만 설명합니다. 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
+> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools). 
 
 
-Find main parameters required to use AWS SDK. 를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
+Following are the major parameters required to use AWS SDK. 
 
 | Name | Description |
 |---|---|
-| access | Access key for credential 자격 증명 접근 키 |
-| secret | Secret key for credential 자격 증명 비밀 키 |
+| access | Access key for credential |
+| secret | Secret key for credential |
 | region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region <br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
 | endpoint | https://api-storage.cloud.toast.com - Korea (Pangyo) region <br/>https://kr2-api-storage.cloud.toast.com - Korea (Pyeongchon) region <br/>https://jp1-api-storage.cloud.toast.com - Japan (Tokyo) region <br/>https://us1-api-storage.cloud.toast.com - US (California) region |
 
