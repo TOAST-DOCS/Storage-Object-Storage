@@ -652,16 +652,16 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | Name | Description |
 |---|---|
-| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 |
-| command | AWS 명령줄 인터페이스 명령 |
-| bucket | 버킷 이름 |
+| endpoint | https://api-storage.cloud.toast.com - Korea (Pangyo) region <br/>https://kr2-api-storage.cloud.toast.com - Korea (Pyeongcheon) region <br/>https://jp1-api-storage.cloud.toast.com - Japan (Tokyo) region <br/>https://us1-api-storage.cloud.toast.com - US (California) region |
+| command | Command for AWS command line interface 명령줄 인터페이스 명령 |
+| bucket | Bucket name 버킷 이름 |
 
 
-> [참고]
-> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 TAOST 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
-> AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
+> [Note]
+> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use TOAST Object Storage, it is required to specify endpoint for every command.  명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 TAOST 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
+> Regarding commands for AWS command line interface 명령줄 인터페이스 명령은 see [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
 <details>
-<summary>버킷 생성</summary>
+<summary>Create Bucket 버킷 생성</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
@@ -671,7 +671,7 @@ make_bucket: example-bucket
 </details>
 
 <details>
-<summary>버킷 목록 조회</summary>
+<summary>List Buckets버킷 목록 조회</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
@@ -682,7 +682,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 
 
 <details>
-<summary>버킷 조회</summary>
+<summary>Get Bucket버킷 조회</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
@@ -693,7 +693,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 </details>
 
 <details>
-<summary>버킷 삭제</summary>
+<summary>Delete Bucket버킷 삭제</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
@@ -704,7 +704,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 </details>
 
 <details>
-<summary>오브젝트 업로드</summary>
+<summary>Upload Object오브젝트 업로드</summary>
 
 ```
 $  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -714,7 +714,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 </details>
 
 <details>
-<summary>오브젝트 다운로드</summary>
+<summary>Download Object 오브젝트 다운로드</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -724,7 +724,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 </details>
 
 <details>
-<summary>오브젝트 삭제</summary>
+<summary>Delete Object 오브젝트 삭제</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -735,25 +735,26 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 TOAST 오브젝트 스토리지를 사용할 수 있습니다.
+AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, TOAST object storage becomes available. 는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 TOAST 오브젝트 스토리지를 사용할 수 있습니다. provide
 
-> [참고]
-> 이 문서에서는 Python과 Java SDK의 간단한 사용 예시만 설명합니다. 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
+> [Note]
+> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools). 이 문서에서는 Python과 Java SDK의 간단한 사용 예시만 설명합니다. 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
 
-AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
 
-| 이름 | 설명 |
+Find main parameters required to use AWS SDK. 를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
+
+| Name | Description |
 |---|---|
-| access | 자격 증명 접근 키 |
-| secret | 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
-| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 |
+| access | Access key for credential 자격 증명 접근 키 |
+| secret | Secret key for credential 자격 증명 비밀 키 |
+| region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region <br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
+| endpoint | https://api-storage.cloud.toast.com - Korea (Pangyo) region <br/>https://kr2-api-storage.cloud.toast.com - Korea (Pyeongchon) region <br/>https://jp1-api-storage.cloud.toast.com - Japan (Tokyo) region <br/>https://us1-api-storage.cloud.toast.com - US (California) region |
 
 
 ### Boto3 - Python SDK
 
 <details>
-<summary>Boto3 클라이언트 클래스</summary>
+<summary>Boto3 Client Class</summary>
 
 ```python
 # boto3example.py
@@ -774,7 +775,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 생성</summary>
+<summary>Create Bucket</summary>
 
 ```python
     def create_bucket(self, bucket_name):
@@ -784,7 +785,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 목록 조회</summary>
+<summary>List Buckets</summary>
 
 ```python
     def list_buckets(self):
@@ -795,7 +796,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 조회(오브젝트 목록 조회)</summary>
+<summary>Get Bucket (List Objects)</summary>
 
 ```python
     def list_objs(self, bucket_name):
@@ -806,7 +807,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 삭제</summary>
+<summary>Delete Bucket</summary>
 
 ```python
     def delete_bucket(self, bucket_name):
@@ -816,7 +817,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>오브젝트 업로드</summary>
+<summary>Upload Object</summary>
 
 ```python
     def upload(self, bucket_name, key, filename):
@@ -827,7 +828,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>오브젝트 다운로드</summary>
+<summary>Download Object</summary>
 
 ```python
     def download(self, bucket_name, key, filename):
@@ -842,7 +843,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>오브젝트 삭제</summary>
+<summary>Delete Object</summary>
 
 ```python
     def delete(self, bucket_name, key):
@@ -855,7 +856,7 @@ class Boto3Example(object):
 ### Java SDK
 
 <details>
-<summary>Java SDK 클라이언트 클래스</summary>
+<summary>Java SDK Client Class</summary>
 
 ```java
 // AwsSdkExapmple.java
@@ -880,7 +881,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 생성</summary>
+<summary>Create Bucket</summary>
 
 ```java
     public String createBucket(String bucketName) {
@@ -892,7 +893,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 목록 조회</summary>
+<summary>List Buckets</summary>
 
 ```java
     public List<Bucket> listBuckets() {
@@ -903,7 +904,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 조회(오브젝트 목록 조회)</summary>
+<summary>Get Bucket (List Objects)</summary>
 
 ```java
     public ListObjectsV2Result listObjects(String bucketName) {
@@ -914,7 +915,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 삭제</summary>
+<summary>Delete Bucket</summary>
 
 ```java
     public void deleteBucket(String bucketName) {
@@ -925,7 +926,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>오브젝트 업로드</summary>
+<summary>Upload Object</summary>
 
 ```java
     public String uploadObject(String bucketName, String objKeyName, String filePath) {
@@ -937,7 +938,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>오브젝트 다운로드</summary>
+<summary>Download Object</summary>
 
 ```java
     public String downloadObject(String bucketName, String objKeyName, String filePath) {
@@ -950,7 +951,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>오브젝트 삭제</summary>
+<summary>Delete Object</summary>
 
 ```java
     public void deleteObject(String bucketName, String objKeyName) {
