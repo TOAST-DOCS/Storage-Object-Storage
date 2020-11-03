@@ -1,6 +1,6 @@
 ## Storage > Object Storage > API Guide for AWS S3 Compatibility
 
-Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
+TOAST Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
 
 APIs that are compatible with S3 are provided as follows.  
 
@@ -172,8 +172,8 @@ Following information is required to create a signature.
 | Algorithm     | AWS4-HMAC-SHA256               |
 | Signed Time   | In the ZssmmhhTDDMMYYYY format |
 | Service Name  | s3                             |
-| Region Name   | KR1 - Korea (Pangyo) region    |
-| Secret Key 키 | Credential secret key          |
+| Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - KOREA (Pyeongchon) Region<br/>JP1 - JAPAN (Tokyo) Region<br/>US1 - USA (California) Region   |
+| Secret Key    | Credential secret key          |
 
 > [Note]
 > APIs compatible with S3 are provided only within Korea (Pangyo) region as of March 2020.
@@ -182,7 +182,15 @@ Following information is required to create a signature.
 
 ### Create  
 
-Create a bucket (container).
+Create a bucket (container). A bucket must be named, following the AWS s3 bucket naming rules like below. 
+
+* Must have 3 to 63 characters.  
+* Must be comprised of small-case letters, numbers, period (.) or hyphen (-) only.
+* Must start and end with a letter or number. 
+* Unable to adopt an IP address format (e.g.:192.168.5.4).
+* Unable to start with xn--. 
+
+For more details, see [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html).
 
 ```
 PUT /{bucket}
@@ -190,6 +198,9 @@ PUT /{bucket}
 Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
+
+> [Note]
+> If a container name made via web console or object storage API violates any bucket naming rules, it is unavailable to access with s3 compatible APIs.
 
 #### Request
 
@@ -199,7 +210,7 @@ This API does not require a request body.
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
 | bucket        | URL    | String | O        | Bucket name                                      |
 | Date          | Header | String | O        | Request time                                     |
-| Authorization | Header | O      | String   | Comprised of credential access key and signature |
+| Authorization | Header | String | 0        | Comprised of credential access key and signature |
 
 #### Response
 
@@ -491,7 +502,7 @@ This API does not require a request body.
 Download objects.
 
 ```
-PUT /{bucket}/{obj}
+GET /{bucket}/{obj}
 
 Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
@@ -602,6 +613,350 @@ This API does not require a request body.
         "RetryAttempts": 0
     }
 }
+```
+
+</details>
+
+## AWS Command Line Interface (CLI)
+TOAST object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API. 
+
+### Install
+AWS command line interface is prvodied by a Python package, which can be installed by using the Python package manager (pip).  
+
+```
+$ sudo pip install awscli
+```
+
+### Configure 
+To enable AWS CLI, it is required, first to set up a credential and environment. 
+
+```
+$ aws configure
+AWS Access Key ID [None]: {access}
+AWS Secret Access Key [None]: {secret}
+Default region name [None]: {region name}
+Default output format [None]: json
+```
+
+| Name | Description |
+|---|---|
+| access | Access key for credential |
+| secret | Secret key for credential |
+| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
+
+
+### Enable S3 Commands 
+
+```
+aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
+```
+
+| Name | Description |
+|---|---|
+| endpoint | https://api-storage.cloud.toast.com - Korea (Pangyo) region <br/>https://kr2-api-storage.cloud.toast.com - Korea (Pyeongcheon) region <br/>https://jp1-api-storage.cloud.toast.com - Japan (Tokyo) region <br/>https://us1-api-storage.cloud.toast.com - US (California) region |
+| command | Command for AWS command line interface |
+| bucket | Bucket name |
+
+
+> [Note]
+> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use TOAST Object Storage, it is required to specify endpoint for every command.  > Regarding commands for AWS command line interface, see [Using Commands for Upper Class Level (s3)](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
+<details>
+<summary>Create Bucket</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
+make_bucket: example-bucket
+```
+
+</details>
+
+<details>
+<summary>List Buckets</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
+2020-07-13 10:07:13 example-bucket
+```
+
+</details>
+
+
+<details>
+<summary>Get Bucket</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
+2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
+```
+
+</details>
+
+<details>
+<summary>Delete Bucket</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
+2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
+```
+
+</details>
+
+<details>
+<summary>Upload Object</summary>
+
+```
+$  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```
+
+</details>
+
+<details>
+<summary>Download Object</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
+```
+
+</details>
+
+<details>
+<summary>Delete Object</summary>
+
+```
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```
+
+</details>
+
+
+## AWS SDK
+AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, TOAST object storage becomes available. 
+
+> [Note]
+> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools). 
+
+
+Following are the major parameters required to use AWS SDK. 
+
+| Name | Description |
+|---|---|
+| access | Access key for credential |
+| secret | Secret key for credential |
+| region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region <br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
+| endpoint | https://api-storage.cloud.toast.com - Korea (Pangyo) region <br/>https://kr2-api-storage.cloud.toast.com - Korea (Pyeongchon) region <br/>https://jp1-api-storage.cloud.toast.com - Japan (Tokyo) region <br/>https://us1-api-storage.cloud.toast.com - US (California) region |
+
+
+### Boto3 - Python SDK
+
+<details>
+<summary>Boto3 Client Class</summary>
+
+```python
+# boto3example.py
+import boto3
+class Boto3Example(object):
+    _REGION = '{region name}'
+    _ENDPOINT = '{endpoint}'
+    _ACCESS = '{access}'
+    _SECRET = '{secret}'
+    def __init__(self):
+        self.s3 = boto3.client(service_name='s3',
+                               region_name=self._REGION,
+                               endpoint_url=self._ENDPOINT,
+                               aws_access_key_id=self._ACCESS,
+                               aws_secret_access_key=self._SECRET)
+```
+
+</details>
+
+<details>
+<summary>Create Bucket</summary>
+
+```python
+    def create_bucket(self, bucket_name):
+        return self.s3.create_bucket(Bucket=bucket_name)
+```
+
+</details>
+
+<details>
+<summary>List Buckets</summary>
+
+```python
+    def list_buckets(self):
+        response = self.s3.list_buckets()
+        return response.get('Buckets')
+```
+
+</details>
+
+<details>
+<summary>Get Bucket (List Objects)</summary>
+
+```python
+    def list_objs(self, bucket_name):
+        response = self.s3.list_objects_v2(Bucket=bucket_name)
+        return response.get('Contents')
+```
+
+</details>
+
+<details>
+<summary>Delete Bucket</summary>
+
+```python
+    def delete_bucket(self, bucket_name):
+        return self.s3.delete_bucket(Bucket=bucket_name)
+```
+
+</details>
+
+<details>
+<summary>Upload Object</summary>
+
+```python
+    def upload(self, bucket_name, key, filename):
+        with open(filename, 'rb') as fd:
+            return self.s3.put_object(Bucket=bucket_name, Key=key, Body=fd)
+```
+
+</details>
+
+<details>
+<summary>Download Object</summary>
+
+```python
+    def download(self, bucket_name, key, filename):
+        response = self.s3.get_object(Bucket=bucket_name, Key=key)
+        with io.FileIO(filename, 'w') as fd:
+            for chunk in response['Body']:
+                fd.write(chunk)
+        response.pop('Body')
+        return response
+```
+
+</details>
+
+<details>
+<summary>Delete Object</summary>
+
+```python
+    def delete(self, bucket_name, key):
+        return self.s3.delete_object(Bucket=bucket_name, Key=keys)
+```
+
+</details>
+
+
+### Java SDK
+
+<details>
+<summary>Java SDK Client Class</summary>
+
+```java
+// AwsSdkExapmple.java
+public class AwsSdkExapmple {
+    private static final String access = "{access}";
+    private static final String secret = "{secret}";
+    private static final String region = "{region name}";
+    private static final String ednpoint = "{endpoint}";
+    private AmazonS3 s3Client;
+    public AwsSdkExapmple() {
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(access, secret);
+        s3Client = AmazonS3ClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(ednpoint, region))
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                .enablePathStyleAccess()
+                .disableChunkedEncoding()
+                .build();
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Create Bucket</summary>
+
+```java
+    public String createBucket(String bucketName) {
+        Bucket bucket = s3Client.createBucket(bucketName);
+        return bucket.toString();
+    }
+```
+
+</details>
+
+<details>
+<summary>List Buckets</summary>
+
+```java
+    public List<Bucket> listBuckets() {
+        return s3Client.listBuckets();
+    }
+```
+
+</details>
+
+<details>
+<summary>Get Bucket (List Objects)</summary>
+
+```java
+    public ListObjectsV2Result listObjects(String bucketName) {
+        return s3Client.listObjectsV2(bucketName);
+    }
+```
+
+</details>
+
+<details>
+<summary>Delete Bucket</summary>
+
+```java
+    public void deleteBucket(String bucketName) {
+        s3Client.deleteBucket(bucketName);
+    }
+```
+
+</details>
+
+<details>
+<summary>Upload Object</summary>
+
+```java
+    public String uploadObject(String bucketName, String objKeyName, String filePath) {
+        PutObjectResult result = s3Client.putObject(bucketName, objKeyName, new File(filePath));
+        return result.getETag();
+    }
+```
+
+</details>
+
+<details>
+<summary>Download Object</summary>
+
+```java
+    public String downloadObject(String bucketName, String objKeyName, String filePath) {
+        GetObjectRequest request = new GetObjectRequest(bucketName, objKeyName);
+        ObjectMetadata metadata = s3Client.getObject(request, new File(filePath));
+        return metadata.getETag();
+    }
+```
+
+</details>
+
+<details>
+<summary>Delete Object</summary>
+
+```java
+    public void deleteObject(String bucketName, String objKeyName) {
+        s3Client.deleteObject(bucketName, objKeyName);
+    }
 ```
 
 </details>
