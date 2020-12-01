@@ -1,37 +1,39 @@
-## Storage > Object Storage > AWS S3 호환 API 가이드
-TOAST 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 AWS S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
+## Storage > Object Storage > API Guide for AWS S3 Compatibility
 
-제공하는 S3 호환 API는 다음과 같습니다.
+TOAST Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
 
-| S3 API 메서드 | 용도 |
-| --- | --- |
-| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | 버킷 생성 |
-| [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | 버킷 정보 조회 |
-| [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | 버킷 삭제 |
-| [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | 버킷 ACL 설정 |
-| [GET Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html) | 버킷 ACL 조회 |
-| [GET Bucket Location](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html) | 버킷이 있는 리전 조회 |
-| [GET Bucket List Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html) | 버킷의 오브젝트 목록 조회 |
-| [GET Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html) | 오브젝트 다운로드 |
-| [HEAD Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html) | 오브젝트 정보 조회 |
-| [PUT Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html) | 오브젝트 업로드 |
-| [PUT Object Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html) | 오브젝트 복사 |
-| [DELETE Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html) | 오브젝트 삭제 |
-| [Initiate Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html) | 멀티 파트 업로드 초기화 |
-| [Upload Part](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html) | 파트 업로드 |
-| [Upload Part Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html) | 파트 복사 |
-| [Complete Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html) | 멀티 파트 업로드 완료 |
-| [Abort Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html) | 멀티 파트 업로드 중단 |
-| [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 멀티 파트 오브젝트의 파트 오브젝트 리스트 |
-| [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 업로드 진행 중인 멀티 파트 오브젝트의 파트 오브젝트 리스트 |
-| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | 멀티 파트 오브젝트 삭제 |
+APIs that are compatible with S3 are provided as follows.  
 
-이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [AWS S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
+| S3 API Method                                                | Usage                                   |
+| ------------------------------------------------------------ | --------------------------------------- |
+| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | Create bucket                           |
+| [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | Query bucket information                |
+| [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | Delete bucket                           |
+| [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | Set bucket ACL                          |
+| [GET Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html) | Get bucket ACL                          |
+| [GET Bucket Location](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html) | Get region with bucket                  |
+| [GET Bucket List Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html) | List bucket objects                     |
+| [GET Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html) | Download object                         |
+| [HEAD Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html) | Query object information                |
+| [PUT Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html) | Upload object                           |
+| [PUT Object Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html) | Copy object                             |
+| [DELETE Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html) | Delete object                           |
+| [Initiate Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html) | Initialize multi-part upload            |
+| [Upload Part](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html) | Upload part                             |
+| [Upload Part Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html) | Copy part                               |
+| [Complete Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html) | Complete multi-part upload              |
+| [Abort Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html) | Abort multi-part upload                 |
+| [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | List multi-part objects                 |
+| [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | List multi-part objects under uploading |
+| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | Delete multi-part objects               |
 
-## EC2 자격 증명(EC2 Credential)
+This document describes only the basic usage of API. To use advanced features, see [API Guide for AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html), or [AWS SDK](https://aws.amazon.com/ko/tools) is recommended.
 
-### EC2 자격 증명 등록
-S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명을 등록하려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참고하십시오.
+## EC2 Credentials
+
+### Register
+
+To use APIs compatible with S3, register AWS EC2-type credential first. To that end, an authentication token is required. To get a token, see [API Guide for Object Storage](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint).
 
 ```
 POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{User ID}/credentials/OS-EC2
@@ -40,19 +42,19 @@ Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
-#### 요청
+#### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
-| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
-| tenant_id | Body | String | O | 사용자 Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
+| Name         | Type   | Format | Required | Description                                                  |
+| ------------ | ------ | ------ | -------- | ------------------------------------------------------------ |
+| X-Auth-Token | Header | String | O        | Issued token ID                                              |
+| user-id      | URL    | String | O        | User ID, included in authentication token                    |
+| tenant_id    | Body   | String | O        | User Tenant ID, to be found on the setup box for API Endpoint |
 
-> [주의]
-> 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 TOAST 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
+> [Caution]
+> User ID for credential registration is not an email-type TOAST account. Find this, when you get a token issued.
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -62,15 +64,15 @@ X-Auth-Token: {token-id}
 
 </details>
 
-#### 응답
+#### Response
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| access | Body | String | 자격 증명 접근 키 |
-| secret | Body | String | 자격 증명 비밀 키 |
+| Name   | Type | Format | Description           |
+| ------ | ---- | ------ | --------------------- |
+| access | Body | String | Credential access key |
+| secret | Body | String | Credential secret key |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -86,32 +88,36 @@ X-Auth-Token: {token-id}
 
 </details>
 
-### EC2 자격 증명 조회
-등록한 EC2 자격 증명을 조회합니다.
+### Get
+
+Get registered EC2 credential.
 
 **[Method, URL]**
+
 ```
 GET   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O |발급받은 토큰 ID |
-| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
+#### Request
 
-#### 응답
+This API does not require a request body.
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| access | Body | String | 자격 증명 접근 키 |
-| secret | Body | String | 자격 증명 비밀 키 |
+| Name         | Type   | Format | Required | Description                               |
+| ------------ | ------ | ------ | -------- | ----------------------------------------- |
+| X-Auth-Token | Header | String | O        | Issued token ID                           |
+| user-id      | URL    | String | O        | User ID, included in authentication token |
+
+#### Response
+
+| Name   | Type | Format | Description           |
+| ------ | ---- | ------ | --------------------- |
+| access | Body | String | Credential access key |
+| secret | Body | String | Credential secret key |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -129,82 +135,90 @@ X-Auth-Token: {token-id}
 
 </details>
 
-### EC2 자격 증명 삭제
-등록한 EC2 자격 증명을 삭제합니다.
+### Delete
+
+Delete registered EC2 credential.
 
 **[Method, URL]**
+
 ```
 DELETE   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
-| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
-| access | URL | String | O | 자격 증명 접근 키 |
+#### Request
 
-#### 응답
-이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+This API does not require a request body.
 
-## 서명(signature) 생성
-S3 API를 사용하려면 자격 증명을 이용해 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
+| Name         | Type   | Format | Required | Description                               |
+| ------------ | ------ | ------ | -------- | ----------------------------------------- |
+| X-Auth-Token | Header | String | O        | Issued token ID                           |
+| user-id      | URL    | String | O        | User ID, included in authentication token |
+| access       | URL    | String | O        | Credential access key                     |
 
-서명 생성에 필요한 정보는 다음과 같습니다.
+#### Response
 
-| 이름 | 값 |
-|---|---|
-| 알고리즘 | AWS4-HMAC-SHA256 |
-| 서명 시각 | YYYYMMDDThhmmssZ 형태 |
-| 서비스 이름 | s3 |
-| 리전 이름 | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
-| 비밀 키 | 자격 증명 비밀 키 |
+This API does not return request body. When the request is appropriate, return status code 204.
 
+## Signatures
 
-## 버킷(Bucket)
-### 버킷 생성
-버킷(컨테이너)을 생성합니다. 버킷 이름은 다음과 같은 AWS S3의 버킷 명명 규칙을 따라야 합니다.
+To enable S3 APIs, use credential to create a signature. See [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) regarding how to sign.
 
-* 버킷 이름은 3자에서 63자 사이여야 합니다.
-* 버킷 이름은 소문자, 숫자, 점(.) 및 하이픈(-)으로만 구성될 수 있습니다.
-* 버킷 이름은 문자 또는 숫자로 시작하고 끝나야 합니다.
-* 버킷 이름은 IP 주소 형식(예: 192.168.5.4)을 사용하지 않습니다.
-* 버킷 이름은 xn--으로 시작할 수 없습니다.
+Following information is required to create a signature.
 
-자세한 내용은 [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html) 문서를 참조하세요.
+| Name          | Value                          |
+| ------------- | ------------------------------ |
+| Algorithm     | AWS4-HMAC-SHA256               |
+| Signed Time   | In the ZssmmhhTDDMMYYYY format |
+| Service Name  | s3                             |
+| Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - KOREA (Pyeongchon) Region<br/>JP1 - JAPAN (Tokyo) Region<br/>US1 - USA (California) Region   |
+| Secret Key    | Credential secret key          |
+
+## Buckets
+
+### Create  
+
+Create a bucket (container). A bucket must be named, following the AWS s3 bucket naming rules like below.
+
+* Must have 3 to 63 characters.  
+* Must be comprised of small-case letters, numbers, period (.) or hyphen (-) only.
+* Must start and end with a letter or number.
+* Unable to adopt an IP address format (e.g.:192.168.5.4).
+* Unable to start with xn--.
+
+For more details, see [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html).
 
 ```
 PUT /{bucket}
 
-Date: Sat, 22 Feb 2020 22:22:22 +0000
+Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
-> [참고]
-> 웹 콘솔 또는 오브젝트 스토리지 API를 통해 만든 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
+> [Note]
+> If a container name made via web console or object storage API violates any bucket naming rules, it is unavailable to access with s3 compatible APIs.
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+This API does not require a request body.
 
-#### 응답
+| Name          | Type   | Format | Required | Description                                      |
+| ------------- | ------ | ------ | -------- | ------------------------------------------------ |
+| bucket        | URL    | String | O        | Bucket name                                      |
+| Date          | Header | String | O        | Request time                                     |
+| Authorization | Header | String | 0        | Comprised of credential access key and signature |
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Location | Body | String | 생성한 버킷 경로 |
+#### Response
+
+| Name                            | Type | Format  | Description                 |
+| ------------------------------- | ---- | ------- | --------------------------- |
+| ResponseMetadata                | Body | Object  | Object of response metadata |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code        |
+| Location                        | Body | String  | Created bucket path         |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -220,7 +234,7 @@ Authorization: AWS {access}:{signature}
       "location": "/new-container",
       "x-trans-id": "txfad4e17792b1432fb106f-005e5ef0e4",
       "x-openstack-request-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
+      "date": "22:22:22 GMT, Sat, 22 Feb 2020"
     },
     "RetryAttempts": 0
   },
@@ -230,34 +244,37 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 버킷 목록 조회
-버킷 목록을 조회합니다.
+### List  
+
+List buckets.
+
 ```
 GET /
 
-Date: Sat, 22 Feb 2020 22:22:22 +0000
+Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+This API does not require a request body.
 
-#### 응답
+| Name          | Type   | Format | Required | Description                                      |
+| ------------- | ------ | ------ | -------- | ------------------------------------------------ |
+| Date          | Header | String | O        | Request Time                                     |
+| Authorization | Header | String | O        | Comprised of credential access key and signature |
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Buckets.Name | Body | String | 버킷 이름 |
-| Buckets.CreationDate | Body | String | 생성 시각 |
+#### Response
+
+| Name                            | Type | Format  | Description                 |
+| ------------------------------- | ---- | ------- | --------------------------- |
+| ResponseMetadata                | Body | Object  | Object of response metadata |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code        |
+| Buckets.Name                    | Body | String  | Bucket name                 |
+| Buckets.CreationDate            | Body | String  | Created time                |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -272,14 +289,14 @@ Authorization: AWS {access}:{signature}
       "content-type": "application/xml",
       "x-trans-id": "txbf73f4d73ad34344a21bb-005e5ef141",
       "x-openstack-request-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
+      "date": "22:22:22 GMT, 22 Feb 2020"
     },
     "RetryAttempts": 0
   },
   "Buckets": [
     {
       "Name": "new-container",
-      "CreationDate": "2020-02-22T22:22:22+00:00"
+      "CreationDate": "T22:22:22+00:00,22 Feb 2020"
     }
   ],
   "Owner": {}
@@ -288,41 +305,44 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 버킷 조회
-지정한 버킷의 정보와 내부에 저장된 오브젝트 목록을 조회합니다.
+### Get
+
+Get bucket information as specified and list objects that are saved within.
+
 ```
 GET /{bucket}
 
-Date: Sat, 22 Feb 2020 22:22:22 +0000
+Date: 22:22:22 +0000, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+This API does not require a request body.
 
-#### 응답
+| Name          | Type   | Format | Required | Description                                      |
+| ------------- | ------ | ------ | -------- | ------------------------------------------------ |
+| bucket        | URL    | String | O        | Bucket name                                      |
+| Date          | Header | String | O        | Request time                                     |
+| Authorization | Header | String | O        | Comprised of credential access key and signature |
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Contents | Body | Object | 오브젝트 목록 객체 |  
-| Contents.Key | Body | String | 오브젝트 이름 |
-| Contents.LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| Contents.ETag | Body | String | 오브젝트의 MD5 해시값 |
-| Contents.Size | Body | String | 오브젝트의 크기 |
-| Contents.StorageClass | Body | String | 오브젝트가 저장된 저장소 종류 |
-| Name | Body | String | 버킷 이름 |
-| KeyCount | Body | Integer | 목록의 오브젝트 수 |
+#### Response
+
+| Name                            | Type | Format  | Description                                         |
+| ------------------------------- | ---- | ------- | --------------------------------------------------- |
+| ResponseMetadata                | Body | Object  | Object of response metadata                         |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code                                |
+| Contents                        | Body | Object  | Object on object list                               |
+| Contents.Key                    | Body | String  | Object name                                         |
+| Contents.LastModified           | Body | String  | The latest object update time, ssZ:mm:hhTDD-MM-YYYY |
+| Contents.ETag                   | Body | String  | MD5 hash of object                                  |
+| Contents.Size                   | Body | String  | Size of object                                      |
+| Contents.StorageClass           | Body | String  | Type of storage for object                          |
+| Name                            | Body | String  | Bucket name                                         |
+| KeyCount                        | Body | Integer | Object count on list                                |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -337,7 +357,7 @@ Authorization: AWS {access}:{signature}
       "content-type": "application/xml",
       "x-trans-id": "tx75a3242dac55411fac69b-005e5ef1f1",
       "x-openstack-request-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
+      "date": "22:22:22 GMT, Sat, 22 Feb 2020"
     },
     "RetryAttempts": 0
   },
@@ -361,33 +381,36 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 버킷 삭제
-지정한 버킷을 삭제합니다. 삭제할 버킷은 비어 있어야 합니다.
+### Delete
+
+Delete buckets as specified. To be deleted, buckets must be empty.
+
 ```
 DELETE /{bucket}
 
-Date: Sat, 22 Feb 2020 22:22:22 +0000
+Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+This API does not require a request body.
 
-#### 응답
+| Name          | Type   | Format | Required | Description                                      |
+| ------------- | ------ | ------ | -------- | ------------------------------------------------ |
+| bucket        | URL    | String | O        | Bucket name                                      |
+| Date          | Header | String | O        | Request time                                     |
+| Authorization | Header | String | O        | Comprised of credential access key and signature |
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
+#### Response
+
+| Name                            | Type | Format  | Description                 |
+| ------------------------------- | ---- | ------- | --------------------------- |
+| ResponseMetadata                | Body | Object  | Object of response metadata |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code        |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -402,7 +425,7 @@ Authorization: AWS {access}:{signature}
             "content-type": "text/html; charset=UTF-8",
             "x-trans-id": "tx9b01c2e650e746ecba298-005e5ef28b",
             "x-openstack-request-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
+            "date": "22:22:22 GMT, Sat, 22 Feb 2020"
         },
         "RetryAttempts": 0
     }
@@ -411,36 +434,40 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-## 오브젝트
-### 오브젝트 업로드
-지정한 버킷에 오브젝트를 업로드합니다.
+## Objects
+
+### Upload
+
+Upload objects to a specified bucket.
+
 ```
 PUT /{bucket}/{obj}
 
-Date: Sat, 22 Feb 2020 22:22:22 +0000
+Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| obj | URL | String | O | 오브젝트 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+This API does not require a request body.
 
-#### 응답
+| Name          | Type   | Format | Required | Description                                      |
+| ------------- | ------ | ------ | -------- | ------------------------------------------------ |
+| bucket        | URL    | String | O        | Bucket name                                      |
+| obj           | URL    | String | O        | Object name                                      |
+| Date          | Header | String | O        | Request time                                     |
+| Authorization | Header | String | O        | Comprised of credential access key and signature |
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| ETag | Body | String | 업로드한 오브젝트의 MD5 해시값 |
+#### Response
+
+| Name                            | Type | Format  | Description                 |
+| ------------------------------- | ---- | ------- | --------------------------- |
+| ResponseMetadata                | Body | Object  | Object of response metadata |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code        |
+| ETag                            | Body | String  | MD5 hash of uploaded object |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -451,13 +478,13 @@ Authorization: AWS {access}:{signature}
     "HTTPHeaders": {
       "content-length": "0",
       "x-amz-id-2": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "last-modified": "Sat, 22 Feb 2020 22:22:22 GMT",
+      "last-modified": "22:22:22 GMT, Sat, 22 Feb 2020",
       "etag": "\"01463f775ef4f4dbbc7525f88120df09\"",
       "x-amz-request-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
       "content-type": "text/html; charset=UTF-8",
       "x-trans-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
       "x-openstack-request-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
+      "date": "22:22:22 GMT, Sat, 22 Feb 2020"
     },
     "RetryAttempts": 0
   },
@@ -467,39 +494,42 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 오브젝트 다운로드
-오브젝트를 다운로드합니다.
+### Download
+
+Download objects.
+
 ```
 GET /{bucket}/{obj}
 
-Date: Sat, 22 Feb 2020 22:22:22 +0000
+Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| obj | URL | String | O | 오브젝트 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+This API does not require a request body.
 
-#### 응답
+| Name          | Type   | Format | Required | Description                                      |
+| ------------- | ------ | ------ | -------- | ------------------------------------------------ |
+| bucket        | URL    | String | O        | Bucket name                                      |
+| obj           | URL    | String | O        | Object name                                      |
+| Date          | Header | String | O        | Request time                                     |
+| Authorization | Header | String | O        | Comprised of credential access key and signature |
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| ContentLength | Body | String | 다운로드한 오브젝트의 크기 |
-| ETag | Body | String | 오브젝트의 MD5 해시값 |
-| ContentType | Body | String | 오브젝트의 콘텐츠 타입 |
-| Metadata | Body | Object | 오브젝트의 메타데이터 객체 |
+#### Response
+
+| Name                            | Type | Format  | Description                                             |
+| ------------------------------- | ---- | ------- | ------------------------------------------------------- |
+| ResponseMetadata                | Body | Object  | Object of response metadata                             |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code                                    |
+| LastModified                    | Body | String  | The latest update time of object, ssZ:mm:Thh DD-MM-YYYY |
+| ContentLength                   | Body | String  | Size of downloaded object                               |
+| ETag                            | Body | String  | MD5 hash of object                                      |
+| ContentType                     | Body | String  | Content type of object                                  |
+| Metadata                        | Body | Object  | Metadata of object                                      |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -510,17 +540,17 @@ Authorization: AWS {access}:{signature}
         "HTTPHeaders": {
             "content-length": "124352",
             "x-amz-id-2": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "last-modified": "Sat, 22 Feb 2020 22:22:22 GMT",
+            "last-modified": "22:22:22 GMT, Sat, 22 Feb 2020",
             "etag": "\"01463f775ef4f4dbbc7525f88120df09\"",
             "x-amz-request-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
             "content-type": "image/jpeg",
             "x-trans-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
             "x-openstack-request-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
+            "date": "22:22:22 GMT, Sat, 22 Feb 2020"
         },
         "RetryAttempts": 0
     },
-    "LastModified": "2020-02-22T22:22:22+00:00",
+    "LastModified": "T22:22:22+00:00 2020-02-22",
     "ContentLength": 124352,
     "ETag": "\"01463f775ef4f4dbbc7525f88120df09\"",
     "ContentType": "image/jpeg",
@@ -530,35 +560,37 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-### 오브젝트 삭제
-지정한 오브젝트를 삭제합니다.
+### Delete
+
+Delete objects as specified.
 
 ```
 DELETE /{bucket}/{obj}
 
-Date: Sat, 22 Feb 2020 22:22:22 +0000
+Date: 22:22:22 +0000 Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
-#### 요청
-이 API는 요청 본문을 요구하지 않습니다.
+#### Request
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| obj | URL | String | O | 오브젝트 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+This API does not require a request body.
 
-#### 응답
+| Name          | Type   | Format | Required | Description                                      |
+| ------------- | ------ | ------ | -------- | ------------------------------------------------ |
+| bucket        | URL    | String | O        | Bucket name                                      |
+| obj           | URL    | String | O        | Object name                                      |
+| Date          | Header | String | O        | Requested time                                   |
+| Authorization | Header | String | O        | Comprised of credential access key and signature |
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
+#### Response
+
+| Name                            | Type | Format  | Description                 |
+| ------------------------------- | ---- | ------- | --------------------------- |
+| ResponseMetadata                | Body | Object  | Object of response metadata |
+| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code        |
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -573,7 +605,7 @@ Authorization: AWS {access}:{signature}
             "content-type": "text/html; charset=UTF-8",
             "x-trans-id": "tx04a548072068487a8a5be-005e5ef648",
             "x-openstack-request-id": "tx04a548072068487a8a5be-005e5ef648",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
+            "date": "22:22:22 GMT, Sat, 22 Feb 2020"
         },
         "RetryAttempts": 0
     }
@@ -582,18 +614,18 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
-## AWS 명령줄 인터페이스(CLI)
-S3 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 TOAST 오브젝트 스토리지를 사용할 수 있습니다.
+## AWS Command Line Interface (CLI)
+TOAST object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API.
 
-### 설치
-AWS 명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 이용해 설치합니다.
+### Install
+AWS command line interface is prvodied by a Python package, which can be installed by using the Python package manager (pip).  
 
 ```
 $ sudo pip install awscli
 ```
 
-### 설정
-AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 자격 증명과 환경을 설정해야 합니다.
+### Configure
+To enable AWS CLI, it is required, first to set up a credential and environment.
 
 ```
 $ aws configure
@@ -603,31 +635,30 @@ Default region name [None]: {region name}
 Default output format [None]: json
 ```
 
-| 이름 | 설명 |
+| Name | Description |
 |---|---|
-| access | 자격 증명 접근 키 |
-| secret | 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
+| access | Access key for credential |
+| secret | Secret key for credential |
+| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
 
-### S3 명령 사용 방법
+
+### Enable S3 Commands
 
 ```
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 ```
 
-| 이름 | 설명 |
+| Name | Description |
 |---|---|
-| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 |
-| command | AWS 명령줄 인터페이스 명령 |
-| bucket | 버킷 이름 |
+| endpoint | https://api-storage.cloud.toast.com - Korea (Pangyo) region <br/>https://kr2-api-storage.cloud.toast.com - Korea (Pyeongcheon) region <br/>https://jp1-api-storage.cloud.toast.com - Japan (Tokyo) region <br/>https://us1-api-storage.cloud.toast.com - US (California) region |
+| command | Command for AWS command line interface |
+| bucket | Bucket name |
 
 
-> [참고]
-> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 TAOST 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
-> AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
-
+> [Note]
+> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use TOAST Object Storage, it is required to specify endpoint for every command.  > Regarding commands for AWS command line interface, see [Using Commands for Upper Class Level (s3)](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
 <details>
-<summary>버킷 생성</summary>
+<summary>Create Bucket</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
@@ -637,7 +668,7 @@ make_bucket: example-bucket
 </details>
 
 <details>
-<summary>버킷 목록 조회</summary>
+<summary>List Buckets</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
@@ -648,7 +679,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 
 
 <details>
-<summary>버킷 조회</summary>
+<summary>Get Bucket</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
@@ -659,7 +690,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 </details>
 
 <details>
-<summary>버킷 삭제</summary>
+<summary>Delete Bucket</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
@@ -670,7 +701,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 </details>
 
 <details>
-<summary>오브젝트 업로드</summary>
+<summary>Upload Object</summary>
 
 ```
 $  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -680,7 +711,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 </details>
 
 <details>
-<summary>오브젝트 다운로드</summary>
+<summary>Download Object</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -690,7 +721,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 </details>
 
 <details>
-<summary>오브젝트 삭제</summary>
+<summary>Delete Object</summary>
 
 ```
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -701,50 +732,47 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 TOAST 오브젝트 스토리지를 사용할 수 있습니다.
+AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, TOAST object storage becomes available.
 
-> [참고]
-> 이 문서에서는 Python과 Java SDK의 간단한 사용 예시만 설명합니다. 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
+> [Note]
+> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools).
 
 
-AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
+Following are the major parameters required to use AWS SDK.
 
-| 이름 | 설명 |
+| Name | Description |
 |---|---|
-| access | 자격 증명 접근 키 |
-| secret | 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
-| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 |
+| access | Access key for credential |
+| secret | Secret key for credential |
+| region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region <br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
+| endpoint | https://api-storage.cloud.toast.com - Korea (Pangyo) region <br/>https://kr2-api-storage.cloud.toast.com - Korea (Pyeongchon) region <br/>https://jp1-api-storage.cloud.toast.com - Japan (Tokyo) region <br/>https://us1-api-storage.cloud.toast.com - US (California) region |
 
 
 ### Boto3 - Python SDK
 
 <details>
-<summary>Boto3 클라이언트 클래스</summary>
+<summary>Boto3 Client Class</summary>
 
 ```python
 # boto3example.py
 import boto3
-
 class Boto3Example(object):
     _REGION = '{region name}'
     _ENDPOINT = '{endpoint}'
     _ACCESS = '{access}'
     _SECRET = '{secret}'
-
     def __init__(self):
         self.s3 = boto3.client(service_name='s3',
                                region_name=self._REGION,
                                endpoint_url=self._ENDPOINT,
                                aws_access_key_id=self._ACCESS,
                                aws_secret_access_key=self._SECRET)
-
 ```
 
 </details>
 
 <details>
-<summary>버킷 생성</summary>
+<summary>Create Bucket</summary>
 
 ```python
     def create_bucket(self, bucket_name):
@@ -754,7 +782,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 목록 조회</summary>
+<summary>List Buckets</summary>
 
 ```python
     def list_buckets(self):
@@ -765,7 +793,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 조회(오브젝트 목록 조회)</summary>
+<summary>Get Bucket (List Objects)</summary>
 
 ```python
     def list_objs(self, bucket_name):
@@ -776,7 +804,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>버킷 삭제</summary>
+<summary>Delete Bucket</summary>
 
 ```python
     def delete_bucket(self, bucket_name):
@@ -786,7 +814,7 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>오브젝트 업로드</summary>
+<summary>Upload Object</summary>
 
 ```python
     def upload(self, bucket_name, key, filename):
@@ -797,24 +825,22 @@ class Boto3Example(object):
 </details>
 
 <details>
-<summary>오브젝트 다운로드</summary>
+<summary>Download Object</summary>
 
 ```python
     def download(self, bucket_name, key, filename):
         response = self.s3.get_object(Bucket=bucket_name, Key=key)
-
         with io.FileIO(filename, 'w') as fd:
             for chunk in response['Body']:
                 fd.write(chunk)
         response.pop('Body')
-
         return response
 ```
 
 </details>
 
 <details>
-<summary>오브젝트 삭제</summary>
+<summary>Delete Object</summary>
 
 ```python
     def delete(self, bucket_name, key):
@@ -827,7 +853,7 @@ class Boto3Example(object):
 ### Java SDK
 
 <details>
-<summary>Java SDK 클라이언트 클래스</summary>
+<summary>Java SDK Client Class</summary>
 
 ```java
 // AwsSdkExapmple.java
@@ -836,9 +862,7 @@ public class AwsSdkExapmple {
     private static final String secret = "{secret}";
     private static final String region = "{region name}";
     private static final String ednpoint = "{endpoint}";
-
     private AmazonS3 s3Client;
-
     public AwsSdkExapmple() {
         BasicAWSCredentials awsCredentials = new BasicAWSCredentials(access, secret);
         s3Client = AmazonS3ClientBuilder.standard()
@@ -854,7 +878,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 생성</summary>
+<summary>Create Bucket</summary>
 
 ```java
     public String createBucket(String bucketName) {
@@ -866,7 +890,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 목록 조회</summary>
+<summary>List Buckets</summary>
 
 ```java
     public List<Bucket> listBuckets() {
@@ -877,7 +901,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 조회(오브젝트 목록 조회)</summary>
+<summary>Get Bucket (List Objects)</summary>
 
 ```java
     public ListObjectsV2Result listObjects(String bucketName) {
@@ -888,7 +912,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>버킷 삭제</summary>
+<summary>Delete Bucket</summary>
 
 ```java
     public void deleteBucket(String bucketName) {
@@ -899,7 +923,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>오브젝트 업로드</summary>
+<summary>Upload Object</summary>
 
 ```java
     public String uploadObject(String bucketName, String objKeyName, String filePath) {
@@ -911,7 +935,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>오브젝트 다운로드</summary>
+<summary>Download Object</summary>
 
 ```java
     public String downloadObject(String bucketName, String objKeyName, String filePath) {
@@ -924,7 +948,7 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>오브젝트 삭제</summary>
+<summary>Delete Object</summary>
 
 ```java
     public void deleteObject(String bucketName, String objKeyName) {
