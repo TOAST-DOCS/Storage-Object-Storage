@@ -14,9 +14,6 @@ Click **API Endpoint Setting** on the object storage service page to check tenan
 | Object-Store | https://api-storage.cloud.toast.com/v1/AUTH_***** | Control object storage: depends on each region  |
 | Tenant ID | Character strings composed of 32 characters in combination of numbers and alphabets | Issue certificate token  |
 
-> [Note]
-> User account for API refers to character strings in the format of `AUTH_***`, which is included in Object-Store API endpoint.
-
 ### Set API Password
 
 To set API password, go to the object storage service page and click **API Endpoint Setting**.

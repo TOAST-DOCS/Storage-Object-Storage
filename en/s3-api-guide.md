@@ -175,9 +175,6 @@ Following information is required to create a signature.
 | Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - KOREA (Pyeongchon) Region<br/>JP1 - JAPAN (Tokyo) Region<br/>US1 - USA (California) Region   |
 | Secret Key    | Credential secret key          |
 
-> [Note]
-> APIs compatible with S3 are provided only within Korea (Pangyo) region as of March 2020.
-
 ## Buckets
 
 ### Create  

@@ -10,12 +10,9 @@ Click **API Endpoint Setting** on the object storage service page to check tenan
 
 | Item | API Endpoint | Usage |
 |---|---|---|
-| Identity | https://gov-api-compute.cloud.toast.com/identity/v2.0 | Issue certificate token |
+| Identity | https://gov-api-identity.infrastructure.cloud.toast.com/v2.0 | Issue certificate token |
 | Object-Store | https://gov-api-storage.cloud.toast.com/v1/{Account} | Control object storage: depends on each region  |
 | Tenant ID | Character strings composed of 32 characters in combination of numbers and alphabets | Issue certificate token  |
-
-> [Note]
-> User account for API refers to character strings in the format of `AUTH_***`, which is included in Object-Store API endpoint.
 
 ### Set API Password
 
@@ -28,7 +25,7 @@ To set API password, go to the object storage service page and click **API Endpo
 ## Certificate Token Issuance
 
 ```
-POST    https://gov-api-compute.cloud.toast.com/identity/v2.0/tokens
+POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/tokens
 Content-Type: application/json
 ```
 
@@ -105,7 +102,7 @@ Content-Type: application/json
 
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
-https://gov-api-compute.cloud.toast.com/identity/v2.0/tokens \
+https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
 -d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
@@ -208,7 +205,7 @@ public class AuthService {
     }
 
     public static void main(String[] args) {
-        final String authUrl = "https://gov-api-compute.cloud.toast.com/identity/v2.0";
+        final String authUrl = "https://gov-api-identity.infrastructure.cloud.toast.com/v2.0";
         final String tenantId = "{Tenant ID}";
         final String username = "{TOAST Account}";
         final String password = "{API Password}";
@@ -250,7 +247,7 @@ def get_token(auth_url, tenant_id, username, password):
 
 
 if __name__ == '__main__':
-    AUTH_URL = 'https://gov-api-compute.cloud.toast.com/identity/v2.0'
+    AUTH_URL = 'https://gov-api-identity.infrastructure.cloud.toast.com/v2.0'
     TENANT_ID = '{Tenant ID}'
     USERNAME = '{TOAST Account}'
     PASSWORD = '{API Password}'
@@ -295,7 +292,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
   return $response;
 }
 
-$AUTH_URL = 'https://gov-api-compute.cloud.toast.com/identity/v2.0';
+$AUTH_URL = 'https://gov-api-identity.infrastructure.cloud.toast.com/v2.0';
 $TENANT_ID = '{Tenant ID}';
 $USERNAME = '{TOAST Account}';
 $PASSWORD = '{API Password}';
