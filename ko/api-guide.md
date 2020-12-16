@@ -1479,14 +1479,14 @@ X-Versions-Retention: {이전 버전을 보관할 기간}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에게 접근 허용<br/>.r:example.com,test.com – 특정 주소에만 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에만 접근 허용 |
 | X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 접근 규칙 지정<br/>\*:\* - 모든 사용자에게 쓰기 허용<br/>AUTH_.... – 특정 계정에만 쓰기 허용 |
-| X-Versions-Location | Header | String | - | 컨테이너에 저장된 오브젝트를 업데이트 할 때 이전 버전을 보관할 컨테이너 지정 |
-| X-History-Location | Header | String | - | 컨테이너에 저장된 오브젝트를 업데이트 할 때 이전 버전을 보관할 컨테이너 지정 |
+| X-Versions-Location | Header | String | - | 컨테이너에 저장된 오브젝트를 업데이트할 때 이전 버전을 보관할 컨테이너 지정 |
+| X-History-Location | Header | String | - | 컨테이너에 저장된 오브젝트를 업데이트할 때 이전 버전을 보관할 컨테이너 지정 |
 | X-Versions-Retention | Header | Integer | - | 이전 버전을 보관할 기간 초 단위 설정 |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 
 > [참고]
-> [오브젝트 내용 수정](/api-guide/#_61) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-Versions-Location` 또는 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 컨테이너를 지정할 수 있습니다. 두 방식 모두 이전 버전을 보관할 컨테이너를 지정하지만, 오브젝트 삭제 방식이 다릅니다. 두 방식을 같이 사용할 수는 없습니다.
+> [오브젝트 내용 수정](/api-guide/#_61) 항목에서 설명한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-Versions-Location` 또는 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 컨테이너를 지정할 수 있습니다. 두 방식 모두 이전 버전을 보관할 컨테이너를 지정하지만, 오브젝트 삭제 방식이 다릅니다. 두 방식을 같이 사용할 수는 없습니다.
 >
 > * **X-Versions-Location**
 >     * 원본 컨테이너의 오브젝트를 삭제하면 보관된 이전 버전의 오브젝트 중 가장 최신 버전이 원본 컨테이너로 복구됩니다. 오브젝트를 5번 업데이트했다면 6번 삭제해야 완전히 삭제됩니다.
