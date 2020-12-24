@@ -33,7 +33,7 @@ This document describes only the basic usage of API. To use advanced features, s
 
 ### Register
 
-To use APIs compatible with S3, register AWS EC2-type credential first. To that end, an authentication token is required. To get a token, see [API Guide for Object Storage](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint).
+To use APIs compatible with S3, register AWS EC2-type credential first. To that end, an authentication token is required. To get a token, see [API Guide for Object Storage](/Storage/Object%20Storage/ko/api-guide-gov/#tenant-id-api-endpoint).
 
 ```
 POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{User ID}/credentials/OS-EC2
