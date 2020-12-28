@@ -10,7 +10,7 @@
 
 | 項目 | APIエンドポイント | 用途 |
 |---|---|---|
-| Identity | https://gov-api-compute.cloud.toast.com/identity/v2.0 | 認証トークン発行 |
+| Identity | https://gov-api-identity.infrastructure.cloud.toast.com/v2.0 | 認証トークン発行 |
 | Object-Store | https://gov-api-storage.cloud.toast.com/v1/{Account} | オブジェクトストレージ制御、リージョンによって異なる |
 | Tenant ID | 数字 + 英字で構成された32文字の文字列 | 認証トークン発行 |
 
@@ -25,7 +25,7 @@ APIパスワードはオブジェクトストレージサービスページの**
 ## 認証トークン発行
 
 ```
-POST    https://gov-api-compute.cloud.toast.com/identity/v2.0/tokens
+POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/tokens
 Content-Type: application/json
 ```
 
@@ -102,7 +102,7 @@ Content-Type: application/json
 
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
-https://gov-api-compute.cloud.toast.com/identity/v2.0/tokens \
+https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
 -d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
@@ -205,7 +205,7 @@ public class AuthService {
     }
 
     public static void main(String[] args) {
-        final String authUrl = "https://gov-api-compute.cloud.toast.com/identity/v2.0";
+        final String authUrl = "https://gov-api-identity.infrastructure.cloud.toast.com/v2.0";
         final String tenantId = "{Tenant ID}";
         final String username = "{TOAST Account}";
         final String password = "{API Password}";
@@ -247,7 +247,7 @@ def get_token(auth_url, tenant_id, username, password):
 
 
 if __name__ == '__main__':
-    AUTH_URL = 'https://gov-api-compute.cloud.toast.com/identity/v2.0'
+    AUTH_URL = 'https://gov-api-identity.infrastructure.cloud.toast.com/v2.0'
     TENANT_ID = '{Tenant ID}'
     USERNAME = '{TOAST Account}'
     PASSWORD = '{API Password}'
@@ -292,7 +292,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
   return $response;
 }
 
-$AUTH_URL = 'https://gov-api-compute.cloud.toast.com/identity/v2.0';
+$AUTH_URL = 'https://gov-api-identity.infrastructure.cloud.toast.com/v2.0';
 $TENANT_ID = '{Tenant ID}';
 $USERNAME = '{TOAST Account}';
 $PASSWORD = '{API Password}';

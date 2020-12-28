@@ -33,7 +33,7 @@ This document describes only the basic usage of API. To use advanced features, s
 
 ### Register
 
-To use APIs compatible with S3, register AWS EC2-type credential first. To that end, an authentication token is required. To get a token, see [API Guide for Object Storage](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint).
+To use APIs compatible with S3, register AWS EC2-type credential first. To that end, an authentication token is required. To get a token, see [API Guide for Object Storage](/Storage/Object%20Storage/ko/api-guide-gov/#tenant-id-api-endpoint).
 
 ```
 POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{User ID}/credentials/OS-EC2
@@ -182,13 +182,13 @@ Following information is required to create a signature.
 
 ### Create  
 
-Create a bucket (container). A bucket must be named, following the AWS s3 bucket naming rules like below. 
+Create a bucket (container). A bucket must be named, following the AWS s3 bucket naming rules like below.
 
 * Must have 3 to 63 characters.  
 * Must be comprised of small-case letters, numbers, period (.) or hyphen (-) only.
-* Must start and end with a letter or number. 
+* Must start and end with a letter or number.
 * Unable to adopt an IP address format (e.g.:192.168.5.4).
-* Unable to start with xn--. 
+* Unable to start with xn--.
 
 For more details, see [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html).
 
@@ -199,7 +199,7 @@ Date: 22:22:22 +0000, Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 > [Note]
-> If a container name made via web console or object storage API violates any bucket naming rules, it is unavailable to access with s3 compatible APIs. 
+> If a container name made via web console or object storage API violates any bucket naming rules, it is unavailable to access with s3 compatible APIs.
 
 #### Request
 
@@ -617,7 +617,7 @@ This API does not require a request body.
 </details>
 
 ## AWS Command Line Interface (CLI)
-TOAST object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API. 
+TOAST object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API.
 
 ### Install
 AWS command line interface is prvodied by a Python package, which can be installed by using the Python package manager (pip).  
@@ -626,8 +626,8 @@ AWS command line interface is prvodied by a Python package, which can be install
 $ sudo pip install awscli
 ```
 
-### Configure 
-To enable AWS CLI, it is required, first to set up a credential and environment. 
+### Configure
+To enable AWS CLI, it is required, first to set up a credential and environment.
 
 ```
 $ aws configure
@@ -644,7 +644,7 @@ Default output format [None]: json
 | region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
 
 
-### Enable S3 Commands 
+### Enable S3 Commands
 
 ```
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
@@ -734,13 +734,13 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, TOAST object storage becomes available. 
+AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, TOAST object storage becomes available.
 
 > [Note]
-> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools). 
+> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools).
 
 
-Following are the major parameters required to use AWS SDK. 
+Following are the major parameters required to use AWS SDK.
 
 | Name | Description |
 |---|---|
