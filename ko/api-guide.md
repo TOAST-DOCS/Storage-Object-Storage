@@ -1459,16 +1459,17 @@ class Container {
 
 ### 컨테이너 수정
 
-컨테이너의 메타데이터를 변경하여 접근 규칙을 지정하거나 오브젝트 버전 관리 설정을 할 수 있습니다.
+컨테이너 설정을 변경합니다.
 
 ```
 POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Container-Read: {컨테이너 읽기 정책}
 X-Container-Write: {컨테이너 쓰기 정책}
-X-Versions-Location: {이전 버전을 저장할 컨테이너}
-X-History-Location: {이전 버전을 저장할 컨테이너}
-X-Versions-Retention: {이전 버전을 보관할 기간}
+X-Container-Object-Retention: {컨테이너의 오브젝트 수명 주기}
+X-Versions-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
+X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
+X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
 ```
 
 #### 요청
@@ -1477,23 +1478,75 @@ X-Versions-Retention: {이전 버전을 보관할 기간}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 지정<br/>.r:* - 모든 사용자에게 접근 허용<br/>.r:example.com,test.com – 특정 주소에만 접근 허용, ‘,’로 구분<br/>.rlistings. – 컨테이너 목록 조회 허용<br/>AUTH_.... – 특정 계정에만 접근 허용 |
-| X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 접근 규칙 지정<br/>\*:\* - 모든 사용자에게 쓰기 허용<br/>AUTH_.... – 특정 계정에만 쓰기 허용 |
-| X-Versions-Location | Header | String | - | 컨테이너에 저장된 오브젝트를 업데이트할 때 이전 버전을 보관할 컨테이너 지정 |
-| X-History-Location | Header | String | - | 컨테이너에 저장된 오브젝트를 업데이트할 때 이전 버전을 보관할 컨테이너 지정 |
-| X-Versions-Retention | Header | Integer | - | 이전 버전을 보관할 기간 초 단위 설정 |
+| X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 설정 |
+| X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 접근 규칙 설정 |
+| X-Container-Object-Retention | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 초 단위로 설정 |
+| X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
+| X-Versions-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
+| X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 초 단위로 설정 |
+| X-Container-Meta-Web-Index | Header | String | - | 정적 웹 사이트 인덱스 문서 오브젝트 설정 |
+| X-Container-Meta-Web-Error | Header | String | - | 정적 웹 사이트 오류 문서 오브젝트 설정 |
 | Account | URL | String | O | 사용자 계정명, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
+<br/>
+
+##### 접근 정책 설정
+`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정 할 수 있습니다.
+
+
+<ul style="padding-top: 10px;">
+<li>
+  <b>X-Container-Read</b>
+  <ul style="padding-left: 10px; padding-bottom: 5px;">
+    <li><b>.r:*</b> - 모든 사용자에게 접근 허용</li>
+    <li><b>.r:example.com,example2.com</b> - 특정 리퍼러 주소에만 접근 허용, ‘,’로 구분</li>
+    <li><b>.rlistings.</b> - 컨테이너 목록 조회 허용</li>
+    <li><b>AUTH_***</b> - 특정 스토리지 계정에만 접근 허용</li>
+  </ul>
+</li>
+<li>
+  <b>X-Container-Write</b>
+  <ul style="padding-left: 10px;">
+    <li><b>*:*</b> - 모든 사용자에게 쓰기 허용</li>
+    <li><b>AUTH_***</b> - 특정 스토리지 계정에만 쓰기 허용</li>
+  </ul>
+</li>
+</ul>
+
+<br/>
+
+##### 오브젝트 수명 주기 설정
+`X-Container-Object-Retention` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 초 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
+<br/>
+
+##### 버전 관리 정책 설정
+[오브젝트 내용 수정](/api-guide/#_61) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 또는 `X-Versions-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다. 두 방식 모두 동일하게 이전 버전을 보관하지만, 오브젝트 삭제 처리 방식이 다릅니다. 두 방식을 같이 사용할 수는 없습니다.
+
+<ul style="padding-top: 10px;">
+<li>
+  <b>X-History-Location</b>
+  <ul style="padding-left: 10px;">
+    <li>원본 컨테이너의 오브젝트를 삭제하면 원본 컨테이너의 오브젝트는 삭제되고 아카이브 컨테이너에 삭제 마커 오브젝트가 생성됩니다.</li>
+    <li>아카이브 컨테이너에 보관된 이전 버전 오브젝트에는 언제든 접근할 수 있습니다.</li>
+  </ul>
+</li>
+<li>
+  <b>X-Versions-Location</b>
+  <ul style="padding-left: 10px;">
+    <li>원본 컨테이너의 오브젝트를 삭제하면 보관된 이전 버전의 오브젝트 중 가장 최신 버전이 원본 컨테이너로 복구됩니다. 오브젝트를 5번 업데이트했다면 6번 삭제해야 완전히 삭제됩니다.</li>
+  </ul>
+</li>
+</ul>
+
+`X-Versions-Retention` 헤더를 함께 사용하면 이전 버전 오브젝트의 수명 주기를 초 단위로 설정할 수 있습니다. 3,600초로 설정했다면 보관된 오브젝트는 1시간 이후에 자동으로 삭제됩니다. 설정하지 않으면 이전 버전 오브젝트는 사용자가 삭제하기 전까지 보관됩니다. 설정 이후 보관된 이전 버전 오브젝트에만 적용됩니다.
+<br/>
+
+##### 정적 웹 사이트 설정
+컨테이너 읽기 접근 권한을 모든 사용자에게 허용한 다음 `X-Container-Meta-Web-Index`, `X-Container-Meta-Web-Error`헤더를 이용해 정적 웹 사이트 인덱스 문서와 오류 문서를 설정하면 컨테이너 URL을 이용해 정적 웹 사이트 호스팅을 할 수 있습니다.
+<br/>
 
 > [참고]
-> [오브젝트 내용 수정](/Storage/Object%20Storage/ko/api-guide/#_61) 항목에서 설명한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-Versions-Location` 또는 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 컨테이너를 지정할 수 있습니다. 두 방식 모두 이전 버전을 보관할 컨테이너를 지정하지만, 오브젝트 삭제 방식이 다릅니다. 두 방식을 같이 사용할 수는 없습니다.
->
-> * **X-Versions-Location**
->     * 원본 컨테이너의 오브젝트를 삭제하면 보관된 이전 버전의 오브젝트 중 가장 최신 버전이 원본 컨테이너로 복구됩니다. 오브젝트를 5번 업데이트했다면 6번 삭제해야 완전히 삭제됩니다.
-> * **X-History-Location**
->     * 원본 컨테이너의 오브젝트를 삭제하면 원본 컨테이너의 오브젝트는 삭제됩니다. 보관 컨테이너의 이전 버전 오브젝트들에는 언제든 접근할 수 있습니다.
->
-> `X-Versions-Retention`을 함께 설정하면 이전 버전 오브젝트를 보관할 기간을 초 단위로 지정할 수 있습니다. 3,600초로 설정했다면 보관된 오브젝트는 1시간 이후에 자동으로 삭제됩니다. 설정하지 않으면 이전 버전 오브젝트는 사용자가 삭제하기 전까지 보관됩니다.
+> 값을 지정하지 않은 헤더를 사용하면 설정이 삭제 됩니다. 예를 들어 오브젝트 수명 주기가 3일로 설정되어 있을 때 `X-Container-Object-Retention: ` 헤더를 사용해 컨테이너 수정 요청을 하면, 오브젝트 수명 주기 설정이 삭제 되고 이후 컨테이너에 저장되는 오브젝트들은 자동으로 수명 주기가 설정되지 않습니다.
 
 #### 응답
 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
