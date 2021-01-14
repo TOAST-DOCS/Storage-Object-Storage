@@ -4,6 +4,8 @@
 
 오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 TOAST 계정별로 관리됩니다.
 
+<br/>
+
 ### 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
 
 토큰 발급을 위한 테넌트 아이디와 API의 엔드포인트는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
@@ -14,6 +16,8 @@
 | Object-Store | https://api-storage.cloud.toast.com/v1/AUTH_***** | 오브젝트 스토리지 제어, 리전에 따라 다름 |
 | Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
 
+<br/>
+
 ### API 비밀번호 설정
 
 API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 설정할 수 있습니다.
@@ -21,6 +25,8 @@ API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpo
 1. **API Endpoint 설정** 버튼을 클릭합니다.
 2. **API Endpoint 설정** 아래 **API 비밀번호 설정** 입력 상자에 토큰 발급 시 사용할 비밀번호를 입력합니다.
 3. **저장** 버튼을 클릭합니다.
+
+<br/>
 
 ## 인증 토큰 발급
 
@@ -51,8 +57,9 @@ Content-Type: application/json
   }
 }
 ```
-
 </details>
+
+<br/>
 
 ### 응답
 
@@ -93,8 +100,9 @@ Content-Type: application/json
   }
 }
 ```
-
 </details>
+
+<br/>
 
 ### 코드 예시
 <details>
@@ -137,7 +145,6 @@ https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
   }
 }
 ```
-
 </details>
 
 <details>
@@ -217,7 +224,6 @@ public class AuthService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -255,7 +261,6 @@ if __name__ == '__main__':
     token = get_token(AUTH_URL, TENANT_ID, USERNAME, PASSWORD)
     print(json.dumps(token, indent=4))
 ```
-
 </details>
 
 <details>
@@ -301,8 +306,9 @@ $token = get_token($AUTH_URL, $TENANT_ID, $USERNAME, $PASSWORD);
 printf("%s\n", $token);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ## 스토리지 계정
 스토리지 계정(account)은 `AUTH_*****` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
@@ -341,7 +347,6 @@ X-Auth-Token: {token-id}
 $ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****
 ```
-
 </details>
 
 <details>
@@ -400,7 +405,6 @@ public class AccountService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -439,7 +443,6 @@ if __name__ == '__main__':
     stat = acc_service.get_stat()
     print(json.dumps(dict(stat), indent=4))
 ```
-
 </details>
 
 <details>
@@ -498,8 +501,9 @@ printf("Object-Count: %d\n", $status["X-Account-Object-Count"]);
 printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ### 컨테이너 목록 조회
 스토리지 계정의 컨테이너 목록을 조회합니다.
@@ -531,7 +535,6 @@ X-Auth-Token: {token-id}
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****
 ```
-
 </details>
 
 <details>
@@ -583,7 +586,6 @@ public class AccountService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -609,7 +611,6 @@ if __name__ == '__main__':
     for container in container_list:
         print(container)
 ```
-
 </details>
 
 <details>
@@ -647,9 +648,9 @@ foreach($container_list as $container){
 }
 ?>
 ```
-
 </details>
 
+<br/>
 
 ## 컨테이너
 
@@ -684,7 +685,6 @@ X-Auth-Token: {token-id}
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
-
 </details>
 
 <details>
@@ -743,7 +743,6 @@ public class ContainerService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -781,7 +780,6 @@ if __name__ == '__main__':
     new_container = 'test'
     con_service.create(new_container)
 ```
-
 </details>
 
 <details>
@@ -838,12 +836,13 @@ $container = new Container($STORAGE_URL, $TOKEN_ID);
 $container->create($CONTAINER_NAME);
 ?>
 ```
-
 </details>
 
 
+<br/>
+
 ### 컨테이너 조회
-지정한 컨테이너의 정보와 내부에 저장된 오브젝트들의 목록을 조회합니다.
+지정한 컨테이너의 정보와 내부에 저장된 오브젝트들의 목록을 조회합니다. 컨테이너의 정보는 응답 헤더에서 확인할 수 있습니다.
 
 ```
 GET   /v1/{Account}/{Container}
@@ -858,11 +857,38 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
+| marker | Query | String | - | 기준 오브젝트 이름 |
+| path | Query | String | - | 조회할 폴더 이름 |
+| prefix | Query | String | - | 검색할 접두어 |
+| limit | Query | Integer | - | 목록에 표시할 오브젝트 수 |
+
+> [참고]
+> 컨테이너 조회 API는 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
+
+#### 1만 개 이상의 오브젝트 목록 조회
+컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다.
+
+<br/>
+
+#### 폴더 단위의 오브젝트 목록 조회
+컨테이너에 여러 개의 폴더를 만들어 사용하고 있다면 `path` 질의를 이용해 폴더 단위로 오브젝트 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 오브젝트 목록은 조회할 수 없습니다.
+
+<br/>
+
+#### 접두어로 시작하는 오브젝트 목록 조회
+`prefix` 질의를 사용하면 지정한 접두어로 시작하는 오브젝트들의 목록을 반환합니다. path 질의로는 조회할 수 없는 하위 폴더의 오브젝트 목록을 조회하는 데 사용할 수 있습니다.
+
+<br/>
+
+#### 목록의 최대 오브젝트 수 지정
+`limit` 질의를 사용하면 반환할 오브젝트 목록의 최대 오브젝트 수를 지정할 수 있습니다.
+
+<br/>
 
 #### 응답
 
 ```
-[지정한 컨테이너에 속한 오브젝트 목록]
+[컨테이너의 오브젝트 목록]
 ```
 
 #### 코드 예시
@@ -876,7 +902,6 @@ ba6610.jpg
 20d33f.jpg
 31466f.jpg
 ```
-
 </details>
 
 <details>
@@ -933,7 +958,6 @@ public class ContainerService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -965,7 +989,6 @@ if __name__ == '__main__':
     for object in object_list:
         print(object)
 ```
-
 </details>
 
 <details>
@@ -1009,457 +1032,13 @@ foreach ($object_list as $obj){
 }
 ?>
 ```
-
 </details>
 
-### 컨테이너 조회 질의
-컨테이너 조회 API는 다음과 같이 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
-
-#### 1만 개 이상의 오브젝트 목록 조회
-컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다.
-
-```
-GET    /v1/{Account}/{Container}?marker={Object}
-X-Auth-Token: {token-id}
-```
-
-##### 요청
-요청 본문은 필요하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | 조회할 컨테이너 이름 |
-| Object | Query | String | O | 기준 오브젝트 이름 |
-
-##### 응답
-```
-[지정한 컨테이너에 속한 지정한 오브젝트 다음 오브젝트 목록]
-```
-
-##### 코드 예시
-<details>
-<summary>cURL</summary>
-
-```
-// `20d33f.jpg` 이후의 오브젝트 목록 조회
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
-[지정한 오브젝트(20d33f.jpg) 이후의 목록]
-```
-
-</details>
-
-<details>
-<summary>Java</summary>
-
-```java
-// ContainerService.java
-package com.toast.swift.service;
-
-// ... import list
-
-public class ContainerService {
-
-    // ContainerService Class ...
-
-    public List<String> getObjectList(String conatinerName, String prevLastObject) {
-        // 지정한 오브젝트 이름을 이용하여 질의 URL 생성
-        String url = this.getUrl(conatinerName) + "?marker=" + prevLastObject;
-        // 컨테이너 조회 예제의 getList() 메서드 호출
-        return this.getList(url);
-    }
-
-    public List<String> getObjectList(String conatinerName) {
-        final int LIMIT_COUNT = 10000;
-
-        String url = this.getUrl(conatinerName);
-
-        // 오브젝트 목록 조회
-        List<String> objectList = this.getList(url);
-        while ((objectList.size() % LIMIT_COUNT) == 0) {
-            // 오브젝트 목록의 길이가 1만개의 배수라면 목록의 마지막 오브젝트를 지정하여 이후의 목록 조회
-            String lastObject = objectList.get(objectList.size() - 1);
-            List<String> nextObjList = this.getObjectList(conatinerName, lastObject);
-            objectList.addAll(nextObjList);			
-        }		
-
-        return objectList;
-    }
-
-    // getObjectList() 사용 예제는 컨테이너 조회와 동일
-}
-```
-
-</details>
-
-<details>
-<summary>Python</summary>
-
-```python
-# container.py
-class ContainerService:
-    # ...
-    _MAX_LIST_COUNT = 10000
-
-    def get_object_list(self, container, last_object=None):
-        req_url = self._get_url(container)
-        if last_object:
-            req_url += '?marker=' + last_object
-        return self._get_list(req_url)
-
-    def get_all_object_list(self, container):
-        object_list = self.get_object_list(container)
-        while (len(object_list) % self._MAX_LIST_COUNT) == 0:
-            next_object_list = self.get_object_list(container, object_list[-1])
-            object_list.append(next_object_list)
-        return object_list
-
-```
-
-</details>
-
-<details>
-<summary>PHP</summary>
-
-```php
-// container.php
-<?php
-class Container {
-  const MAX_LIST_COUNT = 10;
-
-  // ...
-
-  function get_object_list($container, $last_object = null){
-    $req_url = $this->get_url($container);
-    if ($last_object) {
-      $req_url .= '?marker='.last_object;
-    }
-    return $this->get_list($req_url);
-  }
-
-  function get_all_object_list($container){
-    $object_list = $this->get_object_list($container);
-    while ((count($object_list) % self::MAX_LIST_COUNT) == 0) {
-      $next_object_list = $this->get_object_list($container, end($object_list));
-      array_merge($object_list, $next_object_list);
-    }
-
-    return $object_list;
-  }
-}
-
-// main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
-$CONTAINER_NAME = 'test';
-
-$container = new Container($STORAGE_URL, $TOKEN_ID);
-
-$object_list = $container->get_all_object_list($CONTAINER_NAME);
-foreach ($object_list as $obj){
-  printf("%s\n", $obj);
-}
-?>
-```
-
-</details>
-
-#### 폴더 단위의 오브젝트 목록 조회
-컨테이너에 여러 개의 폴더를 만들어 사용하고 있다면 `path` 질의를 이용해 폴더 단위로 오브젝트 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 오브젝트 목록은 조회할 수 없습니다.
-
-```
-GET   /v1/{Account}/{Container}?path={Path}
-X-Auth-Token: {token-id}
-```
-
-##### 요청
-요청 본문은 필요하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | 조회할 컨테이너 이름 |
-| Path | Query | String | O | 조회할 폴더 이름 |
-
-##### 응답
-```
-[지정한 컨테이너에 속한 지정한 폴더의 오브젝트 목록]
-```
-
-##### 코드 예시
-<details>
-<summary>cURL</summary>
-
-```
-// ex 폴더의 오브젝트 목록 조회
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?path=ex
-ex/20d33f.jpg
-ex/31466f.jpg
-```
-
-</details>
-
-<details>
-<summary>Java</summary>
-
-```java
-// ContainerService.java
-package com.toast.swift.service;
-
-// ... import list
-
-public class ContainerService {
-
-    // ContainerService Class ...
-
-    public List<String> getObjectListOfFolder(String conatinerName, String folderName) {
-        // 지정한 폴더 이름을 이용하여 질의 URL 생성
-        String url = this.getUrl(conatinerName) + "?path=" + folderName;
-        // 컨테이너 조회 예제의 getList() 메서드 호출
-        return this.getList(url);
-    }
-
-    // getObjectListOfFolder() 사용 예제는 컨테이너 조회와 동일
-}
-```
-
-</details>
-
-<details>
-<summary>Python</summary>
-
-```python
-# container.py
-class ContainerService:
-    # ...
-    def get_object_list_of_folder(self, container, folder):
-        req_url = self._get_url(container) + "?path=" + folder
-        return self._get_list(req_url)
-
-```
-
-</details>
-
-<details>
-<summary>PHP</summary>
-
-```php
-// container.php
-<?php
-class Container {
-  // ...
-  function get_object_list_of_folder($container, $folder){
-    $req_url = $this->get_url($container)."?path=".$folder;
-    return $this->get_list($req_url);
-  }
-}
-?>
-```
-
-</details>
-
-#### 접두어로 시작하는 오브젝트 목록 조회
-`prefix` 질의를 사용하면 지정한 접두어로 시작하는 오브젝트들의 목록을 반환합니다. path 질의로는 조회할 수 없는 하위 폴더의 오브젝트 목록을 조회하는 데 사용할 수 있습니다.
-
-```
-GET   /v1/{Account}/{Container}?prefix={Prefix}
-X-Auth-Token: {token-id}
-```
-
-##### 요청
-요청 본문은 필요하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | 조회할 컨테이너 이름 |
-| Prefix | Query | String | O | 검색할 접두어 |
-
-##### 응답
-```
-[지정한 컨테이너에 속하고 지정한 접두어로 시작하는 오브젝트 목록]
-```
-
-##### 코드 예시
-<details>
-<summary>cURL</summary>
-
-```
-// 314로 시작하는 오브젝트 목록 조회
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
-3146f0.jpg
-3147a6.jpg
-31486f.jpg
-```
-
-</details>
-
-<details>
-<summary>Java</summary>
-
-```java
-// ContainerService.java
-package com.toast.swift.service;
-
-// ... import list
-
-public class ContainerService {
-
-    // ContainerService Class ...
-
-    public List<String> getObjectListWithPrefix(String conatinerName, String prefix) {
-        // 지정한 접두어를 이용하여 질의 URL 생성
-        String url = this.getUrl(conatinerName) + "?prefix=" + prefix;
-        // 컨테이너 조회 예제의 getList() 메서드 호출
-        return this.getList(url);
-    }
-
-    // getObjectListWithPrefix() 사용 예제는 컨테이너 조회 예제와 동일
-}
-```
-
-</details>
-
-<details>
-<summary>Python</summary>
-
-```python
-# container.py
-class ContainerService:
-    # ...
-    def get_object_list_of_prefix(self, container, prefix):
-        req_url = self._get_url(container) + "?prefix=" + prefix
-        return self._get_list(req_url)
-
-```
-
-</details>
-
-<details>
-<summary>PHP</summary>
-
-```php
-// container.php
-<?php
-class Container {
-  // ...
-  function get_object_list_of_prefix($container, $prefix){
-    $req_url = $this->get_url($container)."?prefix=".$prefix;
-    return $this->get_list($req_url);
-  }
-}
-?>
-```
-
-</details>
-
-#### 목록의 최대 오브젝트 수 지정
-`limit` 질의를 사용하면 반환할 오브젝트 목록의 최대 오브젝트 수를 지정할 수 있습니다.
-
-```
-GET   /v1/{Account}/{Container}?limit={limit}
-X-Auth-Token: {token-id}
-```
-
-##### 요청
-요청 본문은 필요하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | 조회할 컨테이너 이름 |
-| limit | Query | Integer | O | 목록에 표시할 오브젝트 수 |
-
-##### 응답
-```
-[지정한 컨테이너에 속한 지정된 수 만큼의 오브젝트 목록]
-```
-
-##### 코드 예시
-
-<details>
-<summary>cURL</summary>
-
-```curl
-// 10개의 오브젝트만 조회
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?limit=10
-...{9개의 오브젝트}...
-31466f0.jpg
-```
-
-</details>
-
-<details>
-<summary>Java</summary>
-
-```java
-// ContainerService.java
-package com.toast.swift.service;
-
-// ... import list
-
-public class ContainerService {
-
-    // ContainerService Class ...
-
-    public List<String> getObjectList(String conatinerName, int limit) {
-        // 지정한 최대 오브젝트 수를 이용하여 질의 URL 생성
-        String url = this.getUrl(conatinerName) + "?limit=" + limit;
-        // 컨테이너 조회 예제의 getList() 메서드 호출
-        return this.getList(url);
-    }
-
-    // getObjectListWithPrefix() 사용 예제는 컨테이너 조회 예제와 동일
-}
-```
-
-</details>
-
-<details>
-<summary>Python</summary>
-
-```python
-# container.py
-class ContainerService:
-    # ...
-    def get_object_list_with_limit(self, container, limit=0):
-        req_url = self._get_url(container) + "?limit=%d" % limit
-        return self._get_list(req_url)
-
-```
-
-</details>
-
-<details>
-<summary>PHP</summary>
-
-```php
-// container.php
-<?php
-class Container {
-  // ...
-  function get_object_list_with_limit($container, $limit){
-    $req_url = $this->get_url($container)."?limit=".$limit;
-    return $this->get_list($req_url);
-  }}
-}
-?>
-```
-
-</details>
-
+<br/>
 
 ### 컨테이너 수정
 
-컨테이너 설정을 변경합니다.
+컨테이너 설정을 변경합니다. 컨테이너 설정은 컨테이너 조회시 응답 헤더에서 확인할 수 있습니다.
 
 ```
 POST  /v1/{Account}/{Container}
@@ -1513,6 +1092,18 @@ X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
 </li>
 </ul>
 
+읽기 권한을 모든 사용자에게 접근 허용으로 설정하면 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
+
+<details>
+<summary>예시</summary>
+
+```
+$ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+
+{오브젝트의 내용}
+```
+</details>
+
 <br/>
 
 ##### 오브젝트 수명 주기 설정
@@ -1520,7 +1111,7 @@ X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
 <br/>
 
 ##### 버전 관리 정책 설정
-[오브젝트 내용 수정](/api-guide/#_61) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 또는 `X-Versions-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다. 두 방식 모두 동일하게 이전 버전을 보관하지만, 오브젝트 삭제 처리 방식이 다릅니다. 두 방식을 같이 사용할 수는 없습니다.
+[오브젝트 내용 수정](/api-guide/#_67) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 또는 `X-Versions-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다. 두 방식 모두 동일하게 이전 버전을 보관하지만, 오브젝트 삭제 처리 방식이 다릅니다. 두 방식을 같이 사용할 수는 없습니다.
 
 <ul style="padding-top: 10px;">
 <li>
@@ -1538,7 +1129,15 @@ X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
 </li>
 </ul>
 
+이전 버전 오브젝트는 아카이브 컨테이너에 다음과 같은 형태로 보관됩니다.
+```
+{16진수로 표현된 오브젝트 이름의 길이}{오브젝트 이름}/{보관된 유닉스 시간}
+```
+예를 들어 `picture.jpg`라는 오브젝트가 업데이트 되면 아카이브 컨테이너에는 `00bpicture.jpg/1610606551.82539`라는 오브젝트가 생성됩니다.
+
+
 `X-Versions-Retention` 헤더를 함께 사용하면 이전 버전 오브젝트의 수명 주기를 초 단위로 설정할 수 있습니다. 3,600초로 설정했다면 보관된 오브젝트는 1시간 이후에 자동으로 삭제됩니다. 설정하지 않으면 이전 버전 오브젝트는 사용자가 삭제하기 전까지 보관됩니다. 설정 이후 보관된 이전 버전 오브젝트에만 적용됩니다.
+
 <br/>
 
 ##### 정적 웹 사이트 설정
@@ -1552,18 +1151,18 @@ X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 #### 코드 예시
+* 모든 사용자에게 컨테이너 읽기, 쓰기 접근을 허용하는 설정 변경 요청
+
 <details>
 <summary>cURL</summary>
 
 ```
-// 모든 사용자에게 읽기/쓰기 허용
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
 -H 'X-Container-Write: *:*' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
-
 </details>
 
 <details>
@@ -1615,7 +1214,6 @@ public class ContainerService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -1640,7 +1238,6 @@ if __name__ == '__main__':
 
     con_service.set_read_acl(CONTAINER_NAME, True)
 ```
-
 </details>
 
 <details>
@@ -1683,22 +1280,10 @@ $container = new Container($STORAGE_URL, $TOKEN_ID);
 $container->set_acl($CONTAINER_NAME, TRUE);
 ?>
 ```
-
 </details>
 
-#### ACL 확인
-읽기 권한을 공개로 설정한 후에는 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
 
-<details>
-<summary>예시</summary>
-
-```
-$ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-
-{오브젝트의 내용}
-```
-
-</details>
+<br/>
 
 ### 컨테이너 삭제
 
@@ -1729,7 +1314,6 @@ X-Auth-Token: {token-id}
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
-
 </details>
 
 <details>
@@ -1775,7 +1359,6 @@ public class ContainerService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -1799,7 +1382,6 @@ if __name__ == '__main__':
 
     con_service.delete(CONTAINER_NAME)
 ```
-
 </details>
 
 <details>
@@ -1835,8 +1417,9 @@ $container = new Container($STORAGE_URL, $TOKEN_ID);
 $container->delete($CONTAINER_NAME);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ## 오브젝트
 
@@ -1862,6 +1445,11 @@ Content-Type: {content-type}
 | Object | URL | String |	O | 생성할 오브젝트 이름 |
 | - |	Body | Binary | O | 생성할 오브젝트의 내용 |
 
+
+##### 오브젝트 수명 주기 설정
+`X-Delete-At` 또는 `X-Delete-After` 헤더를 사용하면 오브젝트의 수명 주기를 초 단위로 설정할 수 있습니다.
+<br/>
+
 > [주의]
 > 오브젝트의 이름이 `./` 또는 `../`으로 시작한다면 브라우저가 이를 경로 문자로 인식해 웹 콘솔에서 접근할 수 없습니다.
 > API를 이용하여 이러한 이름의 오브젝트를 업로드했다면 API를 통해 접근해야 합니다.
@@ -1878,7 +1466,6 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 -T ./ba6610.jpg
 ```
-
 </details>
 
 <details>
@@ -1955,7 +1542,6 @@ public class ObjectService {
 }
 
 ```
-
 </details>
 
 <details>
@@ -1998,7 +1584,6 @@ if __name__ == '__main__':
 
     obj_service.upload(CONTAINER_NAME, OBJECT_NAME, OBJECT_PATH)
 ```
-
 </details>
 
 <details>
@@ -2061,19 +1646,25 @@ $filename = $OBJ_PATH.'/'.$OBJECT_NAME;
 $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ?>
 ```
-
 </details>
 
-### 멀티 파트 업로드
-5GB를 초과하는 용량을 가진 오브젝트는 5GB 이하의 세그먼트로 분할해 업로드해야 합니다.
+<br/>
 
-#### 세그먼트 업로드
+### 멀티 파트 업로드
+5GB를 초과하는 용량을 가진 오브젝트는 5GB 이하의 세그먼트로 분할해 업로드해야 합니다. 세그먼트 오브젝트를 업로드한 다음 매니페스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다.
+
+<br/>
+
+#### 세그먼트 오브젝트 업로드
+오브젝트를 분할한 세그먼트 오브젝트를 각각 업로드 합니다.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}/{Count}
 X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
+
+<br/>
 
 ##### 요청
 
@@ -2087,34 +1678,92 @@ Content-Type: {content-type}
 | Count | URL | Integer | O | 분할한 오브젝트의 순번, 예) 001, 002 |
 | - |	Body | Binary | O | 분할한 오브젝트의 내용 |
 
+<br/>
+
 ##### 응답
 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
-#### 매니페스트 생성
-모든 오브젝트의 세그먼트를 업로드한 다음 매니페스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다. 매니페스트 오브젝트는 세그먼트들이 저장된 경로를 가리킵니다.
+<br/>
+
+#### 매니페스트 오브젝트 생성
+매니패스트 오브젝트는 **DLO**(Dynamic Large Object)와 **SLO**(Static Large Object), 두 가지 방식으로 만들 수 있습니다.
+
+> [참고]
+> 매니패스트 오브젝트는 세그먼트 오브젝트의 경로 정보를 가지고 있기 때문에 세그먼트 오브젝트와 매니패스트 오브젝트를 반드시 같은 컨테이너에 업로드할 필요는 없습니다. 세그먼트 오브젝트와 매니패스트 오브젝트가 하나의 컨테이너에 있어 관리가 어렵다면 세그먼트 오브젝트를 별도의 컨테이너에 업로드하고 원래 업로드하려 했던 컨테이너에는 매니패스트 오브젝트만 만드는 것을 권장합니다.
+
+**DLO**
+DLO 매니패스트 오브젝트는 `X-Object-Manifest` 헤더에 입력한 세그먼트 오브젝트의 경로를 이용해 자동으로 세그먼트 오브젝트를 찾아 연결합니다.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
-X-Object-Manifest: {Container}/{Object}/
+X-Object-Manifest: {Segment-Container}/{Segment-Object}/
 ```
 
-##### 요청
+<br/>
 
+##### 요청
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | 토큰 ID |
-| X-Object-Manifest | Header| String | O | 분할한 오브젝트들을 업로드한 경로, `{Container}/{Object}/` |
+| X-Object-Manifest | Header| String | O | 분할한 세그먼트 오브젝트를 업로드한 경로, `{Segment-Container}/{Segment-Object}/` |
 | Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
 | - | Body| Binary | O | 빈 데이터 |
 
+<br/>
+
+**SLO**
+SLO 매니패스트 오브젝트는 요청 본문에 세그먼트 오브젝트 리스트를 순서대로 작성해 입력해야 합니다. SLO 매니패스트 오브젝트 생성 요청을 하면 각 세그먼트 오브젝트가 입력된 경로에 있는지, etag 값과 오브젝트의 크기가 일치하는지 확인합니다. 정보가 일치하지 않으면 매니패스트 오브젝트가 생성되지 않습니다.
+
+```
+PUT   /v1/{Account}/{Container}/{Object}?multipart-manifest=put
+X-Auth-Token: {token-id}
+```
+
+```json
+[
+    {
+        "path": "{Segment-Container}/{Segment-Object}",
+        "etag": "{Etag-of-Segment-Object}",
+        "size_bytes": 1048576
+    },
+    {
+        "path": "{Segment-Container}/{Segment-Object1}",
+        "etag": "{Etag-of-Segment-Object}",
+        "size_bytes": 1048576
+    },
+    ...
+]
+```
+<br/>
+
+##### 요청
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| X-Auth-Token | Header| String |	O | 토큰 ID |
+| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Container |	URL | String | O | 컨테이너 이름 |
+| Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
+| multipart-manifest | Query| String | O | put |
+| path | Body | String | O | 세그먼트 오브젝트의 경로 |
+| etag | Body | String | O | 세그먼트 오브젝트의 etag |
+| size_bytes | Body | Integer | O | 세그먼트 오브젝트의 크기 (바이트 단위) |
+
+> [참고]
+> SLO 매니패스트 파일이 가지고 있는 세그먼트 정보를 조회하려면 `multipart-manifest=get` 질의를 이용해야 합니다.
+
+<br/>
+
 ##### 응답
 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
+<br/>
 
 #### 코드 예시
+DLO 방식을 이용한 멀티 파트 업로드 예시
+
 <details>
 <summary>cURL</summary>
 
@@ -2141,7 +1790,6 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
 -d ''
 ```
-
 </details>
 
 <details>
@@ -2226,7 +1874,6 @@ public class ObjectService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -2281,7 +1928,6 @@ if __name__ == '__main__':
 
     obj_service.upload_large_object(CONTAINER_NAME, LARGE_OBJECT, OBJECT_PATH)
 ```
-
 </details>
 
 <details>
@@ -2373,8 +2019,9 @@ $filename = $OBJ_PATH.'/'.$LARGE_OBJECT;
 $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ### 오브젝트 내용 수정
 오브젝트 업로드 API와 같지만, 오브젝트가 이미 컨테이너에 있다면 해당 오브젝트의 내용이 수정됩니다.
@@ -2400,6 +2047,8 @@ Content-Type: {content-type}
 
 #### 응답
 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+
+<br/>
 
 ### 오브젝트 다운로드
 오브젝트를 다운로드합니다.
@@ -2434,7 +2083,6 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
                                  Dload  Upload   Total   Spent    Left  Speed
 100 17166  100 17166    0     0   566k      0 --:--:-- --:--:-- --:--:--  578k
 ```
-
 </details>
 
 <details>
@@ -2500,7 +2148,6 @@ public class ObjectService {
 
 }
 ```
-
 </details>
 
 <details>
@@ -2532,7 +2179,6 @@ if __name__ == '__main__':
 
     obj_service.download(CONTAINER_NAME, OBJECT_NAME, DOWNLOAD_PATH)
 ```
-
 </details>
 
 <details>
@@ -2576,11 +2222,15 @@ $filename = $DOWNLOAD_PATH.'/'.$OBJECT_NAME;
 $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ### 오브젝트 복사
 오브젝트를 다른 컨테이너로 복사합니다.
+
+> [참고]
+> 멀티 파트 업로드한 오브젝트는 대상 컨테이너에 매니패스트 오브젝트를 생성하면 세그먼트 오브젝트를 복사하지 않아도 대상 컨테이너 경로를 통해 오브젝트에 접근할 수 있습니다. 단, 원본 세그먼트 오브젝트를 삭제하면 데이터에 접근할 수 없습니다.
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
@@ -2600,8 +2250,8 @@ X-Copy-From: {원본 오브젝트}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Destination | Header | String |	- | 오브젝트를 복사할 대상, `{컨테이너} / {오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
-| X-Copy-From | Header | String |	- | 원본 오브젝트, `{컨테이너} / {오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
+| Destination | Header | String |	- | 오브젝트를 복사할 대상, `{컨테이너}/{오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
+| X-Copy-From | Header | String |	- | 원본 오브젝트, `{컨테이너}/{오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
 | Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O |	컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 복사할 컨테이너 |
 | Object | URL | String |	복사할 오브젝트 이름 |
@@ -2624,7 +2274,6 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/3a45e9.jpg' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/copy_con/3a45e9.jpg
 ```
-
 </details>
 
 <details>
@@ -2673,7 +2322,6 @@ public class ObjectService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -2701,7 +2349,6 @@ if __name__ == '__main__':
 
     obj_service.copy(CONTAINER_NAME, OBJECT_NAME, DEST_CONTAINER)
 ```
-
 </details>
 
 <details>
@@ -2742,8 +2389,9 @@ $META_VALUE = 'photo';
 $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ### 오브젝트 메타데이터 수정
 지정한 오브젝트의 메타데이터를 수정합니다.
@@ -2788,7 +2436,6 @@ HTTP/1.1 200 OK
 X-Object-Meta-Type: photo
 ...
 ```
-
 </details>
 
 <details>
@@ -2841,7 +2488,6 @@ public class ObjectService {
     }    
 }
 ```
-
 </details>
 
 <details>
@@ -2870,7 +2516,6 @@ if __name__ == '__main__':
 
     obj_service.set_metadata(CONTAINER_NAME, OBJECT_NAME, META_KEY, META_VALUE)    
 ```
-
 </details>
 
 <details>
@@ -2908,24 +2553,20 @@ $object = new Object($STORAGE_URL, $TOKEN_ID);
 $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ### 오브젝트 삭제
 지정한 오브젝트를 삭제합니다.
+
+> [참고]
+> 멀티 파트 업로드한 오브젝트를 삭제할 때는 세그먼트 데이터를 모두 삭제해야 합니다. 매니패스트만 삭제하면 세그먼트 오브젝트가 그대로 남아 과금될 수 있습니다.
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| X-Object-Meta-{Key} | Header | String | - | 변경할 메타데이터 |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL| String |	 O | 컨테이너 이름 |
-| Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
 
 #### 요청
 요청 본문은 필요하지 않습니다.
@@ -2948,7 +2589,6 @@ X-Auth-Token: {token-id}
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 ```
-
 </details>
 
 <details>
@@ -2994,7 +2634,6 @@ public class ObjectService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -3020,7 +2659,6 @@ if __name__ == '__main__':
 
     obj_service.delete(CONTAINER_NAME, OBJECT_NAME)   
 ```
-
 </details>
 
 <details>
@@ -3057,8 +2695,9 @@ $object = new Object($STORAGE_URL, $TOKEN_ID);
 $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ## References
 
