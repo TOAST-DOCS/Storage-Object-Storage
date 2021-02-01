@@ -1146,6 +1146,8 @@ $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 
 ##### 정적 웹 사이트 설정
 컨테이너 읽기 접근 권한을 모든 사용자에게 허용한 다음 `X-Container-Meta-Web-Index`, `X-Container-Meta-Web-Error`헤더를 이용해 정적 웹 사이트 인덱스 문서와 오류 문서를 설정하면 컨테이너 URL을 이용해 정적 웹 사이트 호스팅을 할 수 있습니다.
+
+정적 웹 사이트의 오류 문서 이름은 `{에러 코드}{접미사}` 형태이며 헤더에는 `접미사`를 입력해야 합니다. 예를 들어 `X-Container-Meta-Web-Error: error.html`를 요청했다면, 404 에러가 발생했을 때 보여줄 오류 문서의 이름은 `404error.html`이 됩니다. 각 오류 상황에 맞게 오류 문서를 업로드해 사용할 수 있습니다. 오류 문서를 정의하지 않거나, 에러 코드에 맞는 오류 문서 오브젝트가 없다면 웹 브라우저의 기본 오류 문서가 표시됩니다.
 <br/>
 
 ##### 컨테이너 설정 해제
