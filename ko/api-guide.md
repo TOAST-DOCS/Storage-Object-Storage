@@ -1079,15 +1079,15 @@ X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
   <ul style="padding-left: 10px; padding-bottom: 5px;">
     <li><b>.r:*</b> - 모든 사용자에게 접근 허용</li>
     <li><b>.r:example.com,example2.com</b> - 특정 리퍼러 주소에만 접근 허용, ‘,’로 구분</li>
-    <li><b>.rlistings.</b> - 컨테이너 목록 조회 허용</li>
-    <li><b>AUTH_***</b> - 특정 스토리지 계정에만 접근 허용</li>
+    <li><b>.rlistings</b> - 컨테이너 목록 조회 허용</li>
+    <li><b>{tenantId}:*</b> - 특정 프로젝트의 사용자에게 접근 허용</li>
   </ul>
 </li>
 <li>
   <b>X-Container-Write</b>
   <ul style="padding-left: 10px;">
     <li><b>*:*</b> - 모든 사용자에게 쓰기 허용</li>
-    <li><b>AUTH_***</b> - 특정 스토리지 계정에만 쓰기 허용</li>
+    <li><b>{tenantId}:*</b> - 특정 프로젝트의 사용자에게 쓰기 허용</li>
   </ul>
 </li>
 </ul>
