@@ -1046,9 +1046,10 @@ X-Auth-Token: {token-id}
 X-Container-Read: {컨테이너 읽기 정책}
 X-Container-Write: {컨테이너 쓰기 정책}
 X-Container-Object-Retention: {컨테이너의 오브젝트 수명 주기}
-X-Versions-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
 X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
 X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
+X-Container-Meta-Web-Index: {정적 웹 사이트 인덱스 문서 오브젝트}
+X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접미사}
 ```
 
 #### 요청
@@ -1059,12 +1060,11 @@ X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 설정 |
 | X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 접근 규칙 설정 |
-| X-Container-Object-Retention | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 초 단위로 설정 |
+| X-Container-Object-Retention | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
 | X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
-| X-Versions-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
-| X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 초 단위로 설정 |
+| X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
 | X-Container-Meta-Web-Index | Header | String | - | 정적 웹 사이트 인덱스 문서 오브젝트 설정 |
-| X-Container-Meta-Web-Error | Header | String | - | 정적 웹 사이트 오류 문서 오브젝트 설정 |
+| X-Container-Meta-Web-Error | Header | String | - | 정적 웹 사이트 오류 문서 오브젝트 접미사 설정 |
 | Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 <br/>
@@ -1107,37 +1107,21 @@ $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 <br/>
 
 ##### 오브젝트 수명 주기 설정
-`X-Container-Object-Retention` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 초 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
+`X-Container-Object-Retention` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
 <br/>
 
 ##### 버전 관리 정책 설정
-[오브젝트 내용 수정](/api-guide/#_67) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 또는 `X-Versions-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다. 두 방식 모두 동일하게 이전 버전을 보관하지만, 오브젝트 삭제 처리 방식이 다릅니다. 두 방식을 같이 사용할 수는 없습니다.
-
-<ul style="padding-top: 10px;">
-<li>
-  <b>X-History-Location</b>
-  <ul style="padding-left: 10px;">
-    <li>원본 컨테이너의 오브젝트를 삭제하면 원본 컨테이너의 오브젝트는 삭제되고 아카이브 컨테이너에 삭제 마커 오브젝트가 생성됩니다.</li>
-    <li>아카이브 컨테이너에 보관된 이전 버전 오브젝트에는 언제든 접근할 수 있습니다.</li>
-  </ul>
-</li>
-<li>
-  <b>X-Versions-Location</b>
-  <ul style="padding-left: 10px;">
-    <li>원본 컨테이너의 오브젝트를 삭제하면 보관된 이전 버전의 오브젝트 중 가장 최신 버전이 원본 컨테이너로 복구됩니다. 복구된 이전 버전 오브젝트는 아카이브 컨테이너에서 삭제됩니다.</li>
-    <li>오브젝트를 완전히 삭제하고 싶다면 아카이브 컨테이너에 저장된 이전 버전 오브젝트와 원본 오브젝트를 모두 삭제하거나, 원본 오브젝트를 여러 번 삭제해야 합니다.</li>
-  </ul>
-</li>
-</ul>
+[오브젝트 내용 수정](/api-guide/#_67) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
 
 이전 버전 오브젝트는 아카이브 컨테이너에 다음과 같은 형태로 보관됩니다.
 ```
-{16진수로 표현된 오브젝트 이름의 길이}{오브젝트 이름}/{이전 버전 오브젝트가 보관된 유닉스 시간}
+{3자리 16진수로 표현된 오브젝트 이름의 길이}{오브젝트 이름}/{이전 버전 오브젝트가 보관된 유닉스 시간}
 ```
 예를 들어 `picture.jpg`라는 오브젝트가 업데이트 되면 아카이브 컨테이너에는 `00bpicture.jpg/1610606551.82539`라는 오브젝트가 생성됩니다.
 
+버전 관리 정책이 설정된 컨테이너에서 오브젝트를 삭제하면, 아카이브 컨테이너에 삭제된 오브젝트가 보관되고 삭제 마커 오브젝트가 생성됩니다. 아카이브 컨테이너에 보관된 이전 버전 오브젝트에는 언제든 접근할 수 있습니다.
 
-`X-Versions-Retention` 헤더를 함께 사용하면 이전 버전 오브젝트의 수명 주기를 초 단위로 설정할 수 있습니다. 3,600초로 설정했다면 보관된 오브젝트는 1시간 이후에 자동으로 삭제됩니다. 설정하지 않으면 이전 버전 오브젝트는 사용자가 삭제하기 전까지 보관됩니다. 설정 이후 보관된 이전 버전 오브젝트에만 적용됩니다.
+`X-Versions-Retention` 헤더를 함께 사용하면 이전 버전 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 1을 설정했다면 보관된 오브젝트는 1일 이후에 자동으로 삭제됩니다. 설정하지 않으면 이전 버전 오브젝트는 사용자가 삭제하기 전까지 보관됩니다. 설정 이후 보관된 이전 버전 오브젝트에만 적용됩니다.
 
 > [주의]
 버전 관리 정책을 설정했다면 아카이브 컨테이너를 원본 컨테이너보다 먼저 삭제하면 안 됩니다. 원본 컨테이너의 오브젝트가 업데이트 또는 삭제할 때 아카이브 컨테이너에 이전 버전을 저장할 수 없어 오류가 발생하게 됩니다. 아카이브 컨테이너를 먼저 삭제해서 오류가 발생했다면 아카이브 컨테이너를 새로 생성하거나, 원본 컨테이너의 버전 관리 정책을 해제해 문제를 해결할 수 있습니다.
