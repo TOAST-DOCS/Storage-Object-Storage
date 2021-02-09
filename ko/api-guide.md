@@ -92,8 +92,8 @@ Content-Type: application/json
       },
       "issued_at": "{Token Issued Time}"
     },
-    "serviceCatalog" : [],
-    "user" : {
+    "serviceCatalog": [],
+    "user": {
       "id": "{User UUID}",
       "name": "{User Name}"
     }
@@ -129,17 +129,17 @@ https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
       },
       "issued_at": "2018-01-15T07:05:05.719672"
     },
-    "serviceCatalog" : [
+    "serviceCatalog": [
       {
-        "endpoints" : [
+        "endpoints": [
           {
-            "region" : "KR1",
-            "publicURL" : "https://api-storage.cloud.toast.com/v1/AUTH_*****"
+            "region": "KR1",
+            "publicURL": "https://api-storage.cloud.toast.com/v1/AUTH_*****"
           }
         ],
-        "type" : "object-store",
-        "name" : "swift",
-        "endpoints_links" : []
+        "type": "object-store",
+        "name": "swift",
+        "endpoints_links": []
       }
     ]
   }
@@ -576,7 +576,7 @@ public class AccountService {
         try {
             List<String> containerList = accountService.getContainerList();
             if (containerList != null) {
-                for (String object : containerList) {
+                for (String object: containerList) {
                     System.out.println(object);
                 }
             }
@@ -951,7 +951,7 @@ public class ContainerService {
         List<String> objectList = containerService.getObjectList(containerName);
 
         if (objectList != null) {
-            for (String object : objectList) {
+            for (String object: objectList) {
                 System.out.println(object);
             }
         }
@@ -1070,7 +1070,7 @@ X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접
 <br/>
 
 ##### 접근 정책 설정
-`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정 할 수 있습니다.
+`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다.
 
 
 <ul style="padding-top: 10px;">
@@ -1117,7 +1117,7 @@ $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 ```
 {3자리 16진수로 표현된 오브젝트 이름의 길이}{오브젝트 이름}/{이전 버전 오브젝트가 보관된 유닉스 시간}
 ```
-예를 들어 `picture.jpg`라는 오브젝트가 업데이트 되면 아카이브 컨테이너에는 `00bpicture.jpg/1610606551.82539`라는 오브젝트가 생성됩니다.
+예를 들어 `picture.jpg`라는 오브젝트를 업데이트하면 아카이브 컨테이너에는 `00bpicture.jpg/1610606551.82539`라는 오브젝트가 생성됩니다.
 
 버전 관리 정책이 설정된 컨테이너에서 오브젝트를 삭제하면, 아카이브 컨테이너에 삭제된 오브젝트가 보관되고 삭제 마커 오브젝트가 생성됩니다. 아카이브 컨테이너에 보관된 이전 버전 오브젝트에는 언제든 접근할 수 있습니다.
 
@@ -1129,7 +1129,7 @@ $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 <br/>
 
 ##### 정적 웹 사이트 설정
-컨테이너 읽기 접근 권한을 모든 사용자에게 허용한 다음 `X-Container-Meta-Web-Index`, `X-Container-Meta-Web-Error`헤더를 이용해 정적 웹 사이트 인덱스 문서와 오류 문서를 설정하면 컨테이너 URL을 이용해 정적 웹 사이트 호스팅을 할 수 있습니다.
+컨테이너 읽기 접근 권한을 모든 사용자에게 허용한 다음 `X-Container-Meta-Web-Index`, `X-Container-Meta-Web-Error`헤더를 이용해 정적 웹 사이트 인덱스 문서와 오류 문서를 설정하면 컨테이너 URL을 이용해 정적 웹 사이트를 호스팅할 수 있습니다.
 
 정적 웹 사이트의 오류 문서 이름은 `{에러 코드}{접미사}` 형태이며 헤더에는 `접미사`를 입력해야 합니다. 예를 들어 `X-Container-Meta-Web-Error: error.html`를 요청했다면, 404 에러가 발생했을 때 보여줄 오류 문서의 이름은 `404error.html`이 됩니다. 각 오류 상황에 맞게 오류 문서를 업로드해 사용할 수 있습니다. 오류 문서를 정의하지 않거나, 에러 코드에 맞는 오류 문서 오브젝트가 없다면 웹 브라우저의 기본 오류 문서가 표시됩니다.
 <br/>
@@ -1650,7 +1650,7 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 #### 세그먼트 오브젝트 업로드
-오브젝트를 분할한 세그먼트 오브젝트를 각각 업로드 합니다.
+오브젝트를 분할한 세그먼트 오브젝트를 각각 업로드합니다.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}/{Count}
@@ -1680,13 +1680,13 @@ Content-Type: {content-type}
 <br/>
 
 #### 매니페스트 오브젝트 생성
-매니패스트 오브젝트는 **DLO**(Dynamic Large Object)와 **SLO**(Static Large Object), 두 가지 방식으로 만들 수 있습니다.
+매니페스트 오브젝트는 **DLO**(Dynamic Large Object)와 **SLO**(Static Large Object), 두 가지 방식으로 만들 수 있습니다.
 
 > [참고]
-> 매니패스트 오브젝트는 세그먼트 오브젝트의 경로 정보를 가지고 있기 때문에 세그먼트 오브젝트와 매니패스트 오브젝트를 반드시 같은 컨테이너에 업로드할 필요는 없습니다. 세그먼트 오브젝트와 매니패스트 오브젝트가 하나의 컨테이너에 있어 관리가 어렵다면 세그먼트 오브젝트를 별도의 컨테이너에 업로드하고 원래 업로드하려 했던 컨테이너에는 매니패스트 오브젝트만 만드는 것을 권장합니다.
+> 매니페스트 오브젝트는 세그먼트 오브젝트의 경로 정보를 가지고 있기 때문에 세그먼트 오브젝트와 매니페스트 오브젝트를 반드시 같은 컨테이너에 업로드할 필요는 없습니다. 세그먼트 오브젝트와 매니페스트 오브젝트가 하나의 컨테이너에 있어 관리가 어렵다면 세그먼트 오브젝트를 별도의 컨테이너에 업로드하고 원래 업로드하려 했던 컨테이너에는 매니페스트 오브젝트만 만드는 것을 권장합니다.
 
 **DLO**
-DLO 매니패스트 오브젝트는 `X-Object-Manifest` 헤더에 입력한 세그먼트 오브젝트의 경로를 이용해 자동으로 세그먼트 오브젝트를 찾아 연결합니다.
+DLO 매니페스트 오브젝트는 `X-Object-Manifest` 헤더에 입력한 세그먼트 오브젝트의 경로를 이용해 자동으로 세그먼트 오브젝트를 찾아 연결합니다.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1709,7 +1709,7 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}/
 <br/>
 
 **SLO**
-SLO 매니패스트 오브젝트는 요청 본문에 세그먼트 오브젝트 리스트를 순서대로 작성해 입력해야 합니다. SLO 매니패스트 오브젝트 생성 요청을 하면 각 세그먼트 오브젝트가 입력된 경로에 있는지, etag 값과 오브젝트의 크기가 일치하는지 확인합니다. 정보가 일치하지 않으면 매니패스트 오브젝트가 생성되지 않습니다.
+SLO 매니페스트 오브젝트는 요청 본문에 세그먼트 오브젝트 리스트를 순서대로 작성해 입력해야 합니다. SLO 매니페스트 오브젝트 생성 요청을 하면 각 세그먼트 오브젝트가 입력된 경로에 있는지, etag 값과 오브젝트의 크기가 일치하는지 확인합니다. 정보가 일치하지 않으면 매니페스트 오브젝트가 생성되지 않습니다.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}?multipart-manifest=put
@@ -1746,7 +1746,7 @@ X-Auth-Token: {token-id}
 | size_bytes | Body | Integer | O | 세그먼트 오브젝트의 크기 (바이트 단위) |
 
 > [참고]
-> SLO 매니패스트 파일이 가지고 있는 세그먼트 정보를 조회하려면 `multipart-manifest=get` 질의를 이용해야 합니다.
+> SLO 매니페스트 파일이 가지고 있는 세그먼트 정보를 조회하려면 `multipart-manifest=get` 질의를 이용해야 합니다.
 
 <br/>
 
@@ -2224,7 +2224,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 오브젝트를 다른 컨테이너로 복사합니다.
 
 > [참고]
-> 멀티 파트 업로드한 오브젝트는 대상 컨테이너에 매니패스트 오브젝트를 생성하면 세그먼트 오브젝트를 복사하지 않아도 대상 컨테이너 경로를 통해 오브젝트에 접근할 수 있습니다. 단, 원본 세그먼트 오브젝트를 삭제하면 데이터에 접근할 수 없습니다.
+> 멀티 파트 업로드한 오브젝트는 대상 컨테이너에 매니페스트 오브젝트를 생성하면 세그먼트 오브젝트를 복사하지 않아도 대상 컨테이너 경로를 통해 오브젝트에 접근할 수 있습니다. 단, 원본 세그먼트 오브젝트를 삭제하면 데이터에 접근할 수 없습니다.
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
@@ -2555,7 +2555,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 지정한 오브젝트를 삭제합니다.
 
 > [참고]
-> 멀티 파트 업로드한 오브젝트를 삭제할 때는 세그먼트 데이터를 모두 삭제해야 합니다. 매니패스트만 삭제하면 세그먼트 오브젝트가 그대로 남아 과금될 수 있습니다.
+> 멀티 파트 업로드한 오브젝트를 삭제할 때는 세그먼트 데이터를 모두 삭제해야 합니다. 매니페스트만 삭제하면 세그먼트 오브젝트가 그대로 남아 과금될 수 있습니다.
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}

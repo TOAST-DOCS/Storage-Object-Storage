@@ -85,8 +85,8 @@ Content-Type: application/json
       },
       "issued_at": "{Token Issued Time}"
     },
-    "serviceCatalog" : [],
-    "user" : {
+    "serviceCatalog": [],
+    "user": {
       "id": "{User UUID}",
       "name": "{User Name}"
     }
@@ -121,17 +121,17 @@ https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
       },
       "issued_at": "2018-01-15T07:05:05.719672"
     },
-    "serviceCatalog" : [
+    "serviceCatalog": [
       {
-        "endpoints" : [
+        "endpoints": [
           {
-            "region" : "KR1",
-            "publicURL" : "https://api-storage.cloud.toast.com/v1/AUTH_*****"
+            "region": "KR1",
+            "publicURL": "https://api-storage.cloud.toast.com/v1/AUTH_*****"
           }
         ],
-        "type" : "object-store",
-        "name" : "swift",
-        "endpoints_links" : []
+        "type": "object-store",
+        "name": "swift",
+        "endpoints_links": []
       }
     ]
   }
@@ -304,11 +304,11 @@ printf("%s\n", $token);
 
 </details>
 
-## Storage Account 
-A storage account is a character string in the `AUTH_*****`format, included in the Object-Store API endpoint. 
+## Storage Account
+A storage account is a character string in the `AUTH_*****`format, included in the Object-Store API endpoint.
 
 ### Query Storage Account
-Query usage status of a storage account. 
+Query usage status of a storage account.
 
 ```
 HEAD  /v1/{Account}
@@ -316,7 +316,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -324,7 +324,7 @@ This API does not require a request body.
 | Account | URL | String | O | Storage account, available on the **API Endpoint Setting** popup |
 
 #### Response
-This API does not return a response body. Usage status is included in the header. For a valid request, return status code 200. 
+This API does not return a response body. Usage status is included in the header. For a valid request, return status code 200.
 
 | Name | Type | Format | Description |
 |---|---|---|---|
@@ -332,7 +332,7 @@ This API does not return a response body. Usage status is included in the header
 | X-Account-Object-Count | Header | String | Number of saved objects |
 | X-Account-Bytes-Used | Header | String | Saved data capacity (bytes) |
 
-#### 코드 예시 Code Example 
+#### 코드 예시 Code Example
 
 <details>
 <summary>cURL</summary>
@@ -363,11 +363,11 @@ public class AccountService {
     }
     public HashMap<String, String> getStatus() {
         String url = this.getStorageUrl();
-        // Create a header 
+        // Create a header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
-        // Call API 
+        // Call API
         HashMap<String, String> status = new HashMap<String, String>();
         ResponseEntity<String> response
             = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
@@ -476,8 +476,8 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 
 </details>
 
-### List Containers 
-List containers of a storage account. 
+### List Containers
+List containers of a storage account.
 
 ```
 GET  /v1/{Account}
@@ -497,7 +497,7 @@ This API does not require a request body.
 [List of containers in a storage account]
 ```
 
-#### Code Example 
+#### Code Example
 
 <details>
 <summary>cURL</summary>
@@ -520,16 +520,16 @@ package com.toast.swift.service;
 public class AccountService {
     // AccountService Class ...
     public List<String> getContainerList() {
-        // Create a header 
+        // Create a header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
-        // Call API 
+        // Call API
         ResponseEntity<String>response
             = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
         List<String> containerList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
-            // Convert the list of string into sequence 
+            // Convert the list of string into sequence
             containerList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
         // Convert sequence into list and return
@@ -542,7 +542,7 @@ public class AccountService {
         try {
             List<String> containerList = accountService.getContainerList();
             if (containerList != null) {
-                for (String object : containerList) {
+                for (String object: containerList) {
                     System.out.println(object);
                 }
             }
@@ -887,7 +887,7 @@ public class ContainerService {
         List<String> objectList = containerService.getObjectList(containerName);
 
         if (objectList != null) {
-            for (String object : objectList) {
+            for (String object: objectList) {
                 System.out.println(object);
             }
         }
