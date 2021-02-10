@@ -2,7 +2,7 @@
 
 ## 事前準備
 
-オブジェクトストレージAPIを使用するには、先に認証トークン(token)を発行する必要があります。認証トークンはオブジェクトストレージのREST APIを使用する時に必要な認証キーです。外部公開に設定していないコンテナやオブジェクトへアクセスするにはトークンが必要です。トークンはTOASTアカウントごとに管理されます。
+オブジェクトストレージAPIを使用するには、先に認証トークン(token)を発行する必要があります。認証トークンはオブジェクトストレージのREST APIを使用する時に必要な認証キーです。外部公開に設定していないコンテナやオブジェクトへアクセスするにはトークンが必要です。トークンはNHN Cloudアカウントごとに管理されます。
 
 ### テナントID(Tenant ID)およびAPIエンドポイント(Endpoint)確認
 
@@ -34,7 +34,7 @@ Content-Type: application/json
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | tenantId | Body | String | O | Tenant ID。API Endpoint設定ダイアログボックスで確認可能 |
-| username | Body | String | O | TOASTアカウントID(メール)入力 |
+| username | Body | String | O | NHN CloudアカウントID(メール)入力 |
 | password | Body | String | O | API Endpoint設定ダイアログボックスで保存したパスワード |
 
 <details>
