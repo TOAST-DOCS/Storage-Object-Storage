@@ -33,6 +33,6 @@ A virtual unit that binds many objects: helps to manage objects in hierarchy, si
 #### Container
 Folder in the highest order, which serves as the basic unit for access authority setting. All objects must exist in a container.
 #### Storage Account
-Refers to user's account for object storage. TOAST Object Storage is classified by the account unit.
+Refers to user's account for object storage. NHN Cloud Object Storage is classified by the account unit.
 #### API Endpoint
 Refers to HTTP URL which is provided to access object storage via REST API. When requested with the URL, access is allowed to object storage.   

@@ -2,7 +2,7 @@
 
 ## 사전 준비
 
-오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 TOAST 계정별로 관리됩니다.
+오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 NHN Cloud 계정별로 관리됩니다.
 
 <br/>
 
@@ -40,7 +40,7 @@ Content-Type: application/json
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | tenantId | Body | String | O | Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
-| username | Body | String | O | TOAST 계정 ID(이메일) 입력 |
+| username | Body | String | O | NHN Cloud 계정 ID(이메일) 입력 |
 | password | Body | String | O | API Endpoint 설정 대화 상자에서 저장한 비밀번호 |
 
 <details>
