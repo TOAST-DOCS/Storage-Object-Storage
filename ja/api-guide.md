@@ -4,6 +4,8 @@
 
 オブジェクトストレージAPIを使用するには、先に認証トークン(token)を発行する必要があります。認証トークンはオブジェクトストレージのREST APIを使用する時に必要な認証キーです。外部公開に設定していないコンテナやオブジェクトへアクセスするにはトークンが必要です。トークンはNHN Cloudアカウントごとに管理されます。
 
+<br/>
+
 ### テナントID(Tenant ID)およびAPIエンドポイント(Endpoint)確認
 
 トークンを発行するためのテナントIDとAPIのエンドポイントは、オブジェクトストレージサービスページの**API Endpoint設定**ボタンをクリックして確認できます。
@@ -14,6 +16,8 @@
 | Object-Store | https://api-storage.cloud.toast.com/v1/AUTH_***** | オブジェクトストレージ制御、リージョンによって異なる |
 | Tenant ID | 数字 + 英字で構成された32文字の文字列 | 認証トークン発行 |
 
+<br/>
+
 ### APIパスワード設定
 
 APIパスワードはオブジェクトストレージサービスページの**API Endpoint設定**ボタンをクリックして設定できます。
@@ -21,6 +25,8 @@ APIパスワードはオブジェクトストレージサービスページの**
 1. **API Endpoint設定**ボタンをクリックします。
 2. **API Endpoint設定**下の**APIパスワード設定**入力ボックスに、トークン発行時に使用するパスワードを入力します。
 3. **保存**ボタンをクリックします。
+
+<br/>
 
 ## 認証トークン発行
 
@@ -51,8 +57,9 @@ Content-Type: application/json
   }
 }
 ```
-
 </details>
+
+<br/>
 
 ### レスポンス
 
@@ -93,8 +100,9 @@ Content-Type: application/json
   }
 }
 ```
-
 </details>
+
+<br/>
 
 ### サンプルコード
 <details>
@@ -137,7 +145,6 @@ https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
   }
 }
 ```
-
 </details>
 
 <details>
@@ -217,7 +224,6 @@ public class AuthService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -255,7 +261,6 @@ if __name__ == '__main__':
     token = get_token(AUTH_URL, TENANT_ID, USERNAME, PASSWORD)
     print(json.dumps(token, indent=4))
 ```
-
 </details>
 
 <details>
@@ -301,8 +306,9 @@ $token = get_token($AUTH_URL, $TENANT_ID, $USERNAME, $PASSWORD);
 printf("%s\n", $token);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ## ストレージアカウント
 ストレージアカウント(account)は`AUTH_*****`形式の文字列です。Object-Store APIエンドポイントに含まれています。
@@ -333,7 +339,6 @@ X-Auth-Token: {token-id}
 | X-Account-Bytes-Used | Header | String | 保存されたデータ容量(バイト) |
 
 #### コード例
-
 <details>
 <summary>cURL</summary>
 
@@ -341,7 +346,6 @@ X-Auth-Token: {token-id}
 $ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****
 ```
-
 </details>
 
 <details>
@@ -400,7 +404,6 @@ public class AccountService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -439,7 +442,6 @@ if __name__ == '__main__':
     stat = acc_service.get_stat()
     print(json.dumps(dict(stat), indent=4))
 ```
-
 </details>
 
 <details>
@@ -498,8 +500,9 @@ printf("Object-Count: %d\n", $status["X-Account-Object-Count"]);
 printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ### コンテナリスト照会
 ストレージアカウントのコンテナリストを照会します。
@@ -531,7 +534,6 @@ X-Auth-Token: {token-id}
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****
 ```
-
 </details>
 
 <details>
@@ -583,7 +585,6 @@ public class AccountService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -609,7 +610,6 @@ if __name__ == '__main__':
     for container in container_list:
         print(container)
 ```
-
 </details>
 
 <details>
@@ -647,9 +647,9 @@ foreach($container_list as $container){
 }
 ?>
 ```
-
 </details>
 
+<br/>
 
 ## コンテナ
 
@@ -670,7 +670,7 @@ X-Auth-Token: {token-id}
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 作成するコンテナ名 |
 
 #### レスポンス
@@ -684,7 +684,6 @@ X-Auth-Token: {token-id}
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
-
 </details>
 
 <details>
@@ -743,7 +742,6 @@ public class ContainerService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -781,7 +779,6 @@ if __name__ == '__main__':
     new_container = 'test'
     con_service.create(new_container)
 ```
-
 </details>
 
 <details>
@@ -838,12 +835,13 @@ $container = new Container($STORAGE_URL, $TOKEN_ID);
 $container->create($CONTAINER_NAME);
 ?>
 ```
-
 </details>
 
 
+<br/>
+
 ### コンテナ照会
-指定したコンテナの情報と、内部に保存されたオブジェクトのリストを照会します。
+指定したコンテナの情報と、内部に保存されたオブジェクトのリストを照会します。コンテナの情報はレスポンスヘッダで確認できます。
 
 ```
 GET   /v1/{Account}/{Container}
@@ -856,13 +854,39 @@ X-Auth-Token: {token-id}
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 照会するコンテナ名 |
+| marker | Query | String | - | 基準オブジェクト名 |
+| path | Query | String | - | 照会するフォルダ名 |
+| prefix | Query | String | - | 検索するプレフィックス |
+| limit | Query | Integer | - | リストに表示するオブジェクト数 |
+
+> [参考]
+> コンテナ照会APIは複数のクエリ(query)を提供します。すべてのクエリは`&`で接続して使用できます。
+#### 1万個以上のオブジェクトリスト照会
+コンテナ照会APIで照会できるリストのオブジェクト数は1万個に制限されています。1万個以上のオブジェクトリストを照会するには`marker`クエリを利用する必要があります。Markerクエリは指定したオブジェクトの次のオブジェクトから最大1万個のリストを返します。
+
+<br/>
+
+#### フォルダ単位のオブジェクトリスト照会
+コンテナに複数のフォルダを作って使用している場合、`path`クエリを利用してフォルダ単位でオブジェクトリストを照会できます。Pathクエリはサブフォルダのオブジェクトリストは照会できません。
+
+<br/>
+
+#### プレフィックスで始まるオブジェクトリスト照会
+`prefix`クエリを使用すると、指定したプレフィックスで始まるオブジェクトのリストを返します。Pathクエリでは照会できないサブフォルダのオブジェクトリストを照会するのに使用できます。
+
+<br/>
+
+#### リストの最大オブジェクト数指定
+`limit`クエリを使用する際に返すオブジェクトリストの最大オブジェクト数を指定できます。
+
+<br/>
 
 #### レスポンス
 
 ```
-[指定したコンテナに属しているオブジェクトリスト]
+[コンテナのオブジェクトリスト]
 ```
 
 #### サンプルコード
@@ -876,7 +900,6 @@ ba6610.jpg
 20d33f.jpg
 31466f.jpg
 ```
-
 </details>
 
 <details>
@@ -933,7 +956,6 @@ public class ContainerService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -965,7 +987,6 @@ if __name__ == '__main__':
     for object in object_list:
         print(object)
 ```
-
 </details>
 
 <details>
@@ -1009,463 +1030,26 @@ foreach ($object_list as $obj){
 }
 ?>
 ```
-
 </details>
 
-### コンテナ照会クエリー
-コンテナ照会APIは、次のように複数のクエリー(query)を提供します。すべてのクエリーは`&`で接続して混用できます。
+<br/>
 
-#### 1万個以上のオブジェクトリスト照会
-コンテナ照会APIで照会できるリストのオブジェクト数は1万個に制限されています。1万個以上のオブジェクトリストを照会するには`marker`クエリーを利用する必要があります。 Markerクエリーは指定したオブジェクトの次のオブジェクトから最大1万個のリストを返します。
 
-```
-GET    /v1/{Account}/{Container}?marker={Object}
-X-Auth-Token: {token-id}
-```
-
-##### リクエスト
-リクエスト本文は必要ありません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
-| Container | URL | String | O | 照会するコンテナ名 |
-| Object | Query | String | O | 基準オブジェクト名 |
-
-##### レスポンス
-```
-[指定したコンテナに属している指定したオブジェクトの次のオブジェクトリスト]
-```
-
-##### サンプルコード
-<details>
-<summary>cURL</summary>
-
-```
-// `20d33f.jpg`以降のオブジェクトリスト照会
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
-[指定したオブジェクト(20d33f.jpg)以降のリスト]
-```
-
-</details>
-
-<details>
-<summary>Java</summary>
-
-```java
-// ContainerService.java
-package com.toast.swift.service;
-
-// ... import list
-
-public class ContainerService {
-
-    // ContainerService Class ...
-
-    public List<String> getObjectList(String conatinerName, String prevLastObject) {
-        // 指定したオブジェクト名を利用してクエリーURLを作成
-        String url = this.getUrl(conatinerName) + "?marker=" + prevLastObject;
-        // コンテナ照会例のgetList()メソッド呼び出し
-        return this.getList(url);
-    }
-
-    public List<String> getObjectList(String conatinerName) {
-        final int LIMIT_COUNT = 10000;
-
-        String url = this.getUrl(conatinerName);
-
-        // オブジェクトリスト照会
-        List<String> objectList = this.getList(url);
-        while ((objectList.size() % LIMIT_COUNT) == 0) {
-            // オブジェクトリストの長さが1万の倍数なら、リストの最後のオブジェクトを指定して以降のリストを照会
-            String lastObject = objectList.get(objectList.size() - 1);
-            List<String> nextObjList = this.getObjectList(conatinerName, lastObject);
-            objectList.addAll(nextObjList);			
-        }		
-
-        return objectList;
-    }
-
-    // getObjectList()使用例はコンテナ照会と同じ
-}
-```
-
-</details>
-
-<details>
-<summary>Python</summary>
-
-```python
-# container.py
-class ContainerService:
-    # ...
-    _MAX_LIST_COUNT = 10000
-
-    def get_object_list(self, container, last_object=None):
-        req_url = self._get_url(container)
-        if last_object:
-            req_url += '?marker=' + last_object
-        return self._get_list(req_url)
-
-    def get_all_object_list(self, container):
-        object_list = self.get_object_list(container)
-        while (len(object_list) % self._MAX_LIST_COUNT) == 0:
-            next_object_list = self.get_object_list(container, object_list[-1])
-            object_list.append(next_object_list)
-        return object_list
-
-```
-
-</details>
-
-<details>
-<summary>PHP</summary>
-
-```php
-// container.php
-<?php
-class Container {
-  const MAX_LIST_COUNT = 10;
-
-  // ...
-
-  function get_object_list($container, $last_object = null){
-    $req_url = $this->get_url($container);
-    if ($last_object) {
-      $req_url .= '?marker='.last_object;
-    }
-    return $this->get_list($req_url);
-  }
-
-  function get_all_object_list($container){
-    $object_list = $this->get_object_list($container);
-    while ((count($object_list) % self::MAX_LIST_COUNT) == 0) {
-      $next_object_list = $this->get_object_list($container, end($object_list));
-      array_merge($object_list, $next_object_list);
-    }
-
-    return $object_list;
-  }
-}
-
-// main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
-$CONTAINER_NAME = 'test';
-
-$container = new Container($STORAGE_URL, $TOKEN_ID);
-
-$object_list = $container->get_all_object_list($CONTAINER_NAME);
-foreach ($object_list as $obj){
-  printf("%s\n", $obj);
-}
-?>
-```
-
-</details>
-
-#### フォルダ単位のオブジェクトリスト照会
-コンテナに複数のフォルダを作って使用している場合、`path`クエリーを利用してフォルダ単位でオブジェクトリストを照会できます。Pathクエリーは、サブフォルダのオブジェクトリストは照会できません。
-
-```
-GET   /v1/{Account}/{Container}?path={Path}
-X-Auth-Token: {token-id}
-```
-
-##### リクエスト
-リクエスト本文は必要ありません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
-| Container | URL | String | O | 照会するコンテナ名 |
-| Path | Query | String | O | 照会するフォルダ名 |
-
-##### レスポンス
-```
-[指定したコンテナに属している指定したフォルダのオブジェクトリスト]
-```
-
-##### サンプルコード
-<details>
-<summary>cURL</summary>
-
-```
-// exフォルダのオブジェクトリスト照会
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?path=ex
-ex/20d33f.jpg
-ex/31466f.jpg
-```
-
-</details>
-
-<details>
-<summary>Java</summary>
-
-```java
-// ContainerService.java
-package com.toast.swift.service;
-
-// ... import list
-
-public class ContainerService {
-
-    // ContainerService Class ...
-
-    public List<String> getObjectListOfFolder(String conatinerName, String folderName) {
-        // 指定したフォルダ名を利用してクエリーURLを作成
-        String url = this.getUrl(conatinerName) + "?path=" + folderName;
-        // コンテナ照会例のgetList()メソッド呼び出し
-        return this.getList(url);
-    }
-
-    // getObjectListOfFolder()使用例はコンテナ照会と同じ
-}
-```
-
-</details>
-
-<details>
-<summary>Python</summary>
-
-```python
-# container.py
-class ContainerService:
-    # ...
-    def get_object_list_of_folder(self, container, folder):
-        req_url = self._get_url(container) + "?path=" + folder
-        return self._get_list(req_url)
-
-```
-
-</details>
-
-<details>
-<summary>PHP</summary>
-
-```php
-// container.php
-<?php
-class Container {
-  // ...
-  function get_object_list_of_folder($container, $folder){
-    $req_url = $this->get_url($container)."?path=".$folder;
-    return $this->get_list($req_url);
-  }
-}
-?>
-```
-
-</details>
-
-#### プレフィックスで始まるオブジェクトリスト照会
-`prefix`クエリーを使用すると、指定したプレフィックスで始まるオブジェクトのリストを返します。Pathクエリーでは照会できないサブフォルダのオブジェクトリストを照会する際に使用できます。
-
-```
-GET   /v1/{Account}/{Container}?prefix={Prefix}
-X-Auth-Token: {token-id}
-```
-
-##### リクエスト
-リクエスト本文は必要ありません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
-| Container | URL | String | O | 照会するコンテナ名 |
-| Prefix | Query | String | O | 検索するプレフィックス |
-
-##### レスポンス
-```
-[指定したコンテナに属し、指定したプレフィックスで始まるオブジェクトリスト]
-```
-
-##### サンプルコード
-<details>
-<summary>cURL</summary>
-
-```
-// 314で始まるオブジェクトリスト照会
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
-3146f0.jpg
-3147a6.jpg
-31486f.jpg
-```
-
-</details>
-
-<details>
-<summary>Java</summary>
-
-```java
-// ContainerService.java
-package com.toast.swift.service;
-
-// ... import list
-
-public class ContainerService {
-
-    // ContainerService Class ...
-
-    public List<String> getObjectListWithPrefix(String conatinerName, String prefix) {
-        // 指定したプレフィックスを利用してクエリーURLを作成
-        String url = this.getUrl(conatinerName) + "?prefix=" + prefix;
-        // コンテナ照会例のgetList()メソッド呼び出し
-        return this.getList(url);
-    }
-
-    // getObjectListWithPrefix()使用例はコンテナ照会例と同じ
-}
-```
-
-</details>
-
-<details>
-<summary>Python</summary>
-
-```python
-# container.py
-class ContainerService:
-    # ...
-    def get_object_list_of_prefix(self, container, prefix):
-        req_url = self._get_url(container) + "?prefix=" + prefix
-        return self._get_list(req_url)
-
-```
-
-</details>
-
-<details>
-<summary>PHP</summary>
-
-```php
-// container.php
-<?php
-class Container {
-  // ...
-  function get_object_list_of_prefix($container, $prefix){
-    $req_url = $this->get_url($container)."?prefix=".$prefix;
-    return $this->get_list($req_url);
-  }
-}
-?>
-```
-
-</details>
-
-#### リストの最大オブジェクト数を指定
-`limit`クエリーを使用すると、返すオブジェクトリストの最大オブジェクト数を指定できます。
-
-```
-GET   /v1/{Account}/{Container}?limit={limit}
-X-Auth-Token: {token-id}
-```
-
-##### リクエスト
-リクエスト本文は必要ありません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
-| Container | URL | String | O | 照会するコンテナ名 |
-| limit | Query | Integer | O | リストに表示するオブジェクト数 |
-
-##### レスポンス
-```
-[指定したコンテナに属している指定された数のオブジェクトリスト]
-```
-
-##### サンプルコード
-
-<details>
-<summary>cURL</summary>
-
-```curl
-// 10個のオブジェクトのみ照会
-$ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?limit=10
-...{9個のオブジェクト}...
-31466f0.jpg
-```
-
-</details>
-
-<details>
-<summary>Java</summary>
-
-```java
-// ContainerService.java
-package com.toast.swift.service;
-
-// ... import list
-
-public class ContainerService {
-
-    // ContainerService Class ...
-
-    public List<String> getObjectList(String conatinerName, int limit) {
-        // 指定した最大オブジェクト数を利用してクエリーURLを作成
-        String url = this.getUrl(conatinerName) + "?limit=" + limit;
-        // コンテナ照会例のgetList()メソッド呼び出し
-        return this.getList(url);
-    }
-
-    // getObjectListWithPrefix()使用例はコンテナ照会例と同じ
-}
-```
-
-</details>
-
-<details>
-<summary>Python</summary>
-
-```python
-# container.py
-class ContainerService:
-    # ...
-    def get_object_list_with_limit(self, container, limit=0):
-        req_url = self._get_url(container) + "?limit=%d" % limit
-        return self._get_list(req_url)
-
-```
-
-</details>
-
-<details>
-<summary>PHP</summary>
-
-```php
-// container.php
-<?php
-class Container {
-  // ...
-  function get_object_list_with_limit($container, $limit){
-    $req_url = $this->get_url($container)."?limit=".$limit;
-    return $this->get_list($req_url);
-  }}
-}
-?>
-```
-
-</details>
-
-
-### コンテナ修正
-
-コンテナのメタデータを変更してアクセスルールを指定できます。
+コンテナ設定を変更します。コンテナ設定はコンテナ照会時にレスポンスヘッダで確認できます。
 
 ```
 POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Container-Read: {コンテナ読み取りポリシー}
 X-Container-Write: {コンテナ書き込みポリシー}
+X-Container-Object-Retention: {コンテナのオブジェクトのライフサイクル}
+X-History-Location: {オブジェクトの以前バージョンを保存するコンテナ}
+X-Versions-Retention: {オブジェクトの以前のバージョンのライフサイクル}
+X-Container-Meta-Web-Index: {静的Webサイトインデックス文書オブジェクト}
+X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクトのサフィックス}
+
+
+
 ```
 
 #### リクエスト
@@ -1474,27 +1058,103 @@ X-Container-Write: {コンテナ書き込みポリシー}
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
-| X-Container-Read | Header | String | - | コンテナの読み取りに対するアクセスルール指定<br/>.r:* - すべてのユーザーにアクセス許可<br/>.r:example.com,test.com –特定アドレスにのみアクセス許可、 ‘,’で区切る<br/>.rlistings. –コンテナリスト照会許可<br/>AUTH_.... –特定アカウントにのみアクセス許可 |
-| X-Container-Write | Header | String | - | コンテナの書き込みに対するアクセスルール指定<br/>\*:\* - すべてのユーザーに書き込み許可<br/>AUTH_.... –特定アカウントにのみ書き込み許可 |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| X-Container-Read | Header | String | - | コンテナ読み取りルール設定 |
+| X-Container-Write | Header | String | - | コンテナ書き込みルール設定 |
+| X-Container-Object-Retention | Header | Integer | - | コンテナの基本オブジェクトライフサイクルを日単位で設定 |
+| X-History-Location | Header | String | - | オブジェクトの以前バージョンを保管するコンテナを設定 |
+| X-Versions-Retention | Header | Integer | - | オブジェクトの以前のバージョンのライフサイクルを日単位で設定 |
+| X-Container-Meta-Web-Index | Header | String | - | 静的Webサイトインデックス文書オブジェクト設定 |
+| X-Container-Meta-Web-Error | Header | String | - | 静的Webサイトエラー文書オブジェクトサフィックス設定 |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 修正するコンテナ名 |
+<br/>
+
+##### アクセスポリシー設定
+`X-Container-Read`と`X-Container-Write`ヘッダを使用してコンテナアクセスポリシーを設定できます。
+
+
+<ul style="padding-top: 10px;">
+<li>
+  <b>X-Container-Read</b>
+  <ul style="padding-left: 10px; padding-bottom: 5px;">
+    <li><b>.r:*</b> - すべてのユーザーにアクセス許可</li>
+    <li><b>.r:example.com,example2.com</b> - 特定リファラーアドレスにのみアクセス許可。‘,’で区切る</li>
+    <li><b>.rlistings</b> - コンテナリスト照会許可</li>
+    <li><b>{tenantId}:*</b> - 特定プロジェクトのユーザーにアクセス許可</li>
+  </ul>
+</li>
+<li>
+  <b>X-Container-Write</b>
+  <ul style="padding-left: 10px;">
+    <li><b>*:*</b> - すべてのユーザーに書き込み許可</li>
+    <li><b>{tenantId}:*</b> - 特定プロジェクトのユーザーに書き込み許可</li>
+  </ul>
+</li>
+</ul>
+
+読み取り権限をすべてのユーザーに許可に設定すると、`curl`、`wget`などのツールを使用したり、ブラウザからトークンなしで照会できるかを確認できます。
+
+<details>
+
+
+```
+$ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+
+{オブジェクトの内容}
+```
+</details>
+
+<br/>
+
+##### オブジェクトライフサイクル設定
+`X-Container-Object-Retention`ヘッダを使用するとコンテナに保存されるオブジェクトのライフサイクルを日単位で設定できます。設定後にアップロードしたオブジェクトにのみ適用されます。
+<br/>
+
+##### バージョン管理ポリシー設定
+[オブジェクト内容修正](/api-guide/#_67)項目に記述したとおりにオブジェクトをアップロードする時、同じ名前のオブジェクトがすでにある場合、オブジェクトをアップデートします。既存オブジェクトの内容を保管したい場合は`X-History-Location`ヘッダを使用して以前のバージョンを保管する**アーカイブコンテナ**を指定できます。
+
+以前のバージョンのオブジェクトは、アーカイブコンテナに次のような形式で保管されます。
+```
+{3桁16進数で表現されたオブジェクト名の長さ}{オブジェクト名}/{以前のバージョンのオブジェクトが保管されたUNIX時間}
+```
+例えば`picture.jpg`というオブジェクトをアップデートすると、アーカイブコンテナには`00bpicture.jpg/1610606551.82539`というオブジェクトが作成されます。
+
+バージョン管理ポリシーが設定されたコンテナでオブジェクトを削除すると、アーカイブコンテナに削除されたオブジェクトが保管され、削除マーカーオブジェクトが作成されます。アーカイブコンテナに保管された以前のバージョンのオブジェクトにはいつでもアクセスできます。
+
+`X-Versions-Retention`ヘッダを一緒に使用すると、以前のバージョンのオブジェクトのライフサイクルを日単位で設定できます。1に設定すると保管されたオブジェクトは1日後に自動的に削除されます。設定しない場合、以前のバージョンのオブジェクトはユーザーが削除するまで保管されます。設定後に保管された以前のバージョンのオブジェクトにのみ適用されます。
+
+> [注意]
+バージョン管理ポリシーを設定した場合、アーカイブコンテナを原本コンテナより先に削除してはいけません。原本コンテナのオブジェクトがアップデートまたは削除する時、アーカイブコンテナに以前のバージョンを保存することができず、エラーが発生します。アーカイブコンテナを先に削除してエラーが発生した場合、アーカイブコンテナを新たに作成するか、原本コンテナのバージョン管理ポリシーを解除して問題を解決できます。
+
+<br/>
+
+##### 静的Webサイト設定
+コンテナ読み取り権限をすべてのユーザーに許可した後、`X-Container-Meta-Web-Index`, `X-Container-Meta-Web-Error`ヘッダを利用して静的Webサイトインデックス文書とエラー文書を設定すると、コンテナURLを利用して静的Webサイトをホスティングできます。
+
+静的Webサイトのエラー文書名は`{エラーコード}{サフィックス}`形式で、ヘッダには`サフィックス`を入力する必要があります。例えば`X-Container-Meta-Web-Error: error.html`をリクエストした場合、404エラーが発生した時に表示されるエラー文書の名前は`404error.html`になります。各エラーの状況に合わせてエラー文書をアップロードして使用できます。エラー文書を定義していなかったり、エラーコードに合ったエラー文書オブジェクトがない場合はWebブラウザの基本エラー文書が表示されます。
+<br/>
+
+##### コンテナ設定解除
+値がないヘッダを使用すると設定が解除されます。例えばオブジェクトライフサイクルが3日に設定されている時、`'X-Container-Object-Retention: '`を使用してコンテナ修正リクエストを行うと、オブジェクトライフサイクル設定が解除され、その後にコンテナに保存されるオブジェクトは自動的にライフサイクルが設定されません。
+<br/>
 
 #### レスポンス
 レスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
+<br/>
 
-#### サンプルコード
+#### コード例
+すべてのユーザーにコンテナの読み取り、書き込みを許可する設定変更リクエストを行う例です。同じ方法で他の設定も必要なヘッダを選択してリクエストできます。
+
 <details>
 <summary>cURL</summary>
 
 ```
-// すべてのユーザーに読み取り/書き込み許可
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
 -H 'X-Container-Write: *:*' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
-
 </details>
 
 <details>
@@ -1522,7 +1182,7 @@ public class ContainerService {
         // ヘッダ作成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Container-Read", permission);    // ヘッダに権限を追加
+        headers.add("X-Container-Read", permission);    // ヘッダに権限追加
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
@@ -1546,7 +1206,6 @@ public class ContainerService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -1571,7 +1230,6 @@ if __name__ == '__main__':
 
     con_service.set_read_acl(CONTAINER_NAME, True)
 ```
-
 </details>
 
 <details>
@@ -1589,7 +1247,7 @@ class Container {
 
     $permission = $is_public ? self::PUBLIC_ACL : self::PRIVATE_ACL;
     $req_header = $this->get_request_header();
-    $req_header[] = 'X-Container-Read: ' . $permission;  // ヘッダに権限を追加
+    $req_header[] = 'X-Container-Read: ' . $permission;  // ヘッダに権限追加
 
     $curl  = curl_init($req_url);
     curl_setopt_array($curl, array(
@@ -1614,22 +1272,10 @@ $container = new Container($STORAGE_URL, $TOKEN_ID);
 $container->set_acl($CONTAINER_NAME, TRUE);
 ?>
 ```
-
 </details>
 
-#### ACL確認
-読み取り権限を公開に設定した後は、`curl`、`wget`などのツールを使用したり、ブラウザからトークンなしで照会されるかを確認できます。
 
-<details>
-<summary>例</summary>
-
-```
-$ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-
-{オブジェクトの内容}
-```
-
-</details>
+<br/>
 
 ### コンテナ削除
 
@@ -1646,13 +1292,15 @@ X-Auth-Token: {token-id}
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL| String |	O | 削除するコンテナ名 |
 
 #### レスポンス
 このリクエストはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 
-#### サンプルコード
+<br/>
+
+#### コード例
 <details>
 <summary>cURL</summary>
 
@@ -1660,7 +1308,6 @@ X-Auth-Token: {token-id}
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
-
 </details>
 
 <details>
@@ -1686,7 +1333,7 @@ public class ContainerService {
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API呼び出し    
+        // API呼び出し      
         this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);
     }
 
@@ -1706,7 +1353,6 @@ public class ContainerService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -1730,7 +1376,6 @@ if __name__ == '__main__':
 
     con_service.delete(CONTAINER_NAME)
 ```
-
 </details>
 
 <details>
@@ -1766,8 +1411,9 @@ $container = new Container($STORAGE_URL, $TOKEN_ID);
 $container->delete($CONTAINER_NAME);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ## オブジェクト
 
@@ -1788,19 +1434,24 @@ Content-Type: {content-type}
 | Content-type | Header | String | O | オブジェクトのコンテンツタイプ |
 | X-Delete-At | Header | Timestamp | - | オブジェクトを削除するUNIX時間(秒) |
 | X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、 UNIX時間(秒) |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container |	URL | String | O | コンテナ名 |
 | Object | URL | String |	O | 作成するオブジェクト名 |
 | - |	Body | Binary | O | 作成するオブジェクトの内容 |
 
+
+##### オブジェクトライフサイクル設定
+`X-Delete-At`または`X-Delete-After`ヘッダを使用するとオブジェクトのライフサイクルを秒単位で設定できます。
+<br/>
+
 > [注意]
-> オブジェクト名が`./`または`../`で始まる場合、ブラウザがこれをパス文字と認識し、Webコンソールからアクセスできません。
-> APIを利用してこのような名前のオブジェクトをアップロードした場合、APIでアクセスする必要があります。
+> オブジェクトの名前が`./`または`../`で始まる場合、ブラウザがこれをパス文字として認識してWebコンソールからアクセスできません。
+> APIを利用してこのような名前のオブジェクトをアップロードした場合、APIを通してアクセスする必要があります。
 
 #### レスポンス
-レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
 
-#### サンプルコード
+#### コード例
 <details>
 <summary>cURL</summary>
 
@@ -1809,7 +1460,6 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 -T ./ba6610.jpg
 ```
-
 </details>
 
 <details>
@@ -1872,7 +1522,7 @@ public class ObjectService {
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
 
         try {
-            // ファイルからInputStreamを作成
+            // ファイルからInputStream作成
             File objFile = new File(objectPath + "/" + objectName);            
             InputStream inputStream = FileUtils.openInputStream(objFile);
 
@@ -1886,7 +1536,6 @@ public class ObjectService {
 }
 
 ```
-
 </details>
 
 <details>
@@ -1929,7 +1578,6 @@ if __name__ == '__main__':
 
     obj_service.upload(CONTAINER_NAME, OBJECT_NAME, OBJECT_PATH)
 ```
-
 </details>
 
 <details>
@@ -1992,13 +1640,17 @@ $filename = $OBJ_PATH.'/'.$OBJECT_NAME;
 $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ?>
 ```
-
 </details>
 
-### マルチパートアップロード
-容量が5GBを超えるオブジェクトは、5GB以下のセグメントに分割してアップロードする必要があります。
+<br/>
 
-#### セグメントアップロード
+### マルチパートアップロード
+5GBを超える容量を持つオブジェクトは5GB以下のセグメントに分割してアップロードする必要があります。セグメントオブジェクトをアップロードした後、マニフェストオブジェクトを作成すると1つのオブジェクトのように使用できます。
+
+<br/>
+
+#### セグメントオブジェクトのアップロード
+オブジェクトを分割したセグメントオブジェクトをそれぞれアップロードします。
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}/{Count}
@@ -2006,46 +1658,106 @@ X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
+<br/>
+
 ##### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
 | Content-type | Header | String | O | オブジェクトのコンテンツタイプ |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container |	URL | String | O | コンテナ名 |
 | Object |	URL | String | O | 作成するオブジェクト名 |
 | Count | URL | Integer | O | 分割したオブジェクトの順番、例) 001, 002 |
 | - |	Body | Binary | O | 分割したオブジェクトの内容 |
 
-##### レスポンス
-レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
+<br/>
 
-#### マニフェスト作成
-すべてのオブジェクトのセグメントをアップロードしてマニフェストオブジェクトを作成すると、1つのオブジェクトのように使用できます。マニフェストオブジェクトはセグメントが保存されたパスを指し示します。
+##### レスポンス
+レスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
+
+<br/>
+
+#### マニフェストオブジェクトの作成
+マニフェストオブジェクトは**DLO**(Dynamic Large Object)と **SLO**(Static Large Object)の2つの方式で作成できます。
+
+> [参考]
+> マニフェストオブジェクトはセグメントオブジェクトのパス情報を持っているため、セグメントオブジェクトとマニフェストオブジェクトを必ず同じコンテナにアップロードする必要はありません。セグメントオブジェクトとマニフェストオブジェクトが1つのコンテナにあって管理が難しい場合はセグメントオブジェクトを別のコンテナにアップロードして、アップロードしようとしていたコンテナにはマニフェストオブジェクトを作成することを推奨します。
+
+**DLO**
+DLOマニフェストオブジェクトは`X-Object-Manifest`ヘッダに入力したセグメントオブジェクトのパスを利用して自動的にセグメントオブジェクトを探して接続します。
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
-X-Object-Manifest: {Container}/{Object}/
+X-Object-Manifest: {Segment-Container}/{Segment-Object}/
 ```
 
-##### リクエスト
+<br/>
 
+##### リクエスト
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | トークンID |
-| X-Object-Manifest | Header| String | O | 分割したオブジェクトをアップロードしたパス、 `{Container}/{Object}/` |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| X-Object-Manifest | Header| String | O | 分割したセグメントオブジェクトをアップロードしたパス、 `{Segment-Container}/{Segment-Object}/` |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container |	URL | String | O | コンテナ名 |
 | Object |	URL | String | O | 作成するマニフェストオブジェクト名 |
 | - | Body| Binary | O | 空のデータ |
 
+<br/>
+
+**SLO**
+SLOマニフェストオブジェクトはリクエスト本文にセグメントオブジェクトリストを順序どおりに作成して入力する必要があります。SLOマニフェストオブジェクト作成リクエストを行うと各セグメントオブジェクトが入力されたパスにあるか、etag値とオブジェクトのサイズが一致するかを確認します。情報が一致しなければマニフェストオブジェクトが作成されません。
+
+```
+PUT   /v1/{Account}/{Container}/{Object}?multipart-manifest=put
+X-Auth-Token: {token-id}
+```
+
+```json
+[
+    {
+        "path": "{Segment-Container}/{Segment-Object}",
+        "etag": "{Etag-of-Segment-Object}",
+        "size_bytes": 1048576
+    },
+    {
+        "path": "{Segment-Container}/{Segment-Object1}",
+        "etag": "{Etag-of-Segment-Object}",
+        "size_bytes": 1048576
+    },
+    ...
+]
+```
+<br/>
+
+##### リクエスト
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+|---|---|---|---|---|
+| X-Auth-Token | Header| String |	O | トークンID |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| Container |	URL | String | O | コンテナ名 |
+| Object |	URL | String | O | 作成するマニフェストオブジェクト名 |
+| multipart-manifest | Query| String | O | put |
+| path | Body | String | O | セグメントオブジェクトのパス |
+| etag | Body | String | O | セグメントオブジェクトのetag |
+| size_bytes | Body | Integer | O | セグメントオブジェクトのサイズ(バイト単位) |
+
+> [参考]
+> SLOマニフェストファイルが持っているセグメント情報を照会するには`multipart-manifest=get`クエリを利用する必要があります。
+
+<br/>
+
 ##### レスポンス
-レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
 
+<br/>
 
-#### サンプルコード
+#### コード例
+DLO方式を利用したマルチパートアップロード例
+
 <details>
 <summary>cURL</summary>
 
@@ -2072,7 +1784,6 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
 -d ''
 ```
-
 </details>
 
 <details>
@@ -2092,12 +1803,12 @@ public class ObjectService {
     // マニフェストオブジェクトのアップロード
     public void uploadManifestObject(String containerName, String objectName) {
         String url = this.getUrl(containerName, objectName);        
-        String manifestName = containerName + "/" + objectName + "/"; // マニフェスト名の作成
+        String manifestName = containerName + "/" + objectName + "/"; // マニフェスト名作成
 
         // ヘッダ作成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Object-Manifest", manifestName);  // ヘッダにマニフェストを表記
+        headers.add("X-Object-Manifest", manifestName);  // ヘッダにマニフェスト表記
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
@@ -2123,22 +1834,22 @@ public class ObjectService {
         int totalBytesRead = 0;
 
         try {
-            // ファイルからInputStreamを作成
+            // ファイルからInputStream作成
             InputStream inputStream = new BufferedInputStream(new FileInputStream(objFile));			
             while(totalBytesRead < fileSize) {
 
-                // 残りデータサイズを計算
+                // 残りデータサイズ計算
                 int remainedBytes = fileSize - totalBytesRead;
                 if(remainedBytes < chunkSize) {
                     chunkSize = remainedBytes;
                 }
 
-                // ByteBufferにチャンクサイズ分のデータを読み込む
+                // バイトバッファにチャンクサイズ分のデータを読み取り
                 byte[] chunkBuffer = new byte[chunkSize];
                 int bytesRead = inputStream.read(chunkBuffer, 0, chunkSize);
 
                 if(bytesRead > 0) {
-                    // バッファのデータをInputStreamで作ってアップロード。オブジェクトアップロード例のuploadObject()メソッドを使用
+                    // バッファのデータをInputStreamで作成し、アップロード、オブジェクトアップロード例のuploadObject()メソッド使用
                     String objPartName = String.format("%s/%03d", objectName, ++chunkNo);
                     InputStream chunkInputStream = new ByteArrayInputStream(chunkBuffer);
                     objectService.uploadObject(containerName, objPartName, chunkInputStream);
@@ -2157,7 +1868,6 @@ public class ObjectService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -2212,7 +1922,6 @@ if __name__ == '__main__':
 
     obj_service.upload_large_object(CONTAINER_NAME, LARGE_OBJECT, OBJECT_PATH)
 ```
-
 </details>
 
 <details>
@@ -2247,7 +1956,7 @@ class Object {
       $chunk_index = 1;
       $chunk_size = self::CHUNK_SIZE;
       $total_bytes_read = 0;
-      $fd = fopen($filename, 'r');  // ファイルを開く
+      $fd = fopen($filename, 'r');  // ファイルを開く。
       $obj_size = filesize($filename);
 
       while($total_bytes_read < $obj_size){
@@ -2261,7 +1970,7 @@ class Object {
           $temp_file = sprintf("./multipart-%03d", $chunk_index);
           $req_url = sprintf("%s/%03d", $url, $chunk_index);
 
-          // パート一時ファイルを作成
+          // パート臨時ファイル作成
           $part_fd = fopen($temp_file, 'w+');
           fwrite($part_fd, $chunk);
           fseek($part_fd, 0);
@@ -2271,14 +1980,14 @@ class Object {
               CURLOPT_PUT => TRUE,
               CURLOPT_HEADER => TRUE,
               CURLOPT_RETURNTRANSFER => TRUE,
-              CURLOPT_INFILE => $part_fd,  // パートファイルストリームをパラメータに入力
+              CURLOPT_INFILE => $part_fd,  // パートファイルストリームを引数に入力
               CURLOPT_HTTPHEADER => $req_header
           ));
           $response = curl_exec($curl);
           curl_close($curl);
           printf("$response");
 
-          // 一時ファイルを削除
+          // 臨時ファイル削除
           fclose($part_fd);
           unlink($temp_file);
 
@@ -2304,10 +2013,11 @@ $filename = $OBJ_PATH.'/'.$LARGE_OBJECT;
 $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 ?>
 ```
-
 </details>
 
-### オブジェクト内容修正
+<br/>
+
+### オブジェクト内容の修正
 オブジェクトアップロードAPIと同じですが、オブジェクトがすでにコンテナにある場合、該当オブジェクトの内容が修正されます。
 
 ```
@@ -2324,13 +2034,15 @@ Content-Type: {content-type}
 | X-Auth-Token | Header | String | O | トークンID |
 | Content-type | Header | String | O | オブジェクトのコンテンツタイプ |
 | X-Delete-At | Header | Timestamp | - | オブジェクトを削除するUNIX時間(秒) |
-| X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、 UNIX時間(秒) |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、UNIX時間(秒) |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container |	URL | String | O | コンテナ名 |
 | Object | URL | String | O | 内容を修正するオブジェクト名 |
 
 #### レスポンス
-レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
+レスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
+
+<br/>
 
 ### オブジェクトのダウンロード
 オブジェクトをダウンロードします。
@@ -2346,14 +2058,14 @@ X-Auth-Token: {token-id}
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container |	URL | String | O | コンテナ名 |
 | Object | URL | String | O | ダウンロードするオブジェクト名 |
 
 #### レスポンス
 オブジェクトの内容がストリームで返されます。リクエストが正しければステータスコード200を返します。
 
-#### サンプルコード
+#### コード例
 <details>
 <summary>cURL</summary>
 
@@ -2365,7 +2077,6 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
                                  Dload  Upload   Total   Spent    Left  Speed
 100 17166  100 17166    0     0   566k      0 --:--:-- --:--:-- --:--:--  578k
 ```
-
 </details>
 
 <details>
@@ -2413,7 +2124,7 @@ public class ObjectService {
             // オブジェクトのダウンロード
             InputStream inputStream = objectService.downloadObject(containerName, objectName);
 
-            // ダウンロードしたデータをByteBufferに読み込む
+            // ダウンロードしたデータをバイトバッファに読み込む
             byte[] buffer = new byte[inputStream.available()];
             inputStream.read(buffer);
 
@@ -2431,7 +2142,6 @@ public class ObjectService {
 
 }
 ```
-
 </details>
 
 <details>
@@ -2463,7 +2173,6 @@ if __name__ == '__main__':
 
     obj_service.download(CONTAINER_NAME, OBJECT_NAME, DOWNLOAD_PATH)
 ```
-
 </details>
 
 <details>
@@ -2507,22 +2216,26 @@ $filename = $DOWNLOAD_PATH.'/'.$OBJECT_NAME;
 $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ?>
 ```
-
 </details>
 
+<br/>
+
 ### オブジェクトのコピー
-オブジェクトを他のコンテナへコピーします。
+オブジェクトを他のコンテナにコピーします。
+
+> [参考]
+> マルチパートアップロードしたオブジェクトは対象コンテナにマニフェストオブジェクトを作成すると、セグメントオブジェクトをコピーしなくても対象コンテナパスを通してオブジェクトにアクセスできます。ただし、原本セグメントオブジェクトを削除するとデータにアクセスできません。
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
-Destination：{オブジェクトをコピーする対象}
+Destination: {オブジェクトをコピーする対象}
 ```
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
-X-Copy-From：{原本オブジェクト}
+X-Copy-From: {原本オブジェクト}
 ```
 
 #### リクエスト
@@ -2531,16 +2244,16 @@ X-Copy-From：{原本オブジェクト}
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
-| Destination | Header | String |	- | オブジェクトをコピーする対象、 `{コンテナ} / {オブジェクト}`<br/>COPYメソッドを使用する時に必要 |
-| X-Copy-From | Header | String |	- | 原本オブジェクト、 `{コンテナ} / {オブジェクト}`<br/>PUTメソッドを使用する時に必要 |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| Destination | Header | String |	- | オブジェクトをコピーする対象、 `{コンテナ}/{オブジェクト}`<br/>COPYメソッドを使用する時に必要 |
+| X-Copy-From | Header | String |	- | 原本オブジェクト、 `{コンテナ}/{オブジェクト}`<br/>PUTメソッドを使用する時に必要 |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O |	コンテナ名<br/>COPYメソッド：原本コンテナ<br/>PUTメソッド：コピーするコンテナ |
 | Object | URL | String |	コピーするオブジェクト名 |
 
 #### レスポンス
 このリクエストはレスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
 
-#### サンプルコード
+#### コード例
 <details>
 <summary>cURL</summary>
 
@@ -2555,7 +2268,6 @@ $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/3a45e9.jpg' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/copy_con/3a45e9.jpg
 ```
-
 </details>
 
 <details>
@@ -2579,10 +2291,10 @@ public class ObjectService {
         // ヘッダ作成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Copy-From", srcObject);    // 原本オブジェクトを指定
+        headers.add("X-Copy-From", srcObject);    // 原本オブジェクト指定
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // HttpMethodはCOPYメソッドをサポートしていないため、PUTメソッドを使用する代替APIを呼び出します。
+        // HttpMethodはCOPYメソッドをサポートしません。PUTメソッドを使用する別のAPIを呼び出します。
         this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);			
     }    
 
@@ -2604,7 +2316,6 @@ public class ObjectService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -2632,7 +2343,6 @@ if __name__ == '__main__':
 
     obj_service.copy(CONTAINER_NAME, OBJECT_NAME, DEST_CONTAINER)
 ```
-
 </details>
 
 <details>
@@ -2673,10 +2383,11 @@ $META_VALUE = 'photo';
 $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 ?>
 ```
-
 </details>
 
-### オブジェクトのメタデータを修正
+<br/>
+
+### オブジェクトメタデータ修正
 指定したオブジェクトのメタデータを修正します。
 
 ```
@@ -2693,25 +2404,25 @@ X-Object-Meta-{Key}: {Value}
 | X-Auth-Token | Header | String | O | トークンID |
 | X-Object-Meta-{Key} | Header | String | - | 変更するメタデータ |
 | X-Delete-At | Header | Timestamp | - | オブジェクトを削除するUNIX時間(秒) |
-| X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、 UNIX時間(秒) |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、UNIX時間(秒) |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL| String |	 O | コンテナ名 |
 | Object | URL| String |  O | メタデータを修正するオブジェクト名 |
 
 #### レスポンス
 このリクエストはレスポンス本文を返しません。リクエストが正しければステータスコード202を返します。
 
-#### サンプルコード
+#### コード例
 <details>
 <summary>cURL</summary>
 
 ```
-// オブジェクトにメタデータを追加
+// オブジェクトにメタデータ追加
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
-// オブジェクトヘッダで追加したメタデータの確認
+// オブジェクトヘッダで追加したメタデータ確認
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
@@ -2719,7 +2430,6 @@ HTTP/1.1 200 OK
 X-Object-Meta-Type: photo
 ...
 ```
-
 </details>
 
 <details>
@@ -2739,13 +2449,13 @@ public class ObjectService {
     public void setObjectMetadata(String containerName, String objectName, String key, String value) {
         String url = this.getUrl(containerName, objectName);
 
-        // メタデータキーの作成
+        // メタデータキーを作成
         String metaKey = "X-Object-Meta-" + key;
 
         // ヘッダ作成
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add(metaKey, value);    // ヘッダにメタデータを設定
+        headers.add(metaKey, value);    // ヘッダにメタデータ設定
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
@@ -2772,7 +2482,6 @@ public class ObjectService {
     }    
 }
 ```
-
 </details>
 
 <details>
@@ -2801,7 +2510,6 @@ if __name__ == '__main__':
 
     obj_service.set_metadata(CONTAINER_NAME, OBJECT_NAME, META_KEY, META_VALUE)    
 ```
-
 </details>
 
 <details>
@@ -2814,7 +2522,7 @@ class Object {
   function set_metadata($container, $object, $key, $value){
       $req_url = $this->get_url($container, $object);
       $req_header = $this->get_request_header();
-      $req_header[] = 'X-Object-Meta-'.$key.': '.$value;  // ヘッダにメタデータを追加
+      $req_header[] = 'X-Object-Meta-'.$key.': '.$value;  // ヘッダにメタデータ追加
 
       $curl  = curl_init($req_url);
       curl_setopt_array($curl, array(
@@ -2839,24 +2547,20 @@ $object = new Object($STORAGE_URL, $TOKEN_ID);
 $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 ?>
 ```
-
 </details>
 
-### オブジェクトの削除
+<br/>
+
+### オブジェクト削除
 指定したオブジェクトを削除します。
+
+> [参考]
+> マルチパートアップロードしたオブジェクトを削除する時はセグメントデータを全て削除する必要があります。マニフェストのみ削除するとセグメントオブジェクトが残って課金される場合があります。
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| X-Object-Meta-{Key} | Header | String | - | 変更するメタデータ |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
-| Container | URL| String |	 O | コンテナ名 |
-| Object | URL| String |  O | メタデータを修正するオブジェクト名 |
 
 #### リクエスト
 リクエスト本文は必要ありません。
@@ -2864,14 +2568,16 @@ X-Auth-Token: {token-id}
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
+| Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL| String |	 O | コンテナ名 |
 | Object | URL| String |  O | 削除するオブジェクト名 |
 
 #### レスポンス
 このリクエストはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 
-#### サンプルコード
+<br/>
+
+#### コード例
 <details>
 <summary>cURL</summary>
 
@@ -2879,7 +2585,6 @@ X-Auth-Token: {token-id}
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 ```
-
 </details>
 
 <details>
@@ -2925,7 +2630,6 @@ public class ObjectService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -2951,7 +2655,6 @@ if __name__ == '__main__':
 
     obj_service.delete(CONTAINER_NAME, OBJECT_NAME)   
 ```
-
 </details>
 
 <details>
@@ -2988,8 +2691,9 @@ $object = new Object($STORAGE_URL, $TOKEN_ID);
 $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 ?>
 ```
-
 </details>
+
+<br/>
 
 ## References
 
