@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-To enable object storage API, an authentication token must be issued first. Authentication token is required to use REST API of object storage: it is a must to access container or object which is not open to public. Tokens are managed by each TOAST account.
+To enable object storage API, an authentication token must be issued first. Authentication token is required to use REST API of object storage: it is a must to access container or object which is not open to public. Tokens are managed by each NHN Cloud account.
 
 ### Check Tenant ID and API Endpoint
 
@@ -34,7 +34,7 @@ Content-Type: application/json
 | Name  | Type | Format | Required | Description |
 |---|---|---|---|---|
 | tenantId | Body | String | O | Tenant ID, to be found on the setup box for API Endpoint |
-| username | Body | String | O | Enter ID (email) of TOAST Account |
+| username | Body | String | O | Enter ID (email) of NHN Cloud Account |
 | password | Body | String | O | Password saved on the setup box for API Endpoint  |
 
 <details>

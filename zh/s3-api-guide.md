@@ -1,6 +1,6 @@
 ## Storage > Object Storage > API Guide for AWS S3 Compatibility
 
-TOAST Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
+NHN Cloud Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
 
 APIs that are compatible with S3 are provided as follows.  
 
@@ -51,7 +51,7 @@ X-Auth-Token: {token-id}
 | tenant_id    | Body   | String | O        | User Tenant ID, to be found on the setup box for API Endpoint |
 
 > [Caution]
-> User ID for credential registration is not an email-type TOAST account. Find this, when you get a token issued.
+> User ID for credential registration is not an email-type NHN Cloud account. Find this, when you get a token issued.
 
 <details>
 <summary>Example</summary>
@@ -615,7 +615,7 @@ This API does not require a request body.
 </details>
 
 ## AWS Command Line Interface (CLI)
-TOAST object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API.
+NHN Cloud object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API.
 
 ### Install
 AWS command line interface is prvodied by a Python package, which can be installed by using the Python package manager (pip).  
@@ -656,7 +656,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 
 > [Note]
-> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use TOAST Object Storage, it is required to specify endpoint for every command.  > Regarding commands for AWS command line interface, see [Using Commands for Upper Class Level (s3)](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
+> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use NHN Cloud Object Storage, it is required to specify endpoint for every command.  > Regarding commands for AWS command line interface, see [Using Commands for Upper Class Level (s3)](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
 <details>
 <summary>Create Bucket</summary>
 
@@ -732,7 +732,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, TOAST object storage becomes available.
+AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, NHN Cloud object storage becomes available.
 
 > [Note]
 > This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools).

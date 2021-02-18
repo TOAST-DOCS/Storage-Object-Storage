@@ -1,5 +1,5 @@
 ## Storage > Object Storage > AWS S3互換APIガイド
-TOASTオブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
+NHN CloudオブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
 
 提供するS3互換APIは次のとおりです。
 
@@ -49,7 +49,7 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | O | ユーザーTenant ID。API Endpoint設定ダイアログボックスで確認可能 |
 
 > [注意]
-> 認証情報の登録に使用するユーザーIDはメール形式のTOASTアカウントIDではありません。認証トークン発行時に確認できます。
+> 認証情報の登録に使用するユーザーIDはメール形式のNHN CloudアカウントIDではありません。認証トークン発行時に確認できます。
 
 <details>
 <summary>例</summary>
@@ -585,7 +585,7 @@ Authorization: AWS {access}:{signature}
 </details>
 
 ## AWSコマンドラインインターフェイス(CLI)
-S3互換APIを利用して[AWSコマンドラインインターフェイス](https://aws.amazon.com/ko/cli/)でTOASTオブジェクトストレージを使用できます。
+S3互換APIを利用して[AWSコマンドラインインターフェイス](https://aws.amazon.com/ko/cli/)でNHN Cloudオブジェクトストレージを使用できます。
 
 ### インストール
 AWSコマンドラインインターフェイスはPythonパッケージで提供されます。Pythonパッケージ管理者(pip)を利用してインストールします。
@@ -703,7 +703,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWSは多くのプログラミング言語用のSDKを提供しています。S3互換APIを利用してAWS SDKでTOASTオブジェクトストレージを使用できます。
+AWSは多くのプログラミング言語用のSDKを提供しています。S3互換APIを利用してAWS SDKでNHN Cloudオブジェクトストレージを使用できます。
 
 > [参考]
 > この文書ではPythonとJava SDKの簡単な使用例のみ説明します。詳細な内容は[AWS SDK](https://aws.amazon.com/ko/tools)文書を参照してください。
