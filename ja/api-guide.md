@@ -339,6 +339,7 @@ X-Auth-Token: {token-id}
 | X-Account-Bytes-Used | Header | String | 保存されたデータ容量(バイト) |
 
 #### コード例
+
 <details>
 <summary>cURL</summary>
 
@@ -863,6 +864,7 @@ X-Auth-Token: {token-id}
 
 > [参考]
 > コンテナ照会APIは複数のクエリ(query)を提供します。すべてのクエリは`&`で接続して使用できます。
+
 #### 1万個以上のオブジェクトリスト照会
 コンテナ照会APIで照会できるリストのオブジェクト数は1万個に制限されています。1万個以上のオブジェクトリストを照会するには`marker`クエリを利用する必要があります。Markerクエリは指定したオブジェクトの次のオブジェクトから最大1万個のリストを返します。
 
@@ -1034,6 +1036,7 @@ foreach ($object_list as $obj){
 
 <br/>
 
+### コンテナ修正
 
 コンテナ設定を変更します。コンテナ設定はコンテナ照会時にレスポンスヘッダで確認できます。
 
@@ -1047,9 +1050,6 @@ X-History-Location: {オブジェクトの以前バージョンを保存する�
 X-Versions-Retention: {オブジェクトの以前のバージョンのライフサイクル}
 X-Container-Meta-Web-Index: {静的Webサイトインデックス文書オブジェクト}
 X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクトのサフィックス}
-
-
-
 ```
 
 #### リクエスト
