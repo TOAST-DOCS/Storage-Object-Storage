@@ -43,8 +43,8 @@ POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens
 
 |名称|	种类|	属性|	说明|
 |---|---|---|---|
-|tenantName|	Body or Plain|	String|	TOAST 项目ID|
-|username|	Plain|	String|	输入TOAST帐户 ID(邮箱) |
+|tenantName|	Body or Plain|	String|	NHN Cloud 项目ID|
+|username|	Plain|	String|	输入NHN Cloud帐户 ID(邮箱) |
 |password|	Plain|	String|	在**API Endpoint设置**保存的密码|
 
 **Request Body Example**
