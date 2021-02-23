@@ -9,7 +9,7 @@
     * Private: 只有授权用户才能访问Bucket中的对象。
     * Public: 任何人都可以通过公开URL访问Bucket中的的对象。
 * **Storage Class**
-    * Standard : 默认值。
+    * Standard: 默认值。
 
 > [参考]
 > Bucket名称限制为255个字符，中语85个字符。

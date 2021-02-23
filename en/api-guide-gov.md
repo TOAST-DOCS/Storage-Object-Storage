@@ -85,8 +85,8 @@ Content-Type: application/json
       },
       "issued_at": "{Token Issued Time}"
     },
-    "serviceCatalog" : [],
-    "user" : {
+    "serviceCatalog": [],
+    "user": {
       "id": "{User UUID}",
       "name": "{User Name}"
     }
@@ -121,17 +121,17 @@ https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
       },
       "issued_at": "2018-01-15T07:05:05.719672"
     },
-    "serviceCatalog" : [
+    "serviceCatalog": [
       {
-        "endpoints" : [
+        "endpoints": [
           {
-            "region" : "KR1",
-            "publicURL" : "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****"
+            "region": "KR1",
+            "publicURL": "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****"
           }
         ],
-        "type" : "object-store",
-        "name" : "swift",
-        "endpoints_links" : []
+        "type": "object-store",
+        "name": "swift",
+        "endpoints_links": []
       }
     ]
   }
@@ -542,7 +542,7 @@ public class AccountService {
         try {
             List<String> containerList = accountService.getContainerList();
             if (containerList != null) {
-                for (String object : containerList) {
+                for (String object: containerList) {
                     System.out.println(object);
                 }
             }
@@ -887,7 +887,7 @@ public class ContainerService {
         List<String> objectList = containerService.getObjectList(containerName);
 
         if (objectList != null) {
-            for (String object : objectList) {
+            for (String object: objectList) {
                 System.out.println(object);
             }
         }
