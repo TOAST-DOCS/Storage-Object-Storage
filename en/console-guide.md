@@ -97,7 +97,8 @@ URL of static websites can be obtained by clicking the `Copy URL` button on the 
 ## Objects
 ### Create Folder
 Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 255 letters in English or 85 characters in Korean.
-
+> [Note]
+> Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
 
 ### Delete Folder
 Delete folders. Check if the folders are empty before deleting them. If any objects are left inside a folder, you cannot delete the relevant folder.
@@ -142,3 +143,6 @@ Copy objects to create  new objects. Create an object under a new name to the co
 
 ### Delete Objects
 Delete selected objects.
+
+## Search Prefix
+If you enter a prefix in the search bar and click the **Search**  button, you can see the search results of containers, folders, and objects that begin with the typed-in prefix. In the container list, you can search for containers, and in the object list, you can search for folders and objects.
