@@ -57,7 +57,6 @@ Content-Type: application/json
   }
 }
 ```
-
 </details>
 
 <br/>
@@ -101,7 +100,6 @@ Content-Type: application/json
   }
 }
 ```
-
 </details>
 
 <br/>
@@ -147,7 +145,6 @@ https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
   }
 }
 ```
-
 </details>
 
 <details>
@@ -227,7 +224,6 @@ public class AuthService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -265,7 +261,6 @@ if __name__ == '__main__':
     token = get_token(AUTH_URL, TENANT_ID, USERNAME, PASSWORD)
     print(json.dumps(token, indent=4))
 ```
-
 </details>
 
 <details>
@@ -311,7 +306,6 @@ $token = get_token($AUTH_URL, $TENANT_ID, $USERNAME, $PASSWORD);
 printf("%s\n", $token);
 ?>
 ```
-
 </details>
 
 <br/>
@@ -353,7 +347,6 @@ This API does not return a response body. Usage status is included in the header
 $ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****
 ```
-
 </details>
 
 <details>
@@ -363,22 +356,28 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****
 // AccountService.java
 package com.toast.swift.service;
 // .. import list
+
 @Data
 public class AccountService {
     private String tokenId;
     private String storageUrl;
     private RestTemplate restTemplate;
+
     public AccountService(String storageUrl, String tokenId) {
         this.setStorageUrl(storageUrl);
         this.setTokenId(tokenId);
         this.restTemplate = new RestTemplate();
     }
+
     public HashMap<String, String> getStatus() {
         String url = this.getStorageUrl();
+
         // Create a header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
+
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
         // Call API
         HashMap<String, String> status = new HashMap<String, String>();
         ResponseEntity<String> response
@@ -391,9 +390,11 @@ public class AccountService {
         }
         return status;
     }
+
     public static void main(String[] args) {
         final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+
         AccountService accountService = new AccountService(storageUrl, tokenId);
         try {
             HashMap<String, String> status = accountService.getStatus();
@@ -404,7 +405,6 @@ public class AccountService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -414,27 +414,35 @@ public class AccountService {
 # account.py
 import json
 import requests
+
+
 class AccountService:
     def __init__(self, storage_url, token_id):
         self.storage_url = storage_url
         self.token_id = token_id
+
     def _get_url(self, container):
         return self.storage_url
+
     def _get_request_header(self):
         return {'X-Auth-Token': self.token_id}
+
     def get_stat(self):
         req_header = self._get_request_header()
         resp = requests.head(self.storage_url, headers=req_header)
         return resp.headers
+
+
 if __name__ == '__main__':
     STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
+
     # Get the account status
     stat = acc_service.get_stat()
     print(json.dumps(dict(stat), indent=4))
 ```
-
 </details>
 
 <details>
@@ -446,17 +454,21 @@ if __name__ == '__main__':
 class Account {
   private $storage_url;
   private $token_id;
+
   function __construct($storage_url,  $token_id) {
      $this->storage_url = $storage_url;
      $this->token_id = $token_id;
   }
+
   function get_request_header(){
     return array(
       'X-Auth-Token: ' . $this->token_id
     );
   }
+
   function get_status() {
     $req_header = $this->get_request_header();
+
     $curl = curl_init($this->storage_url); // initialize curl
     curl_setopt_array($curl, array(
       CURLOPT_RETURNTRANSFER => TRUE,
@@ -466,6 +478,7 @@ class Account {
     $response = curl_exec($curl); // call api
     curl_close($curl);  // close curl
     $data = explode("\n", $response);
+
     // parse response headers
     $headers = [];
     foreach($data as $part){
@@ -475,17 +488,19 @@ class Account {
     return $headers;
   }
 }
+
 // main
 $STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+
 $account = new Account($STORAGE_URL, $TOKEN_ID);
 $status = $account->get_status();
+
 printf("Container-Count: %d\n", $status["X-Account-Container-Count"]);
 printf("Object-Count: %d\n", $status["X-Account-Object-Count"]);
 printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 ?>
 ```
-
 </details>
 
 <br/>
@@ -520,7 +535,6 @@ This API does not require a request body.
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****
 ```
-
 </details>
 
 <details>
@@ -530,6 +544,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****
 // AccountService.java
 package com.toast.swift.service;
 // .. import list
+
 @Data
 public class AccountService {
     // AccountService Class ...
@@ -537,18 +552,23 @@ public class AccountService {
         // Create a header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
+
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+
         // Call API
         ResponseEntity<String>response
             = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
+
         List<String> containerList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
             // Convert the list of string into sequence
             containerList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
+
         // Convert sequence into list and return
         return new ArrayList<String>(containerList);
     }
+
     public static void main(String[] args) {
         final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
@@ -566,7 +586,6 @@ public class AccountService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -580,16 +599,18 @@ class AccountService:
       req_header = self._get_request_header()
       resp = requests.get(self.storage_url, headers=req_header)
       return resp.content.split('\n')
+
+
 if __name__ == '__main__':
     STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
+
     # Get the container list
     container_list = acc_service.get_container_list()
     for container in container_list:
         print(container)
 ```
-
 </details>
 
 <details>
@@ -602,6 +623,7 @@ class Account {
   // ...
   function get_container_list() {
     $req_header = $this->get_request_header();
+
     $curl  = curl_init($this->storage_url); // initialize curl
     curl_setopt_array($curl, array(
       CURLOPT_RETURNTRANSFER => TRUE,
@@ -609,13 +631,16 @@ class Account {
     )); // set parameters of curl
     $response = curl_exec($curl); // call api
     curl_close($curl);  // close curl
+
     $container_list = explode("\n", $response);
     return $container_list;
   }
 }
+
 // main
 $STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+
 $account = new Account($STORAGE_URL, $TOKEN_ID);
 $container_list = $account->get_container_list();
 foreach($container_list as $container){
@@ -623,7 +648,6 @@ foreach($container_list as $container){
 }
 ?>
 ```
-
 </details>
 
 <br/>
@@ -661,7 +685,6 @@ This API does not return a response body. When a container is created, return st
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```
-
 </details>
 
 <details>
@@ -720,7 +743,6 @@ public class ContainerService {
     }
 }
 ```
-
 </details>
 
 <details>
@@ -758,7 +780,6 @@ if __name__ == '__main__':
     new_container = 'test'
     con_service.create(new_container)
 ```
-
 </details>
 
 <details>
@@ -815,8 +836,8 @@ $container = new Container($STORAGE_URL, $TOKEN_ID);
 $container->create($CONTAINER_NAME);
 ?>
 ```
-
 </details>
+
 
 <br/>
 
@@ -838,7 +859,7 @@ This API does not require a request body.
 | Container | URL | String | O | Container name to get |
 | marker | Query | String | - | Name of base object |
 | path | Query | String | - | Name of the folder to view |
-| Prefix | Query | String | - | Prefix to search |
+| prefix | Query | String | - | Prefix to search |
 | limit | Query | Integer | - | The number of objects to display in the list |
 
 > [Note]
@@ -966,7 +987,7 @@ if __name__ == '__main__':
 
     object_list = con_service.get_object_list(CONTAINER_NAME)
     for object in object_list:
-          print(object)
+        print(object)
 ```
 </details>
 
@@ -1017,7 +1038,7 @@ foreach ($object_list as $obj){
 
 ### Edit Container
 
-Changes the container settings. The container settings can be found in the response header when viewing containers. 
+Changes the container settings. The container settings can be found in the response header when viewing containers.
 
 ```
 POST  /v1/{Account}/{Container}
@@ -1078,6 +1099,7 @@ If you set the read permission to 'Allow access to all users,' you can check if 
 
 ```
 $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+
 {Content of object}
 ```
 </details>
@@ -1088,7 +1110,7 @@ $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
 With the `X-Container-Object-Retention` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
 <br/>
 
-#####Set Version Control Policy
+##### Set Version Control Policy
 If there are duplicate object names while uploading objects as described in the [Object Content Modification](/api-guide/#_67), update the objects. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
 
 The previous version of objects are stored in the archive container in the following manner:
@@ -1113,7 +1135,7 @@ The name of a static website's error document is in the form of `{error code}{su
 <br/>
 
 ##### Unset Container
-If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Retention:'`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
+If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Retention: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
 <br/>
 
 #### Response
@@ -1411,11 +1433,11 @@ Content-Type: {content-type}
 | X-Auth-Token | Header | String | O | Token ID |
 | Content-type | Header | String | O | Content type of object |
 | X-Delete-At | Header | Timestamp | - | Unix time (seconds) to delete object |
-| X-Delete-After | Header | Timestamp | - | Valid object time, unix time (seconds)  |
+| X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
 | Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
 | Container |	URL | String | O | Container name  |
 | Object | URL | String |	O | Object name to create |
-| - |	Body | Binary | O | Object details to create  |
+| - |	Body | Binary | O | Data content of the object to create |
 
 
 ##### Set Object Life Cycle
@@ -1623,7 +1645,7 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 ### Upload Multiple Parts
-Objects whose capacity exceeds 5GB need to be segmented into smaller objects of 5GB or smaller before uploading them. If you upload segmented objects and create a manifesto object, you can use them as if they are a single object.
+Objects whose capacity exceeds 5GB need to be segmented into smaller objects of 5GB or smaller before uploading them. If you upload segmented objects and create a manifest object, you can use them as if they are a single object.
 
 <br/>
 
@@ -1648,7 +1670,7 @@ Content-Type: {content-type}
 | Container |	URL | String | O | Container name |
 | Object |	URL | String | O | Object name to create |
 | Count | URL | Integer | O | Sequence of segmented objects, e.g.) 001, 002 |
-| - |	Body | Binary | O | Segmented object details |
+| - |	Body | Binary | O | Data content of the segmented object |
 
 <br/>
 
@@ -1657,14 +1679,14 @@ This API does not return a request body. For a valid request, return status code
 
 <br/>
 
-#### Create a Manifesto Object
-A manifesto object can be created in two ways: either using **DLO**(Dynamic Large Object) or **SLO**(Static Large Object).
+#### Create a Manifest Object
+A manifest object can be created in two ways: either using **DLO**(Dynamic Large Object) or **SLO**(Static Large Object).
 
 > [Note]
-> Because a manifesto object has path information for segmented objects, there is no need to upload segmented objects and the manifesto object in the same container. If segmented objects and manifesto object are in a single container, so it is difficult to manage them, it is recommended to upload segmented objects to a separate container and keep only the manifesto object in the upload-intended container.
+> Because a manifest object has path information for segmented objects, there is no need to upload segmented objects and the manifest object in the same container. If segmented objects and manifest object are in a single container, so it is difficult to manage them, it is recommended to upload segmented objects to a separate container and keep only the manifest object in the upload-intended container.
 
 **DLO**
-The DLO manifesto object uses the path to the segmented objects entered in the `X-Object-Manifest` header to automatically find and connect segmented objects.
+The DLO manifest object uses the path to the segmented objects entered in the `X-Object-Manifest` header to automatically find and connect segmented objects.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1687,7 +1709,7 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}
 <br/>
 
 **SLO**
-When you request an SLO manifesto object, you must write segmented object list in order in the request body text. If you request to create an SLO manifesto object, the system checks if each segmented object is in the entered path and if the etag value and the size of the object are identical. If the information does not match, the manifesto object creation fails.
+When you request an SLO manifest object, you must write segmented object list in order in the request body text. If you request to create an SLO manifest object, the system checks if each segmented object is in the entered path and if the etag value and the size of the object are identical. If the information does not match, the manifest object creation fails.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}?multipart-manifest=put
@@ -1717,14 +1739,14 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header| String |	O | Token ID |
 | Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
 | Container |	URL | String | O | Container name |
-| Object |	URL | String | O | Name of the manifesto object to create |
+| Object |	URL | String | O | Name of the manifest object to create |
 | multipart-manifest | Query| String | O | put |
 | path | Body | String | O | Path to segmented objects |
 | etag | Body | String | O | etag of segmented objects |
 | size_bytes | Body | Integer | O | Size of segmented objects (in bytes) |
 
 > [Note]
-> To view the segment information held by SLO manifesto file, you must use the `multipart-manifest=get` query.
+> To view the segment information held by SLO manifest file, you must use the `multipart-manifest=get` query.
 
 <br/>
 
@@ -1995,8 +2017,8 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <br/>
 
-### Modify Object Details
-Same as Upload Object API, but if object is already located in the container, the object details are to be modified.
+### Update
+Same as Upload Object API, but if object is already located in the container, the content of the object is updated.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -2012,10 +2034,10 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Content-type | Header | String | O | Content type of object |
 | X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
-| X-Delete-After | Header | Timestamp | - | Valid object time, unitx time (seconds) |
+| X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
 | Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
 | Container |	URL | String | O | Container name |
-| Object | URL | String | O | Object name of which details are to be modified |
+| Object | URL | String | O | Name of the object to be updated |
 
 #### Response
 This API does not return a response body. For a valid request, return status code 201.
@@ -2041,7 +2063,7 @@ This API does not require a request body.
 | Object | URL | String | O | Object name to download |
 
 #### Response
-Object details are returned to stream. For a valid request, return status code 200.
+Data content of the object is returned to stream. For a valid request, return status code 200.
 
 #### Code Example
 <details>
@@ -2202,7 +2224,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 Copy object to another container.
 
 > [Note]
-> If you create a manifesto object in the target container, the object uploaded in multiple parts can be accessed through the path to the target container without having to copy segmented objects. However, you cannot access the data if you delete the source segmented objects.
+> If you create a manifest object in the target container, the object uploaded in multiple parts can be accessed through the path to the target container without having to copy segmented objects. However, you cannot access the data if you delete the source segmented objects.
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
@@ -2382,7 +2404,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | X-Object-Meta-{Key} | Header | String | - | Metadata to change |
 | X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
-| X-Delete-After | Header | Timestamp | - | Valid object time, unitx time (seconds) |
+| X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
 | Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
 | Container | URL| String |	 O | Container name |
 | Object | URL| String |  O | Object name of which metadata is to be modified |
@@ -2395,7 +2417,7 @@ This request does not return a response body. For a valid request, return status
 <summary>cURL</summary>
 
 ```
-// Add metada to object
+// Add metadata to object
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
@@ -2533,7 +2555,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 Delete specified object.
 
 > [Note]
-> When deleting an object that was uploaded in multiple parts, you need to delete all segmented data. If you delete only the manifesto, the segmented objects remain in place and you may be charged for them.
+> When deleting an object that was uploaded in multiple parts, you need to delete all segmented data. If you delete only the manifest, the segmented objects remain in place and you may be charged for them.
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}
