@@ -163,8 +163,8 @@ curl -H 'Referer: cloud.toast.com' \
 ```
 curl -i -X POST \
     -H X-Auth-Token:${TOKEN} \
-    -H 'X-Container-Read: {tenantId}:{userId}' \
-    -H 'X-Container-Write: {tenantId}:{userId}' \
+    -H 'X-Container-Read: {tenantId}:*' \
+    -H 'X-Container-Write: {tenantId}:*' \
     https://api-storage.cloud.toast.com/v1/AUTH_****/container
 ```
 
