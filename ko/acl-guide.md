@@ -156,8 +156,10 @@ curl -H 'Referer: cloud.toast.com' \
 | `*:*` | 유효한 토큰을 사용한경우 컨테이너를 읽거나 쓰기가 가능합니다. |
 
 #### 예시
+
 <details>
 <summary>특정 테넌트에 대해 읽기/쓰기 권한 추가</summary>
+
 ```
 curl -i -X POST \
     -H X-Auth-Token:${TOKEN} \
@@ -165,6 +167,7 @@ curl -i -X POST \
     -H 'X-Container-Write: {tenantId}:{userId}' \
     https://api-storage.cloud.toast.com/v1/AUTH_****/container
 ```
+
 </details>
 
 
