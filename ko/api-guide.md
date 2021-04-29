@@ -40,7 +40,7 @@ Content-Type: application/json
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | tenantId | Body | String | O | Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
-| username | Body | String | O | NHN Cloud 계정 ID(이메일 또는 IAM ID) 입력 |
+| username | Body | String | O | NHN Cloud 사용자 ID(이메일 또는 IAM ID) 입력 |
 | password | Body | String | O | API Endpoint 설정 대화 상자에서 저장한 비밀번호 |
 
 <details>

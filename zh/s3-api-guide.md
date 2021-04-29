@@ -51,7 +51,7 @@ X-Auth-Token: {token-id}
 | tenant_id    | Body   | String | O        | User Tenant ID, to be found on the setup box for API Endpoint |
 
 > [Caution]
-> User ID for credential registration is not an email-type NHN Cloud account. Find this, when you get a token issued.
+> User ID for credential registration is not a NHN Cloud User ID. Find this, when you get a token issued.
 
 <details>
 <summary>Example</summary>

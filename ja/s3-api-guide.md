@@ -49,7 +49,7 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | O | ユーザーTenant ID。API Endpoint設定ダイアログボックスで確認可能 |
 
 > [注意]
-> 認証情報の登録に使用するユーザーIDはメール形式のNHN CloudアカウントIDではありません。認証トークン発行時に確認できます。
+> 認証情報の登録に使用するユーザーIDはNHN CloudユーザーIDではありません。認証トークン発行時に確認できます。
 
 <details>
 <summary>例</summary>

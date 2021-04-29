@@ -49,7 +49,7 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | O | 사용자 Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
 
 > [주의]
-> 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 NHN Cloud 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
+> 자격 증명 등록에 사용하는 사용자 ID는 NHN Cloud 사용자 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
 
 <details>
 <summary>예시</summary>
