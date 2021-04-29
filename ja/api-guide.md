@@ -40,7 +40,7 @@ Content-Type: application/json
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | tenantId | Body | String | O | Tenant ID。API Endpoint設定ダイアログボックスで確認可能 |
-| username | Body | String | O | NHN CloudアカウントID(メール)入力 |
+| username | Body | String | O | NHN CloudアカウントID(メールまたはIAM ID)入力 |
 | password | Body | String | O | API Endpoint設定ダイアログボックスで保存したパスワード |
 
 <details>
@@ -51,7 +51,7 @@ Content-Type: application/json
   "auth": {
     "tenantId": "{Tenant ID}",
     "passwordCredentials": {
-      "username": "{TOAST ID}",
+      "username": "{NHN Cloud ID}",
       "password": "{API Password}"
     }
   }
@@ -85,8 +85,8 @@ Content-Type: application/json
         "description": "",
         "enabled": true,
         "id": "{Tenant ID}",
-        "name": "{TOAST ID}",
-        "groupId": "{TOAST Project ID}",
+        "name": "{NHN Cloud ID}",
+        "groupId": "{NHN Cloud Project ID}",
         "project_domain": "NORMAL",
         "swift": true
       },
@@ -214,7 +214,7 @@ public class AuthService {
     public static void main(String[] args) {
         final String authUrl = "https://api-identity.infrastructure.cloud.toast.com/v2.0";
         final String tenantId = "{Tenant ID}";
-        final String username = "{TOAST Account}";
+        final String username = "{NHN Cloud Account}";
         final String password = "{API Password}";
 
         AuthService authService = new AuthService(authUrl, tenantId, username, password);
@@ -255,7 +255,7 @@ def get_token(auth_url, tenant_id, username, password):
 if __name__ == '__main__':
     AUTH_URL = 'https://api-identity.infrastructure.cloud.toast.com/v2.0'
     TENANT_ID = '{Tenant ID}'
-    USERNAME = '{TOAST Account}'
+    USERNAME = '{NHN Cloud Account}'
     PASSWORD = '{API Password}'
 
     token = get_token(AUTH_URL, TENANT_ID, USERNAME, PASSWORD)
@@ -299,7 +299,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
 
 $AUTH_URL = 'https://api-identity.infrastructure.cloud.toast.com/v2.0';
 $TENANT_ID = '{Tenant ID}';
-$USERNAME = '{TOAST Account}';
+$USERNAME = '{NHN Cloud Account}';
 $PASSWORD = '{API Password}';
 
 $token = get_token($AUTH_URL, $TENANT_ID, $USERNAME, $PASSWORD);
