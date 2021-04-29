@@ -152,7 +152,7 @@ https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
 
 ```java
 // AuthService.java
-package com.toast.swift.auth;
+package com.nhn.cloud.auth;
 
 // .. import list
 
@@ -354,7 +354,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****
 
 ```java
 // AccountService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 // .. import list
 
 @Data
@@ -542,7 +542,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****
 
 ```java
 // AccountService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 // .. import list
 
 @Data
@@ -692,7 +692,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 
 ```java
 // ContainerService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // .. import list
 
@@ -909,7 +909,7 @@ ba6610.jpg
 
 ```java
 // ContainerService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // .. import list
 
@@ -1163,7 +1163,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```java
 // ContainerService.java
 
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -1316,7 +1316,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```java
 // ContainerService.java
 
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -1467,7 +1467,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -1791,7 +1791,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2084,7 +2084,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2275,7 +2275,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/copy_con/3a45e9.jpg
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2437,7 +2437,7 @@ X-Object-Meta-Type: photo
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2592,7 +2592,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
