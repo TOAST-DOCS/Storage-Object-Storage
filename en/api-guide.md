@@ -40,7 +40,7 @@ Content-Type: application/json
 | Name  | Type | Format | Required | Description |
 |---|---|---|---|---|
 | tenantId | Body | String | O | Tenant ID, to be found on the setup box for API Endpoint |
-| username | Body | String | O | Enter ID (email) of NHN Cloud Account |
+| username | Body | String | O | Enter User ID (email or IAM ID) of NHN Cloud |
 | password | Body | String | O | Password saved on the setup box for API Endpoint  |
 
 <details>
@@ -51,7 +51,7 @@ Content-Type: application/json
   "auth": {
     "tenantId": "{Tenant ID}",
     "passwordCredentials": {
-      "username": "{TOAST ID}",
+      "username": "{NHN Cloud ID}",
       "password": "{API Password}"
     }
   }
@@ -85,8 +85,8 @@ Content-Type: application/json
         "description": "",
         "enabled": true,
         "id": "{Tenant ID}",
-        "name": "{TOAST ID}",
-        "groupId": "{TOAST Project ID}",
+        "name": "{NHN Cloud ID}",
+        "groupId": "{NHN Cloud Project ID}",
         "project_domain": "NORMAL",
         "swift": true
       },
@@ -152,7 +152,7 @@ https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
 
 ```java
 // AuthService.java
-package com.toast.swift.auth;
+package com.nhn.cloud.auth;
 
 // .. import list
 
@@ -214,7 +214,7 @@ public class AuthService {
     public static void main(String[] args) {
         final String authUrl = "https://api-identity.infrastructure.cloud.toast.com/v2.0";
         final String tenantId = "{Tenant ID}";
-        final String username = "{TOAST Account}";
+        final String username = "{NHN Cloud Account}";
         final String password = "{API Password}";
 
         AuthService authService = new AuthService(authUrl, tenantId, username, password);
@@ -255,7 +255,7 @@ def get_token(auth_url, tenant_id, username, password):
 if __name__ == '__main__':
     AUTH_URL = 'https://api-identity.infrastructure.cloud.toast.com/v2.0'
     TENANT_ID = '{Tenant ID}'
-    USERNAME = '{TOAST Account}'
+    USERNAME = '{NHN Cloud Account}'
     PASSWORD = '{API Password}'
 
     token = get_token(AUTH_URL, TENANT_ID, USERNAME, PASSWORD)
@@ -299,7 +299,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
 
 $AUTH_URL = 'https://api-identity.infrastructure.cloud.toast.com/v2.0';
 $TENANT_ID = '{Tenant ID}';
-$USERNAME = '{TOAST Account}';
+$USERNAME = '{NHN Cloud Account}';
 $PASSWORD = '{API Password}';
 
 $token = get_token($AUTH_URL, $TENANT_ID, $USERNAME, $PASSWORD);
@@ -354,7 +354,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****
 
 ```java
 // AccountService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 // .. import list
 
 @Data
@@ -542,7 +542,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****
 
 ```java
 // AccountService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 // .. import list
 
 @Data
@@ -692,7 +692,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 
 ```java
 // ContainerService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // .. import list
 
@@ -909,7 +909,7 @@ ba6610.jpg
 
 ```java
 // ContainerService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // .. import list
 
@@ -1163,7 +1163,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```java
 // ContainerService.java
 
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -1316,7 +1316,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```java
 // ContainerService.java
 
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -1467,7 +1467,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -1791,7 +1791,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2084,7 +2084,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2275,7 +2275,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/copy_con/3a45e9.jpg
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2437,7 +2437,7 @@ X-Object-Meta-Type: photo
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2592,7 +2592,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 

@@ -34,7 +34,7 @@ NHN CloudオブジェクトストレージはAWSのオブジェクトストレ�
 S3と互換性のあるAPIを使用するには、先にAWS EC2の形式の認証情報を登録する必要があります。認証情報を登録するには認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](/Storage/Object%20Storage/ja/api-guide/#tenant-id-api-endpoint)を参照してください。
 
 ```
-POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{User ID}/credentials/OS-EC2
+POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -49,7 +49,7 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | O | ユーザーTenant ID。API Endpoint設定ダイアログボックスで確認可能 |
 
 > [注意]
-> 認証情報の登録に使用するユーザーIDはメール形式のNHN CloudアカウントIDではありません。認証トークン発行時に確認できます。
+> 認証情報の登録に使用するユーザーIDはNHN CloudユーザーIDではありません。認証トークン発行時に確認できます。
 
 <details>
 <summary>例</summary>

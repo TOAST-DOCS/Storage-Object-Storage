@@ -34,7 +34,7 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명을 등록하려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참고하십시오.
 
 ```
-POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{User ID}/credentials/OS-EC2
+POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -49,7 +49,7 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | O | 사용자 Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
 
 > [주의]
-> 자격 증명 등록에 사용하는 사용자 ID는 이메일 형태의 NHN Cloud 계정 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
+> 자격 증명 등록에 사용하는 사용자 ID는 NHN Cloud 사용자 ID가 아닙니다. 인증 토큰 발급 시 확인할 수 있습니다.
 
 <details>
 <summary>예시</summary>
