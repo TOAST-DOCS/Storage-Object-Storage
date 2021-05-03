@@ -1,6 +1,6 @@
-## Storage > Object Storage > API Guide for AWS S3 Compatibility
+## Storage > Object Storage >
 
-TOAST Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
+NHN Cloud Object storage provides APIs that are compatible with S3 API of AWS Object Storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
 
 APIs that are compatible with S3 are provided as follows.  
 
@@ -36,7 +36,7 @@ This document describes only the basic usage of API. To use advanced features, s
 To use APIs compatible with S3, register AWS EC2-type credential first. To that end, an authentication token is required. To get a token, see [API Guide for Object Storage](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint).
 
 ```
-POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{User ID}/credentials/OS-EC2
+POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -51,7 +51,7 @@ X-Auth-Token: {token-id}
 | tenant_id    | Body   | String | O        | User Tenant ID, to be found on the setup box for API Endpoint |
 
 > [Caution]
-> User ID for credential registration is not an email-type TOAST account. Find this, when you get a token issued.
+> User ID for credential registration is not a NHN Cloud User ID. Find this, when you get a token issued.
 
 <details>
 <summary>Example</summary>
@@ -179,13 +179,13 @@ Following information is required to create a signature.
 
 ### Create  
 
-Create a bucket (container). A bucket must be named, following the AWS s3 bucket naming rules like below. 
+Create a bucket (container). A bucket must be named, following the AWS s3 bucket naming rules like below.
 
 * Must have 3 to 63 characters.  
 * Must be comprised of small-case letters, numbers, period (.) or hyphen (-) only.
-* Must start and end with a letter or number. 
+* Must start and end with a letter or number.
 * Unable to adopt an IP address format (e.g.:192.168.5.4).
-* Unable to start with xn--. 
+* Unable to start with xn--.
 
 For more details, see [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html).
 
@@ -615,7 +615,7 @@ This API does not require a request body.
 </details>
 
 ## AWS Command Line Interface (CLI)
-TOAST object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API. 
+NHN Cloud Object Storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API.
 
 ### Install
 AWS command line interface is prvodied by a Python package, which can be installed by using the Python package manager (pip).  
@@ -624,8 +624,8 @@ AWS command line interface is prvodied by a Python package, which can be install
 $ sudo pip install awscli
 ```
 
-### Configure 
-To enable AWS CLI, it is required, first to set up a credential and environment. 
+### Configure
+To enable AWS CLI, it is required, first to set up a credential and environment.
 
 ```
 $ aws configure
@@ -642,7 +642,7 @@ Default output format [None]: json
 | region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
 
 
-### Enable S3 Commands 
+### Enable S3 Commands
 
 ```
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
@@ -656,7 +656,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 
 > [Note]
-> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use TOAST Object Storage, it is required to specify endpoint for every command.  > Regarding commands for AWS command line interface, see [Using Commands for Upper Class Level (s3)](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
+> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use NHN Cloud Object Storage, it is required to specify endpoint for every command.  > Regarding commands for AWS command line interface, see [Using Commands for Upper Class Level (s3)](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
 <details>
 <summary>Create Bucket</summary>
 
@@ -732,13 +732,13 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, TOAST object storage becomes available. 
+AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, NHN Cloud Object Storage becomes available.
 
 > [Note]
-> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools). 
+> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools).
 
 
-Following are the major parameters required to use AWS SDK. 
+Following are the major parameters required to use AWS SDK.
 
 | Name | Description |
 |---|---|
