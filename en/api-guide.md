@@ -35,7 +35,7 @@ POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens
 Content-Type: application/json
 ```
 
-### Request
+<p style='padding-top: 10px; font-size: 15px;'><b>Request</b></p>
 
 | Name  | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -59,9 +59,7 @@ Content-Type: application/json
 ```
 </details>
 
-<br/>
-
-### Response
+<p style='padding-top: 10px; font-size: 15px;'><b>Response</b></p>
 
 | Name | Type | Format | Description |
 |---|---|---|---|
@@ -102,9 +100,8 @@ Content-Type: application/json
 ```
 </details>
 
-<br/>
+<p style='padding-top: 10px; font-size: 15px;'><b>Code Example</b></p>
 
-### Code Example
 <details>
 <summary>cURL</summary>
 
@@ -1036,7 +1033,7 @@ foreach ($object_list as $obj){
 
 <br/>
 
-### Edit Container
+### Changes the container settings
 
 Changes the container settings. The container settings can be found in the response header when viewing containers.
 
