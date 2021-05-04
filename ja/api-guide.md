@@ -35,7 +35,7 @@ POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens
 Content-Type: application/json
 ```
 
-### リクエスト
+<p style='padding-top: 10px; font-size: 15px;'><b>リクエスト</b></p>
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
@@ -59,9 +59,7 @@ Content-Type: application/json
 ```
 </details>
 
-<br/>
-
-### レスポンス
+<p style='padding-top: 10px; font-size: 15px;'><b>レスポンス</b></p>
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
@@ -102,9 +100,8 @@ Content-Type: application/json
 ```
 </details>
 
-<br/>
+<p style='padding-top: 10px; font-size: 15px;'><b>サンプルコード</b></p>
 
-### サンプルコード
 <details>
 <summary>cURL</summary>
 
@@ -1036,7 +1033,7 @@ foreach ($object_list as $obj){
 
 <br/>
 
-### コンテナ修正
+### コンテナ設定変更
 
 コンテナ設定を変更します。コンテナ設定はコンテナ照会時にレスポンスヘッダで確認できます。
 
