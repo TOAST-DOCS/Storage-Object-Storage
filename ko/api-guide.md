@@ -1068,39 +1068,7 @@ X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접
 <br/>
 
 ##### 접근 정책 설정
-`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다.
-
-
-<ul style="padding-top: 10px;">
-<li>
-  <b>X-Container-Read</b>
-  <ul style="padding-left: 10px; padding-bottom: 5px;">
-    <li><b>.r:*</b> - 모든 사용자에게 접근 허용</li>
-    <li><b>.r:example.com,example2.com</b> - 특정 리퍼러 주소에만 접근 허용, ‘,’로 구분</li>
-    <li><b>.rlistings</b> - 컨테이너 목록 조회 허용</li>
-    <li><b>{tenantId}:*</b> - 특정 프로젝트의 사용자에게 접근 허용</li>
-  </ul>
-</li>
-<li>
-  <b>X-Container-Write</b>
-  <ul style="padding-left: 10px;">
-    <li><b>*:*</b> - 모든 사용자에게 쓰기 허용</li>
-    <li><b>{tenantId}:*</b> - 특정 프로젝트의 사용자에게 쓰기 허용</li>
-  </ul>
-</li>
-</ul>
-
-읽기 권한을 모든 사용자에게 접근 허용으로 설정하면 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
-
-<details>
-<summary>예시</summary>
-
-```
-$ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-
-{오브젝트의 내용}
-```
-</details>
+`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](/Storage/Object%20Storage/ko/acl-guide/)를 참조하세요.
 
 <br/>
 
