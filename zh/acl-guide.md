@@ -27,10 +27,10 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write` 속성�
 | `.rlistings` | 읽기 권한이 있는 사용자에게 컨테이너 조회(GET 또는 HEAD 요청)를 허용합니다.<br/>이 정책 요소가 없으면 오브젝트 목록을 조회할 수 없습니다.<br/>이 정책 요소는 단독으로 설정할 수 없습니다. |
 | `.r:<referrer>` | 요청 헤더를 참조하여 설정된 HTTP 리퍼러(HTTP Referer)에게 접근을 허용합니다.<br/>인증 토큰은 필요하지 않습니다. |
 | `.r:-<referrer>` | 요청 헤더를 참조하여 설정된 HTTP 리퍼러의 접근을 제한합니다.<br/>리퍼러 앞에 마이너스 기호(-)를 붙여 설정합니다. |
-| `<tenant-id>:<user-uuid>` | 특정 프로젝트에 속한 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다. 읽기, 쓰기 권한을 모두 부여합니다. |
-| `<tenant-id>:*` | 특정 프로젝트에 속한 모든 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다. 읽기, 쓰기 권한을 모두 부여합니다. |
-| `*:<user-uuid>` | 프로젝트와 관계없이 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다. 읽기, 쓰기 권한을 모두 부여합니다. |
-| `*:*` | 프로젝트와 관계없이 인증 토큰을 발급받을 수 있는 사용자라면 누구나 오브젝트에 접근할 수 있습니다. 읽기, 쓰기 권한을 모두 부여합니다. |
+| `<tenant-id>:<user-uuid>` | 특정 프로젝트에 속한 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
+| `<tenant-id>:*` | 특정 프로젝트에 속한 모든 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
+| `*:<user-uuid>` | 프로젝트와 관계없이 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
+| `*:*` | 프로젝트와 관계없이 인증 토큰을 발급받을 수 있는 사용자라면 누구나 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
 
 > [참고]
 > 사용자 UUID는 NHN Cloud 사용자 ID가 아닙니다. 인증 토큰 발급 요청의 응답 본문에 포함되어 있습니다. (access.user.id)
@@ -52,7 +52,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read;' \
   -H 'X-Container-Write;' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 <blockquote>
@@ -64,7 +64,7 @@ curl을 이용해 값이 없는 헤더를 보낼 때는 헤더 이름에 세미�
 
 ```
 $ curl -X GET \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -74,7 +74,7 @@ $ curl -X GET \
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 
 [컨테이너의 오브젝트 목록]
 ```
@@ -92,18 +92,18 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .rlistings' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -X GET \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 
 [컨테이너의 오브젝트 목록]
 ```
@@ -114,18 +114,18 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -X GET \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -148,7 +148,7 @@ HTTP 리퍼러(HTTP Referer)는 하이퍼링크를 통해 요청하는 웹 페�
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:cloud.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 API 요청 헤더에 허용된 HTTP 리퍼러 주소를 명시해 요청하면 오브젝트에 접근할 수 있습니다.
@@ -156,14 +156,14 @@ API 요청 헤더에 허용된 HTTP 리퍼러 주소를 명시해 요청하면 �
 ```
 $ curl -O -X GET \
   -H 'Referer: https://cloud.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://cloud.nhn.com/some/path' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -172,21 +172,21 @@ API 요청 헤더에 허가된 리퍼러 주소가 없거나, 리퍼러 주소�
 
 ```
 $ curl -X GET \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: https://example.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: cloud.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -197,20 +197,20 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://cloud.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://guide.docs.nhn.com/some/path' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -220,7 +220,7 @@ $ curl -O -X GET \
 ```
 $ curl -X GET \
   -H 'Referer: https://nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -231,20 +231,20 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:nhn.com, .r:.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://container.nhn.com/some/path' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -257,14 +257,14 @@ $ curl -O -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:-cloud.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 HTTP 리퍼러 도메인 이름 앞에 마이너스 기호를 붙여 설정하면, 설정된 HTTP 리퍼러 요청이 차단됩니다.
 
 ```
 $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -282,18 +282,18 @@ HTTP 리퍼러에 대한 접근 허용/차단 정책은 입력하는 순서에 �
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:-cloud.nhn.com, .r:*' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET -H 'Referer: https://cloud.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -306,18 +306,18 @@ $ curl -O -X GET -H 'Referer: https://cloud.nhn.com' \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .r:-cloud.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -338,7 +338,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:{user-uuid}' \
   -H 'X-Container-Write: {tenant-id}:{user-uuid}' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근 요청을 할 때는 반드시 허가된 테넌트 ID와 NHN Cloud 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
@@ -346,14 +346,14 @@ $ curl -i -X POST \
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 
 [컨테이너의 오브젝트 목록]
 
 
 $ curl -O -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -361,12 +361,13 @@ $ curl -O -X GET \
 
 <details>
 <summary>특정 프로젝트의 모든 사용자에게 읽기/쓰기 권한 부여 예시</summary>
+
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:*' \
   -H 'X-Container-Write: {tenant-id}:*' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근 요청을 할 때는 반드시 허가된 테넌트 ID와 해당하는 프로젝트에 속한 NHN Cloud 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
@@ -375,12 +376,13 @@ $ curl -i -X POST \
 
 <details>
 <summary>프로젝트와 관계없이 특정 사용자에게 읽기/쓰기 권한 부여 예시</summary>
+
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:{user-uuid}' \
   -H 'X-Container-Write: *:{user-uuid}' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근 요청을 할 때는 반드시 허가된 NHN Cloud 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
@@ -389,12 +391,13 @@ $ curl -i -X POST \
 
 <details>
 <summary>모든 NHN Cloud 사용자에게 읽기/쓰기 권한 부여 예시</summary>
+
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:*' \
   -H 'X-Container-Write: *:*' \
-  https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근 요청을 할 때는 반드시 유효한 인증 토큰이 필요합니다.
