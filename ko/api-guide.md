@@ -39,7 +39,7 @@ Content-Type: application/json
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| tenantId | Body | String | O | Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
+| tenantId | Body | String | O | 테넌트 ID, API Endpoint 설정 대화 상자에서 확인 가능 |
 | username | Body | String | O | NHN Cloud 사용자 ID(이메일 또는 IAM ID) 입력 |
 | password | Body | String | O | API Endpoint 설정 대화 상자에서 저장한 비밀번호 |
 
@@ -64,8 +64,9 @@ Content-Type: application/json
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
 | access.token.id | Body | String |	발급된 토큰 ID |
-| access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 Tenant ID |
+| access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 테넌트 ID |
 | access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
+| access.user.id | Body | String | 대시 없이 32개의 16진수로 구성된 사용자 UUID<br/>S3 호환 API를 사용하기 위한 EC2 자격 증명을 발급 받거나, 접근 정책을 설정하는데 사용 |
 
 > [주의]
 > 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
@@ -1067,39 +1068,7 @@ X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접
 <br/>
 
 ##### 접근 정책 설정
-`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다.
-
-
-<ul style="padding-top: 10px;">
-<li>
-  <b>X-Container-Read</b>
-  <ul style="padding-left: 10px; padding-bottom: 5px;">
-    <li><b>.r:*</b> - 모든 사용자에게 접근 허용</li>
-    <li><b>.r:example.com,example2.com</b> - 특정 리퍼러 주소에만 접근 허용, ‘,’로 구분</li>
-    <li><b>.rlistings</b> - 컨테이너 목록 조회 허용</li>
-    <li><b>{tenantId}:*</b> - 특정 프로젝트의 사용자에게 접근 허용</li>
-  </ul>
-</li>
-<li>
-  <b>X-Container-Write</b>
-  <ul style="padding-left: 10px;">
-    <li><b>*:*</b> - 모든 사용자에게 쓰기 허용</li>
-    <li><b>{tenantId}:*</b> - 특정 프로젝트의 사용자에게 쓰기 허용</li>
-  </ul>
-</li>
-</ul>
-
-읽기 권한을 모든 사용자에게 접근 허용으로 설정하면 `curl`, `wget` 등의 도구를 사용하거나 브라우저를 통해 토큰 없이 조회되는지 확인할 수 있습니다.
-
-<details>
-<summary>예시</summary>
-
-```
-$ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-
-{오브젝트의 내용}
-```
-</details>
+`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](/Storage/Object%20Storage/ko/acl-guide/)를 참조하세요.
 
 <br/>
 
