@@ -669,7 +669,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 생성할 컨테이너 이름 |
 
 #### 응답
@@ -853,7 +853,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | marker | Query | String | - | 기준 오브젝트 이름 |
 | path | Query | String | - | 조회할 폴더 이름 |
@@ -1063,7 +1063,7 @@ X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접
 | X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
 | X-Container-Meta-Web-Index | Header | String | - | 정적 웹 사이트 인덱스 문서 오브젝트 설정 |
 | X-Container-Meta-Web-Error | Header | String | - | 정적 웹 사이트 오류 문서 오브젝트 접미사 설정 |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 <br/>
 
@@ -1258,7 +1258,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	O | 삭제할 컨테이너 이름 |
 
 #### 응답
@@ -1400,7 +1400,7 @@ Content-Type: {content-type}
 | Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
 | X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String |	O | 생성할 오브젝트 이름 |
 | - |	Body | Binary | O | 생성할 오브젝트의 내용 |
@@ -1632,7 +1632,7 @@ Content-Type: {content-type}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 오브젝트 이름 |
 | Count | URL | Integer | O | 분할한 오브젝트의 순번, 예) 001, 002 |
@@ -1667,7 +1667,7 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}/
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | 토큰 ID |
 | X-Object-Manifest | Header| String | O | 분할한 세그먼트 오브젝트를 업로드한 경로, `{Segment-Container}/{Segment-Object}/` |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
 | - | Body| Binary | O | 빈 데이터 |
@@ -1703,7 +1703,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
 | multipart-manifest | Query| String | O | put |
@@ -2001,7 +2001,7 @@ Content-Type: {content-type}
 | Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
 | X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
 
@@ -2024,7 +2024,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 다운로드할 오브젝트 이름 |
 
@@ -2212,7 +2212,7 @@ X-Copy-From: {원본 오브젝트}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Destination | Header | String |	- | 오브젝트를 복사할 대상, `{컨테이너}/{오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
 | X-Copy-From | Header | String |	- | 원본 오브젝트, `{컨테이너}/{오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O |	컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 복사할 컨테이너 |
 | Object | URL | String |	복사할 오브젝트 이름 |
 
@@ -2371,7 +2371,7 @@ X-Object-Meta-{Key}: {Value}
 | X-Object-Meta-{Key} | Header | String | - | 변경할 메타데이터 |
 | X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
 
@@ -2534,7 +2534,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 이름, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 삭제할 오브젝트 이름 |
 
