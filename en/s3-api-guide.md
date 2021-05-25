@@ -36,7 +36,7 @@ This document describes only the basic usage of API. To use advanced features, s
 To use APIs compatible with S3, register AWS EC2-type credential first. To that end, an authentication token is required. To get a token, see [API Guide for Object Storage](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint).
 
 ```
-POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
+POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-uuid}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -47,11 +47,11 @@ X-Auth-Token: {token-id}
 | Name         | Type   | Format | Required | Description                                                  |
 | ------------ | ------ | ------ | -------- | ------------------------------------------------------------ |
 | X-Auth-Token | Header | String | O        | Issued token ID                                              |
-| user-id      | URL    | String | O        | User ID, included in authentication token                    |
-| tenant_id    | Body   | String | O        | User Tenant ID, to be found on the setup box for API Endpoint |
+| user-id      | URL    | String | O        | User UUID, included in authentication token                    |
+| tenant_id    | Body   | String | O        | Tenant ID, to be found on the setup box for API Endpoint |
 
-> [Caution]
-> User ID for credential registration is not a NHN Cloud User ID. Find this, when you get a token issued.
+> [Note]
+> User UUID is not the ID of NHN Cloud users. It is included in the reply statement of the issue request for authentication tokens. (access.user.id)
 
 <details>
 <summary>Example</summary>
