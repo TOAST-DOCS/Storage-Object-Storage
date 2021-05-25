@@ -1,51 +1,51 @@
-## Storage > Object Storage > 접근 정책 설정 가이드
+## Storage > Object Storage > アクセスポリシー設定ガイド
 
-콘솔 또는 API를 사용해 다른 사용자에게 컨테이너의 읽기/쓰기 접근 권한을 부여할 수 있습니다.
+コンソールまたはAPIを使用して、他のユーザーにコンテナの読み取り/書き取りアクセス権限を付与できます。
 
-## 콘솔
-콘솔에서는 [컨테이너 생성](/Storage/Object%20Storage/ko/console-guide/#_2) 또는 [컨테이너 설정](http://localhost:8080/Storage/Object%20Storage/ko/console-guide/#_5) 창에서 컨테이너 접근 정책을 선택할 수 있습니다. 선택할 수 있는 정책은 `PRIVATE`과 `PUBLIC` 두 가지로 제한됩니다.
+## コンソール
+コンソールでは[コンテナ作成](/Storage/Object%20Storage/ko/console-guide/#_2)または[コンテナ設定](http://localhost:8080/Storage/Object%20Storage/ko/console-guide/#_5)ウィンドウでコンテナアクセスポリシーを選択できます。選択できるポリシーは`PRIVATE`と`PUBLIC`の2つに制限されます。
 
 ### PRIVATE
-`PRIVATE`은 컨테이너가 속한 프로젝트의 사용자에게만 접근 권한을 부여하는 기본 접근 정책입니다. 콘솔을 이용하거나, 인증 토큰을 발급받아 API로 컨테이너에 접근할 수 있습니다. API 섹션의 [컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용](/Storage/Object%20Storage/ko/acl-guide/#_2) 항목과 같은 정책입니다.
+`PRIVATE`は、コンテナが属すプロジェクトのユーザーにのみアクセス権限を付与する基本アクセスポリシーです。コンソールを利用するか、認証トークンを発行してAPIでコンテナにアクセスできます。 APIセッションの[コンテナが属すプロジェクトのユーザーにのみ読み取り/書き込み許可](/Storage/Object%20Storage/ko/acl-guide/#_2)項目と同じポリシーです。
 <br/>
 
 ### PUBLIC
-`PUBLIC`은 누구에게나 읽기와 오브젝트 목록 조회를 허용하는 정책입니다. 컨테이너를 PUBLIC으로 설정하면 콘솔에서 URL을 얻을 수 있습니다. 이 URL을 통해 누구나 컨테이너에 접근할 수 있습니다. API 섹션의 [모든 사용자에게 읽기 허용](/Storage/Object%20Storage/ko/acl-guide/#_2) 항목과 같은 정책입니다.
+`PUBLIC`は、誰でも読み取りとオブジェクトリスト照会を許可するポリシーです。コンテナをPUBLICに設定すると、コンソールでURLを取得できます。このURLを利用して誰でもコンテナにアクセスできます。 APIセッションの[すべてのユーザーに読み取り許可](/Storage/Object%20Storage/ko/acl-guide/#_2)項目と同じポリシーです。
 <br/>
 
 ## API
-API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write` 속성에 ACL 정책 요소를 입력하면 여러 가지 상황에 맞게 접근 정책을 설정할 수 있습니다.
+APIを使用してコンテナの`X-Container-Read`, `X-Container-Write`プロパティにACLポリシー要素を入力すると、さまざまな状況に合わせてアクセスポリシーを設定できます。
 <br/>
 
-### ACL 정책 요소
+### ACLポリシー要素
 
-설정할 수 있는 ACL 정책 요소는 다음과 같습니다. 모든 정책 요소는 콤마(`,`)로 구분해 조합할 수 있습니다.
+設定することができるACLポリシー要素は次のとおりです。すべてのポリシー要素はカンマ(,)で区切って組み合わせることができます。
 
-| 정책 요소 | 설명 |
+| ポリシー要素 | 説明 |
 | --- | --- |
-| `.r:*` | 누구나 인증 토큰 없이 오브젝트에 접근할 수 있습니다. |
-| `.rlistings` | 읽기 권한이 있는 사용자에게 컨테이너 조회(GET 또는 HEAD 요청)를 허용합니다.<br/>이 정책 요소가 없으면 오브젝트 목록을 조회할 수 없습니다.<br/>이 정책 요소는 단독으로 설정할 수 없습니다. |
-| `.r:<referrer>` | 요청 헤더를 참조하여 설정된 HTTP 리퍼러(HTTP Referer)에게 접근을 허용합니다.<br/>인증 토큰은 필요하지 않습니다. |
-| `.r:-<referrer>` | 요청 헤더를 참조하여 설정된 HTTP 리퍼러의 접근을 제한합니다.<br/>리퍼러 앞에 마이너스 기호(-)를 붙여 설정합니다. |
-| `<tenant-id>:<user-uuid>` | 특정 프로젝트에 속한 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
-| `<tenant-id>:*` | 특정 프로젝트에 속한 모든 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
-| `*:<user-uuid>` | 프로젝트와 관계없이 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
-| `*:*` | 프로젝트와 관계없이 인증 토큰을 발급받을 수 있는 사용자라면 누구나 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
+| `.r:*` | 誰でも認証トークンなしでオブジェクトにアクセスできます。 |
+| `.rlistings` | 読み取り権限があるユーザーにコンテナ照会(GETまたはHEADリクエスト)を許可します。<br/>このポリシー要素がなければオブジェクトリストを照会できません。<br/>がポリシー要素は単独で設定できません。 |
+| `.r:<referrer>` | リクエストヘッダを参照して設定されたHTTPリファラー(HTTP Referer)にアクセスを許可します。<br/>認証トークンは必要ありません。 |
+| `.r:-<referrer>` | リクエストヘッダを参照して設定されたHTTPリファラーのアクセスを制限します。<br/>リファラーの前にハイフン(-)をつけて設定します。 |
+| `<tenant-id>:<user-uuid>` | 特定プロジェクトに属す特定ユーザーに発行された認証トークンでオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を付与できます。 |
+| `<tenant-id>:*` | 特定プロジェクトに属すすべてのユーザーに発行された認証トークンでオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を全て付与できます。 |
+| `*:<user-uuid>` | プロジェクトに関係なく、特定ユーザーに発行された認証トークンでオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を付与できます。 |
+| `*:*` | プロジェクトに関係なく、認証トークンを発行できるユーザーなら誰でもオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を付与できます。 |
 
-> [참고]
-> 사용자 UUID는 NHN Cloud 사용자 ID가 아닙니다. 인증 토큰 발급 요청의 응답 본문에 포함되어 있습니다. (access.user.id)
-> API 가이드의 [인증 토큰 발급](/Storage/Object%20Storage/ko/api-guide/#_2) 항목을 참조하세요.
+> [参考]
+> ユーザーUUIDはNHN CloudユーザーIDではありません。認証トークン発行リクエストのレスポンス本文に含まれています。 (access.user.id)
+> APIガイドの[認証トークン発行](/Storage/Object%20Storage/ko/api-guide/#_2)項目を参照してください。
 
 <br/>
 
-### 컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용
-ACL 정책 요소를 설정하지 않았을 때 사용되는 기본 접근 정책입니다. API를 사용해 컨테이너에 접근하려면 반드시 유효한 인증 토큰이 필요합니다.
-컨테이너의 `X-Container-Read`, `X-Container-Write` 속성값을 모두 삭제하면 컨테이너가 속한 프로젝트의 사용자에게만 접근을 허용하는 [PRIVATE](/Storage/Object%20Storage/ko/acl-guide/#private) 컨테이너가 됩니다.
+### コンテナが属すプロジェクトのユーザーにのみ書き込み/読み取り許可
+ACLポリシー要素を設定しなかった時に使用される基本アクセスポリシーです。 APIを使用してコンテナにアクセスするには、必ず有効な認証トークンが必要です。
+コンテナの`X-Container-Read`、`X-Container-Write`プロパティ値を全て削除すると、コンテナが属すプロジェクトのユーザーにのみアクセスを許可する[PRIVATE](/Storage/Object%20Storage/ko/acl-guide/#private)コンテナになります。
 
 <br/>
 
 <details>
-<summary>모든 ACL 정책 요소 제거 예시</summary>
+<summary>すべてのACLポリシー要素を削除する例</summary>
 
 ```
 $ curl -i -X POST \
@@ -56,11 +56,11 @@ $ curl -i -X POST \
 ```
 
 <blockquote>
-<p>[참고]
-curl을 이용해 값이 없는 헤더를 보낼 때는 헤더 이름에 세미콜론(;)을 붙여야 합니다.</p>
+<p>[参考]
+curlを利用して値がないヘッダを送る時は、ヘッダ名にセミコロン(;)をつける必要があります。</p>
 </blockquote>
 
-유효한 인증 토큰 없이 요청하면 에러 메시지를 응답합니다.
+有効な認証トークンなしでリクエストするとエラーメッセージを返します。
 
 ```
 $ curl -X GET \
@@ -69,24 +69,24 @@ $ curl -X GET \
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
-반드시 요청 헤더에 유효한 인증 토큰이 있어야 원하는 응답을 받을 수 있습니다.
+リクエストヘッダに有効な認証トークンがなければレスポンスを受け取れません。
 
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 
-[컨테이너의 오브젝트 목록]
+[コンテナのオブジェクトリスト]
 ```
 </details>
 <br/>
 
-### 모든 사용자에게 읽기/목록 조회 허용
-컨테이너의 `X-Container-Read` 속성을 `.r:*, .rlistings`로 설정하면 모든 사용자에게 오브젝트 읽기와 목록 조회를 허용합니다. 인증 토큰은 필요하지 않습니다. 콘솔 섹션의 [PUBLIC](/Storage/Object%20Storage/ko/acl-guide/#public) 항목과 같은 정책입니다.
+### すべてのユーザーに読み取り/リスト照会を許可
+コンテナの`X-Container-Read`プロパティを`.r:*, .rlistings`に設定すると、すべてのユーザーにオブジェクトの読み取りとリスト照会を許可します。認証トークンは必要ありません。コンソールセッションの[PUBLIC](/Storage/Object%20Storage/ko/acl-guide/#public)項目と同じポリシーです。
 <br/>
 
 <details>
-<summary>전체 사용자에 대해 오브젝트 읽기 및 목록 조회 허용 설정 예시</summary>
+<summary>全てのユーザーにオブジェクトの読み取りおよびリスト照会を許可する設定例</summary>
 
 ```
 $ curl -i -X POST \
@@ -99,16 +99,16 @@ $ curl -i -X POST \
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 
 
 $ curl -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 
-[컨테이너의 오브젝트 목록]
+[コンテナのオブジェクトリスト]
 ```
 
-<code>.r:*</code>만 설정하면 컨테이너의 오브젝트에는 접근할 수 있지만, 오브젝트 목록은 조회할 수 없습니다.
+<code>.r:*</code>だけ設定すると、コンテナのオブジェクトにはアクセスできますが、オブジェクトリストは照会できません。
 
 ```
 $ curl -i -X POST \
@@ -121,7 +121,7 @@ $ curl -i -X POST \
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 
 
 $ curl -X GET \
@@ -134,15 +134,15 @@ $ curl -X GET \
 <br/>
 
 
-### 특정 HTTP 리퍼러 요청에 읽기 허용/거부
-HTTP 리퍼러(HTTP Referer)는 하이퍼링크를 통해 요청하는 웹 페이지의 주소 정보입니다. 요청 헤더에 포함되어 있습니다.
-컨테이너의 `X-Container-Read` 속성에 `.r:<referrer>` 또는 `.r:-<referrer>` 형태의 ACL 정책 요소를 설정하면, 특정 리퍼러의 접근 요청을 허용하거나 차단할 수 있습니다. ACL 정책 요소로 HTTP 리퍼러를 설정할 때는 프로토콜과 하위 경로를 제외한 도메인 이름을 입력해야 합니다.
+### 特定HTTPリファラーのリクエストに読み取り許可/拒否
+HTTPリファラー(HTTP Referer)は、ハイパーリンクを介してリクエストするWebページのアドレス情報です。リクエストヘッダに含まれています。
+コンテナの`X-Container-Read`プロパティに`.r:<referrer>`または`.r:-<referrer>`形式のACLポリシー要素を設定すると、特定リファラーのアクセスリクエストを許可またはブロックできます。 ACLポリシー要素でHTTPリファラーを設定する時は、プロトコルとサブパスを除くドメイン名を入力する必要があります。
 
-> [주의]
-> HTTP 리퍼러는 헤더 변조를 통해 사용자가 언제든지 변경할 수 있습니다. HTTP 리퍼러를 이용한 접근 정책은 보안에 취약하기 때문에 권장하지 않습니다.
+> [注意]
+> HTTPリファラーはヘッダを編集してユーザーがいつでも変更できます。 HTTPリファラーを利用したアクセスポリシーはセキュリティに脆弱であるため推奨しません。
 
 <details>
-<summary>특정 HTTP 리퍼러 읽기 요청 허용 예시</summary>
+<summary>特定HTTPリファラーの読み取りリクエストを許可する例</summary>
 
 ```
 $ curl -i -X POST \
@@ -151,24 +151,24 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-API 요청 헤더에 허용된 HTTP 리퍼러 주소를 명시해 요청하면 오브젝트에 접근할 수 있습니다.
+APIリクエストヘッダに、許可されたHTTPリファラーアドレスを明示してリクエストすると、オブジェクトにアクセスできます。
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://cloud.nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://cloud.nhn.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 ```
 
-API 요청 헤더에 허가된 리퍼러 주소가 없거나, 리퍼러 주소에 프로토콜이 포함되어 있지 않으면 접근이 차단됩니다.
+APIリクエストヘッダに許可されたリファラーアドレスがないか、リファラーアドレスにプロトコルが含まれていない場合は、アクセスがブロックされます。
 
 ```
 $ curl -X GET \
@@ -191,7 +191,7 @@ $ curl -X GET \
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
-다음과 같이 HTTP 리퍼러 설정에 <code>.</code>으로 시작하는 도메인 이름을 입력하면, 설정된 도메인의 모든 서브 도메인 주소를 포함하는 리퍼러에 읽기를 허용합니다.
+HTTPリファラー設定に、次のように<code>.</code>で始まるドメイン名を入力すると、設定されたドメインのすべてのサブドメインアドレスを含むリファラーに読み取りを許可します。
 
 ```
 $ curl -i -X POST \
@@ -205,17 +205,17 @@ $ curl -O -X GET \
   -H 'Referer: https://cloud.nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://guide.docs.nhn.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 ```
 
-서브 도메인이 포함되어 있지 않은 요청은 차단됩니다.
+サブドメインが含まれていないリクエストはブロックされます。
 
 ```
 $ curl -X GET \
@@ -225,7 +225,7 @@ $ curl -X GET \
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
-특정 도메인 이름을 가진 모든 리퍼러의 접근 요청을 허용하려면 다음과 같이 콤마 리스트를 이용해 설정합니다.
+特定ドメイン名を持つすべてのリファラーのアクセスリクエストを許可するには、次のようにカンマで区切ったリストを利用して設定します。
 
 ```
 $ curl -i -X POST \
@@ -239,19 +239,19 @@ $ curl -O -X GET \
   -H 'Referer: https://nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://container.nhn.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 ```
 </details>
 
 <details>
-<summary>특정 HTTP 리퍼러의 읽기 요청 차단 예시</summary>
+<summary>特定HTTPリファラーの読み取りリクエストをブロックする例</summary>
 
 ```
 $ curl -i -X POST \
@@ -260,7 +260,7 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-HTTP 리퍼러 도메인 이름 앞에 마이너스 기호를 붙여 설정하면, 설정된 HTTP 리퍼러 요청이 차단됩니다.
+HTTPリファラードメイン名の前にハイフンをつけて設定すると、設定されたHTTPリファラーリクエストがブロックされます。
 
 ```
 $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
@@ -272,11 +272,11 @@ $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
 </details>
 <br/>
 
-HTTP 리퍼러에 대한 접근 허용/차단 정책은 입력하는 순서에 따라 적용됩니다. 예를 들어, 리퍼러 차단 정책 요소 뒤에 모두에게 접근을 허용하는 `.r:*` 정책 요소를 입력했다면 리퍼러 차단 정책은 무시됩니다. 반대로 모두에게 접근을 허용하는 정책 요소를 먼저 입력하고 특정 리퍼러 차단 정책 요소를 뒤에 입력했다면, 설정된 리퍼러의 접근 요청을 제외한 모든 접근 요청이 허용됩니다.
+HTTPリファラーのアクセス許可/ブロックポリシーは、入力した順序で適用されます。例えば、リファラーブロックポリシー要素の後ろに全てのアクセスを許可する`.r:*`ポリシー要素を入力すると、リファラーブロックポリシーは無視されます。反対に、全てのアクセスを許可するポリシー要素を先に入力して特定リファラーブロックポリシー要素を後ろに入力すると、設定されたリファラーのアクセスリクエストを除くすべてのアクセスリクエストが許可されます。
 <br/>
 
 <details>
-<summary>HTTP 리퍼러 차단이 무시되는 잘못된 정책 설정 예시</summary>
+<summary>HTTPリファラーブロックが無視される無効なポリシー設定例</summary>
 
 ```
 $ curl -i -X POST \
@@ -289,18 +289,18 @@ $ curl -i -X POST \
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 
 
 $ curl -O -X GET -H 'Referer: https://cloud.nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 ```
 </details>
 
 <details>
-<summary>특정 HTTP 리퍼러의 접근 요청을 제외한 모든 접근 요청을 허용하는 정책 설정 예시</summary>
+<summary>特定HTTPリファラーのアクセスリクエストを除くすべてのアクセスリクエストを許可するポリシー設定例</summary>
 
 ```
 $ curl -i -X POST \
@@ -313,7 +313,7 @@ $ curl -i -X POST \
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 
 
 $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
@@ -324,14 +324,14 @@ $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
 </details>
 <br/>
 
-### 특정 프로젝트 또는 특정 사용자에게 읽기/쓰기 허용
-컨테이너의 `X-Container-Read`와 `X-Container-Write` 속성에 `<tenant-id>:<user-uuid>` 형태의 ACL 정책 요소를 설정하면, 특정 프로젝트 또는 특정 사용자에게 읽기/쓰기 권한을 각각 부여할 수 있습니다. 테넌트 ID 또는 사용자 UUID 대신 와일드카드 문자 `*`를 입력하면 모든 프로젝트 또는 모든 사용자에게 접근 권한을 부여합니다. 접근 요청을 할 때는 반드시 유효한 인증 토큰이 필요합니다.
+### 特定プロジェクトまたは特定ユーザーに書き込み/読み取り許可
+コンテナの`X-Container-Read`と`X-Container-Write`プロパティに`<tenant-id>:<user-uuid>`形式のACLポリシー要素を設定すると、特定プロジェクトまたは特定ユーザーに書き込み/読み取り権限をそれぞれ付与できます。テナントIDまたはユーザーUUIDの代わりにワイルドカード文字`*`を入力すると、すべてのプロジェクトまたはすべてのユーザーにアクセス権限を付与します。アクセスリクエストを行う時は必ず有効な認証トークンが必要です。
 
-> [참고]
-> 인증 토큰이 필요한 ACL 정책으로 부여된 읽기 권한에는 오브젝트 목록 조회 권한이 포함되어 있습니다.
+> [参考]
+> 認証トークンが必要なACLポリシーで付与された読み取り権限にはオブジェクトリスト照会権限が含まれています。
 
 <details>
-<summary>특정 프로젝트의 특정 사용자에게 읽기/쓰기 권한 부여 예시</summary>
+<summary>特定プロジェクトの特定ユーザーに書き込み/読み取り権限を付与する例</summary>
 
 ```
 $ curl -i -X POST \
@@ -341,26 +341,26 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-오브젝트에 접근 요청을 할 때는 반드시 허가된 테넌트 ID와 NHN Cloud 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
+オブジェクトにアクセスリクエストを行う時は、必ず許可されたテナントIDと、NHN CloudユーザーIDに発行された有効な認証トークンが必要です。
 
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 
-[컨테이너의 오브젝트 목록]
+[コンテナのオブジェクトリスト]
 
 
 $ curl -O -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[오브젝트 다운로드]
+[オブジェクトのダウンロード]
 ```
 </details>
 
 <details>
-<summary>특정 프로젝트의 모든 사용자에게 읽기/쓰기 권한 부여 예시</summary>
+<summary>特定プロジェクトのすべてのユーザーに書き込み/読み取り権限を付与する例</summary>
 
 ```
 $ curl -i -X POST \
@@ -370,12 +370,12 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-오브젝트에 접근 요청을 할 때는 반드시 허가된 테넌트 ID와 해당하는 프로젝트에 속한 NHN Cloud 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
+オブジェクトにアクセスリクエストを行う時は、必ず許可されたテナントIDと、該当するプロジェクトに属すNHN CloudユーザーIDに発行された有効な認証トークンが必要です。
 <br/><br/>
 </details>
 
 <details>
-<summary>프로젝트와 관계없이 특정 사용자에게 읽기/쓰기 권한 부여 예시</summary>
+<summary>プロジェクトに関係なく特定ユーザーに書き込み/読み取り権限を付与する例</summary>
 
 ```
 $ curl -i -X POST \
@@ -385,12 +385,12 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-오브젝트에 접근 요청을 할 때는 반드시 허가된 NHN Cloud 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
+オブジェクトにアクセスリクエストを行う時は、必ず許可されたNHN CloudユーザーIDに発行された有効な認証トークンが必要です。
 <br/><br/>
 </details>
 
 <details>
-<summary>모든 NHN Cloud 사용자에게 읽기/쓰기 권한 부여 예시</summary>
+<summary>すべてのNHN Cloudユーザーに書き込み/読み取り権限を付与する例</summary>
 
 ```
 $ curl -i -X POST \
@@ -400,12 +400,12 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-오브젝트에 접근 요청을 할 때는 반드시 유효한 인증 토큰이 필요합니다.
+オブジェクトにアクセスリクエストを行う時は、必ず有効な認証トークンが必要です。
 </details>
 <br/>
 
-### 접근 정책 삭제
-빈 헤더를 입력하면 설정된 ACL 정책 요소를 모두 삭제할 수 있습니다. ACL 정책 요소가 없는 컨테이너는 허가된 사용자만 접근할 수 있는 **PRIVATE** 컨테이너가 됩니다. [컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용](/Storage/Object%20Storage/ko/acl-guide/#_2) 항목을 참고하세요.
+### アクセスポリシーの削除
+空のヘッダを入力すると、設定されたACLポリシー要素を全て削除できます。ACLポリシー要素がないコンテナは、許可されたユーザーのみアクセスできる**PRIVATE**コンテナになります。[コンテナが属すプロジェクトのユーザーにのみ書き込み/読み取り許可](/Storage/Object%20Storage/ko/acl-guide/#_2)項目を参照してください。
 
 
 ## References

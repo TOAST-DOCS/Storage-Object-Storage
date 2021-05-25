@@ -66,6 +66,7 @@ Content-Type: application/json
 | access.token.id | Body | String |	ID of issued token |
 | access.token.tenant.id | Body | String | Tenant ID of a project requesting for token |
 | access.token.expires | Body | String | Expiration time of issued token <br/> in the ssZ:MM:HHTdd-mm-yyyy format. e.g.) 50Z:17:03T16-05-2017 |
+| access.user.id | Body | String | A User UUID composed of 32 digits of hexadecimal numbers without being interrupted by dashes<br/>receiving the EC2 qualification certification to use S3-compatible API, or using it for access policy setup |
 
 > [Caution]
 > A token includes expiration. The 'expires' item included in the reponse to request for token issuance refers to token expiration time. When a token is expired, a new token must be issued.  
@@ -668,7 +669,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container | URL | String | O | Name of container to be created  |
 
 #### Response
@@ -852,7 +853,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container | URL | String | O | Container name to get |
 | marker | Query | String | - | Name of base object |
 | path | Query | String | - | Name of the folder to view |
@@ -1062,44 +1063,12 @@ This API does not require a request body.
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
 | X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object |
 | X-Container-Meta-Web-Error | Header | String | - | Sets the static website error document object prefix |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container | URL | String | O | The name of the container to edit |
 <br/>
 
 ##### Set Access Policy
-You can set the container access policy using the `X-Container-Read` and `X-Container-Write` header.
-
-
-<ul style="padding-top: 10px;">
-<li>
-  <b>X-Container-Read</b>
-  <ul style="padding-left: 10px; padding-bottom: 5px;">
-    <li><b>.r:*</b> - Allow access to all users</li>
-    <li><b>.r:example.com,example2.com</b> - Allow access to only specific referrer addresses, separated by commas</li>
-    <li><b>.rlistings</b> - Allow to view container lists</li>
-    <li><b>{tenantId}:*</b> - Allow access to users of a specific project</li>
-  </ul>
-</li>
-<li>
-  <b>X-Container-Write</b>
-  <ul style="padding-left: 10px;">
-    <li><b>*:*</b> - Allow all users to write</li>
-    <li><b>{tenantId}:*</b> - Allow write permissions to users of a specific project</li>
-  </ul>
-</li>
-</ul>
-
-If you set the read permission to 'Allow access to all users,' you can check if they can be viewed using tools such as `curl` or `wget` or through a browser without any tokens.
-
-<details>
-<summary>Example</summary>
-
-```
-$ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
-
-{Content of object}
-```
-</details>
+You can set the container access policy using the `X-Container-Read` and `X-Container-Write` header. For more details, refer to [Guide to setting up access policy](/Storage/Object%20Storage/ko/acl-guide/).
 
 <br/>
 
@@ -1289,7 +1258,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container | URL| String |	O | Container name to delete |
 
 #### Response
@@ -1431,7 +1400,7 @@ Content-Type: {content-type}
 | Content-type | Header | String | O | Content type of object |
 | X-Delete-At | Header | Timestamp | - | Unix time (seconds) to delete object |
 | X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container |	URL | String | O | Container name  |
 | Object | URL | String |	O | Object name to create |
 | - |	Body | Binary | O | Data content of the object to create |
@@ -1663,7 +1632,7 @@ Content-Type: {content-type}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Content-type | Header | String | O | Content type of object |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container |	URL | String | O | Container name |
 | Object |	URL | String | O | Object name to create |
 | Count | URL | Integer | O | Sequence of segmented objects, e.g.) 001, 002 |
@@ -1698,7 +1667,7 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | Token ID |
 | X-Object-Manifest | Header| String | O | The path where segmented objects are uploaded: `{Segment-Container}/{Segment-Object}/` |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container |	URL | String | O | Container name |
 | Object |	URL | String | O | Manifest object name to create |
 | - | Body| Binary | O | Empty data |
@@ -1734,7 +1703,7 @@ X-Auth-Token: {token-id}
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | Token ID |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container |	URL | String | O | Container name |
 | Object |	URL | String | O | Name of the manifest object to create |
 | multipart-manifest | Query| String | O | put |
@@ -2032,7 +2001,7 @@ This API does not require a request body.
 | Content-type | Header | String | O | Content type of object |
 | X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
 | X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container |	URL | String | O | Container name |
 | Object | URL | String | O | Name of the object to be updated |
 
@@ -2055,7 +2024,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container |	URL | String | O | Container name |
 | Object | URL | String | O | Object name to download |
 
@@ -2243,7 +2212,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Destination | Header | String |	- | The target object to be copied (required when using the `{container}/{object}`<br/>COPY method) |
 | X-Copy-From | Header | String |	- | The source object (required when using the `{container}/{object}`<br/>PUT method) |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container | URL | String | O |	Container name<br/>COPY Method: Original container<br/>PUT Method: Container to copy |
 | Object | URL | String |	Object name to copy |
 
@@ -2402,7 +2371,7 @@ This API does not require a request body.
 | X-Object-Meta-{Key} | Header | String | - | Metadata to change |
 | X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
 | X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container | URL| String |	 O | Container name |
 | Object | URL| String |  O | Object name of which metadata is to be modified |
 
@@ -2565,7 +2534,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | See the storage account name and API Endpoint settings dialog box |
+| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container | URL| String |	 O | Container name |
 | Object | URL| String |  O | Object name to delete |
 

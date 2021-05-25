@@ -39,7 +39,7 @@ Content-Type: application/json
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | Body | String | O | Tenant ID。API Endpoint設定ダイアログボックスで確認可能 |
+| tenantId | Body | String | O | テナントID。API Endpoint設定ダイアログボックスで確認可能 |
 | username | Body | String | O | NHN CloudユーザーID(メールまたはIAM ID)入力 |
 | password | Body | String | O | API Endpoint設定ダイアログボックスで保存したパスワード |
 
@@ -64,8 +64,9 @@ Content-Type: application/json
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
 | access.token.id | Body | String |	発行されたトークンID |
-| access.token.tenant.id | Body | String | トークンをリクエストしたプロジェクトに対応するTenant ID |
+| access.token.tenant.id | Body | String | トークンをリクエストしたプロジェクトに対応するテナントID |
 | access.token.expires | Body | String | 発行したトークンの満了時間 <br/>yyyy-mm-ddTHH:MM:ssZの形式。例) 2017-05-16T03:17:50Z |
+| access.user.id | Body | String | ダッシュを含まない32個の16進数で構成されたユーザーUUID<br/>S3互換APIを使用するためのEC2資格証明を発行したり、アクセスポリシーを設定するのに使用 |
 
 > [注意]
 > トークンには有効期限があります。トークン発行リクエストのレスポンスに含まれた「expires」項目は、発行されたトークンの有効期限が終了する時間です。トークンが無効になった場合、新しいトークンを発行する必要があります。
@@ -1067,32 +1068,7 @@ X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクト
 <br/>
 
 ##### アクセスポリシー設定
-`X-Container-Read`と`X-Container-Write`ヘッダを使用してコンテナアクセスポリシーを設定できます。
-
-
-<ul style="padding-top: 10px;">
-<li>
-  <b>X-Container-Read</b>
-  <ul style="padding-left: 10px; padding-bottom: 5px;">
-    <li><b>.r:*</b> - すべてのユーザーにアクセス許可</li>
-    <li><b>.r:example.com,example2.com</b> - 特定リファラーアドレスにのみアクセス許可。‘,’で区切る</li>
-    <li><b>.rlistings</b> - コンテナリスト照会許可</li>
-    <li><b>{tenantId}:*</b> - 特定プロジェクトのユーザーにアクセス許可</li>
-  </ul>
-</li>
-<li>
-  <b>X-Container-Write</b>
-  <ul style="padding-left: 10px;">
-    <li><b>*:*</b> - すべてのユーザーに書き込み許可</li>
-    <li><b>{tenantId}:*</b> - 特定プロジェクトのユーザーに書き込み許可</li>
-  </ul>
-</li>
-</ul>
-
-読み取り権限をすべてのユーザーに許可に設定すると、`curl`、`wget`などのツールを使用したり、ブラウザからトークンなしで照会できるかを確認できます。
-
-<details>
-
+`X-Container-Read`と`X-Container-Write`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](/Storage/Object%20Storage/ko/acl-guide/)を参照してください。
 
 ```
 $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
