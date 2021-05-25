@@ -34,7 +34,7 @@ NHN CloudオブジェクトストレージはAWSのオブジェクトストレ�
 S3と互換性のあるAPIを使用するには、先にAWS EC2の形式の認証情報を登録する必要があります。認証情報を登録するには認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](/Storage/Object%20Storage/ja/api-guide/#tenant-id-api-endpoint)を参照してください。
 
 ```
-POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
+POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-uuid}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -45,11 +45,12 @@ X-Auth-Token: {token-id}
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 発行されたトークンID |
-| user-id | URL | String | O | ユーザーID、認証トークンに含まれている |
-| tenant_id | Body | String | O | ユーザーTenant ID。API Endpoint設定ダイアログボックスで確認可能 |
+| user-uuid | URL | String | O | ユーザーUUID、認証トークンに含まれている |
+| tenant_id | Body | String | O | ユーザーテナントID。API Endpoint設定ダイアログボックスで確認可能 |
 
-> [注意]
-> 認証情報の登録に使用するユーザーIDはNHN CloudユーザーIDではありません。認証トークン発行時に確認できます。
+> [参考]
+> ユーザーUUIDはNHN CloudユーザーIDではありません。認証トークン発行リクエストのレスポンス本文に含まれています。 (access.user.id)
+> APIガイドの[認証トークン発行](/Storage/Object%20Storage/ko/api-guide/#_2)項目を参照してください。
 
 <details>
 <summary>例</summary>
