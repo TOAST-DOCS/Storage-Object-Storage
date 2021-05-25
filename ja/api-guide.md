@@ -35,12 +35,12 @@ POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens
 Content-Type: application/json
 ```
 
-### リクエスト
+<p style='padding-top: 10px; font-size: 15px;'><b>リクエスト</b></p>
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| tenantId | Body | String | O | Tenant ID。API Endpoint設定ダイアログボックスで確認可能 |
-| username | Body | String | O | NHN CloudアカウントID(メール)入力 |
+| tenantId | Body | String | O | テナントID。API Endpoint設定ダイアログボックスで確認可能 |
+| username | Body | String | O | NHN CloudユーザーID(メールまたはIAM ID)入力 |
 | password | Body | String | O | API Endpoint設定ダイアログボックスで保存したパスワード |
 
 <details>
@@ -51,7 +51,7 @@ Content-Type: application/json
   "auth": {
     "tenantId": "{Tenant ID}",
     "passwordCredentials": {
-      "username": "{TOAST ID}",
+      "username": "{NHN Cloud ID}",
       "password": "{API Password}"
     }
   }
@@ -59,15 +59,14 @@ Content-Type: application/json
 ```
 </details>
 
-<br/>
-
-### レスポンス
+<p style='padding-top: 10px; font-size: 15px;'><b>レスポンス</b></p>
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
 | access.token.id | Body | String |	発行されたトークンID |
-| access.token.tenant.id | Body | String | トークンをリクエストしたプロジェクトに対応するTenant ID |
+| access.token.tenant.id | Body | String | トークンをリクエストしたプロジェクトに対応するテナントID |
 | access.token.expires | Body | String | 発行したトークンの満了時間 <br/>yyyy-mm-ddTHH:MM:ssZの形式。例) 2017-05-16T03:17:50Z |
+| access.user.id | Body | String | ダッシュを含まない32個の16進数で構成されたユーザーUUID<br/>S3互換APIを使用するためのEC2資格証明を発行したり、アクセスポリシーを設定するのに使用 |
 
 > [注意]
 > トークンには有効期限があります。トークン発行リクエストのレスポンスに含まれた「expires」項目は、発行されたトークンの有効期限が終了する時間です。トークンが無効になった場合、新しいトークンを発行する必要があります。
@@ -85,8 +84,8 @@ Content-Type: application/json
         "description": "",
         "enabled": true,
         "id": "{Tenant ID}",
-        "name": "{TOAST ID}",
-        "groupId": "{TOAST Project ID}",
+        "name": "{NHN Cloud ID}",
+        "groupId": "{NHN Cloud Project ID}",
         "project_domain": "NORMAL",
         "swift": true
       },
@@ -102,9 +101,8 @@ Content-Type: application/json
 ```
 </details>
 
-<br/>
+<p style='padding-top: 10px; font-size: 15px;'><b>サンプルコード</b></p>
 
-### サンプルコード
 <details>
 <summary>cURL</summary>
 
@@ -152,7 +150,7 @@ https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
 
 ```java
 // AuthService.java
-package com.toast.swift.auth;
+package com.nhn.cloud.auth;
 
 // .. import list
 
@@ -214,7 +212,7 @@ public class AuthService {
     public static void main(String[] args) {
         final String authUrl = "https://api-identity.infrastructure.cloud.toast.com/v2.0";
         final String tenantId = "{Tenant ID}";
-        final String username = "{TOAST Account}";
+        final String username = "{NHN Cloud Account}";
         final String password = "{API Password}";
 
         AuthService authService = new AuthService(authUrl, tenantId, username, password);
@@ -255,7 +253,7 @@ def get_token(auth_url, tenant_id, username, password):
 if __name__ == '__main__':
     AUTH_URL = 'https://api-identity.infrastructure.cloud.toast.com/v2.0'
     TENANT_ID = '{Tenant ID}'
-    USERNAME = '{TOAST Account}'
+    USERNAME = '{NHN Cloud Account}'
     PASSWORD = '{API Password}'
 
     token = get_token(AUTH_URL, TENANT_ID, USERNAME, PASSWORD)
@@ -299,7 +297,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
 
 $AUTH_URL = 'https://api-identity.infrastructure.cloud.toast.com/v2.0';
 $TENANT_ID = '{Tenant ID}';
-$USERNAME = '{TOAST Account}';
+$USERNAME = '{NHN Cloud Account}';
 $PASSWORD = '{API Password}';
 
 $token = get_token($AUTH_URL, $TENANT_ID, $USERNAME, $PASSWORD);
@@ -354,7 +352,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****
 
 ```java
 // AccountService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 // .. import list
 
 @Data
@@ -542,7 +540,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****
 
 ```java
 // AccountService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 // .. import list
 
 @Data
@@ -692,7 +690,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 
 ```java
 // ContainerService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // .. import list
 
@@ -909,7 +907,7 @@ ba6610.jpg
 
 ```java
 // ContainerService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // .. import list
 
@@ -1036,7 +1034,7 @@ foreach ($object_list as $obj){
 
 <br/>
 
-### コンテナ修正
+### コンテナ設定変更
 
 コンテナ設定を変更します。コンテナ設定はコンテナ照会時にレスポンスヘッダで確認できます。
 
@@ -1070,32 +1068,7 @@ X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクト
 <br/>
 
 ##### アクセスポリシー設定
-`X-Container-Read`と`X-Container-Write`ヘッダを使用してコンテナアクセスポリシーを設定できます。
-
-
-<ul style="padding-top: 10px;">
-<li>
-  <b>X-Container-Read</b>
-  <ul style="padding-left: 10px; padding-bottom: 5px;">
-    <li><b>.r:*</b> - すべてのユーザーにアクセス許可</li>
-    <li><b>.r:example.com,example2.com</b> - 特定リファラーアドレスにのみアクセス許可。‘,’で区切る</li>
-    <li><b>.rlistings</b> - コンテナリスト照会許可</li>
-    <li><b>{tenantId}:*</b> - 特定プロジェクトのユーザーにアクセス許可</li>
-  </ul>
-</li>
-<li>
-  <b>X-Container-Write</b>
-  <ul style="padding-left: 10px;">
-    <li><b>*:*</b> - すべてのユーザーに書き込み許可</li>
-    <li><b>{tenantId}:*</b> - 特定プロジェクトのユーザーに書き込み許可</li>
-  </ul>
-</li>
-</ul>
-
-読み取り権限をすべてのユーザーに許可に設定すると、`curl`、`wget`などのツールを使用したり、ブラウザからトークンなしで照会できるかを確認できます。
-
-<details>
-
+`X-Container-Read`と`X-Container-Write`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](/Storage/Object%20Storage/ko/acl-guide/)を参照してください。
 
 ```
 $ curl https://api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
@@ -1163,7 +1136,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```java
 // ContainerService.java
 
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -1316,7 +1289,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
 ```java
 // ContainerService.java
 
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -1467,7 +1440,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -1791,7 +1764,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2084,7 +2057,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2275,7 +2248,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/copy_con/3a45e9.jpg
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2437,7 +2410,7 @@ X-Object-Meta-Type: photo
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
@@ -2592,7 +2565,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 ```java
 // ObjectService.java
-package com.toast.swift.service;
+package com.nhn.cloud.obs;
 
 // ... import list
 
