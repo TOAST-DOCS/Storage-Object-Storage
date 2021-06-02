@@ -1,49 +1,50 @@
-## Storage > Object Storage > Guide to setting up access policy
+## Storage > Object Storage > Guide on Setting Access Policy
 
-By using the Console or the API, you can give other people the access rights for reading/writing the containers.
+By using the console or the API, you may authorize other people the access rights for reading/writing the containers.
 
 ## Console
-In the Console, [Container Generation](/Storage/Object%20Storage/ko/console-guide/#_2) or [Container Setup](http://localhost:8080/Storage/Object%20Storage/ko/console-guide/#_5) window, you can select the Container access policy. The selectable policies are limited to 2 types: `PRIVATE`and `PUBLIC`.
+In the console, you can select the access policy of the container in the [Container Generation](/Storage/Object%20Storage/ko/console-guide/#_2) or [Container Settings](http://localhost:8080/Storage/Object%20Storage/ko/console-guide/#_5) window. The selectable policies are limited to two types: `PRIVATE` and `PUBLIC`.
 
 ### PRIVATE
-`PRIVATE`is a basic access policy that gives access rights only to users who are part of the project wherein the container belong to. They can use the Console and access the container with the API by receiving authentication token. It is the same policy as that of the API section’s[ permission of reading/writing only to users who are part of the project wherein the container belong to ](/Storage/Object%20Storage/ko/acl-guide/#_2).
+`PRIVATE` is a basic access policy that authorizes access rights only to users of a project that the container is affiliated to. The users may use the console or receive an authentication token to access the container with the API. It is the same policy as that of the provision to authorize reading and writing rights to [users of a project that the container of the API section is affiliated to](/Storage/Object%20Storage/ko/acl-guide/#_2).
 <br/>
 
 ### PUBLIC
-`PUBLIC`is a policy that allows Read or View Object Lists by all people. If the container is set up as PUBLIC, you can receive an URL in the Console. Through this URL, anybody can access the container. It is the same policy as that of the API Section's [permission of reading to all users ](/Storage/Object%20Storage/ko/acl-guide/#_2).
+`PUBLIC` is a policy that authorizes the disclosure of reading and viewing object lists to all. You will receive a URL in the console if you designate the container as PUBLIC. Through this URL, anyone can access the container. It is the same policy as that of the provision to authorize reading and writing rights to [all users of the API section](/Storage/Object%20Storage/ko/acl-guide/#_2).
 <br/>
 
 ## API
-If you enter the ACL policy elements in the Container's `X-Container-Read` and `X-Container-Write` using the API, you can set up the accessibility policies for a variety of circumstances.
+If you enter the ACL policy elements in the container's `X-Container-Read` and `X-Container-Write` attribute using the API, you can set access policies for a variety of circumstances.
 <br/>
 
-### ACL 정책 요소
+### ACL Policy Elements
 
-The ACL policy elements that you can set up are as follows. All policy elements can be combined using the comma (`,`).
+The ACL policy elements that you can set are as follows. All policy elements can be separated and combined using a comma (`,`).
 
 | Policy Elements | Description |
 | --- | --- |
-| `.r:*` | Anybody can access the Object without an authentication token. |
-| `.rlistings` | To all users with reading rights, the View Container (GET or HEAD Request)is allowed. <br/>If this policy element does not exist, the Object List cannot be checked.<br/> This policy element cannot be set up alone. |
-| `.r:<referrer>` | By referring to the request header, access is permitted to the set-up (HTTP Referer).<br/>Authentication token is not necessary. |
-| `.r:-<referrer>` | By referring to the request header, the set-up HTTP Referer’s access is restricted.<br/>In front of the referer, the minus symbol (-)is added for setup. |
-| `<tenant-id>:<user-uuid>` | An authentication token issued to certain users of certain Projects to access Objects.<br/>You can assign both reading and writing rights. |
-| `<tenant-id>:*` | An authentication token issued to all users of certain Projects to access Objects.<br/>You can assign both reading and writing rights. |
-| `*:<user-uuid>` | Regardless of a project, certain user can access the Object with an issued authentication tokens.<br/>You can assign both reading and writing rights. |
-| `*:*` | Regardless of a project, any user with an issued authentication token can access the Objects.<br/>You can assign both reading and writing rights. |
+| `.r:*` | Anyone can access the object without an authentication token. |
+| `.rlistings` | The view container (GET or HEAD request) is permitted to users authorized to read.<br/>Without this policy element, the object list cannot be viewed.<br/>This policy element cannot be set independently. |
+| `.r:<referrer>` | Refer to the request header to authorize access to the designated (HTTP Referer).<br/>Refer to the request header to authorize access to the designated (HTTP Referer). <br/>Authentication tokens are not required. |
+| `.r:-<referrer>` | Refer to the request header to restrict the access of the designated HTTP Referer.<br/>Place a hyphen (-) in front of the referer to designate. |
+| `<tenant-id>:<user-uuid>` | An object can be accessed with an authentication token issued to certain users of specific projects.<br/>You may authorize both reading and writing. |
+| `<tenant-id>:*` | An object can be accessed by using the authentication token issued to all users participating in specific projects.<br/>You may authorize both reading and writing. |
+| `*:<user-uuid>` | An object can be accessed by using the authentication token issued to a specific user regardless of the project.<br/>You may authorize both reading and writing. |
+| `*:*` | Any user issued with an authentication token can access an object regardless of the project.<br/>You may authorize both reading and writing. |
 
-[Note]
-User UUID is not the ID of NHN Cloud users. It is included in the reply statement of the issue request for authentication tokens. (access.user.id)
-Please refer to the API Guide's [Authentication Token Issuance ](/Storage/Object%20Storage/ko/api-guide/#_2) provision.
+> [Notes]
+> A user UUID is not a user ID for NHN Cloud. It is included in the response message for the request to issue an authentication token. (access.user.id)
+> Please refer to [Authentication Token Issuance ](/Storage/Object%20Storage/ko/api-guide/#_2) in the API guide.
 <br/>
 
-### Permitting reading/writing only to users who are part of the project wherein the container belong to
-If you delete all the Container’s `X-Container-Read` and `X-Container-Write` attribute values, the container permits access to users who are part of the project wherein the container belong to [PRIVATE](/Storage/Object%20Storage/ko/acl-guide/#private).
+### Authorize reading and writing only to users who participate in a project that the container is affiliated to.
+This is the basic access policy used when the ACL policy elements are not set. You need a valid authentication token to access the container using API.
+If you delete all attribute values of the container’s `X-Container-Read`, `X-Container-Write` it becomes a [PRIVATE](/Storage/Object%20Storage/ko/acl-guide/#private) container that authorizes access only to users who participate in a project that the container is affiliated to.
 
 <br/>
 
 <details>
-<summary>An example of the deletion of all ACL policy elements</summary>
+<summary>Examples of deleting all ACL policy elements</summary>
 
 ```
 $ curl -i -X POST \
@@ -54,11 +55,11 @@ $ curl -i -X POST \
 ```
 
 <blockquote>
-<p>[Note]
-If you want to send a header without values using curl, you must include in the header name the semi-colon (;).</p>
+<p>[Notes]
+If you want to use curl to send out a header with no values, place a semicolon(;) in the name of the header.</p>
 </blockquote>
 
-If you submit request without a valid authentication token, an error message will appear.
+An error message is sent if a request is submitted without a valid authentication token.
 
 ```
 $ curl -X GET \
@@ -66,23 +67,23 @@ $ curl -X GET \
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
-You can only receive the wanted reply if you have a valid authentication token that is included in the request header.
+You can receive the desired response only if you have a valid authentication token in the request header.
 
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
-[The list of Object in the container]
+[List of objects in the container]
 ```
 </details>
 <br/>
 
-### Allow read/view list to all Users.
-If you set up the `X-Container-Read` attribute to `.r:*, .rlistings`, Read and View List are permitted to all Users. Authentication tokens are not necessary. This is the same policy as the Console Section’s [PUBLIC](/Storage/Object%20Storage/ko/acl-guide/#public) provision.
+### Authorize all users to read and view the list.
+If you set the `X-Container-Read` attribute as `.r:*, .rlistings`, all users are authorized the right to read the object and view the list. Authentication tokens are not required. This is the same policy as that of the provision of [PUBLIC](/Storage/Object%20Storage/ko/acl-guide/#public) in the console section.
 <br/>
 
 <details>
-<summary>An example of permitting the Object Read and View List to all Users</summary>
+<summary>Examples of authorizing all users the right to read the object and view the list</summary>
 
 ```
 $ curl -i -X POST \
@@ -94,13 +95,13 @@ $ curl -i -X POST \
 ```
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 $ curl -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
-[The list of Object in the container]
+[List of objects in the container]
 ```
 
-If only <code>.r:*</code>is set up, you can access the Container's object, but may not view the Object lists.
+If only <code>.r:*</code>is designated, you may access the object of the container but may not view the object list.
 
 ```
 $ curl -i -X POST \
@@ -112,7 +113,7 @@ $ curl -i -X POST \
 ```
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 $ curl -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -122,14 +123,14 @@ $ curl -X GET \
 <br/>
 
 
-### Allowing/rejecting reading to certain HTTP Referers
-HTTP Referer is the web page's address information requested through Hyperlink. It is included in the Request Header.
-If you wish to set up the ACL Policy Elements with the Container’s `X-Container-Read` attributes in `.r:<referrer>` or in `.r:-<referrer>` form, you can permit or reject certain Referers who made accessibility requests. When setting up the HTTP Referers in the ACL policy elements, you must enter the domain name exluding the Protocol and lower-level path.
+### Authorize/block the permission to read for a specific request made by an HTTP referer
+An HTTP Referer is the address information of a web page requested through a hyperlink. It is included in the request header.
+If you wish to set the ACL policy elements with the `X-Container-Read` attribute of the container in `.r:<referrer>` or `.r:-<referrer>` form, you can authorize or block the permission of access requested by certain referers. When setting HTTP referers with ACL policy elements, you must enter the domain name excluding the protocol and lower-level path.
 
 > [Caution]
-> The HTTP Referer can always be changed by the User through Header tampering. Accessibility policies using HTTP Referers are weak in security, and thus not recommended.
+> The user may change the HTTP referer at any time by modifying the header. Accessibility policies using HTTP referers are not recommended due to high security risks.
 <details>
-<summary>An example of permitting reading requests to certain HTTP Referers</summary>
+<summary>Examples of authorizing reading requests to specific HTTP referers</summary>
 
 ```
 $ curl -i -X POST \
@@ -138,20 +139,20 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-If the API Request Header contains the permitted HTTP Referer’s address, access to Object is allowed.
+The object can be accessed if the API request header contains the authorized address of the HTTP referer.
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://cloud.nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 $ curl -O -X GET \
   -H 'Referer: https://cloud.nhn.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 ```
 
-If the API Request Header does not contain the permitted Referer’s address, or if the Referer’s address does not include the Protocol, access is blocked.
+Access is blocked if the API request header does not contain the authorized address of the referer or if the address of the referer does not include the protocol.
 
 ```
 $ curl -X GET \
@@ -167,7 +168,7 @@ $ curl -X GET \
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
-When the domain name starting with <code>.</code>is entered as below, reading is permitted to all Referers’ subdomains in specified domains.
+When you enter a domain name starting with <code>.</code>as in the following, all subdomains of the referer for the set domains are authorized to read.
 
 ```
 $ curl -i -X POST \
@@ -180,14 +181,14 @@ $ curl -i -X POST \
 $ curl -O -X GET \
   -H 'Referer: https://cloud.nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 $ curl -O -X GET \
   -H 'Referer: https://guide.docs.nhn.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 ```
 
-Requests without including subdomains will be blocked.
+Requests without subdomains will be blocked.
 
 ```
 $ curl -X GET \
@@ -196,7 +197,7 @@ $ curl -X GET \
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
-If you wish to permit the access requests of all Referers with certain domain names, you must use the comma list and set up as follows.
+If you wish to authorize the access requests of all referers with certain domain names, you must use the comma list and set it as follows.
 
 ```
 $ curl -i -X POST \
@@ -209,16 +210,16 @@ $ curl -i -X POST \
 $ curl -O -X GET \
   -H 'Referer: https://nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 $ curl -O -X GET \
   -H 'Referer: https://container.nhn.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 ```
 </details>
 
 <details>
-<summary>An example of blocking reading access to certain HTTP Referers</summary>
+<summary>Examples of blocking reading access to certain HTTP referers</summary>
 
 ```
 $ curl -i -X POST \
@@ -227,7 +228,7 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-If a minus symbol is added in front of the HTTP Referer’s domain name, the HTTP Referer's Request is blocked.
+If a hyphen is added in front of the domain name of the HTTP referer, the request of the HTTP referer is blocked.
 
 ```
 $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
@@ -238,11 +239,11 @@ $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
 </details>
 <br/>
 
-The permit/reject policy concerning HTTP Referers is applied according to the order of input. For example, if Referer policy elements allowing `.r:*` are entered after policy elements blocking Referers, Referer blockage policies are ignored. On the other hand, if policy elements allowing requests to all are entered first and certain Referers are entered as not allowed to access, all access requests excluding the specified exceptions are allowed.
+The authorize/block access policy concerning HTTP referers is applied according to the order of input. For example, if `.r:*` policy elements that authorize access to all users are entered after the referer block policy elements, the referer block policy is ignored. On the other hand, if policy elements that authorize access to all users are entered first followed by specific referer block policy elements, all access requests are authorized excluding the access request of set referers.
 <br/>
 
 <details>
-<summary>An example of a wrong policy setup that ignores blockage of HTTP Referers</summary>
+<summary>Examples of wrong policy settings that disregard the blockage of HTTP referers</summary>
 
 ```
 $ curl -i -X POST \
@@ -254,15 +255,15 @@ $ curl -i -X POST \
 ```
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 $ curl -O -X GET -H 'Referer: https://cloud.nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 ```
 </details>
 
 <details>
-<summary>An example of a policy setup that allows all access requests except for that of certain HTTP Referers</summary>
+<summary>Examples of policy settings that permit all access requests except for that of certain HTTP referers</summary>
 
 ```
 $ curl -i -X POST \
@@ -274,7 +275,7 @@ $ curl -i -X POST \
 ```
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -282,13 +283,13 @@ $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
 </details>
 <br/>
 
-### Allowing reading/writing to certain projects or certain Users
-If you wish to set up ACL Policy Elements with the Container’s `X-Container-Read`and `X-Container-Write` attribute’s `<tenant-id>:<user-uuid>` form, you can assign reading/writing rights to certain project or certain users. If you enter wildcard script`*` instead of Tenant ID or User UUID, all Projects or all Users are allowed to access. When making access requests, a valid authentication token is required.
+### Authorizing reading and writing to certain projects or users
+If you set ACL policy elements in the form of `<tenant-id>:<user-uuid>` to the `X-Container-Read` and `X-Container-Write` attributes of the container, you may selectively authorize reading and writing to certain projects or users. All users or projects are authorized to access if you enter a wild card script `*` instead of a tenant ID or user UUID. A valid authentication token is required when requesting access.
 
-> [Note]
-> The Reading Right assigned through the ACL Policy with the authentication token includes the Object List View rights.
+> [Notes]
+> The authority to view the object list is included in the authority to read for the ACL policy that requires an authentication token.
 <details>
-<summary>An example of reading/writing rights assigned to certain Users of a certain Project</summary>
+<summary>Examples of authorizing reading and writing to specific users of a specific project</summary>
 
 ```
 $ curl -i -X POST \
@@ -298,22 +299,22 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-In making access requests to Objects, a valid authentication token received through a Tenant ID and NHN Cloud User’s ID is required.
+Requesting access to objects requires a valid authentication token received through an authorized tenant ID and an NHN Cloud user ID.
 
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
-[The list of Object in the container]
+[List of objects in the container]
 $ curl -O -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-[Object Download]
+[Download Object]
 ```
 </details>
 
 <details>
-<summary>An example of allowing reading/writing rights to all users of a certain Project</summary>
+<summary>Examples of authorizing reading and writing to all users of a specific project</summary>
 
 ```
 $ curl -i -X POST \
@@ -323,12 +324,12 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-In making access requests to Objects, a valid authentication token received through a Tenant ID and an NHN Cloud User's ID issued from a related project is required.
+Requesting access to objects requires a valid authentication token received through an authorized tenant ID and an NHN Cloud user ID of a relevant project.
 <br/><br/>
 </details>
 
 <details>
-<summary>An example of allowing reading/writing rights to certain users regardless of Projects</summary>
+<summary>Examples of authorizing reading and writing to specific users regardless of the project</summary>
 
 ```
 $ curl -i -X POST \
@@ -338,12 +339,12 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-In making an access request to an Object, a valid authentication token issued with a permitted NHN Cloud User's ID is required.
+Requesting access to objects requires a valid authentication token received through an authorized NHN Cloud user ID.
 <br/><br/>
 </details>
 
 <details>
-<summary>An example of allowing reading/writing rights to all NHN Cloud Users</summary>
+<summary>Examples of authorizing reading and writing to all NHN Cloud users</summary>
 
 ```
 $ curl -i -X POST \
@@ -353,12 +354,12 @@ $ curl -i -X POST \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-When making an access request to an Object, a valid authentication token is necessary.
+Requesting access to objects requires a valid authentication token.
 </details>
 <br/>
 
 ### Deleting Access Policies
-If you enter the empty headers, you can delete all set-up ACL Policy Elements. Containers without ACL Policy Elements become a**PRIVATE** Container that only authorized users may access. Check the provision of [authorizing reading/writing rights to users of Containers belonging to certain Projects](/Storage/Object%20Storage/ko/acl-guide/#_2).
+Enter the empty headers to delete all ACL policy elements that have been set. Containers without ACL policy elements become a **PRIVATE** container that only authorized users can access. Refer to provision. [컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용](/Storage/Object%20Storage/ko/acl-guide/#_2) 항목을 참고하세요.
 
 
 ## References
