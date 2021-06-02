@@ -39,7 +39,7 @@ The ACL policy elements that you can set are as follows. All policy elements can
 
 ### Authorize reading and writing only to users who participate in a project that the container is affiliated to.
 This is the basic access policy used when the ACL policy elements are not set. You need a valid authentication token to access the container using API.
-If you delete all attribute values of the container’s `X-Container-Read`, `X-Container-Write` it becomes a [PRIVATE](/Storage/Object%20Storage/ko/acl-guide/#private) container that authorizes access only to users who participate in a project that the container is affiliated to.
+If you delete all attribute values of the container’s `X-Container-Read` and `X-Container-Write`, it becomes a [PRIVATE](/Storage/Object%20Storage/ko/acl-guide/#private) container that authorizes access only to users who participate in a project that the container is affiliated to.
 
 <br/>
 
@@ -359,7 +359,7 @@ Requesting access to objects requires a valid authentication token.
 <br/>
 
 ### Deleting Access Policies
-Enter the empty headers to delete all ACL policy elements that have been set. Containers without ACL policy elements become a **PRIVATE** container that only authorized users can access. Refer to provision. [컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용](/Storage/Object%20Storage/ko/acl-guide/#_2) 항목을 참고하세요.
+Enter the empty headers to delete all ACL policy elements that have been set. Containers without ACL policy elements become a **PRIVATE** container that only authorized users can access. Refer to provision on [authorizing reading and writing to users of a project that the container is affiliated to](/Storage/Object%20Storage/ko/acl-guide/#_2).
 
 
 ## References
