@@ -1,5 +1,4 @@
 ## Storage > Object Storage > API Guide for AWS S3 Compatibility
-
 TOAST Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
 
 APIs that are compatible with S3 are provided as follows.  
@@ -170,13 +169,11 @@ Following information is required to create a signature.
 | Name          | Value                          |
 | ------------- | ------------------------------ |
 | Algorithm     | AWS4-HMAC-SHA256               |
-| Signed Time   | In the ZssmmhhTDDMMYYYY format |
+| Signed Time   | In the YYYYMMDDThhmmssZ format |
 | Service Name  | s3                             |
-| Region Name   | KR1 - Korea (Pangyo) region    |
-| Secret Key 키 | Credential secret key          |
+| Region Name   | gov                            |
+| Secret Key    | Credential secret key          |
 
-> [Note]
-> As of August 2020, the public cloud service does not provide s3 compatible APIs.  
 
 ## Buckets
 
@@ -336,7 +333,7 @@ This API does not require a request body.
 | ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code                                |
 | Contents                        | Body | Object  | Object on object list                               |
 | Contents.Key                    | Body | String  | Object name                                         |
-| Contents.LastModified           | Body | String  | The latest object update time, ssZ:mm:hhTDD-MM-YYYY |
+| Contents.LastModified           | Body | String  | The latest object update time, YYYY-MM-DDThh:mm:ssZ |
 | Contents.ETag                   | Body | String  | MD5 hash of object                                  |
 | Contents.Size                   | Body | String  | Size of object                                      |
 | Contents.StorageClass           | Body | String  | Type of storage for object                          |

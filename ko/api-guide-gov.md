@@ -60,7 +60,7 @@ Content-Type: application/json
 |---|---|---|---|
 | access.token.id | Body | String |	발급된 토큰 ID |
 | access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 테넌트 ID |
-| access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
+| access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>YYYY-MM-DDThh:mm:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
 | access.user.id | Body | String | 대시 없이 32개의 16진수로 구성된 사용자 UUID<br/>S3 호환 API를 사용하기 위한 EC2 자격 증명을 발급 받거나, 접근 정책을 설정하는데 사용 |
 
 > [주의]
