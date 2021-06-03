@@ -3,14 +3,14 @@
 コンソールまたはAPIを使用して、他のユーザーにコンテナの読み取り/書き取りアクセス権限を付与できます。
 
 ## コンソール
-コンソールでは[コンテナ作成](/Storage/Object%20Storage/ko/console-guide/#_2)または[コンテナ設定](http://localhost:8080/Storage/Object%20Storage/ko/console-guide/#_5)ウィンドウでコンテナアクセスポリシーを選択できます。選択できるポリシーは`PRIVATE`と`PUBLIC`の2つに制限されます。
+コンソールでは[コンテナ作成](/Storage/Object%20Storage/ja/console-guide/#_2)または[コンテナ設定](/Storage/Object%20Storage/ja/console-guide/#_5)ウィンドウでコンテナアクセスポリシーを選択できます。選択できるポリシーは`PRIVATE`と`PUBLIC`の2つに制限されます。
 
 ### PRIVATE
-`PRIVATE`は、コンテナが属すプロジェクトのユーザーにのみアクセス権限を付与する基本アクセスポリシーです。コンソールを利用するか、認証トークンを発行してAPIでコンテナにアクセスできます。 APIセッションの[コンテナが属すプロジェクトのユーザーにのみ読み取り/書き込み許可](/Storage/Object%20Storage/ko/acl-guide/#_2)項目と同じポリシーです。
+`PRIVATE`は、コンテナが属すプロジェクトのユーザーにのみアクセス権限を付与する基本アクセスポリシーです。コンソールを利用するか、認証トークンを発行してAPIでコンテナにアクセスできます。 APIセッションの[コンテナが属すプロジェクトのユーザーにのみ読み取り/書き込み許可](/Storage/Object%20Storage/ja/acl-guide/#_2)項目と同じポリシーです。
 <br/>
 
 ### PUBLIC
-`PUBLIC`は、誰でも読み取りとオブジェクトリスト照会を許可するポリシーです。コンテナをPUBLICに設定すると、コンソールでURLを取得できます。このURLを利用して誰でもコンテナにアクセスできます。 APIセッションの[すべてのユーザーに読み取り許可](/Storage/Object%20Storage/ko/acl-guide/#_2)項目と同じポリシーです。
+`PUBLIC`は、誰でも読み取りとオブジェクトリスト照会を許可するポリシーです。コンテナをPUBLICに設定すると、コンソールでURLを取得できます。このURLを利用して誰でもコンテナにアクセスできます。 APIセッションの[すべてのユーザーに読み取り許可](/Storage/Object%20Storage/ja/acl-guide/#_2)項目と同じポリシーです。
 <br/>
 
 ## API
@@ -34,13 +34,13 @@ APIを使用してコンテナの`X-Container-Read`, `X-Container-Write`プロ�
 
 > [参考]
 > ユーザーUUIDはNHN CloudユーザーIDではありません。認証トークン発行リクエストのレスポンス本文に含まれています。 (access.user.id)
-> APIガイドの[認証トークン発行](/Storage/Object%20Storage/ko/api-guide/#_2)項目を参照してください。
+> APIガイドの[認証トークン発行](/Storage/Object%20Storage/ja/api-guide/#_2)項目を参照してください。
 
 <br/>
 
 ### コンテナが属すプロジェクトのユーザーにのみ書き込み/読み取り許可
 ACLポリシー要素を設定しなかった時に使用される基本アクセスポリシーです。 APIを使用してコンテナにアクセスするには、必ず有効な認証トークンが必要です。
-コンテナの`X-Container-Read`、`X-Container-Write`プロパティ値を全て削除すると、コンテナが属すプロジェクトのユーザーにのみアクセスを許可する[PRIVATE](/Storage/Object%20Storage/ko/acl-guide/#private)コンテナになります。
+コンテナの`X-Container-Read`、`X-Container-Write`プロパティ値を全て削除すると、コンテナが属すプロジェクトのユーザーにのみアクセスを許可する[PRIVATE](/Storage/Object%20Storage/ja/acl-guide/#private)コンテナになります。
 
 <br/>
 
@@ -82,7 +82,7 @@ $ curl -X GET \
 <br/>
 
 ### すべてのユーザーに読み取り/リスト照会を許可
-コンテナの`X-Container-Read`プロパティを`.r:*, .rlistings`に設定すると、すべてのユーザーにオブジェクトの読み取りとリスト照会を許可します。認証トークンは必要ありません。コンソールセッションの[PUBLIC](/Storage/Object%20Storage/ko/acl-guide/#public)項目と同じポリシーです。
+コンテナの`X-Container-Read`プロパティを`.r:*, .rlistings`に設定すると、すべてのユーザーにオブジェクトの読み取りとリスト照会を許可します。認証トークンは必要ありません。コンソールセッションの[PUBLIC](/Storage/Object%20Storage/ja/acl-guide/#public)項目と同じポリシーです。
 <br/>
 
 <details>
@@ -405,7 +405,7 @@ $ curl -i -X POST \
 <br/>
 
 ### アクセスポリシーの削除
-空のヘッダを入力すると、設定されたACLポリシー要素を全て削除できます。ACLポリシー要素がないコンテナは、許可されたユーザーのみアクセスできる**PRIVATE**コンテナになります。[コンテナが属すプロジェクトのユーザーにのみ書き込み/読み取り許可](/Storage/Object%20Storage/ko/acl-guide/#_2)項目を参照してください。
+空のヘッダを入力すると、設定されたACLポリシー要素を全て削除できます。ACLポリシー要素がないコンテナは、許可されたユーザーのみアクセスできる**PRIVATE**コンテナになります。[コンテナが属すプロジェクトのユーザーにのみ書き込み/読み取り許可](/Storage/Object%20Storage/ja/acl-guide/#_2)項目を参照してください。
 
 
 ## References

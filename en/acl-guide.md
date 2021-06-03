@@ -3,14 +3,14 @@
 By using the console or the API, you may authorize other people the access rights for reading/writing the containers.
 
 ## Console
-In the console, you can select the access policy of the container in the [Container Generation](/Storage/Object%20Storage/ko/console-guide/#_2) or [Container Settings](http://localhost:8080/Storage/Object%20Storage/ko/console-guide/#_5) window. The selectable policies are limited to two types: `PRIVATE` and `PUBLIC`.
+In the console, you can select the access policy of the container in the [Container Generation](/Storage/Object%20Storage/en/console-guide/#_2) or [Container Settings](/Storage/Object%20Storage/en/console-guide/#_5) window. The selectable policies are limited to two types: `PRIVATE` and `PUBLIC`.
 
 ### PRIVATE
-`PRIVATE` is a basic access policy that authorizes access rights only to users of a project that the container is affiliated to. The users may use the console or receive an authentication token to access the container with the API. It is the same policy as that of the provision to authorize reading and writing rights to [users of a project that the container of the API section is affiliated to](/Storage/Object%20Storage/ko/acl-guide/#_2).
+`PRIVATE` is a basic access policy that authorizes access rights only to users of a project that the container is affiliated to. The users may use the console or receive an authentication token to access the container with the API. It is the same policy as that of the provision to authorize reading and writing rights to [users of a project that the container of the API section is affiliated to](/Storage/Object%20Storage/en/acl-guide/#_2).
 <br/>
 
 ### PUBLIC
-`PUBLIC` is a policy that authorizes the disclosure of reading and viewing object lists to all. You will receive a URL in the console if you designate the container as PUBLIC. Through this URL, anyone can access the container. It is the same policy as that of the provision to authorize reading and writing rights to [all users of the API section](/Storage/Object%20Storage/ko/acl-guide/#_2).
+`PUBLIC` is a policy that authorizes the disclosure of reading and viewing object lists to all. You will receive a URL in the console if you designate the container as PUBLIC. Through this URL, anyone can access the container. It is the same policy as that of the provision to authorize reading and writing rights to [all users of the API section](/Storage/Object%20Storage/en/acl-guide/#_2).
 <br/>
 
 ## API
@@ -34,12 +34,12 @@ The ACL policy elements that you can set are as follows. All policy elements can
 
 > [Notes]
 > A user UUID is not a user ID for NHN Cloud. It is included in the response message for the request to issue an authentication token. (access.user.id)
-> Please refer to [Authentication Token Issuance ](/Storage/Object%20Storage/ko/api-guide/#_2) in the API guide.
+> Please refer to [Authentication Token Issuance ](/Storage/Object%20Storage/en/api-guide/#_2) in the API guide.
 <br/>
 
 ### Authorize reading and writing only to users who participate in a project that the container is affiliated to.
 This is the basic access policy used when the ACL policy elements are not set. You need a valid authentication token to access the container using API.
-If you delete all attribute values of the container’s `X-Container-Read` and `X-Container-Write`, it becomes a [PRIVATE](/Storage/Object%20Storage/ko/acl-guide/#private) container that authorizes access only to users who participate in a project that the container is affiliated to.
+If you delete all attribute values of the container’s `X-Container-Read` and `X-Container-Write`, it becomes a [PRIVATE](/Storage/Object%20Storage/en/acl-guide/#private) container that authorizes access only to users who participate in a project that the container is affiliated to.
 
 <br/>
 
@@ -79,7 +79,7 @@ $ curl -X GET \
 <br/>
 
 ### Authorize all users to read and view the list.
-If you set the `X-Container-Read` attribute as `.r:*, .rlistings`, all users are authorized the right to read the object and view the list. Authentication tokens are not required. This is the same policy as that of the provision of [PUBLIC](/Storage/Object%20Storage/ko/acl-guide/#public) in the console section.
+If you set the `X-Container-Read` attribute as `.r:*, .rlistings`, all users are authorized the right to read the object and view the list. Authentication tokens are not required. This is the same policy as that of the provision of [PUBLIC](/Storage/Object%20Storage/en/acl-guide/#public) in the console section.
 <br/>
 
 <details>
@@ -359,7 +359,7 @@ Requesting access to objects requires a valid authentication token.
 <br/>
 
 ### Deleting Access Policies
-Enter the empty headers to delete all ACL policy elements that have been set. Containers without ACL policy elements become a **PRIVATE** container that only authorized users can access. Refer to provision on [authorizing reading and writing to users of a project that the container is affiliated to](/Storage/Object%20Storage/ko/acl-guide/#_2).
+Enter the empty headers to delete all ACL policy elements that have been set. Containers without ACL policy elements become a **PRIVATE** container that only authorized users can access. Refer to provision on [authorizing reading and writing to users of a project that the container is affiliated to](/Storage/Object%20Storage/en/acl-guide/#_2).
 
 
 ## References
