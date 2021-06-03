@@ -65,7 +65,7 @@ Content-Type: application/json
 |---|---|---|---|
 | access.token.id | Body | String |	발급된 토큰 ID |
 | access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 Tenant ID |
-| access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
+| access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>YYYY-MM-DDThh:mm:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
 
 > [주의]
 > 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.

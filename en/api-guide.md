@@ -65,7 +65,7 @@ Content-Type: application/json
 |---|---|---|---|
 | access.token.id | Body | String |	ID of issued token |
 | access.token.tenant.id | Body | String | Tenant ID of a project requesting for token |
-| access.token.expires | Body | String | Expiration time of issued token <br/> in the ssZ:MM:HHTdd-mm-yyyy format. e.g.) 50Z:17:03T16-05-2017 |
+| access.token.expires | Body | String | Expiration time of issued token <br/> in the YYYY-MM-DDThh:mm:ssZ format. e.g.) 2017-05-16T03:17:50Z |
 | access.user.id | Body | String | A User UUID composed of 32 digits of hexadecimal numbers without being interrupted by dashes<br/>receiving the EC2 qualification certification to use S3-compatible API, or using it for access policy setup |
 
 > [Caution]
