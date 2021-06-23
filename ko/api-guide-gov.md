@@ -33,7 +33,7 @@ Content-Type: application/json
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| tenantId | Body | String | O | Tenant ID. API Endpoint 설정 대화 상자에서 확인 가능 |
+| tenantId | Body | String | O | 테넌트 ID. API Endpoint 설정 대화 상자에서 확인 가능 |
 | username | Body | String | O | TOAST 계정 ID(이메일) 입력 |
 | password | Body | String | O | API Endpoint 설정 대화 상자에서 저장한 비밀번호 |
 
@@ -59,8 +59,9 @@ Content-Type: application/json
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
 | access.token.id | Body | String |	발급된 토큰 ID |
-| access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 Tenant ID |
-| access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>yyyy-mm-ddTHH:MM:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
+| access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 테넌트 ID |
+| access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>YYYY-MM-DDThh:mm:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
+| access.user.id | Body | String | 대시 없이 32개의 16진수로 구성된 사용자 UUID<br/>S3 호환 API를 사용하기 위한 EC2 자격 증명을 발급 받거나, 접근 정책을 설정하는데 사용 |
 
 > [주의]
 > 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.

@@ -60,7 +60,7 @@ Content-Type: application/json
 |---|---|---|---|
 | access.token.id | Body | String |	発行されたトークンID |
 | access.token.tenant.id | Body | String | トークンをリクエストしたプロジェクトに対応するTenant ID |
-| access.token.expires | Body | String | 発行したトークンの満了時間 <br/>yyyy-mm-ddTHH:MM:ssZの形式。例) 2017-05-16T03:17:50Z |
+| access.token.expires | Body | String | 発行したトークンの満了時間 <br/>YYYY-MM-DDThh:mm:ssZの形式。例) 2017-05-16T03:17:50Z |
 
 > [注意]
 > トークンには有効期限があります。トークン発行リクエストのレスポンスに含まれた「expires」項目は、発行されたトークンの有効期限が終了する時間です。トークンが無効になった場合、新しいトークンを発行する必要があります。

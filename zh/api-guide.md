@@ -66,7 +66,7 @@ POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens
 |---|---|---|---|
 |access.token.id|	Body or Plain|	String|	颁发的令牌ID|
 |access.token.tenant.id|	Plain|	String|	与请求令牌的项目相对应的Tenant ID |
-|access.token.expires|	Plain|	String|	所发布令牌的到期时间。yyyy-mm-ddTHH:MM:ssZ格式。例如) 2017-05-16T03:17:50Z |
+|access.token.expires|	Plain|	String|	所发布令牌的到期时间。YYYY-MM-DDThh:mm:ssZ格式。例如) 2017-05-16T03:17:50Z |
 
 **Response Body Example**
 ```
