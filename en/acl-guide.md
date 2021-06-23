@@ -64,6 +64,7 @@ An error message is sent if a request is submitted without a valid authenticatio
 ```
 $ curl -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
@@ -116,6 +117,7 @@ $ curl -O -X GET \
 [Download Object]
 $ curl -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
@@ -157,14 +159,21 @@ Access is blocked if the API request header does not contain the authorized addr
 ```
 $ curl -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
+
+
 $ curl -X GET \
   -H 'Referer: https://example.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
+
+
 $ curl -X GET \
   -H 'Referer: cloud.nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
@@ -194,6 +203,7 @@ Requests without subdomains will be blocked.
 $ curl -X GET \
   -H 'Referer: https://nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
@@ -233,6 +243,7 @@ If a hyphen is added in front of the domain name of the HTTP referer, the reques
 ```
 $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
@@ -278,6 +289,7 @@ $ curl -O -X GET \
 [Download Object]
 $ curl -X GET -H 'Referer: https://cloud.nhn.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 </details>
