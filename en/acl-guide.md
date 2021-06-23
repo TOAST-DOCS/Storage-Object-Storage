@@ -1,4 +1,4 @@
-## Storage > Object Storage > Guide on Setting Access Policy
+## Storage > Object Storage > ACL Configuration Guide
 
 By using the console or the API, you may authorize other people the access rights for reading/writing the containers.
 
