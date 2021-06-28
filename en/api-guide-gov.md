@@ -60,7 +60,7 @@ Content-Type: application/json
 |---|---|---|---|
 | access.token.id | Body | String |	ID of issued token |
 | access.token.tenant.id | Body | String | Tenant ID of a project requesting for token |
-| access.token.expires | Body | String | Expiration time of issued token <br/> in the ssZ:MM:HHTdd-mm-yyyy format. e.g.) 50Z:17:03T16-05-2017 |
+| access.token.expires | Body | String | Expiration time of issued token <br/> in the YYYY-MM-DDThh:mm:ssZ format. e.g.) 2017-05-16T03:17:50Z |
 
 > [Caution]
 > A token includes expiration. The 'expires' item included in the reponse to request for token issuance refers to token expiration time. When a token is expired, a new token must be issued.  
@@ -304,11 +304,11 @@ printf("%s\n", $token);
 
 </details>
 
-## Storage Account 
-A storage account is a character string in the `AUTH_*****` format, included in the Object-Store API endpoint. 
+## Storage Account
+A storage account is a character string in the `AUTH_*****` format, included in the Object-Store API endpoint.
 
 ### Query Storage Account
-Query usage status of a storage account. 
+Query usage status of a storage account.
 
 ```
 HEAD  /v1/{Account}
@@ -316,7 +316,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -332,7 +332,7 @@ This API does not return a response body. Usage status is included in the header
 | X-Account-Object-Count | Header | String | Number of saved objects |
 | X-Account-Bytes-Used | Header | String | Saved data capacity (bytes) |
 
-#### Code Example 
+#### Code Example
 
 <details>
 <summary>cURL</summary>
@@ -476,8 +476,8 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 
 </details>
 
-### List Containers 
-List containers of a storage account. 
+### List Containers
+List containers of a storage account.
 
 ```
 GET  /v1/{Account}
@@ -485,7 +485,7 @@ X-Auth-Token: {token-id}
 ```
 
 #### Request
-This API does not require a request body. 
+This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -497,7 +497,7 @@ This API does not require a request body.
 [List of containers included in a storage account]
 ```
 
-#### Code Example 
+#### Code Example
 
 <details>
 <summary>cURL</summary>
@@ -520,19 +520,19 @@ package com.toast.swift.service;
 public class AccountService {
     // AccountService Class ...
     public List<String> getContainerList() {
-        // Create header 
+        // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
-        // Call API 
+        // Call API
         ResponseEntity<String>response
             = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
         List<String> containerList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
-            // Convert the list of string into sequence 
+            // Convert the list of string into sequence
             containerList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
-        // Convert sequence into list and return 
+        // Convert sequence into list and return
         return new ArrayList<String>(containerList);
     }
     public static void main(String[] args) {
@@ -2542,7 +2542,7 @@ public class ObjectService {
         headers.add("X-Copy-From", srcObject);    // Specify original object
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call alternative API since the COPY method is not supported by HttpMethod. 
+        // Call alternative API since the COPY method is not supported by HttpMethod.
         this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);			
     }    
 

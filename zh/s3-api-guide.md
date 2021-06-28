@@ -1,6 +1,6 @@
 ## Storage > Object Storage > API Guide for AWS S3 Compatibility
 
-NHN Cloud Object storage provides APIs that are compatible with S3 API of AWS object storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
+NHN Cloud Object storage provides APIs that are compatible with S3 API of AWS Object Storage. To enable the service, you can only change settings for applications developed for AWS S3 API.
 
 APIs that are compatible with S3 are provided as follows.  
 
@@ -51,7 +51,7 @@ X-Auth-Token: {token-id}
 | tenant_id    | Body   | String | O        | User Tenant ID, to be found on the setup box for API Endpoint |
 
 > [Caution]
-> User ID for credential registration is not an email-type NHN Cloud account. Find this, when you get a token issued.
+> User ID for credential registration is not a NHN Cloud User ID. Find this, when you get a token issued.
 
 <details>
 <summary>Example</summary>
@@ -170,7 +170,7 @@ Following information is required to create a signature.
 | Name          | Value                          |
 | ------------- | ------------------------------ |
 | Algorithm     | AWS4-HMAC-SHA256               |
-| Signed Time   | In the ZssmmhhTDDMMYYYY format |
+| Signed Time   | In the YYYYMMDDThhmmssZ format |
 | Service Name  | s3                             |
 | Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - KOREA (Pyeongchon) Region<br/>JP1 - JAPAN (Tokyo) Region<br/>US1 - USA (California) Region   |
 | Secret Key    | Credential secret key          |
@@ -334,7 +334,7 @@ This API does not require a request body.
 | ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code                                |
 | Contents                        | Body | Object  | Object on object list                               |
 | Contents.Key                    | Body | String  | Object name                                         |
-| Contents.LastModified           | Body | String  | The latest object update time, ssZ:mm:hhTDD-MM-YYYY |
+| Contents.LastModified           | Body | String  | The latest object update time, YYYY-MM-DDThh:mm:ssZ |
 | Contents.ETag                   | Body | String  | MD5 hash of object                                  |
 | Contents.Size                   | Body | String  | Size of object                                      |
 | Contents.StorageClass           | Body | String  | Type of storage for object                          |
@@ -615,7 +615,7 @@ This API does not require a request body.
 </details>
 
 ## AWS Command Line Interface (CLI)
-NHN Cloud object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API.
+NHN Cloud Object Storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API.
 
 ### Install
 AWS command line interface is prvodied by a Python package, which can be installed by using the Python package manager (pip).  
@@ -732,7 +732,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, NHN Cloud object storage becomes available.
+AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, NHN Cloud Object Storage becomes available.
 
 > [Note]
 > This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools).
