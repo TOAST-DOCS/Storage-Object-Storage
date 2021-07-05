@@ -50,6 +50,7 @@ X-Auth-Token: {token-id}
 
 > [참고]
 > 사용자 UUID는 NHN Cloud 사용자 ID가 아닙니다. 인증 토큰 발급 요청의 응답 본문에 포함되어 있습니다. (access.user.id)
+> API 가이드의 [인증 토큰 발급](/Storage/Object%20Storage/ko/api-guide-gov/#_2) 항목을 참조하세요.
 
 <details>
 <summary>예시</summary>
@@ -606,7 +607,7 @@ Default output format [None]: json
 |---|---|
 | access | 자격 증명 접근 키 |
 | secret | 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
+| region name | KR1 |
 
 ### S3 명령 사용 방법
 
@@ -616,7 +617,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | 이름 | 설명 |
 |---|---|
-| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 |
+| endpoint | https://gov-api-storage.cloud.toast.com |
 | command | AWS 명령줄 인터페이스 명령 |
 | bucket | 버킷 이름 |
 
@@ -629,7 +630,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 <summary>버킷 생성</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
+$ aws --endpoint-url=https://gov-api-storage.cloud.toast.com s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
 
@@ -639,7 +640,7 @@ make_bucket: example-bucket
 <summary>버킷 목록 조회</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
+$ aws --endpoint-url=https://gov-api-storage.cloud.toast.com s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
 
@@ -650,7 +651,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 <summary>버킷 조회</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+$ aws --endpoint-url=https://gov-api-storage.cloud.toast.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -661,7 +662,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <summary>버킷 삭제</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+$ aws --endpoint-url=https://gov-api-storage.cloud.toast.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -672,7 +673,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <summary>오브젝트 업로드</summary>
 
 ```
-$  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$  aws --endpoint-url=https://gov-api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -682,7 +683,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 <summary>오브젝트 다운로드</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=https://gov-api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
 
@@ -692,7 +693,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <summary>오브젝트 삭제</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=https://gov-api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -712,8 +713,8 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 |---|---|
 | access | 자격 증명 접근 키 |
 | secret | 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
-| endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 |
+| region name | KR1 |
+| endpoint | https://gov-api-storage.cloud.toast.com |
 
 
 ### Boto3 - Python SDK
