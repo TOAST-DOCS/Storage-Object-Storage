@@ -3,7 +3,7 @@
 콘솔 또는 API를 사용해 다른 사용자에게 컨테이너의 읽기/쓰기 접근 권한을 부여할 수 있습니다.
 
 ## 콘솔
-콘솔에서는 [컨테이너 생성](/Storage/Object%20Storage/ko/console-guide/#_2) 또는 [컨테이너 설정](http://localhost:8080/Storage/Object%20Storage/ko/console-guide/#_5) 창에서 컨테이너 접근 정책을 선택할 수 있습니다. 선택할 수 있는 정책은 `PRIVATE`과 `PUBLIC` 두 가지로 제한됩니다.
+콘솔에서는 [컨테이너 생성](/Storage/Object%20Storage/ko/console-guide/#_2) 또는 [컨테이너 설정](/Storage/Object%20Storage/ko/console-guide/#_5) 창에서 컨테이너 접근 정책을 선택할 수 있습니다. 선택할 수 있는 정책은 `PRIVATE`과 `PUBLIC` 두 가지로 제한됩니다.
 
 ### PRIVATE
 `PRIVATE`은 컨테이너가 속한 프로젝트의 사용자에게만 접근 권한을 부여하는 기본 접근 정책입니다. 콘솔을 이용하거나, 인증 토큰을 발급받아 API로 컨테이너에 접근할 수 있습니다. API 섹션의 [컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용](/Storage/Object%20Storage/ko/acl-guide/#_2) 항목과 같은 정책입니다.
