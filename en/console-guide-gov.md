@@ -12,7 +12,7 @@ To upload objects to object storage, at least one container is required.
     * Standard: Default
 
 > [Note]
-> Container name is limited to 255 in English, or 85 in Korean. 
+> Container name is limited to 256 in English, or 85 in Korean. 
 
 
 ### Delete Containers
@@ -26,7 +26,7 @@ Make sure the container is empty before it is deleted. Any remained objects in a
 Folder is a virtual unit to bind objects of object storage in groups. It helps to manage objects in the hierarchical order, similar to folder of Windows or directory of Linux.
 
 > [Note]
-> Folder name cannot exceed 255 characters in English or 85 in Korean: slash (/) serves as a delimiter between folders.
+> Folder name cannot exceed 256 characters in English or 85 in Korean: slash (/) serves as a delimiter between folders.
 
 
 ### Upload Objects
