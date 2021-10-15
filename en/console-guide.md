@@ -11,7 +11,7 @@ Creates containers. Uploading objects in an object storage requires one or more 
   </tr>
   <tr>
     <td>Name</td>
-    <td>Name of a container is limited to 255 characters in English or 85 characters in Korean.</td>
+    <td>Name of a container is limited to 256 characters in English or 85 characters in Korean.</td>
   </tr>
   <tr>
     <td rowspan="2">Container access policy</td>
@@ -96,7 +96,7 @@ Change settings of a selected container.
 
 ## Objects
 ### Create Folder
-Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 255 letters in English or 85 characters in Korean.
+Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 256 letters in English or 85 characters in Korean.
 > [Note]
 > Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
 
