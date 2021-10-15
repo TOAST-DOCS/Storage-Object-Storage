@@ -11,7 +11,7 @@ Creates containers. Uploading objects in an object storage requires one or more 
   </tr>
   <tr>
     <td>Name</td>
-    <td>Name of a container is limited to 255 characters in English or 85 characters in Korean.</td>
+    <td>Name of a container is limited to 256 characters in English or 85 characters in Korean.</td>
   </tr>
   <tr>
     <td rowspan="2">Container access policy</td>
@@ -71,11 +71,11 @@ Change settings of a selected container.
   <tr>
     <td rowspan="5">Static Website Settings</td>
     <td>Index Document</td>
-    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.</td>
+    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) can be entered.</td>
   </tr>
   <tr>
     <td>Error Document</td>
-    <td>Enter the (suffix)of an error document from a static website.Folder path cannot be included in the suffix of the error document.</td>
+    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) can be entered.</td>
   </tr>
 </table>
 
@@ -85,18 +85,18 @@ Change settings of a selected container.
 <br/>
 
 > [Note]
-> If the access policy of a container is set to **PUBLIC** and index document and error document are entered, it becomes possible to host static websites in a container.
-URL of static websites can be obtained by clicking the `Copy URL` button on the container list.
-
-<br/>
-
-> [Note]
-> Error documents of static websites are named in the form of `{error code}{suffix}.` For example, an error document is set as `error.html,` the name of the error document will be displayed as `404error.html` when 404 error occurs. You can upload and use error documents according to each error conditions. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
+> If the access policy of a container is set to **PUBLIC** and index document and error document are entered, it becomes possible to host a static website in a container.
+>
+> The URL of a static website can be obtained by clicking the `Copy URL` button on the container list.
+>
+> The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters, or some special character (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` extension. If the conditions are not met, you may not be able to set it up or your static website may not work.
+>
+> Error documents of a static website are named in the form of `{error code}{suffix}`. For example, if an error document is set as `error.html,` the name of the error document will be displayed as `404error.html` when 404 error occurs. You can upload and use error documents according to each error conditions. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
 
 
 ## Objects
 ### Create Folder
-Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 255 letters in English or 85 characters in Korean.
+Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 256 letters in English or 85 characters in Korean.
 > [Note]
 > Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
 

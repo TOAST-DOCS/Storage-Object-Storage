@@ -333,8 +333,8 @@ This API does not return a response body. Usage status is included in the header
 | Name | Type | Format | Description |
 |---|---|---|---|
 | X-Account-Container-Count | Header | String | Number of containers |
-| X-Account-Object-Count | Header | String | Number of saved objects |
-| X-Account-Bytes-Used | Header | String | Saved data capacity (bytes) |
+| X-Account-Object-Count | Header | String | Number of stored objects |
+| X-Account-Bytes-Used | Header | String | Stored data capacity (bytes) |
 
 #### Code Example
 
@@ -559,11 +559,11 @@ public class AccountService {
 
         List<String> containerList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
-            // Convert the list of string into sequence
+            // Convert the list received as String to array
             containerList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
 
-        // Convert sequence into list and return
+        // Convert the array to list and return it
         return new ArrayList<String>(containerList);
     }
 
@@ -932,10 +932,10 @@ public class ContainerService {
 
         List<String> objectList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
-            // Convert list on the string into sequence
+            // Convert list received as String to array
             objectList = Arrays.asList(response.getBody().split("\\r?\\n"));
         }
-        // Convert sequence into list and return
+        // Convert the array to list and return it
         return new ArrayList<String>(objectList);
     }
 
@@ -1047,7 +1047,7 @@ X-Container-Object-Retention: {Life cycle of objects in container}
 X-History-Location: {Container to store the previous object version}
 X-Versions-Retention: {Life cycle of the previous object version}
 X-Container-Meta-Web-Index: {Static website index document object}
-X-Container-Meta-Web-Error: {Static website error document object prefix}
+X-Container-Meta-Web-Error: {Static website error document object suffix}
 ```
 
 #### Request
@@ -1055,14 +1055,14 @@ This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | Toekn ID |
+| X-Auth-Token | Header | String | O | Token ID |
 | X-Container-Read | Header | String | - | Sets the access rules for container read |
 | X-Container-Write | Header | String | - | Sets the access rules for container write |
 | X-Container-Object-Retention | Header | Integer | - | Sets the life cycle of the container's base object in days |
 | X-History-Location | Header | String | - | Sets the container to store the previous version of the object |
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
-| X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object |
-| X-Container-Meta-Web-Error | Header | String | - | Sets the static website error document object prefix |
+| X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
+| X-Container-Meta-Web-Error | Header | String | - | Sets the static website error document object suffix<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
 | Container | URL | String | O | The name of the container to edit |
 <br/>
@@ -1090,12 +1090,17 @@ If you delete an object from a container where version control policy is already
 With the `X-Versions-Retention` header, you can set the life cycle of a previous object version in days. If set to 1, the stored object will be automatically deleted after a day. If not set, the previous object version will be stored until users delete it. This applies only to previous object versions uploaded after the setting has been applied.
 
 > [Cautions]
-> If the version control policy has been set up, you must not delete the archive container before the original container. An error may occur as objects in the original container cannot save previous versions in the archive container during updates or deletion. If an error occurs because the archive container was deleted before the original container, create a new archive container or disable the version control policy of the original container.
+> If the version control policy has been set up, you must not delete the archive container before the original container. An error may occur because the previous versions cannot be stored in the archive container when updating or deleting the objects in the original container. If an error occurs because the archive container was deleted before the original container, create a new archive container or disable the version control policy of the original container.
+>
+> It is recommended that you avoid using Unicode characters in container names for archive containers. If the name of the container to set as an archive container contains Unicode characters, it must be URL-encoded and entered in the request header.
+>
 
 <br/>
 
 ##### Set Static Website
 You can use container URLs to host a static website if you set static website index document and error document using the `X-Container-Meta-Web-Index` and `X-Container-Meta-Web-Error` header after allowing containers read access to all users.
+
+The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters, or some special character (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` extension. If the conditions are not met, you may not be able to set it up or your static website may not work.
 
 The name of a static website's error document is in the form of `{error code}{suffix}`, and you must enter a `suffix` to the header. For example, if you requested `X-Container-Meta-Web-Error: error.html`, the name of the error document to be displayed when the 404 error occurs is `404error.html`. An error document can be flexibly uploaded and used according to the context of each error. If you did not define any error document or there is no error document object that fits the error code, the default error document of the web browser will be displayed.
 <br/>
@@ -1148,7 +1153,7 @@ public class ContainerService {
         // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Container-Read", permission);    // Add authority to header
+        headers.add("X-Container-Read", permission);    // Add permission to header
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
@@ -1213,7 +1218,7 @@ class Container {
 
     $permission = $is_public ? self::PUBLIC_ACL : self::PRIVATE_ACL;
     $req_header = $this->get_request_header();
-    $req_header[] = 'X-Container-Read: ' . $permission;  // Add authority to header
+    $req_header[] = 'X-Container-Read: ' . $permission;  // Add permission to header
 
     $curl  = curl_init($req_url);
     curl_setopt_array($curl, array(
@@ -1466,7 +1471,7 @@ public class ObjectService {
             }
         };
 
-        // Set to enable the override RequestCallback
+        // Set to enable the overridden RequestCallback
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setBufferRequestBody(false);
         RestTemplate restTemplate = new RestTemplate(requestFactory);
@@ -2069,11 +2074,11 @@ public class ObjectService {
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call API, with data received as byte sequence
+        // Call API, data is received as byte array
         ResponseEntity<byte[]> response
             = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, byte[].class);
 
-        // Create byte sequence data as InputStream to be returned
+        // Create InputStream from byte array data and return it
         return new ByteArrayInputStream(response.getBody());
     }
 
