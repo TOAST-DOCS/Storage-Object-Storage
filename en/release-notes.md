@@ -2,14 +2,14 @@
 
 ### 2021. 02. 23.
 * Container settings improved
-  * Feature improved to allow setting access policy, object life cycle, version control policy, state website, etc. in container unit
+    * Feature improved to allow setting access policy, object life cycle, version control policy, state website, etc. in container unit
 
 
 ### November 24, 2020
 
 #### Feature Updates
 * Prefix search
-  * Searches containers, folders, or objects that begin with the typed-in prefix
+    * Searches containers, folders, or objects that begin with the typed-in prefix
 
 ### Feburary 25, 2020
 
@@ -33,7 +33,7 @@
 #### Feature Updates
 
 * Specifies the size of uploadable files
-	* Up to 5GB can be uploaded.
+    * Up to 5GB can be uploaded.
 
 ### Dec. 22, 2016
 
