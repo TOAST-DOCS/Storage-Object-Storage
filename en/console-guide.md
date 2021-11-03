@@ -71,11 +71,11 @@ Change settings of a selected container.
   <tr>
     <td rowspan="5">Static Website Settings</td>
     <td>Index Document</td>
-    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.</td>
+    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) can be entered.</td>
   </tr>
   <tr>
     <td>Error Document</td>
-    <td>Enter the (suffix)of an error document from a static website.Folder path cannot be included in the suffix of the error document.</td>
+    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) can be entered.</td>
   </tr>
 </table>
 
@@ -85,13 +85,13 @@ Change settings of a selected container.
 <br/>
 
 > [Note]
-> If the access policy of a container is set to **PUBLIC** and index document and error document are entered, it becomes possible to host static websites in a container.
-URL of static websites can be obtained by clicking the `Copy URL` button on the container list.
-
-<br/>
-
-> [Note]
-> Error documents of static websites are named in the form of `{error code}{suffix}.` For example, an error document is set as `error.html,` the name of the error document will be displayed as `404error.html` when 404 error occurs. You can upload and use error documents according to each error conditions. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
+> If the access policy of a container is set to **PUBLIC** and index document and error document are entered, it becomes possible to host a static website in a container.
+>
+> The URL of a static website can be obtained by clicking the `Copy URL` button on the container list.
+>
+> The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters, or some special character (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` extension. If the conditions are not met, you may not be able to set it up or your static website may not work.
+>
+> Error documents of a static website are named in the form of `{error code}{suffix}`. For example, if an error document is set as `error.html,` the name of the error document will be displayed as `404error.html` when 404 error occurs. You can upload and use error documents according to each error conditions. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
 
 
 ## Objects
