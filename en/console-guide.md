@@ -1,7 +1,7 @@
 ## Storage > Object Storage > Console Guide
 
 ## Container
-### Container Generation
+### Create Container
 Creates containers. Uploading objects in an object storage requires one or more containers.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
@@ -26,13 +26,13 @@ Creates containers. Uploading objects in an object storage requires one or more 
   </tr>  
 </table>
 
-### Deleting Container
+### Delete Container
 Delete selected containers. Check if the containers are empty before deleting them. If any objects are left inside a container, you cannot delete the relevant container.
 
 ### Container Details
 Check detailed information of selected container. Information including basic information and settings of a container are available.
 
-### Container settings
+### Container Settings
 Change settings of a selected container.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
@@ -71,11 +71,11 @@ Change settings of a selected container.
   <tr>
     <td rowspan="5">Static Website Settings</td>
     <td>Index Document</td>
-    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) can be entered.</td>
+    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
   </tr>
   <tr>
     <td>Error Document</td>
-    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) can be entered.</td>
+    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
   </tr>
 </table>
 
@@ -94,7 +94,7 @@ Change settings of a selected container.
 > Error documents of a static website are named in the form of `{error code}{suffix}`. For example, if an error document is set as `error.html,` the name of the error document will be displayed as `404error.html` when 404 error occurs. You can upload and use error documents according to each error conditions. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
 
 
-## Objects
+## Object
 ### Create Folder
 Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 256 letters in English or 85 characters in Korean.
 > [Note]
@@ -107,7 +107,7 @@ Delete folders. Check if the folders are empty before deleting them. If any obje
 All objects must be uploaded to containers. One object cannot be larger than 5GB.
 
 > [Note]
-> Files exceeding 5GB cannot be uploaded in a web console. Objects exceeding 5GB must be split by using commands, like  `split`, or programmed to be divided into less than 5GB before uploaded. Fore more details, refer to [Upload Multiple Parts](api-guide/#_10) of API guide.
+> Files exceeding 5GB cannot be uploaded in a web console. Objects exceeding 5GB must be split by using commands, like `split`, or programmed to be divided into less than 5GB before uploaded. Fore more details, refer to [Upload Multiple Parts](api-guide/#_10) of API guide.
 
 ### Download Objects
 Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the `Copy URL` button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
@@ -138,11 +138,14 @@ Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 
 
 ### Copy Objects
-Copy objects to create  new objects. Create an object under a new name to the container which has an object to copy, or copy objects to another container.
+Copy objects to create new objects. Create an object with a new name in the container which has an object to copy, or copy objects to another container.
 
+> [Note]
+> The maximum length of the path that can be entered depends on the length of the object name. The length of the path to copy plus the object name must be 1024 bytes or less.
+> `{Maximum length of the path} = 1024 - {Length of the object name} - 1`
 
 ### Delete Objects
 Delete selected objects.
 
 ## Search Prefix
-If you enter a prefix in the search bar and click the **Search**  button, you can see the search results of containers, folders, and objects that begin with the typed-in prefix. In the container list, you can search for containers, and in the object list, you can search for folders and objects.
+If you enter a prefix in the search bar and click the **Search** button, you can see the search results of containers, folders, and objects that begin with the typed-in prefix. In the container list, you can search for containers, and in the object list, you can search for folders and objects.
