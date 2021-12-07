@@ -4,7 +4,7 @@
 
 #### Feature Updates
 * Changed the limitation rule for characters that can be entered when setting up a static website
-    * Up to 1024 bytes, only alphanumeric characters and some special characters (-, _, ., /) allowed
+    * Up to 256 bytes, only alphanumeric characters and some special characters (-, _, ., /) allowed
 * Changed the input restriction rule applied when copying objects
     * A path including subfolders can be entered
     * {Maximum length of the path} = 1024 - {Length of the object name} - 1
