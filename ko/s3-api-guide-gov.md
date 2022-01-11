@@ -31,9 +31,9 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 ## S3 API 자격 증명(S3 API Credential)
 
 ### S3 API 자격 증명 발급
-Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급 받아야 합니다. 자격 증명은 API를 이용해 발급 받을 수 있습니다.
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급받아야 합니다. 자격 증명은 API를 이용해 발급받을 수 있습니다.
 
-API를 이용해 자격 증명을 발급 받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide-gov/#tenant-id-api-endpoint)를 참조하세요.
+API를 이용해 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide-gov/#tenant-id-api-endpoint)를 참조하세요.
 
 ```
 POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-uuid}/credentials/OS-EC2
@@ -57,7 +57,7 @@ X-Auth-Token: {token-id}
 > S3 API 자격 증명은 유효 기간이 없습니다.
 >
 > [주의]
-> S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 이용해 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급 받아 사용하는 것을 권장합니다.
+> S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 이용해 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급받아 사용하는 것을 권장합니다.
 
 
 <details>
@@ -96,7 +96,7 @@ X-Auth-Token: {token-id}
 </details>
 
 ### S3 API 자격 증명 조회
-발급 받은 S3 API 자격 증명을 조회합니다.
+발급받은 S3 API 자격 증명을 조회합니다.
 
 **[Method, URL]**
 ```
@@ -139,7 +139,7 @@ X-Auth-Token: {token-id}
 </details>
 
 ### S3 API 자격 증명 삭제
-발급 받은 S3 API 자격 증명을 삭제합니다.
+발급받은 S3 API 자격 증명을 삭제합니다.
 
 **[Method, URL]**
 ```
