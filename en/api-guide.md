@@ -1392,7 +1392,7 @@ $container->delete($CONTAINER_NAME);
 ## Objects
 
 ### Upload Object
-Uploads new objects to a specified container.
+Uploads a new object to the specified container.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1619,12 +1619,12 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 ### Upload Multiple Parts
-Objects whose capacity exceeds 5GB need to be segmented into smaller objects of 5GB or smaller before uploading them. If you upload segmented objects and create a manifest object, you can use them as if they are a single object.
+An object whose size exceeds 5GB needs to be divided into segments of 5GB or smaller before uploading. If you upload segment objects and create a manifest object, you can use them as if they are a single object.
 
 <br/>
 
-#### Upload Segmented Objects
-Uploads each segmented object.
+#### Upload Segment Objects
+Uploads each of the segment objects generated from the object.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}/{Count}
@@ -1643,8 +1643,8 @@ Content-Type: {content-type}
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container |	URL | String | O | Container name |
 | Object |	URL | String | O | Name of object to create |
-| Count | URL | Integer | O | Sequence of segmented objects, e.g.) 001, 002 |
-| - |	Body | Binary | O | Data content of the segmented object |
+| Count | URL | Integer | O | Sequence of segment objects, e.g.) 001, 002 |
+| - |	Body | Binary | O | Data content of the segment object |
 
 <br/>
 
@@ -1657,10 +1657,10 @@ This API does not return a request body. For a valid request, return status code
 A manifest object can be created in two ways: either using **DLO**(Dynamic Large Object) or **SLO**(Static Large Object).
 
 > [Note]
-> Because a manifest object has path information for segmented objects, there is no need to upload segmented objects and the manifest object in the same container. If segmented objects and manifest object are in a single container, so it is difficult to manage them, it is recommended to upload segmented objects to a separate container and keep only the manifest object in the upload-intended container.
+> Because a manifest object has path information for segment objects, there is no need to upload segment objects and the manifest object in the same container. If segment objects and manifest object are in a single container, so it is difficult to manage them, it is recommended to upload segment objects to a separate container and keep only the manifest object in the upload-intended container.
 
 **DLO**
-The DLO manifest object uses the path to the segmented objects entered in the `X-Object-Manifest` header to automatically find and connect segmented objects.
+The DLO manifest object uses the path to the segment objects entered in the `X-Object-Manifest` header to automatically find and connect segment objects.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1674,7 +1674,7 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | Token ID |
-| X-Object-Manifest | Header| String | O | The path where segmented objects are uploaded: `{Segment-Container}/{Segment-Object}/` |
+| X-Object-Manifest | Header| String | O | The path where segment objects are uploaded: `{Segment-Container}/{Segment-Object}/` |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container |	URL | String | O | Container name |
 | Object |	URL | String | O | Name of the manifest object to create |
@@ -1683,7 +1683,7 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}
 <br/>
 
 **SLO**
-When you request an SLO manifest object, you must write segmented object list in order in the request body text. If you request to create an SLO manifest object, the system checks if each segmented object is in the entered path and if the etag value and the size of the object are identical. If the information does not match, the manifest object creation fails.
+When you request an SLO manifest object, you must write segment object list in order in the request body text. If you request to create an SLO manifest object, the system checks if each segment object is in the entered path and if the etag value and the size of the object are identical. If the information does not match, the manifest object creation fails.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}?multipart-manifest=put
@@ -1715,9 +1715,9 @@ X-Auth-Token: {token-id}
 | Container |	URL | String | O | Container name |
 | Object |	URL | String | O | Name of the manifest object to create |
 | multipart-manifest | Query| String | O | put |
-| path | Body | String | O | Path to segmented objects |
-| etag | Body | String | O | etag of segmented objects |
-| size_bytes | Body | Integer | O | Size of segmented objects (in bytes) |
+| path | Body | String | O | Path to segment objects |
+| etag | Body | String | O | etag of segment objects |
+| size_bytes | Body | Integer | O | Size of segment objects (in bytes) |
 
 > [Note]
 > To retrieve the segment information held by SLO manifest file, you must use the `multipart-manifest=get` query.
@@ -1739,7 +1739,7 @@ Example of multipart uploading using the DLO method
 // Segment file by 200MB
 $ split -d -b 209715200 large_obj.img large_obj.img.
 
-// Upload segmented object
+// Upload segment object
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
 -T large_obj.img.00
@@ -1804,7 +1804,7 @@ public class ObjectService {
 
         final int defaultChunkSize = 100 * 1024; // Segment by 100 KB
         int chunkSize = defaultChunkSize;
-        int chunkNo = 0;  // Chunk number to create names for segmented objects  
+        int chunkNo = 0;  // Chunk number to create names for segment objects  
         int totalBytesRead = 0;
 
         try {
@@ -1992,7 +1992,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 <br/>
 
 ### Update Object
-Same as Upload Object API, but if object is already located in the container, the content of the object is updated.
+Same as Upload Object API, but if the object is already located in the container, the content of the object is updated.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -2019,7 +2019,7 @@ This API does not return a response body. For a valid request, return status cod
 <br/>
 
 ### Download Object
-Downloads objects.
+Downloads an object.
 
 ```
 GET   /v1/{Account}/{Container}/{Object}
@@ -2195,10 +2195,10 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 ### Copy Object
-Copies object to another container.
+Copies an object to another container.
 
 > [Note]
-> If you create a manifest object in the target container, the object uploaded in multiple parts can be accessed through the path to the target container without having to copy segmented objects. However, you cannot access the data if you delete the source segmented objects.
+> If you create a manifest object in the target container, the object uploaded in multiple parts can be accessed through the path to the target container without having to copy segment objects. However, you cannot access the data if you delete the source segment objects.
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
@@ -2362,7 +2362,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 <br/>
 
 ### Modify Object Metadata
-Modify metadata of a specified object.
+Modify metadata of the specified object.
 
 ```
 POST   /v1/{Account}/{Container}/{Object}
@@ -2526,10 +2526,10 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 <br/>
 
 ### Delete Object
-Deletes specified object.
+Deletes a specified object.
 
 > [Note]
-> When deleting an object that was uploaded in multiple parts, you need to delete all segmented data. If you delete only the manifest, the segmented objects remain in place and you may be charged for them.
+> When deleting an object that was uploaded in multiple parts, you need to delete all segmented data. If you delete only the manifest, the segment objects remain in place and you may be charged for them.
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}

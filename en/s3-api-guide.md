@@ -313,7 +313,7 @@ This API does not require a request body.
 
 ### Get Bucket
 
-Retrieves the information of a specified bucket and the list of objects that are stored in the bucket.
+Retrieves the information of the specified bucket and the list of objects that are stored in the bucket.
 
 ```
 GET /{bucket}
