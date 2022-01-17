@@ -624,7 +624,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 
 > [参考]
-> AWSコマンドラインインターフェイスはAWSを使用するために提供されるツールのため、AWSドメインを使用するように設定されています。したがってTAOSTオブジェクトストレージを使用するには必ずコマンドごとにエンドポイントを指定する必要があります。
+> AWSコマンドラインインターフェイスはAWSを使用するために提供されるツールのため、AWSドメインを使用するように設定されています。したがってNHN Cloudオブジェクトストレージを使用するには必ずコマンドごとにエンドポイントを指定する必要があります。
 > AWSコマンドラインインターフェイスコマンドは[AWS CLIで高レベル(s3)コマンド使用](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html)文書を参照してください。
 
 <details>
