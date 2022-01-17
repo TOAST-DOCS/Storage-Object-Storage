@@ -631,7 +631,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 
 > [참고]
-> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 TAOST 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
+> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 NHN Cloud 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
 > AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
 
 <details>
