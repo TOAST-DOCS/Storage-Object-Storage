@@ -103,13 +103,13 @@ Create folders. Folders are virtual units to bundle objects within a container i
 ### Delete Folder
 Delete folders. Check if the folders are empty before deleting them. If any objects are left inside a folder, you cannot delete the relevant folder.
 
-### Upload Objects
+### Upload Object
 All objects must be uploaded to containers. One object cannot be larger than 5GB.
 
 > [Note]
 > Files exceeding 5GB cannot be uploaded in a web console. Objects exceeding 5GB must be split by using commands, like `split`, or programmed to be divided into less than 5GB before uploaded. Fore more details, refer to [Upload Multiple Parts](api-guide/#_10) of API guide.
 
-### Download Objects
+### Download Object
 Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the `Copy URL` button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
 
 <details style="padding-top: 15px; padding-bottom: 10px;">
@@ -137,15 +137,22 @@ Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 </details>
 
 
-### Copy Objects
+### Copy Object
 Copy objects to create new objects. Create an object with a new name in the container which has an object to copy, or copy objects to another container.
 
 > [Note]
 > The maximum length of the path that can be entered depends on the length of the object name. The length of the path to copy plus the object name must be 1024 bytes or less.
 > `{Maximum length of the path} = 1024 - {Length of the object name} - 1`
 
-### Delete Objects
-Delete selected objects.
+### Delete Object
+Delete selected objects. When a multipart object is deleted, the segment object is also deleted.
 
-## Search Prefix
-If you enter a prefix in the search bar and click the **Search** button, you can see the search results of containers, folders, and objects that begin with the typed-in prefix. In the container list, you can search for containers, and in the object list, you can search for folders and objects.
+## Prefix Search
+If you enter a prefix in the search bar and click the **Search** button, you can search for containers, folders, and objects that begin with the prefix you entered. You can search for containers in the container list, and search for folders and objects in the object list.
+
+## S3 API Credentials
+You can obtain credentials required to use Amazon S3 compatible API. S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
+
+> [Caution]
+> If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, it is recommended to delete the leaked credentials and obtain a new one.
+>
