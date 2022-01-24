@@ -2,33 +2,33 @@
 
 ## Prerequisites
 
-To enable object storage API, an authentication token must be issued first. Authentication token is required to use REST API of object storage: it is a must to access container or object which is not open to public. Tokens are managed by each NHN Cloud account.
+To use the Object Storage API, you must obtain an authentication token first. An authentication token is the authentication key required when using the REST API of Object Storage. A token is required to access a container or object that is not publicly available. Tokens are managed per NHN Cloud account.
 
 <br/>
 
 ### Check Tenant ID and API Endpoint
 
-Click **API Endpoint Setting** on the object storage service page to check tenant ID and API endpoint to issue a token.
+Click **API Endpoint Setting** on the Object Storage service page to check the tenant ID and API endpoint to issue a token.
 
 | Item | API Endpoint | Usage |
 |---|---|---|
-| Identity | https://api-identity.infrastructure.cloud.toast.com/v2.0 | Issue certificate token |
+| Identity | https://api-identity.infrastructure.cloud.toast.com/v2.0 | Issue authentication token |
 | Object-Store | https://api-storage.cloud.toast.com/v1/AUTH_***** | Control object storage: depends on each region  |
-| Tenant ID | Character strings composed of 32 characters in combination of numbers and alphabets | Issue certificate token  |
+| Tenant ID | A string in 32 characters consisting of numbers and alphabets | Issue authentication token  |
 
 <br/>
 
 ### Set API Password
 
-To set API password, go to the object storage service page and click **API Endpoint Setting**.
+To set the API password, go to the Object Storage service page and click **API Endpoint Setting**.
 
 1. Click **API Endpoint Setting**.
-2. Go to **API Password Setting** under **API Endpoint Setting** and enter password to issue a token.
+2. In the **Set API Password** input box under **API Endpoint Setting**, enter the password to use when issuing a token.
 3. Click **Save**.
 
 <br/>
 
-## Certificate Token Issuance
+## Authentication Token Issuance
 
 ```
 POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens
@@ -39,9 +39,9 @@ Content-Type: application/json
 
 | Name  | Type | Format | Required | Description |
 |---|---|---|---|---|
-| tenantId | Body | String | O | Tenant ID, to be found on the setup box for API Endpoint |
+| tenantId | Body | String | O | Tenant ID, which can be found in the API Endpoint setting dialog box |
 | username | Body | String | O | Enter User ID (email or IAM ID) of NHN Cloud |
-| password | Body | String | O | Password saved on the setup box for API Endpoint  |
+| password | Body | String | O | Password saved on the API Endpoint setting dialog box |
 
 <details>
 <summary>Example</summary>
@@ -64,12 +64,12 @@ Content-Type: application/json
 | Name | Type | Format | Description |
 |---|---|---|---|
 | access.token.id | Body | String |	ID of issued token |
-| access.token.tenant.id | Body | String | Tenant ID of a project requesting for token |
+| access.token.tenant.id | Body | String | Tenant ID corresponding to the project requesting the token |
 | access.token.expires | Body | String | Expiration time of issued token <br/> in the YYYY-MM-DDThh:mm:ssZ format. e.g.) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | A User UUID composed of 32 digits of hexadecimal numbers without being interrupted by dashes<br/>receiving the EC2 qualification certification to use S3-compatible API, or using it for access policy setup |
+| access.user.id | Body | String | A User UUID composed of 32 digits of hexadecimal numbers without dashes<br/>Used to obtain EC2 credentials to use S3 compatible API or to set access policies |
 
 > [Caution]
-> A token includes expiration. The 'expires' item included in the reponse to request for token issuance refers to token expiration time. When a token is expired, a new token must be issued.  
+> A token has expiration time. The 'expires' item included in the response to the request for token issuance refers to expiration time of the issued token. When a token expires, a new token must be issued.  
 
 <details>
 <summary>Example</summary>
@@ -202,7 +202,7 @@ public class AuthService {
         HttpEntity<TokenRequest> httpEntity
             = new HttpEntity<TokenRequest>(this.tokenRequest, headers);
 
-        // Request for token
+        // Request token
         ResponseEntity<String> response
             = this.restTemplate.exchange(identityUrl, HttpMethod.POST, httpEntity, String.class);
 
@@ -312,7 +312,7 @@ printf("%s\n", $token);
 A storage account is a character string in the `AUTH_*****`format, included in the Object-Store API endpoint.
 
 ### Query Storage Account
-Query usage status of a storage account.
+Retrieves usage status of a storage account.
 
 ```
 HEAD  /v1/{Account}
@@ -504,7 +504,7 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 <br/>
 
 ### List Containers
-List containers of a storage account.
+Lists containers of a storage account.
 
 ```
 GET  /v1/{Account}
@@ -652,11 +652,14 @@ foreach($container_list as $container){
 
 ## Containers
 
-### Create
-Create a container. To upload files to object storage, a container must be created.
+### Create Container
+Creates a container. To upload files to object storage, a container must be created.
+
+> [Caution]
+> A container name cannot include the special characters `' " < > ;`,spaces, and relative path characters (`. ..`).
 
 > [Note]
-> If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL encoded (percent-encoding). These are reserved characters that are considered important for URL. Unless the paths including the characters are encoded before sending an API request, you may not receive response as needed.
+> If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL-encoded (percent-encoding). These are reserved characters that are considered important for URL. If you send an API request without URL-encoding a path including these characters, you won't get the desired response.
 
 ```
 PUT  /v1/{Account}/{Container}
@@ -669,7 +672,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | Name of container to be created  |
 
 #### Response
@@ -839,8 +842,8 @@ $container->create($CONTAINER_NAME);
 
 <br/>
 
-### Get
-Views the information of the specified containers and the list of the objects stored inside. The container's information can be viewed in the response header.
+### Get Container
+Retrieves the information of the specified container and the list of the objects stored in the container. The container's information can be viewed in the response header.
 
 ```
 GET   /v1/{Account}/{Container}
@@ -853,33 +856,33 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | Container name to get |
 | marker | Query | String | - | Name of base object |
-| path | Query | String | - | Name of the folder to view |
+| path | Query | String | - | Name of the folder to retrieve |
 | prefix | Query | String | - | Prefix to search |
 | limit | Query | Integer | - | The number of objects to display in the list |
 
 > [Note]
-> View Container API provides a number of queries. Each query can be conjoined using `&`.
+> Get Container API provides a number of queries. Each query can be concatenated using `&`.
 
-#### View the list of more than 10,000 objects
-The number of objects that can be viewed using View Container API is restricted to 10,000. If you want to view more than 10,000 objects, you need to use the `marker` query. The marker query returns up to 10,000 additional objects, starting from the object next to the specified object.
-
-<br/>
-
-#### View the list of objects in folders
-If you're using multiple folders in a container, use the `path` query to view the list of objects per folder. Please note that the path query cannot view any objects in sub folders.
+#### Listing More Than 10,000 Objects
+The number of objects that can be retrieved using Get Container API is limited to 10,000. If you want to retrieve more than 10,000 objects, you need to use the `marker` query. The marker query returns up to 10,000 additional objects, starting from the next object of the specified object.
 
 <br/>
 
-#### Search the list of objects starting with a prefix
-If the `prefix` query is used, the list of objects that start with the specified prefix is returned. Unlike path query, this query can be used to view the list of objects in sub folders.
+#### Listing Objects by Folder
+If you're using multiple folders in a container, use the `path` query to retrieve the list of objects per folder. Note that the path query cannot retrieve any objects in subfolders.
 
 <br/>
 
-#### Specify the maximum number of objects in the list
-With the `limit` query, you can specify the maximum number of objects in the list of objects to be returned.
+#### Listing Objects Starting with a Prefix
+Using the `prefix` query returns the list of objects that start with the specified prefix. Unlike path query, this query can be used to retrieve the list of objects in subfolders.
+
+<br/>
+
+#### Specifying the Maximum Number of Objects in The List
+Using the `limit` query allows you to specify the maximum number of objects in the list of objects to be returned.
 
 <br/>
 
@@ -1034,9 +1037,9 @@ foreach ($object_list as $obj){
 
 <br/>
 
-### Changes the container settings
+### Change Container Settings
 
-Changes the container settings. The container settings can be found in the response header when viewing containers.
+Changes the container settings. The container settings can be found in the response header when retrieving the container.
 
 ```
 POST  /v1/{Account}/{Container}
@@ -1063,12 +1066,12 @@ This API does not require a request body.
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
 | X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | X-Container-Meta-Web-Error | Header | String | - | Sets the static website error document object suffix<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | The name of the container to edit |
 <br/>
 
 ##### Set Access Policy
-You can set the container access policy using the `X-Container-Read` and `X-Container-Write` header. For more details, refer to [Guide to setting up access policy](/Storage/Object%20Storage/ko/acl-guide/).
+You can set the container access policy using the `X-Container-Read` and `X-Container-Write` header. For more details, refer to [Guide to setting up access policy](/Storage/Object%20Storage/en/acl-guide/).
 
 <br/>
 
@@ -1077,7 +1080,7 @@ With the `X-Container-Object-Retention` header, you can set the life cycle of th
 <br/>
 
 ##### Set Version Control Policy
-If there are duplicate object names while uploading objects as described in the [Object Content Modification](/api-guide/#_67), update the objects. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
+As described in the [Update Object](/api-guide/#update-object), If there are duplicate object names while uploading objects, the objects are updated. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
 
 The previous version of objects are stored in the archive container in the following manner:
 ```
@@ -1248,9 +1251,9 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 
 <br/>
 
-### Delete
+### Delete Container
 
-Delete specified containers. To be deleted, containers must be empty.
+Deletes the specified container. The container to be deleted must be empty.
 
 ```
 DELETE   /v1/{Account}/{Container}
@@ -1263,11 +1266,11 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
-| Container | URL| String |	O | Container name to delete |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
+| Container | URL| String |	O | Name of the container to delete |
 
 #### Response
-This request does not return a response body. For a valid request, return status code 204.
+This request does not return a response body. For a valid request, status code 204 is returned.
 
 <br/>
 
@@ -1388,8 +1391,8 @@ $container->delete($CONTAINER_NAME);
 
 ## Objects
 
-### Upload
-Upload new objects to a specified container.
+### Upload Object
+Uploads a new object to the specified container.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1405,13 +1408,13 @@ Content-Type: {content-type}
 | Content-type | Header | String | O | Content type of object |
 | X-Delete-At | Header | Timestamp | - | Unix time (seconds) to delete object |
 | X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container |	URL | String | O | Container name  |
-| Object | URL | String |	O | Object name to create |
+| Object | URL | String |	O | Name of object to create |
 | - |	Body | Binary | O | Data content of the object to create |
 
 
-##### Set Object Life Cycle
+##### Setting Object Life Cycle
 If you use either the `X-Delete-At` or `X-Delete-After` header, you can set the life cycle of an object in seconds.
 <br/>
 
@@ -1616,12 +1619,12 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 ### Upload Multiple Parts
-Objects whose capacity exceeds 5GB need to be segmented into smaller objects of 5GB or smaller before uploading them. If you upload segmented objects and create a manifest object, you can use them as if they are a single object.
+An object whose size exceeds 5GB needs to be divided into segments of 5GB or smaller before uploading. If you upload segment objects and create a manifest object, you can use them as if they are a single object.
 
 <br/>
 
-#### Upload Segmented Objects
-Upload each segmented object.
+#### Upload Segment Objects
+Uploads each of the segment objects generated from the object.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}/{Count}
@@ -1637,11 +1640,11 @@ Content-Type: {content-type}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Content-type | Header | String | O | Content type of object |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container |	URL | String | O | Container name |
-| Object |	URL | String | O | Object name to create |
-| Count | URL | Integer | O | Sequence of segmented objects, e.g.) 001, 002 |
-| - |	Body | Binary | O | Data content of the segmented object |
+| Object |	URL | String | O | Name of object to create |
+| Count | URL | Integer | O | Sequence of segment objects, e.g.) 001, 002 |
+| - |	Body | Binary | O | Data content of the segment object |
 
 <br/>
 
@@ -1654,10 +1657,10 @@ This API does not return a request body. For a valid request, return status code
 A manifest object can be created in two ways: either using **DLO**(Dynamic Large Object) or **SLO**(Static Large Object).
 
 > [Note]
-> Because a manifest object has path information for segmented objects, there is no need to upload segmented objects and the manifest object in the same container. If segmented objects and manifest object are in a single container, so it is difficult to manage them, it is recommended to upload segmented objects to a separate container and keep only the manifest object in the upload-intended container.
+> Because a manifest object has path information for segment objects, there is no need to upload segment objects and the manifest object in the same container. If segment objects and manifest object are in a single container, so it is difficult to manage them, it is recommended to upload segment objects to a separate container and keep only the manifest object in the upload-intended container.
 
 **DLO**
-The DLO manifest object uses the path to the segmented objects entered in the `X-Object-Manifest` header to automatically find and connect segmented objects.
+The DLO manifest object uses the path to the segment objects entered in the `X-Object-Manifest` header to automatically find and connect segment objects.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -1671,16 +1674,16 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | Token ID |
-| X-Object-Manifest | Header| String | O | The path where segmented objects are uploaded: `{Segment-Container}/{Segment-Object}/` |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| X-Object-Manifest | Header| String | O | The path where segment objects are uploaded: `{Segment-Container}/{Segment-Object}/` |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container |	URL | String | O | Container name |
-| Object |	URL | String | O | Manifest object name to create |
+| Object |	URL | String | O | Name of the manifest object to create |
 | - | Body| Binary | O | Empty data |
 
 <br/>
 
 **SLO**
-When you request an SLO manifest object, you must write segmented object list in order in the request body text. If you request to create an SLO manifest object, the system checks if each segmented object is in the entered path and if the etag value and the size of the object are identical. If the information does not match, the manifest object creation fails.
+When you request an SLO manifest object, you must write segment object list in order in the request body text. If you request to create an SLO manifest object, the system checks if each segment object is in the entered path and if the etag value and the size of the object are identical. If the information does not match, the manifest object creation fails.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}?multipart-manifest=put
@@ -1708,16 +1711,16 @@ X-Auth-Token: {token-id}
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | Token ID |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container |	URL | String | O | Container name |
 | Object |	URL | String | O | Name of the manifest object to create |
 | multipart-manifest | Query| String | O | put |
-| path | Body | String | O | Path to segmented objects |
-| etag | Body | String | O | etag of segmented objects |
-| size_bytes | Body | Integer | O | Size of segmented objects (in bytes) |
+| path | Body | String | O | Path to segment objects |
+| etag | Body | String | O | etag of segment objects |
+| size_bytes | Body | Integer | O | Size of segment objects (in bytes) |
 
 > [Note]
-> To view the segment information held by SLO manifest file, you must use the `multipart-manifest=get` query.
+> To retrieve the segment information held by SLO manifest file, you must use the `multipart-manifest=get` query.
 
 <br/>
 
@@ -1736,7 +1739,7 @@ Example of multipart uploading using the DLO method
 // Segment file by 200MB
 $ split -d -b 209715200 large_obj.img large_obj.img.
 
-// Upload segmented object
+// Upload segment object
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
 -T large_obj.img.00
@@ -1801,7 +1804,7 @@ public class ObjectService {
 
         final int defaultChunkSize = 100 * 1024; // Segment by 100 KB
         int chunkSize = defaultChunkSize;
-        int chunkNo = 0;  // Chunk number to create names for segmented objects  
+        int chunkNo = 0;  // Chunk number to create names for segment objects  
         int totalBytesRead = 0;
 
         try {
@@ -1988,8 +1991,8 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <br/>
 
-### Update
-Same as Upload Object API, but if object is already located in the container, the content of the object is updated.
+### Update Object
+Same as Upload Object API, but if the object is already located in the container, the content of the object is updated.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -2006,7 +2009,7 @@ This API does not require a request body.
 | Content-type | Header | String | O | Content type of object |
 | X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
 | X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container |	URL | String | O | Container name |
 | Object | URL | String | O | Name of the object to be updated |
 
@@ -2015,8 +2018,8 @@ This API does not return a response body. For a valid request, return status cod
 
 <br/>
 
-### Download
-Download objects.
+### Download Object
+Downloads an object.
 
 ```
 GET   /v1/{Account}/{Container}/{Object}
@@ -2029,9 +2032,9 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container |	URL | String | O | Container name |
-| Object | URL | String | O | Object name to download |
+| Object | URL | String | O | Name of the object to download |
 
 #### Response
 Data content of the object is returned to stream. For a valid request, return status code 200.
@@ -2191,11 +2194,11 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
-### Copy
-Copy object to another container.
+### Copy Object
+Copies an object to another container.
 
 > [Note]
-> If you create a manifest object in the target container, the object uploaded in multiple parts can be accessed through the path to the target container without having to copy segmented objects. However, you cannot access the data if you delete the source segmented objects.
+> If you create a manifest object in the target container, the object uploaded in multiple parts can be accessed through the path to the target container without having to copy segment objects. However, you cannot access the data if you delete the source segment objects.
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
@@ -2217,9 +2220,9 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Destination | Header | String |	- | The target object to be copied (required when using the `{container}/{object}`<br/>COPY method) |
 | X-Copy-From | Header | String |	- | The source object (required when using the `{container}/{object}`<br/>PUT method) |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O |	Container name<br/>COPY Method: Original container<br/>PUT Method: Container to copy |
-| Object | URL | String |	Object name to copy |
+| Object | URL | String |	Name of the object to copy |
 
 #### Response
 This request does not return a response body. For a valid request, return status code 201.
@@ -2359,7 +2362,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 <br/>
 
 ### Modify Object Metadata
-Modify metadata of a specified object.
+Modify metadata of the specified object.
 
 ```
 POST   /v1/{Account}/{Container}/{Object}
@@ -2376,9 +2379,9 @@ This API does not require a request body.
 | X-Object-Meta-{Key} | Header | String | - | Metadata to change |
 | X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
 | X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL| String |	 O | Container name |
-| Object | URL| String |  O | Object name of which metadata is to be modified |
+| Object | URL| String |  O | Name of the object for which metadata is to be modified |
 
 #### Response
 This request does not return a response body. For a valid request, return status code 202.
@@ -2522,11 +2525,11 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 
 <br/>
 
-### Delete
-Delete specified object.
+### Delete Object
+Deletes a specified object.
 
 > [Note]
-> When deleting an object that was uploaded in multiple parts, you need to delete all segmented data. If you delete only the manifest, the segmented objects remain in place and you may be charged for them.
+> When deleting an object that was uploaded in multiple parts, you need to delete all segmented data. If you delete only the manifest, the segment objects remain in place and you may be charged for them.
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}
@@ -2539,9 +2542,9 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | See the storage account and API Endpoint settings dialog box |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL| String |	 O | Container name |
-| Object | URL| String |  O | Object name to delete |
+| Object | URL| String |  O | Name of the object to delete |
 
 #### Response
 This request does not return a response body. For a valid request, return status code 204.

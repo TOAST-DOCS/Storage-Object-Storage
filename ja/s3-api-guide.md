@@ -1,4 +1,4 @@
-## Storage > Object Storage > AWS S3互換APIガイド
+## Storage > Object Storage > Amazon S3互換APIガイド
 NHN CloudオブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
 
 提供するS3互換APIは次のとおりです。
@@ -26,12 +26,14 @@ NHN CloudオブジェクトストレージはAWSのオブジェクトストレ�
 | [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | アップロード進行中のマルチパートオブジェクトのパートオブジェクトリスト |
 | [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | マルチパートオブジェクトを削除 |
 
-この文書はAPI使用方法の基礎的な部分のみを説明します。高度な機能を使用するには[AWS S3 APIガイド](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)を参照するか、[AWS SDK](https://aws.amazon.com/jp/tools)を使用することを推奨します。
+この文書はAPI使用方法の基礎的な部分のみを説明します。高度な機能を使用するには[Amazon S3 APIガイド](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)を参照するか、[AWS SDK](https://aws.amazon.com/jp/tools)を使用することを推奨します。
 
-## EC2認証情報(EC2 Credential)
+## S3 API認証情報(S3 API Credential)
 
-### EC2認証情報を登録
-S3と互換性のあるAPIを使用するには、先にAWS EC2の形式の認証情報を登録する必要があります。認証情報を登録するには認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](/Storage/Object%20Storage/ja/api-guide/#tenant-id-api-endpoint)を参照してください。
+### S3 API認証情報の発行
+Amazon S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報を発行する必要があります。認証情報はWebコンソールまたはAPIを利用して発行できます。Webコンソールを利用した認証情報の発行は[S3 API認証情報](/Storage/Object%20Storage/ko/console-guide/#s3-api)項目を参照してください。
+
+APIを利用して認証情報を発行するには認証トークンが必要です。認証トークンの発行は[オブジェクトストレージAPIガイド](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)を参照してください。
 
 ```
 POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-uuid}/credentials/OS-EC2
@@ -51,6 +53,11 @@ X-Auth-Token: {token-id}
 > [参考]
 > ユーザーUUIDはNHN CloudユーザーIDではありません。認証トークン発行リクエストのレスポンス本文に含まれています。 (access.user.id)
 > APIガイドの[認証トークン発行](/Storage/Object%20Storage/ko/api-guide/#_2)項目を参照してください。
+> 
+> S3 API認証情報は有効期限がなく、ユーザーごとにプロジェクトあたり最大3個まで発行できます。
+>
+> [注意]
+> S3 API認証情報キーが漏洩すると、誰でも漏洩したキーを利用してオブジェクトにアクセスできます。キーが漏洩した場合は漏洩した認証情報を削除して、新しく発行して使用することを推奨します。
 
 <details>
 <summary>例</summary>
@@ -67,8 +74,8 @@ X-Auth-Token: {token-id}
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| access | Body | String | 認証情報アクセスキー |
-| secret | Body | String | 認証情報シークレットキー |
+| access | Body | String | S3 API認証情報アクセスキー |
+| secret | Body | String | S3 API認証情報シークレットキー |
 
 <details>
 <summary>例</summary>
@@ -87,8 +94,8 @@ X-Auth-Token: {token-id}
 
 </details>
 
-### EC2認証情報照会
-登録したEC2認証情報を照会します。
+### S3 API認証情報照会
+発行されたS3 API認証情報を照会します。
 
 **[Method, URL]**
 ```
@@ -146,7 +153,7 @@ X-Auth-Token: {token-id}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 発行されたトークンID |
 | user-id | URL | String | O | ユーザーID。認証トークンに含まれている |
-| access | URL | String | O | 認証情報アクセスキー |
+| access | URL | String | O | S3 API認証情報アクセスキー |
 
 #### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
@@ -167,7 +174,7 @@ S3 APIを使用するには、認証情報を利用して署名を作成する�
 
 ## バケット(Bucket)
 ### バケット作成
-バケット(コンテナ)を作成します。バケット名は次のようにAWS S3のバケット命名ルールに従う必要があります。
+バケット(コンテナ)を作成します。バケット名は次のようにAmazon S3のバケット命名ルールに従う必要があります。
 
 * バケット名は3文字から63文字にする必要があります。
 * バケット名は英字(小文字)、数字、ドット(.)およびハイフン(-)のみ使用できます。
@@ -194,7 +201,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|---|
 | bucket | URL | String | O | バケット名 |
 | Date | Header | String | O | リクエスト時刻 |
-| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
+| Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
 
@@ -246,7 +253,7 @@ Authorization: AWS {access}:{signature}
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | Date | Header | String | O | リクエスト時刻 |
-| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
+| Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
 
@@ -305,7 +312,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|---|
 | bucket | URL | String | O | バケット名 |
 | Date | Header | String | O | リクエスト時刻 |
-| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
+| Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
 
@@ -378,7 +385,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|---|
 | bucket | URL | String | O | バケット名 |
 | Date | Header | String | O | リクエスト時刻 |
-| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
+| Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
 
@@ -430,7 +437,7 @@ Authorization: AWS {access}:{signature}
 | bucket | URL | String | O | バケット名 |
 | obj | URL | String | O | オブジェクト名 |
 | Date | Header | String | O | リクエスト時刻 |
-| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
+| Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
 
@@ -485,7 +492,7 @@ Authorization: AWS {access}:{signature}
 | bucket | URL | String | O | バケット名 |
 | obj | URL | String | O | オブジェクト名 |
 | Date | Header | String | O | リクエスト時刻 |
-| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
+| Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
 
@@ -549,7 +556,7 @@ Authorization: AWS {access}:{signature}
 | bucket | URL | String | O | バケット名 |
 | obj | URL | String | O | オブジェクト名 |
 | Date | Header | String | O | リクエスト時刻 |
-| Authorization | Header | String | O | 認証情報アクセスキーと署名で構成 |
+| Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
 
@@ -594,7 +601,7 @@ $ sudo pip install awscli
 ```
 
 ### 設定
-AWSコマンドラインインターフェイスを使用するには、先に認証情報と環境を設定する必要があります。
+AWSコマンドラインインターフェイスを使用するには、先にS3 API認証情報と環境を設定する必要があります。
 
 ```
 $ aws configure
@@ -606,8 +613,8 @@ Default output format [None]: json
 
 | 名前 | 説明 |
 |---|---|
-| access | 認証情報アクセスキー |
-| secret | 認証情報シークレットキー |
+| access | S3 API認証情報アクセスキー |
+| secret | S3 API認証情報シークレットキー |
 | region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
 
 ### S3コマンド使用方法
@@ -712,8 +719,8 @@ AWS SDKを使用するために必要な主要パラメータは次のとおり�
 
 | 名前 | 説明 |
 |---|---|
-| access | 認証情報アクセスキー |
-| secret | 認証情報シークレットキー |
+| access | S3 API認証情報アクセスキー |
+| secret | S3 API認証情報シークレットキー |
 | region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
 | endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(坪村)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン | |
 

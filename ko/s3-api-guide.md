@@ -1,7 +1,7 @@
-## Storage > Object Storage > AWS S3 호환 API 가이드
-NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 AWS S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
+## Storage > Object Storage > Amazon S3 호환 API 가이드
+NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 Amazon S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
 
-제공하는 S3 호환 API는 다음과 같습니다.
+제공하는 Amazon S3 호환 API는 다음과 같습니다.
 
 | S3 API 메서드 | 용도 |
 | --- | --- |
@@ -26,12 +26,14 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 | [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 업로드 진행 중인 멀티 파트 오브젝트의 파트 오브젝트 리스트 |
 | [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | 멀티 파트 오브젝트 삭제 |
 
-이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [AWS S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
+이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [Amazon S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
 
-## EC2 자격 증명(EC2 Credential)
+## S3 API 자격 증명(S3 API Credential)
 
-### EC2 자격 증명 등록
-S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 자격 증명을 등록해야 합니다. 자격 증명을 등록하려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참고하십시오.
+### S3 API 자격 증명 발급
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 이용해 발급받을 수 있습니다. 웹 콘솔을 이용한 자격 증명 발급은 [S3 API 자격 증명](/Storage/Object%20Storage/ko/console-guide/#s3-api) 항목을 참조하세요.
+
+API를 이용해 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide/#tenant-id-api-endpoint)를 참조하세요.
 
 ```
 POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-uuid}/credentials/OS-EC2
@@ -51,6 +53,11 @@ X-Auth-Token: {token-id}
 > [참고]
 > 사용자 UUID는 NHN Cloud 사용자 ID가 아닙니다. 인증 토큰 발급 요청의 응답 본문에 포함되어 있습니다. (access.user.id)
 > API 가이드의 [인증 토큰 발급](/Storage/Object%20Storage/ko/api-guide/#_2) 항목을 참조하세요.
+> 
+> S3 API 자격 증명은 유효 기간이 없으며, 사용자별로 프로젝트당 최대 3개까지 발급받을 수 있습니다. 
+>
+> [주의]
+> S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 이용해 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급받아 사용하는 것을 권장합니다.
 
 <details>
 <summary>예시</summary>
@@ -67,8 +74,8 @@ X-Auth-Token: {token-id}
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| access | Body | String | 자격 증명 접근 키 |
-| secret | Body | String | 자격 증명 비밀 키 |
+| access | Body | String | S3 API 자격 증명 접근 키 |
+| secret | Body | String | S3 API 자격 증명 비밀 키 |
 
 <details>
 <summary>예시</summary>
@@ -87,8 +94,8 @@ X-Auth-Token: {token-id}
 
 </details>
 
-### EC2 자격 증명 조회
-등록한 EC2 자격 증명을 조회합니다.
+### S3 API 자격 증명 조회
+발급받은 S3 API 자격 증명을 조회합니다.
 
 **[Method, URL]**
 ```
@@ -101,15 +108,15 @@ X-Auth-Token: {token-id}
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O |발급받은 토큰 ID |
+| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
 | user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
 
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| access | Body | String | 자격 증명 접근 키 |
-| secret | Body | String | 자격 증명 비밀 키 |
+| access | Body | String | S3 API 자격 증명 접근 키 |
+| secret | Body | String | S3 API 자격 증명 비밀 키 |
 
 <details>
 <summary>예시</summary>
@@ -130,8 +137,8 @@ X-Auth-Token: {token-id}
 
 </details>
 
-### EC2 자격 증명 삭제
-등록한 EC2 자격 증명을 삭제합니다.
+### S3 API 자격 증명 삭제
+발급받은 S3 API 자격 증명을 삭제합니다.
 
 **[Method, URL]**
 ```
@@ -146,7 +153,7 @@ X-Auth-Token: {token-id}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
 | user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
-| access | URL | String | O | 자격 증명 접근 키 |
+| access | URL | String | O | S3 API 자격 증명 접근 키 |
 
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
@@ -162,12 +169,12 @@ S3 API를 사용하려면 자격 증명을 이용해 서명을 생성해야 합�
 | 서명 시각 | YYYYMMDDThhmmssZ 형태 |
 | 서비스 이름 | s3 |
 | 리전 이름 | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
-| 비밀 키 | 자격 증명 비밀 키 |
+| 비밀 키 | S3 API 자격 증명 비밀 키 |
 
 
 ## 버킷(Bucket)
 ### 버킷 생성
-버킷(컨테이너)을 생성합니다. 버킷 이름은 다음과 같은 AWS S3의 버킷 명명 규칙을 따라야 합니다.
+버킷(컨테이너)을 생성합니다. 버킷 이름은 다음과 같은 Amazon S3의 버킷 명명 규칙을 따라야 합니다.
 
 * 버킷 이름은 3자에서 63자 사이여야 합니다.
 * 버킷 이름은 소문자, 숫자, 점(.) 및 하이픈(-)으로만 구성될 수 있습니다.
@@ -194,7 +201,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|---|
 | bucket | URL | String | O | 버킷 이름 |
 | Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
 
@@ -246,7 +253,7 @@ Authorization: AWS {access}:{signature}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
 
@@ -305,7 +312,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|---|
 | bucket | URL | String | O | 버킷 이름 |
 | Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
 
@@ -378,7 +385,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|---|
 | bucket | URL | String | O | 버킷 이름 |
 | Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
 
@@ -430,7 +437,7 @@ Authorization: AWS {access}:{signature}
 | bucket | URL | String | O | 버킷 이름 |
 | obj | URL | String | O | 오브젝트 이름 |
 | Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
 
@@ -485,7 +492,7 @@ Authorization: AWS {access}:{signature}
 | bucket | URL | String | O | 버킷 이름 |
 | obj | URL | String | O | 오브젝트 이름 |
 | Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
 
@@ -549,7 +556,7 @@ Authorization: AWS {access}:{signature}
 | bucket | URL | String | O | 버킷 이름 |
 | obj | URL | String | O | 오브젝트 이름 |
 | Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | 자격 증명 접근 키와 서명으로 구성 |
+| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
 
@@ -594,7 +601,7 @@ $ sudo pip install awscli
 ```
 
 ### 설정
-AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 자격 증명과 환경을 설정해야 합니다.
+AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 S3 API 자격 증명과 환경을 설정해야 합니다.
 
 ```
 $ aws configure
@@ -606,8 +613,8 @@ Default output format [None]: json
 
 | 이름 | 설명 |
 |---|---|
-| access | 자격 증명 접근 키 |
-| secret | 자격 증명 비밀 키 |
+| access | S3 API 자격 증명 접근 키 |
+| secret | S3 API 자격 증명 비밀 키 |
 | region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
 
 ### S3 명령 사용 방법
@@ -624,7 +631,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 
 > [참고]
-> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 TAOST 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
+> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 NHN Cloud 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
 > AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
 
 <details>
@@ -712,8 +719,8 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 
 | 이름 | 설명 |
 |---|---|
-| access | 자격 증명 접근 키 |
-| secret | 자격 증명 비밀 키 |
+| access | S3 API 자격 증명 접근 키 |
+| secret | S3 API 자격 증명 비밀 키 |
 | region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
 | endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 | |
 
