@@ -1884,8 +1884,8 @@ class ObjectService:
                 req_url = '%s/%03d' % (url, chunk_index)
                 requests.put(
                     req_url, headers=req_header, data=f.read(chunk_size))
-                f.seek(chunk_size)
                 total_bytes_read += chunk_size
+                f.seek(total_bytes_read)
                 chunk_index += 1
 
         self._create_manifest(container, object)
