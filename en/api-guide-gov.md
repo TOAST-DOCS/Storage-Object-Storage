@@ -2629,7 +2629,7 @@ $object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
 $META_KEY = 'Type';
 $META_VALUE = 'photo';
-$object->copy($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
+$object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 ?>
 ```
 
@@ -2795,7 +2795,7 @@ $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
 $object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
-$object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
+$object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 ?>
 ```
 
