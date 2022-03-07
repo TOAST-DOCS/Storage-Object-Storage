@@ -1874,7 +1874,7 @@ class ObjectService:
 
         path = '/'.join([object_path, object])
         with open(path, 'rb') as f:
-            return return requests.put(req_url, headers=req_header, data=f.read())
+            return requests.put(req_url, headers=req_header, data=f.read())
 
 
 if __name__ == '__main__':
@@ -2157,7 +2157,7 @@ class ObjectService:
                 total_bytes_read += chunk_size
                 chunk_index += 1
 
-        return return self._create_manifest(container, object)
+        return self._create_manifest(container, object)
 
 
 if __name__ == '__main__':
@@ -2627,8 +2627,6 @@ $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
 $object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
-$META_KEY = 'Type';
-$META_VALUE = 'photo';
 $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 ?>
 ```
@@ -2795,6 +2793,8 @@ $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
 $object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
+$META_KEY = 'Type';
+$META_VALUE = 'photo';
 $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 ?>
 ```
