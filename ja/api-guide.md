@@ -2353,6 +2353,7 @@ class ObjectService {
 $STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
+$DEST_CONTAINER = 'dest';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
 $object = new ObjectService($STORAGE_URL, $TOKEN_ID);
@@ -2516,7 +2517,6 @@ class ObjectService {
 $STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
-$DEST_CONTAINER = 'dest';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
 $object = new ObjectService($STORAGE_URL, $TOKEN_ID);
