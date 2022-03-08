@@ -368,6 +368,7 @@ $ curl -i -X POST \
   -H 'X-Container-Write: {tenant-id}:*' \
   https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
+
 오브젝트에 접근 요청을 할 때는 반드시 허가된 테넌트 ID와 해당하는 프로젝트에 속한 NHN Cloud 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
 <br/><br/>
 </details>
@@ -381,6 +382,7 @@ $ curl -i -X POST \
   -H 'X-Container-Write: *:{user-uuid}' \
   https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
+
 오브젝트에 접근 요청을 할 때는 반드시 허가된 NHN Cloud 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
 <br/><br/>
 </details>
@@ -394,6 +396,7 @@ $ curl -i -X POST \
   -H 'X-Container-Write: *:*' \
   https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
+
 오브젝트에 접근 요청을 할 때는 반드시 유효한 인증 토큰이 필요합니다.
 </details>
 <br/>
