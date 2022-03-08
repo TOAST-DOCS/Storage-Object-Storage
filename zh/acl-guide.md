@@ -74,6 +74,7 @@ You can receive the desired response only if you have a valid authentication tok
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+
 [List of objects in the container]
 ```
 </details>
@@ -96,9 +97,13 @@ $ curl -i -X POST \
 ```
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
+
+
 $ curl -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+
 [List of objects in the container]
 ```
 
@@ -137,7 +142,7 @@ If you wish to set the ACL policy elements with the `X-Container-Read` attribute
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:cloud.nhn.com' \
+  -H 'X-Container-Read: .r:bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
@@ -145,12 +150,16 @@ The object can be accessed if the API request header contains the authorized add
 
 ```
 $ curl -O -X GET \
-  -H 'Referer: https://cloud.nhn.com' \
+  -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
+
+
 $ curl -O -X GET \
-  -H 'Referer: https://cloud.nhn.com/some/path' \
+  -H 'Referer: https://bar.foo.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
 ```
 
@@ -171,7 +180,7 @@ $ curl -X GET \
 
 
 $ curl -X GET \
-  -H 'Referer: cloud.nhn.com' \
+  -H 'Referer: bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -182,18 +191,22 @@ When you enter a domain name starting with <code>.</code>as in the following, al
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:.nhn.com' \
+  -H 'X-Container-Read: .r:.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  -H 'Referer: https://cloud.nhn.com' \
+  -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
+
+
 $ curl -O -X GET \
-  -H 'Referer: https://guide.docs.nhn.com/some/path' \
+  -H 'Referer: https://qux.baz.foo.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
 ```
 
@@ -201,7 +214,7 @@ Requests without subdomains will be blocked.
 
 ```
 $ curl -X GET \
-  -H 'Referer: https://nhn.com' \
+  -H 'Referer: https://foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -212,18 +225,22 @@ If you wish to authorize the access requests of all referers with certain domain
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:nhn.com, .r:.nhn.com' \
+  -H 'X-Container-Read: .r:foo.com, .r:.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  -H 'Referer: https://nhn.com' \
+  -H 'Referer: https://foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
+
+
 $ curl -O -X GET \
-  -H 'Referer: https://container.nhn.com/some/path' \
+  -H 'Referer: https://baz.foo.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
 ```
 </details>
@@ -234,14 +251,14 @@ $ curl -O -X GET \
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:-cloud.nhn.com' \
+  -H 'X-Container-Read: .r:-bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 If a hyphen is added in front of the domain name of the HTTP referer, the request of the HTTP referer is blocked.
 
 ```
-$ curl -X GET -H 'Referer: https://cloud.nhn.com' \
+$ curl -X GET -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -259,16 +276,20 @@ The authorize/block access policy concerning HTTP referers is applied according 
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:-cloud.nhn.com, .r:*' \
+  -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
-$ curl -O -X GET -H 'Referer: https://cloud.nhn.com' \
+
+
+$ curl -O -X GET -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
 ```
 </details>
@@ -279,15 +300,18 @@ $ curl -O -X GET -H 'Referer: https://cloud.nhn.com' \
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:*, .r:-cloud.nhn.com' \
+  -H 'X-Container-Read: .r:*, .r:-bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
-$ curl -X GET -H 'Referer: https://cloud.nhn.com' \
+
+
+$ curl -X GET -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -317,10 +341,14 @@ Requesting access to objects requires a valid authentication token received thro
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+
 [List of objects in the container]
+
+
 $ curl -O -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+
 [Download Object]
 ```
 </details>
