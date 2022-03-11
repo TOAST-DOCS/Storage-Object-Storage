@@ -596,7 +596,7 @@ class AccountService:
     def get_container_list(self):
       req_header = self._get_request_header()
       resp = requests.get(self.storage_url, headers=req_header)
-      return resp.content.split('\n')
+      return resp.text.split('\n')
 
 
 if __name__ == '__main__':
