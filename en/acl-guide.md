@@ -34,7 +34,7 @@ The ACL policy elements that you can set are as follows. All policy elements can
 
 > [Notes]
 > A user UUID is not a user ID for NHN Cloud. It is included in the response message for the request to issue an authentication token. (access.user.id)
-> Please refer to [Authentication Token Issuance ](/Storage/Object%20Storage/en/api-guide/#_2) in the API guide.
+> Please refer to [Authentication Token Issuance](/Storage/Object%20Storage/en/api-guide/#_2) in the API guide.
 <br/>
 
 ### Authorize reading and writing only to users who participate in a project that the container is affiliated to.

@@ -6,7 +6,7 @@ To use the Object Storage API, you must obtain an authentication token first. An
 
 <br/>
 
-### Check Tenant ID and API Endpoint
+### Check the Tenant ID and API Endpoint
 
 Click **API Endpoint Setting** on the Object Storage service page to check the tenant ID and API endpoint to issue a token.
 
@@ -18,7 +18,7 @@ Click **API Endpoint Setting** on the Object Storage service page to check the t
 
 <br/>
 
-### Set API Password
+### Set the API Password
 
 To set the API password, go to the Object Storage service page and click **API Endpoint Setting**.
 
@@ -309,9 +309,9 @@ printf("%s\n", $token);
 <br/>
 
 ## Storage Account
-A storage account is a character string in the `AUTH_*****`format, included in the Object-Store API endpoint.
+A storage account is a character string in the `AUTH_*****` format, included in the Object-Store API endpoint.
 
-### Query Storage Account
+### Query the Storage Account
 Retrieves usage status of a storage account.
 
 ```
@@ -652,7 +652,7 @@ foreach($container_list as $container) {
 
 ## Containers
 
-### Create Container
+### Create a Container
 Creates a container. To upload files to object storage, a container must be created.
 
 > [Caution]
@@ -842,7 +842,7 @@ $container->create($CONTAINER_NAME);
 
 <br/>
 
-### Get Container
+### Get a Container
 Retrieves the information of the specified container and the list of the objects stored in the container. The container's information can be viewed in the response header.
 
 ```
@@ -1069,17 +1069,17 @@ This API does not require a request body.
 | Container | URL | String | O | The name of the container to edit |
 <br/>
 
-##### Set Access Policy
+##### Set the Access Policy
 You can set the container access policy using the `X-Container-Read` and `X-Container-Write` header. For more details, refer to [Guide to setting up access policy](/Storage/Object%20Storage/en/acl-guide/).
 
 <br/>
 
-##### Set Object Life Cycle
+##### Set the Object Life Cycle
 With the `X-Container-Object-Retention` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
 <br/>
 
-##### Set Version Control Policy
-As described in the [Update Object](/api-guide/#update-object), If there are duplicate object names while uploading objects, the objects are updated. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
+##### Set the Version Control Policy
+As described in the [Update an Object](/api-guide/#update-an-object), if there are duplicate object names while uploading objects, the objects are updated. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
 
 The previous version of objects are stored in the archive container in the following manner:
 ```
@@ -1099,14 +1099,14 @@ With the `X-Versions-Retention` header, you can set the life cycle of a previous
 
 <br/>
 
-##### Set Static Website
+##### Set a Static Website
 If you allow the container read access to all users and set the static website's index document and error document using the `X-Container-Meta-Web-Index` and `X-Container-Meta-Web-Error` headers, you can host a static website using the container URL.
 
 The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters or some special characters (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` file extension. If the conditions are not met, you may not be able to configure the setting or the static website may not work.
 The format of a static website's error document name is `{response code}{suffix}`. For example, if an error document is set as `error.html`, the name of the error document to be displayed when the 404 error occurs becomes `404error.html`. You can upload and use error documents according to each error condition. If an error document is not defined or an error object that matches the response code does not exist, the default error document of a web browser will be displayed.
 <br/>
 
-##### Unset Container
+##### Unset a Container
 If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Retention: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
 <br/>
 
@@ -1249,7 +1249,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 
 <br/>
 
-### Delete Container
+### Delete a Container
 
 Deletes the specified container. The container to be deleted must be empty.
 
@@ -1389,7 +1389,7 @@ $container->delete($CONTAINER_NAME);
 
 ## Objects
 
-### Upload Object
+### Upload an Object
 Uploads a new object to the specified container.
 
 ```
@@ -1990,8 +1990,8 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <br/>
 
-### Update Object
-Same as Upload Object API, but if the object is already located in the container, the content of the object is updated.
+### Update an Object
+Same as the Upload an Object API, but if the object is already located in the container, the content of the object is updated.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -2017,7 +2017,7 @@ This API does not return a response body. For a valid request, return status cod
 
 <br/>
 
-### Download Object
+### Download an Object
 Downloads an object.
 
 ```
@@ -2193,7 +2193,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
-### Copy Object
+### Copy an Object
 Copies an object to another container.
 
 > [Note]
@@ -2360,7 +2360,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 <br/>
 
 ### Modify Object Metadata
-Modify metadata of the specified object.
+Modifies metadata of the specified object.
 
 ```
 POST   /v1/{Account}/{Container}/{Object}
@@ -2524,7 +2524,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 
 <br/>
 
-### Delete Object
+### Delete an Object
 Deletes a specified object.
 
 > [Note]
