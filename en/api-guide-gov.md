@@ -1956,7 +1956,7 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 </details>
 
-### Upload Multiple Parts
+### Multipart Upload
 Objects that are over 5GB must be segmented into less than 5GB-parts before uploaded.
 
 #### Segment Uploading  
