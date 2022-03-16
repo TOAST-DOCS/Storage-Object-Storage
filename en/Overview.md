@@ -1,38 +1,38 @@
 ## Storage > Object Storage > Overview
 
-Object Storage refers to an online storage which can save large-capacity data.
+Object Storage is an online storage service that can store large-capacity data.
 
 ## Features
 
 ### Scalable
 
-Volume scale-up is almost limitless. Data can be saved whenever and as much as a user wants, without considering storage volume.
+Capacity can be expanded almost infinitely. Users can store as much data as they want when they need it, without worrying about storage capacity.
 
-### Control Accessibility   
+### Control Accessibility
 
-Access authority can be differently set for each container. Only allowed users can access a private container, whereas a public container can be accessed by anyone to internal objects, via public URL.
+Access permissions can be set per container. Containers set to private can only be accessed by authorized users. When a container is set to public, anyone can access the objects inside the container using a public URL.
 
-### Ensure Data Security
+### Ensure Data Reliability
 
-A total of three copies are created for each object to safely save data. Access to data is unavailable during copies are created, since integrity of copied data cannot be ensured. Hence, sending a request of GET right after data saving may result in failure response. If at least two copies are same, saving is completed as copying is considered to be successful, and access to data is allowed.    
+To store data safely, a total of 3 copies of each object are created. While creating the copies, the integrity of the replicated data cannot be guaranteed and therefore the data is inaccessible. So, if you send a GET request immediately after storing data, you might get a failure response. If at least two copies are identical, the replication is considered successful, and the storing is completed and the data becomes accessible.
 
-### Provide Convenient Web Console
+### Provide a Convenient Web Console
 
-For user's convenience, web console is provided to manage data in the hierarchical directory structure. When an application approaches data, RESTful API is available as an object ID, while user can use the web console with familiar directory structure to approach data. You may use folders to manage objects under groups.
+For user convenience, a web console is provided to manage data in a hierarchical directory structure. When an application accesses data, the RESTful API can be used with the object ID. When a user directly accesses data, they can use a web console with a familiar directory structure. You can manage objects by grouping them using folders.
 
-### Provide RESTful APIs
+### Provide RESTful API
 
-HTTP(s)-based REST API is provided to control containers and objects. With APIs, object storage becomes available on user's applications.
+HTTP(s)-based REST API is provided to control containers and objects. The API allows you to use object storage in your applications.
 
 
 ## Glossary
 #### Object
-Data to be saved, as a basic management unit of object storage: generally refers to a file.
+The basic management unit of object storage, which refers to the data to be stored. Generally a file is used as an object.
 #### Folder
-A virtual unit that binds many objects: helps to manage objects in hierarchy, similar to folder of Windows or directory of Linux.
+A virtual unit that binds multiple objects. It helps to manage objects hierarchically, similar to folders in Windows or directories in Linux.
 #### Container
-Folder in the highest order, which serves as the basic unit for access authority setting. All objects must exist in a container.
+Refers to the top-level folder. Basically, a container becomes the unit of access permission setting. All objects must exist in a container.
 #### Storage Account
-Refers to user's account for object storage. NHN Cloud Object Storage is classified by the account unit.
+A user account for object storage. NHN Cloud Object Storage is isolated on a per-account basis.
 #### API Endpoint
-Refers to HTTP URL which is provided to access object storage via REST API. When requested with the URL, access is allowed to object storage.   
+HTTP URL provided to access object storage with REST API. You can access object storage by making a request with the URL.

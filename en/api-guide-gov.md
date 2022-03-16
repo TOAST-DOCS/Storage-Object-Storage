@@ -1483,7 +1483,7 @@ public class ContainerService {
         // Create header
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Auth-Token", tokenId);
-        headers.add("X-Container-Read", permission);    // Add authority to header
+        headers.add("X-Container-Read", permission);    // Add permission to header
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
@@ -1550,7 +1550,7 @@ class Container {
 
     $permission = $is_public ? self::PUBLIC_ACL : self::PRIVATE_ACL;
     $req_header = $this->get_request_header();
-    $req_header[] = 'X-Container-Read: ' . $permission;  // Add authority to header
+    $req_header[] = 'X-Container-Read: ' . $permission;  // Add permission to header
 
     $curl  = curl_init($req_url);
     curl_setopt_array($curl, array(
@@ -1579,7 +1579,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 </details>
 
 #### Check ACL
-After setting public for the authority to read, you may use tools such as `curl` or `wget`, or check whether to get without token via browser.   
+After setting public for the permission to read, you may use tools such as `curl` or `wget`, or check whether to get without token via browser.   
 
 <details>
 <summary>Example</summary>
