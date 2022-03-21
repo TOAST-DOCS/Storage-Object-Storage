@@ -658,6 +658,8 @@ Creates a container. To upload files to object storage, a container must be crea
 > [Caution]
 > A container name cannot include the special characters `' " < > ;`,spaces, and relative path characters (`. ..`).
 
+<!-- This is a comment for line break, so it must be included. -->
+
 > [Note]
 > If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL-encoded (percent-encoding). These are reserved characters that are considered important for URL. If you send an API request without URL-encoding a path including these characters, you won't get the desired response.
 
