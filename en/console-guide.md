@@ -42,61 +42,109 @@ Change settings of a selected container.
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan="3">Default Setting</td>
-    <td rowspan="2">Container Access Policy</td>
-    <td><b>PRIVATE</b>: Only permitted users can access objects within a container.</td>
-  </tr>
-  <tr>
-    <td><b>PUBLIC</b>: Anyone with a public URL can access objects within a container.</td>
+    <td rowspan="2">Basic Settings</td>
+    <td>Container access policy</td>
+    <td>Select the container access policy between <b>PRIVATE</b> and <b>PUBLIC</b>. </td>
   </tr>
   <tr>
     <td>Object life cycle</td>
-    <td>Enter object life cycle in days. Life cycle setting will be removed if it is not filled in.<br/>
-    Objects that are uploaded to containers with object life cycle enabled up will be deleted automatically after the set life cycle is reached.</td>
+    <td>Enter the object life cycle in days. Life cycle setting will be cleared if it is not filled in.</td>
+  </tr>
+
+  <tr>
+    <td rowspan="3">Object<br/>version control policy</td>
+    <td>Version control policy</td>
+    <td>Select whether to use a version control policy.</td>
   </tr>
   <tr>
-    <td rowspan="3">Object<br/>Version Control Policy</td>
-    <td>Version Control Policy</td>
-    <td>When version control policy setting is enabled, you can store previous versions in a designated container when updating saved objects.</td>
-  </tr>
-  <tr>
-    <td>Archive Container</td>
+    <td>Archive container</td>
     <td>Enter a container in which previous versions of an object are stored.</td>
   </tr>
   <tr>
     <td>Archiving object<br/>life cycle</td>
-    <td>Enter life cycle of previous versions of an object in days. Life cycle setting will be removed if it is not filled in.<br/>
-    After the life cycle is enabled, previous versions of an object will be deleted automatically after the set life cycle is reached.</td>
-  </tr>  
+    <td>Enter the life cycle of previous versions of an object in days. Life cycle setting will be cleared if it is not filled in.</td>
+  </tr>
   <tr>
-    <td rowspan="5">Static Website Settings</td>
-    <td>Index Document</td>
+    <td rowspan="3">Replication settings</td>
+    <td>Replication</td>
+    <td>Select whether to use the replication feature.</td>
+  </tr>
+  <tr>
+    <td>Target region</td>
+    <td>Select a region to replicate to other than the currently used region.</td>
+  </tr>
+  <tr>
+    <td>Replication container</td>
+    <td>Enter the target container for replication.</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Static website settings</td>
+    <td>Index document</td>
     <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
   </tr>
   <tr>
-    <td>Error Document</td>
+    <td>Error document</td>
     <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
   </tr>
 </table>
 
-> [Caution]
-> If the version control policy has been set up, you must not delete the archive container before the original container. An error may occur as objects in the original container cannot save previous versions in the archive container during updates or deletion. If an error occurs because the archive container was deleted before the original container, create a new archive container or disable the version control policy of the original container.
+#### Basic Settings
 
-<br/>
+##### Access Policy
+
+You can control access with the access policy.
+
+* **PRIVATE**: Only permitted users can access objects within a container.
+* **PUBLIC**: Anyone can access objects within a container through a public URL.
+
+##### Object Life Cycle
+
+If you set an object life cycle, the objects within the container are automatically deleted after the entered life cycle.
 
 > [Note]
-> If the access policy of a container is set to **PUBLIC** and index document and error document are entered, it becomes possible to host a static website in a container.
->
-> The URL of a static website can be obtained by clicking the `Copy URL` button on the container list.
->
-> The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters, or some special character (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` extension. If the conditions are not met, you may not be able to set it up or your static website may not work.
->
-> Error documents of a static website are named in the form of `{error code}{suffix}`. For example, if an error document is set as `error.html,` the name of the error document will be displayed as `404error.html` when 404 error occurs. You can upload and use error documents according to each error conditions. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
+> It is applied only to objects uploaded after the object life cycle is set.
+
+#### Object Version Control Settings
+
+Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated, and you can enter a lifetime for previous versions through settings.
+Previous versions that exceed the set life cycle are automatically deleted.
+
+> [Caution]
+> If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
+
+#### Replication Settings
+
+Replication settings allow you to set objects in a container to be replicated to a container in another region. Replication settings are for disaster recovery, and objects are replicated and managed in the target region the same as in the source region. All objects in the container are replicated to the container in the target region at regular intervals.
+
+The replication policies are as follows:
+
+* Uploading, updating, or deleting objects in the source container are all reflected in the same way in the target container.
+* Updates made to the target container are not reflected in the source container.
+* It is recommended to use an empty container as the target container. When a non-empty container is set as the target container, if there is an object with the same name as the object in the source container, replication may not be performed properly.
+* When the Replication setting is changed to **Disabled**, the previously replicated object is maintained and new replication is stopped.
+* If the segment objects of a large object uploaded by multipart are stored in another container, replication of the large object is possible only if the corresponding container is also set for replication.
+* It is recommended to set the name of the source container and the target container to be the same. If they are not the same, access to large replicated objects may fail.
+
+> [Caution]
+> If you delete a replicated object within the target container, it will not be replicated again.
+
+<!-- This is a comment for line break, so it must be included. -->
+
+> [Note]
+> The target container cannot be replicated to another region, and it cannot be set as another container's target container in duplicate.
+
+#### Static Website Settings
+
+If you set the access policy of a container to **PUBLIC** and enter the index document and error document, you can host a static website in the container. You can get the URL of the static website by clicking the `Copy URL` button on the container list.
+
+The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters or some special characters (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` file extension. If the conditions are not met, you may not be able to configure the setting or the static website may not work.
+The format of a static website's error document name is `{response code}{suffix}`. For example, if an error document is set as `error.html`, the name of the error document to be displayed when the 404 error occurs becomes `404error.html`. You can upload and use error documents according to each error condition. If an error document is not defined or an error object that matches the response code does not exist, the default error document of a web browser will be displayed.
 
 
 ## Object
 ### Create Folder
 Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 256 letters in English or 85 characters in Korean.
+
 > [Note]
 > Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
 
@@ -107,7 +155,7 @@ Delete folders. Check if the folders are empty before deleting them. If any obje
 All objects must be uploaded to containers. One object cannot be larger than 5GB.
 
 > [Note]
-> Files exceeding 5GB cannot be uploaded in a web console. Objects exceeding 5GB must be split by using commands, like `split`, or programmed to be divided into less than 5GB before uploaded. Fore more details, refer to [Upload Multiple Parts](api-guide/#_10) of API guide.
+> Files exceeding 5GB cannot be uploaded in a web console. If the size of the object to be uploaded exceeds 5GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5GB before uploading. For more details, refer to [Multipart Upload](api-guide/#multipart-upload) of the API guide.
 
 ### Download Object
 Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the `Copy URL` button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
