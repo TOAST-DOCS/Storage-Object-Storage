@@ -74,7 +74,7 @@ Change settings of a selected container.
     <td>Select a region to replicate to other than the currently used region.</td>
   </tr>
   <tr>
-    <td>Replication container</td>
+    <td>Target container</td>
     <td>Enter the target container for replication.</td>
   </tr>
   <tr>
