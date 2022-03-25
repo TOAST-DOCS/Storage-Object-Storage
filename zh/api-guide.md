@@ -6,7 +6,7 @@ To use the Object Storage API, you must obtain an authentication token first. An
 
 <br/>
 
-### Check Tenant ID and API Endpoint
+### Check the Tenant ID and API Endpoint
 
 Click **API Endpoint Setting** on the Object Storage service page to check the tenant ID and API endpoint to issue a token.
 
@@ -18,7 +18,7 @@ Click **API Endpoint Setting** on the Object Storage service page to check the t
 
 <br/>
 
-### Set API Password
+### Set the API Password
 
 To set the API password, go to the Object Storage service page and click **API Endpoint Setting**.
 
@@ -309,9 +309,9 @@ printf("%s\n", $token);
 <br/>
 
 ## Storage Account
-A storage account is a character string in the `AUTH_*****`format, included in the Object-Store API endpoint.
+A storage account is a character string in the `AUTH_*****` format, included in the Object-Store API endpoint.
 
-### Query Storage Account
+### Query the Storage Account
 Retrieves usage status of a storage account.
 
 ```
@@ -652,11 +652,13 @@ foreach($container_list as $container) {
 
 ## Containers
 
-### Create Container
+### Create a Container
 Creates a container. To upload files to object storage, a container must be created.
 
 > [Caution]
 > A container name cannot include the special characters `' " < > ;`,spaces, and relative path characters (`. ..`).
+
+<!-- This is a comment for line break, so it must be included. -->
 
 > [Note]
 > If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL-encoded (percent-encoding). These are reserved characters that are considered important for URL. If you send an API request without URL-encoding a path including these characters, you won't get the desired response.
@@ -842,7 +844,7 @@ $container->create($CONTAINER_NAME);
 
 <br/>
 
-### Get Container
+### Get a Container
 Retrieves the information of the specified container and the list of the objects stored in the container. The container's information can be viewed in the response header.
 
 ```
@@ -1069,17 +1071,17 @@ This API does not require a request body.
 | Container | URL | String | O | The name of the container to edit |
 <br/>
 
-##### Set Access Policy
+##### Set the Access Policy
 You can set the container access policy using the `X-Container-Read` and `X-Container-Write` header. For more details, refer to [Guide to setting up access policy](/Storage/Object%20Storage/en/acl-guide/).
 
 <br/>
 
-##### Set Object Life Cycle
+##### Set the Object Life Cycle
 With the `X-Container-Object-Retention` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
 <br/>
 
-##### Set Version Control Policy
-As described in the [Update Object](/api-guide/#update-object), If there are duplicate object names while uploading objects, the objects are updated. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
+##### Set the Version Control Policy
+As described in the [Update an Object](/api-guide/#update-an-object), if there are duplicate object names while uploading objects, the objects are updated. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
 
 The previous version of objects are stored in the archive container in the following manner:
 ```
@@ -1092,22 +1094,21 @@ If you delete an object from a container where version control policy is already
 With the `X-Versions-Retention` header, you can set the life cycle of a previous object version in days. If set to 1, the stored object will be automatically deleted after a day. If not set, the previous object version will be stored until users delete it. This applies only to previous object versions uploaded after the setting has been applied.
 
 > [Cautions]
-> If the version control policy has been set up, you must not delete the archive container before the original container. An error may occur because the previous versions cannot be stored in the archive container when updating or deleting the objects in the original container. If an error occurs because the archive container was deleted before the original container, create a new archive container or disable the version control policy of the original container.
+> If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
 >
-> It is recommended that you avoid using Unicode characters in container names for archive containers. If the name of the container to set as an archive container contains Unicode characters, it must be URL-encoded and entered in the request header.
+> It is recommended that you avoid using Unicode characters in container names for archive containers. If the name of the container to set as an archive container contains Unicode characters, it must be URL-encoded before being entered in the request header.
 >
 
 <br/>
 
-##### Set Static Website
-You can use container URLs to host a static website if you set static website index document and error document using the `X-Container-Meta-Web-Index` and `X-Container-Meta-Web-Error` header after allowing containers read access to all users.
+##### Set a Static Website
+If you allow the container read access to all users and set the static website's index document and error document using the `X-Container-Meta-Web-Index` and `X-Container-Meta-Web-Error` headers, you can host a static website using the container URL.
 
-The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters, or some special character (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` extension. If the conditions are not met, you may not be able to set it up or your static website may not work.
-
-The name of a static website's error document is in the form of `{error code}{suffix}`, and you must enter a `suffix` to the header. For example, if you requested `X-Container-Meta-Web-Error: error.html`, the name of the error document to be displayed when the 404 error occurs is `404error.html`. An error document can be flexibly uploaded and used according to the context of each error. If you did not define any error document or there is no error document object that fits the error code, the default error document of the web browser will be displayed.
+The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters or some special characters (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` file extension. If the conditions are not met, you may not be able to configure the setting or the static website may not work.
+The format of a static website's error document name is `{response code}{suffix}`. For example, if an error document is set as `error.html`, the name of the error document to be displayed when the 404 error occurs becomes `404error.html`. You can upload and use error documents according to each error condition. If an error document is not defined or an error object that matches the response code does not exist, the default error document of a web browser will be displayed.
 <br/>
 
-##### Unset Container
+##### Unset a Container
 If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Retention: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
 <br/>
 
@@ -1250,7 +1251,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 
 <br/>
 
-### Delete Container
+### Delete a Container
 
 Deletes the specified container. The container to be deleted must be empty.
 
@@ -1390,7 +1391,7 @@ $container->delete($CONTAINER_NAME);
 
 ## Objects
 
-### Upload Object
+### Upload an Object
 Uploads a new object to the specified container.
 
 ```
@@ -1617,7 +1618,7 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
-### Upload Multiple Parts
+### Multipart Upload
 An object whose size exceeds 5GB needs to be divided into segments of 5GB or smaller before uploading. If you upload segment objects and create a manifest object, you can use them as if they are a single object.
 
 <br/>
@@ -1653,10 +1654,10 @@ This API does not return a request body. For a valid request, return status code
 <br/>
 
 #### Create a Manifest Object
-A manifest object can be created in two ways: either using **DLO**(Dynamic Large Object) or **SLO**(Static Large Object).
+A manifest object can be created in two ways: either using **DLO** (Dynamic Large Object) or **SLO** (Static Large Object).
 
 > [Note]
-> Because a manifest object has path information for segment objects, there is no need to upload segment objects and the manifest object in the same container. If segment objects and manifest object are in a single container, so it is difficult to manage them, it is recommended to upload segment objects to a separate container and keep only the manifest object in the upload-intended container.
+> Because a manifest object has path information for segment objects, there is no need to upload segment objects and the manifest object in the same container. If segment objects and manifest object are in a single container and it is difficult to manage them, it is recommended to upload segment objects to a separate container and create only the manifest object in the container where you originally intended to upload the objects.
 
 **DLO**
 The DLO manifest object uses the path to the segment objects entered in the `X-Object-Manifest` header to automatically find and connect segment objects.
@@ -1682,7 +1683,8 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}
 <br/>
 
 **SLO**
-When you request an SLO manifest object, you must write segment object list in order in the request body text. If you request to create an SLO manifest object, the system checks if each segment object is in the entered path and if the etag value and the size of the object are identical. If the information does not match, the manifest object creation fails.
+To create an SLO manifest object, you must enter the list of segment objects in order in the request body.
+If you make a request to create an SLO manifest object, the system checks whether each segment object is in the entered path and the etag value matches the size of the object. If the information does not match, the manifest object is not created.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}?multipart-manifest=put
@@ -1729,7 +1731,7 @@ This API does not return a response body. For a valid request, return status cod
 <br/>
 
 #### Code Example
-Example of multipart uploading using the DLO method
+Example of multipart upload using the DLO method
 
 <details>
 <summary>cURL</summary>
@@ -1990,8 +1992,8 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <br/>
 
-### Update Object
-Same as Upload Object API, but if the object is already located in the container, the content of the object is updated.
+### Update an Object
+Same as the Upload an Object API, but if the object is already located in the container, the content of the object is updated.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -2017,7 +2019,7 @@ This API does not return a response body. For a valid request, return status cod
 
 <br/>
 
-### Download Object
+### Download an Object
 Downloads an object.
 
 ```
@@ -2193,11 +2195,11 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
-### Copy Object
+### Copy an Object
 Copies an object to another container.
 
 > [Note]
-> If you create a manifest object in the target container, the object uploaded in multiple parts can be accessed through the path to the target container without having to copy segment objects. However, you cannot access the data if you delete the source segment objects.
+> If you create a manifest object in the target container, the multipart-uploaded object can be accessed through the path to the target container without having to copy segment objects. However, you cannot access the data if you delete the source segment objects.
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
@@ -2360,7 +2362,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 <br/>
 
 ### Modify Object Metadata
-Modify metadata of the specified object.
+Modifies metadata of the specified object.
 
 ```
 POST   /v1/{Account}/{Container}/{Object}
@@ -2524,11 +2526,11 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 
 <br/>
 
-### Delete Object
+### Delete an Object
 Deletes a specified object.
 
 > [Note]
-> When deleting an object that was uploaded in multiple parts, you need to delete all segmented data. If you delete only the manifest, the segment objects remain in place and you may be charged for them.
+> When deleting a multipart-uploaded object, you need to delete all segment data. If you delete only the manifest object, the segment objects might be kept intact and you might be charged for them.
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}
