@@ -1,5 +1,9 @@
 ## Storage > Object Storage > Release Notes
 
+### March 29, 2022
+#### Added Features
+* [Console] Added the inter-region container replication feature
+
 ### January 25, 2022
 #### Added Features
 * [Console] Added a feature to obtain S3 API credentials

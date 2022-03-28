@@ -180,8 +180,8 @@ public class AuthService {
     private TokenRequest tokenRequest;
     private RestTemplate restTemplate;
 
-    public AuthService(String authUrl, String tenantId, String username, String password) {		
-        this.authUrl = authUrl;		
+    public AuthService(String authUrl, String tenantId, String username, String password) {
+        this.authUrl = authUrl;
 
         // 요청 본문 생성
         this.tokenRequest = new TokenRequest();
@@ -270,13 +270,13 @@ if __name__ == '__main__':
 function get_token($auth_url, $tenant_id, $username, $password) {
   $url = "$auth_url/tokens";
   $req_body = array(
-      'auth' => array(
-          'tenantId' => $tenant_id,
-          'passwordCredentials' => array(
-              'username' => $username,
-              'password' => $password
-          )
+    'auth' => array(
+      'tenantId' => $tenant_id,
+      'passwordCredentials' => array(
+        'username' => $username,
+        'password' => $password
       )
+    )
   );  // 요청 본문 생성
   $req_header = array(
     'Content-Type: application/json'
@@ -454,11 +454,11 @@ class Account {
   private $token_id;
 
   function __construct($storage_url,  $token_id) {
-     $this->storage_url = $storage_url;
-     $this->token_id = $token_id;
+   $this->storage_url = $storage_url;
+   $this->token_id = $token_id;
   }
 
-  function get_request_header(){
+  function get_request_header() {
     return array(
       'X-Auth-Token: ' . $this->token_id
     );
@@ -479,9 +479,9 @@ class Account {
 
     // parse response headers
     $headers = [];
-    foreach($data as $part){
-        $middle = explode(":", $part, 2);
-        $headers[trim($middle[0])] = trim($middle[1]);
+    foreach($data as $part) {
+      $middle = explode(":", $part, 2);
+      $headers[trim($middle[0])] = trim($middle[1]);
     }
     return $headers;
   }
@@ -554,7 +554,7 @@ public class AccountService {
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
         // API 호출
-        ResponseEntity<String>response
+        ResponseEntity<String> response
             = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
 
         List<String> containerList = null;
@@ -596,7 +596,7 @@ class AccountService:
     def get_container_list(self):
       req_header = self._get_request_header()
       resp = requests.get(self.storage_url, headers=req_header)
-      return resp.content.split('\n')
+      return resp.text.split('\n')
 
 
 if __name__ == '__main__':
@@ -641,8 +641,8 @@ $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
 $container_list = $account->get_container_list();
-foreach($container_list as $container){
-    printf("%s\n", $container);
+foreach($container_list as $container) {
+  printf("%s\n", $container);
 }
 ?>
 ```
@@ -791,11 +791,11 @@ class Container {
   private $token_id;
 
   function __construct($storage_url,  $token_id) {
-     $this->storage_url = $storage_url;
-     $this->token_id = $token_id;
+   $this->storage_url = $storage_url;
+   $this->token_id = $token_id;
   }
 
-  function get_url($container = null){
+  function get_url($container = null) {
     $url = $this->storage_url;
     if ($container != null) {
       $url .= '/' . $container;
@@ -803,13 +803,13 @@ class Container {
     return $url;
   }
 
-  function get_request_header(){
+  function get_request_header() {
     return array(
       'X-Auth-Token: ' . $this->token_id
     );
   }
 
-  function create($container){
+  function create($container) {
     $req_url = $this->get_url($container);
     $req_header = $this->get_request_header();
 
@@ -927,16 +927,15 @@ public class ContainerService {
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
         // API 호출
-        ResponseEntity<String>response
+        ResponseEntity<String> response
             = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, String.class);
 
-        List<String> objectList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
             // String으로 받은 목록을 배열로 변환
-            objectList = Arrays.asList(response.getBody().split("\\r?\\n"));
+            return Arrays.asList(response.getBody().split("\\r?\\n"));
         }
-        // 배열을 List로 변환하여 반환
-        return new ArrayList<String>(objectList);
+
+        return Collections.emptyList();
     }
 
     public static void main(String[] args) {
@@ -969,7 +968,7 @@ class ContainerService:
     def _get_list(self, req_url):
         req_header = self._get_request_header()
         response = requests.get(req_url, headers=req_header)
-        return response.content.split('\n')
+        return response.text.split('\n')
 
     def get_object_list(self, container):
         req_url = self._get_url(container)
@@ -1011,7 +1010,7 @@ class Container {
     return $object_list;
   }
 
-  function get_object_list($container, $last_object = null){
+  function get_object_list($container, $last_object = null) {
     $req_url = $this->get_url($container);
     return $this->get_list($req_url);
   }
@@ -1025,7 +1024,7 @@ $CONTAINER_NAME = 'test';
 $container = new Container($STORAGE_URL, $TOKEN_ID);
 
 $object_list = $container->get_object_list($CONTAINER_NAME);
-foreach ($object_list as $obj){
+foreach ($object_list as $obj) {
   printf("%s\n", $obj);
 }
 ?>
@@ -1090,7 +1089,7 @@ X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접
 `X-Versions-Retention` 헤더를 함께 사용하면 이전 버전 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 1을 설정했다면 보관된 오브젝트는 1일 이후에 자동으로 삭제됩니다. 설정하지 않으면 이전 버전 오브젝트는 사용자가 삭제하기 전까지 보관됩니다. 설정 이후 보관된 이전 버전 오브젝트에만 적용됩니다.
 
 > [주의]
-> 버전 관리 정책을 설정했다면 아카이브 컨테이너를 원본 컨테이너보다 먼저 삭제하면 안 됩니다. 원본 컨테이너의 오브젝트를 업데이트 또는 삭제할 때 아카이브 컨테이너에 이전 버전을 저장할 수 없어 오류가 발생하게 됩니다. 아카이브 컨테이너를 먼저 삭제해서 오류가 발생했다면 아카이브 컨테이너를 새로 생성하거나, 원본 컨테이너의 버전 관리 정책을 해제해 문제를 해결할 수 있습니다.
+> 아카이브 컨테이너를 원본 컨테이너보다 먼저 삭제하면, 원본 컨테이너의 오브젝트 업데이트 또는 삭제 시에 오류가 발생합니다. 이미 삭제하였다면 아카이브 컨테이너를 새로 생성하거나 원본 컨테이너의 버전 관리 정책을 해제해 해결할 수 있습니다.
 >
 > 아카이브 컨테이너로 사용할 컨테이너 이름에는 가급적 유니코드 문자를 사용하지 않는 것을 권장합니다. 아카이브 컨테이너로 지정할 컨테이너 이름에 유니코드 문자가 포함되어 있다면 반드시 URL 인코딩 후 요청 헤더에 입력해야 합니다.
 >
@@ -1100,9 +1099,8 @@ X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접
 ##### 정적 웹 사이트 설정
 컨테이너 읽기 접근 권한을 모든 사용자에게 허용한 다음 `X-Container-Meta-Web-Index`, `X-Container-Meta-Web-Error`헤더를 이용해 정적 웹 사이트 인덱스 문서와 오류 문서를 설정하면 컨테이너 URL을 이용해 정적 웹 사이트를 호스팅할 수 있습니다.
 
-정적 웹 사이트의 인덱스 문서, 오류 문서로 사용할 오브젝트는 하나 이상의 영문자, 숫자 또는 일부 특수 문자(`-`, `_`, `.`, `/`)로 구성된 이름을 가지고 있어야 하며, `html` 확장자를 가진 하이퍼텍스트 형식이어야 합니다. 조건에 맞지 않으면 설정할 수 없거나 정적 웹 사이트가 동작하지 않을 수 있습니다.
-
-정적 웹 사이트의 오류 문서 이름은 `{에러 코드}{접미사}` 형태이며 헤더에는 `접미사`를 입력해야 합니다. 예를 들어 `X-Container-Meta-Web-Error: error.html`를 요청했다면, 404 에러가 발생했을 때 보여줄 오류 문서의 이름은 `404error.html`이 됩니다. 각 오류 상황에 맞게 오류 문서를 업로드해 사용할 수 있습니다. 오류 문서를 정의하지 않거나, 에러 코드에 맞는 오류 문서 오브젝트가 없다면 웹 브라우저의 기본 오류 문서가 표시됩니다.
+정적 웹 사이트의 인덱스 문서, 오류 문서로 사용할 오브젝트는 하나 이상의 영문자, 숫자 또는 일부 특수 문자(`-`, `_`, `.`, `/`)로 구성된 이름이어야 하며, 파일 확장자가 `html`인 하이퍼텍스트 형식이어야 합니다. 조건에 맞지 않으면 설정할 수 없거나 정적 웹 사이트가 동작하지 않을 수 있습니다.
+정적 웹 사이트의 오류 문서 이름은 `{응답 코드}{접미사}` 형태입니다. 예를 들어 오류 문서를 `error.html`로 설정했다면, 404 오류가 발생했을 때 보여줄 오류 문서의 이름은 `404error.html`이 됩니다. 각 오류 상황에 맞게 오류 문서를 업로드해 사용할 수 있습니다. 오류 문서를 정의하지 않거나, 응답 코드에 맞는 오류 문서 오브젝트가 없다면 웹 브라우저의 기본 오류 문서가 표시됩니다.
 <br/>
 
 ##### 컨테이너 설정 해제
@@ -1211,9 +1209,9 @@ if __name__ == '__main__':
 <?php
 class Container {
   const PUBLIC_ACL = '.r:*';
-  const PRIVATE_ACL = '';  
-  // ...  
-  function set_acl($container, $is_public){
+  const PRIVATE_ACL = '';
+  // ...
+  function set_acl($container, $is_public) {
     $req_url = $this->get_url($container);
 
     $permission = $is_public ? self::PUBLIC_ACL : self::PRIVATE_ACL;
@@ -1295,7 +1293,7 @@ public class ContainerService {
 
     // ContainerService Class ...
 
-    public void deleteContainer(String containerName){
+    public void deleteContainer(String containerName) {
         String url = this.getUrl(containerName);
 
         // 헤더 생성
@@ -1304,7 +1302,7 @@ public class ContainerService {
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // API 호출        
+        // API 호출
         this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);
     }
 
@@ -1356,8 +1354,8 @@ if __name__ == '__main__':
 // container.php
 <?php
 class Container {
-  // ...  
-  function delete($container){
+  // ...
+  function delete($container) {
     $req_url = $this->get_url($container);
     $req_header = $this->get_request_header();
 
@@ -1494,8 +1492,8 @@ public class ObjectService {
 
         try {
             // 파일로 부터 InputStream 생성
-            File objFile = new File(objectPath + "/" + objectName);            
-            InputStream inputStream = FileUtils.openInputStream(objFile);
+            File objFile = new File(objectPath + "/" + objectName);
+            InputStream inputStream = new FileInputStream(objFile);
 
             // 업로드
             objectService.uploadObject(containerName, objectName, inputStream);
@@ -1535,7 +1533,7 @@ class ObjectService:
 
         path = '/'.join([object_path, object])
         with open(path, 'rb') as f:
-            requests.put(req_url, headers=req_header, data=f.read())
+            return requests.put(req_url, headers=req_header, data=f.read())
 
 
 if __name__ == '__main__':
@@ -1557,43 +1555,43 @@ if __name__ == '__main__':
 ```php
 // object.php
 <?php
-class Object {
+class ObjectService {
   private $storage_url;
   private $token_id;
 
   function __construct($storage_url,  $token_id) {
-      $this->storage_url = $storage_url;
-      $this->token_id = $token_id;
+    $this->storage_url = $storage_url;
+    $this->token_id = $token_id;
   }
 
-  function get_url($container, $object){
-      return $this->storage_url . '/' . $container . '/' . $object;
+  function get_url($container, $object) {
+    return $this->storage_url . '/' . $container . '/' . $object;
   }
 
-  function get_request_header(){
-      return array(
-          'X-Auth-Token: ' . $this->token_id
-      );
+  function get_request_header() {
+    return array(
+      'X-Auth-Token: ' . $this->token_id
+    );
   }
 
-  function upload($container, $object, $filename){
-      $req_url = $this->get_url($container, $object);
+  function upload($container, $object, $filename) {
+    $req_url = $this->get_url($container, $object);
 
-      $req_header = $this->get_request_header();
+    $req_header = $this->get_request_header();
 
-      $fd = fopen($filename, 'r');  // 파일을 연다.
+    $fd = fopen($filename, 'r');  // 파일을 연다.
 
-      $curl  = curl_init($req_url);
-      curl_setopt_array($curl, array(
-          CURLOPT_PUT => TRUE,
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_INFILE => $fd,  // 파일 스트림을 매개변수로 넣는다.
-          CURLOPT_HTTPHEADER => $req_header
-      ));
-      $response = curl_exec($curl);
-      curl_close($curl);l
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_PUT => TRUE,
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_INFILE => $fd,  // 파일 스트림을 매개변수로 넣는다.
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);l
 
-      fclose($fd);
+    fclose($fd);
   }
 }
 
@@ -1604,7 +1602,7 @@ $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 $OBJ_PATH = '/home/example';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
 // upload object
 $filename = $OBJ_PATH.'/'.$OBJECT_NAME;
@@ -1615,7 +1613,7 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
-### 멀티 파트 업로드
+### 멀티파트 업로드
 5GB를 초과하는 용량을 가진 오브젝트는 5GB 이하의 세그먼트로 분할해 업로드해야 합니다. 세그먼트 오브젝트를 업로드한 다음 매니페스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다.
 
 <br/>
@@ -1680,7 +1678,8 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}/
 <br/>
 
 **SLO**
-SLO 매니페스트 오브젝트는 요청 본문에 세그먼트 오브젝트 리스트를 순서대로 작성해 입력해야 합니다. SLO 매니페스트 오브젝트 생성 요청을 하면 각 세그먼트 오브젝트가 입력된 경로에 있는지, etag 값과 오브젝트의 크기가 일치하는지 확인합니다. 정보가 일치하지 않으면 매니페스트 오브젝트가 생성되지 않습니다.
+SLO 매니페스트 오브젝트는 요청 본문에 세그먼트 오브젝트 목록을 순서대로 작성해 입력해야 합니다. 최대 1천 개의 세그먼트 오브젝트를 입력할 수 있습니다.
+SLO 매니페스트 오브젝트 생성 요청을 하면 각 세그먼트 오브젝트가 입력된 경로에 있는지, etag 값과 오브젝트의 크기가 일치하는지 확인합니다. 정보가 일치하지 않으면 매니페스트 오브젝트가 생성되지 않습니다.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}?multipart-manifest=put
@@ -1727,7 +1726,7 @@ X-Auth-Token: {token-id}
 <br/>
 
 #### 코드 예시
-DLO 방식을 이용한 멀티 파트 업로드 예시
+DLO 방식을 이용한 멀티파트 업로드 예시
 
 <details>
 <summary>cURL</summary>
@@ -1773,7 +1772,7 @@ public class ObjectService {
 
     // 매니페스트 오브젝트 업로드
     public void uploadManifestObject(String containerName, String objectName) {
-        String url = this.getUrl(containerName, objectName);        
+        String url = this.getUrl(containerName, objectName);
         String manifestName = containerName + "/" + objectName + "/"; // 매니페스트 이름 생성
 
         // 헤더 생성
@@ -1792,7 +1791,7 @@ public class ObjectService {
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectPath = "/home/example/";
-        final String objectName = "46432aa503ab715f288c4922911d2035.jpg";        
+        final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
 
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
 
@@ -1806,7 +1805,7 @@ public class ObjectService {
 
         try {
             // 파일로부터 InputStream 생성
-            InputStream inputStream = new BufferedInputStream(new FileInputStream(objFile));			
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(objFile));
             while(totalBytesRead < fileSize) {
 
                 // 남은 데이터 크기 계산
@@ -1854,7 +1853,7 @@ class ObjectService:
         req_url = self._get_url(container, object)
         req_header = self._get_request_header()
         req_header['X-Object-Manifest'] = '/'.join([container, object])
-        requests.put(req_url, headers=req_header)
+        return requests.put(req_url, headers=req_header)
 
     def upload_large_object(self, container, object, object_path):
         url = self._get_url(container, object)
@@ -1875,11 +1874,11 @@ class ObjectService:
                 req_url = '%s/%03d' % (url, chunk_index)
                 requests.put(
                     req_url, headers=req_header, data=f.read(chunk_size))
-                f.seek(chunk_size)
                 total_bytes_read += chunk_size
+                f.seek(total_bytes_read)
                 chunk_index += 1
 
-        self._create_manifest(container, object)
+        return self._create_manifest(container, object)
 
 
 if __name__ == '__main__':
@@ -1901,73 +1900,73 @@ if __name__ == '__main__':
 ```php
 // object.php
 <?php
-class Object {
+class ObjectService {
   const CHUNK_SIZE = 100 * 1024;  // 100 KB
   // ...
 
-  function create_manifest($container, $object){
-      $req_url = $this->get_url($container, $object);
-      $req_header = $this->get_request_header();
-      $req_header[] = 'X-Object-Manifest: '.$container.'/'.$object.'/';
+  function create_manifest($container, $object) {
+    $req_url = $this->get_url($container, $object);
+    $req_header = $this->get_request_header();
+    $req_header[] = 'X-Object-Manifest: '.$container.'/'.$object.'/';
+
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_PUT => TRUE,
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
+  }
+
+  function upload_large_object($container, $object, $filename) {
+    $url = $this->get_url($container, $object);
+    $req_header = $this->get_request_header();
+
+    $chunk_index = 1;
+    $chunk_size = self::CHUNK_SIZE;
+    $total_bytes_read = 0;
+    $fd = fopen($filename, 'r');  // 파일을 연다.
+    $obj_size = filesize($filename);
+
+    while($total_bytes_read < $obj_size) {
+      // 분할할 용량 계산
+      $remained_bytes = $obj_size - $total_bytes_read;
+      if ($remained_bytes < $chunk_size) {
+        $chunk_size = $remained_bytes;
+      }
+      $chunk = fread($fd, $chunk_size);
+      // 파트 이름 생성
+      $temp_file = sprintf("./multipart-%03d", $chunk_index);
+      $req_url = sprintf("%s/%03d", $url, $chunk_index);
+
+      // 파트 임시 파일 생성
+      $part_fd = fopen($temp_file, 'w+');
+      fwrite($part_fd, $chunk);
+      fseek($part_fd, 0);
 
       $curl  = curl_init($req_url);
       curl_setopt_array($curl, array(
-          CURLOPT_PUT => TRUE,
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_HTTPHEADER => $req_header
+        CURLOPT_PUT => TRUE,
+        CURLOPT_HEADER => TRUE,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_INFILE => $part_fd,  // 파트 파일 스트림을 매개 변수로 입력
+        CURLOPT_HTTPHEADER => $req_header
       ));
       $response = curl_exec($curl);
       curl_close($curl);
-  }
+      printf("$response");
 
-  function upload_large_object($container, $object, $filename){
-      $url = $this->get_url($container, $object);
-      $req_header = $this->get_request_header();
+      // 임시 파일 삭제
+      fclose($part_fd);
+      unlink($temp_file);
 
-      $chunk_index = 1;
-      $chunk_size = self::CHUNK_SIZE;
-      $total_bytes_read = 0;
-      $fd = fopen($filename, 'r');  // 파일을 연다.
-      $obj_size = filesize($filename);
+      $total_bytes_read += $chunk_size;
+      $chunk_index += 1;
+    }
+    fclose($fd);
 
-      while($total_bytes_read < $obj_size){
-          // 분할할 용량 계산
-          $remained_bytes = $obj_size - $total_bytes_read;
-          if ($remained_bytes < $chunk_size){
-              $chunk_size = $remained_bytes;
-          }
-          $chunk = fread($fd, $chunk_size);
-          // 파트 이름 생성
-          $temp_file = sprintf("./multipart-%03d", $chunk_index);
-          $req_url = sprintf("%s/%03d", $url, $chunk_index);
-
-          // 파트 임시 파일 생성
-          $part_fd = fopen($temp_file, 'w+');
-          fwrite($part_fd, $chunk);
-          fseek($part_fd, 0);
-
-          $curl  = curl_init($req_url);
-          curl_setopt_array($curl, array(
-              CURLOPT_PUT => TRUE,
-              CURLOPT_HEADER => TRUE,
-              CURLOPT_RETURNTRANSFER => TRUE,
-              CURLOPT_INFILE => $part_fd,  // 파트 파일 스트림을 매개 변수로 입력
-              CURLOPT_HTTPHEADER => $req_header
-          ));
-          $response = curl_exec($curl);
-          curl_close($curl);
-          printf("$response");
-
-          // 임시 파일 삭제
-          fclose($part_fd);
-          unlink($temp_file);
-
-          $total_bytes_read += $chunk_size;
-          $chunk_index += 1;
-      }
-      fclose($fd);
-
-      $this->create_manifest($container, $object);
+    $this->create_manifest($container, $object);
   }
 }
 
@@ -1978,7 +1977,7 @@ $CONTAINER_NAME = 'test';
 $LARGE_OBJECT = '8cb0d624f8c14c69b52f2cd89e5e59b7.jpg';
 $OBJ_PATH = '/home/example';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
 $filename = $OBJ_PATH.'/'.$LARGE_OBJECT;
 $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
@@ -2152,25 +2151,25 @@ if __name__ == '__main__':
 ```php
 // object.php
 <?php
-class Object {
+class ObjectService {
   //...
-  function download($container, $object, $filename){
-      $req_url = $this->get_url($container, $object);
+  function download($container, $object, $filename) {
+    $req_url = $this->get_url($container, $object);
 
-      $req_header = $this->get_request_header();
+    $req_header = $this->get_request_header();
 
-      $fd = fopen($filename, 'w');
+    $fd = fopen($filename, 'w');
 
-      $curl  = curl_init($req_url);
-      curl_setopt_array($curl, array(
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_FILE => $fd,
-          CURLOPT_HTTPHEADER => $req_header
-      ));
-      $response = curl_exec($curl);
-      curl_close($curl);
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_FILE => $fd,
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
 
-      fclose($fd);
+    fclose($fd);
   }
 }
 
@@ -2181,7 +2180,7 @@ $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 $DOWNLOAD_PATH = '/home/example/download';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
 $filename = $DOWNLOAD_PATH.'/'.$OBJECT_NAME;
 $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
@@ -2195,7 +2194,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 오브젝트를 다른 컨테이너로 복사합니다.
 
 > [참고]
-> 멀티 파트 업로드한 오브젝트는 대상 컨테이너에 매니페스트 오브젝트를 생성하면 세그먼트 오브젝트를 복사하지 않아도 대상 컨테이너 경로를 통해 오브젝트에 접근할 수 있습니다. 단, 원본 세그먼트 오브젝트를 삭제하면 데이터에 접근할 수 없습니다.
+> 멀티파트 업로드한 오브젝트는 대상 컨테이너에 매니페스트 오브젝트를 생성하면 세그먼트 오브젝트를 복사하지 않아도 대상 컨테이너 경로를 통해 오브젝트에 접근할 수 있습니다. 단, 원본 세그먼트 오브젝트를 삭제하면 데이터에 접근할 수 없습니다.
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
@@ -2266,8 +2265,8 @@ public class ObjectService {
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
         // HttpMethod는 COPY 메서드를 지원하지 않아 PUT 메서드를 사용하는 대체 API를 호출한다.
-        this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);			
-    }    
+        this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
+    }
 
     public static void main(String[] args) {
         final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
@@ -2300,7 +2299,7 @@ class ObjectService:
         req_url = self._get_url(dest_container, object)
         req_header = self._get_request_header()
         req_header['X-Copy-From'] = '/'.join([src_container, object])
-        requests.put(req_url, headers=req_header)
+        return requests.put(req_url, headers=req_header)
 
 
 if __name__ == '__main__':
@@ -2322,22 +2321,22 @@ if __name__ == '__main__':
 ```php
 // object.php
 <?php
-class Object {
+class ObjectService {
   //...
-  function copy($src_container, $object, $dest_container){
-      $req_url = $this->get_url($dest_container, $object);
+  function copy($src_container, $object, $dest_container) {
+    $req_url = $this->get_url($dest_container, $object);
 
-      $req_header = $this->get_request_header();
-      $req_header[] = 'X-Copy-From: '.$src_container.'/'.$object;
+    $req_header = $this->get_request_header();
+    $req_header[] = 'X-Copy-From: '.$src_container.'/'.$object;
 
-      $curl  = curl_init($req_url);
-      curl_setopt_array($curl, array(
-          CURLOPT_PUT => TRUE,
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_HTTPHEADER => $req_header
-      ));
-      $response = curl_exec($curl);
-      curl_close($curl);l
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_PUT => TRUE,
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);l
   }
 }
 
@@ -2345,13 +2344,12 @@ class Object {
 $STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
+$DEST_CONTAINER = 'dest';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
-$META_KEY = 'Type';
-$META_VALUE = 'photo';
-$object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
+$object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 ?>
 ```
 </details>
@@ -2390,7 +2388,7 @@ X-Object-Meta-{Key}: {Value}
 ```
 // 오브젝트에 메타 데이터 추가
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
--H "X-Object-Meta-Type: photo' \
+-H "X-Object-Meta-Type: photo" \
 https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 // 오브젝트 헤더에서 추가한 메타데이터 확인
@@ -2450,7 +2448,7 @@ public class ObjectService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }    
+    }
 }
 ```
 </details>
@@ -2466,7 +2464,7 @@ class ObjectService:
         req_url = self._get_url(container, object)
         req_header = self._get_request_header()
         req_header['X-Object-Meta-' + key] = value
-        requests.post(req_url, headers=req_header)
+        return requests.post(req_url, headers=req_header)
 
 
 if __name__ == '__main__':
@@ -2479,7 +2477,7 @@ if __name__ == '__main__':
 
     obj_service = ObjectService(STORAGE_URL, TOKEN_ID)
 
-    obj_service.set_metadata(CONTAINER_NAME, OBJECT_NAME, META_KEY, META_VALUE)    
+    obj_service.set_metadata(CONTAINER_NAME, OBJECT_NAME, META_KEY, META_VALUE)
 ```
 </details>
 
@@ -2488,21 +2486,21 @@ if __name__ == '__main__':
 
 ```php
 <?php
-class Object {
+class ObjectService {
   //...
-  function set_metadata($container, $object, $key, $value){
-      $req_url = $this->get_url($container, $object);
-      $req_header = $this->get_request_header();
-      $req_header[] = 'X-Object-Meta-'.$key.': '.$value;  // 헤더에 메타데이터 추가
+  function set_metadata($container, $object, $key, $value) {
+    $req_url = $this->get_url($container, $object);
+    $req_header = $this->get_request_header();
+    $req_header[] = 'X-Object-Meta-'.$key.': '.$value;  // 헤더에 메타데이터 추가
 
-      $curl  = curl_init($req_url);
-      curl_setopt_array($curl, array(
-          CURLOPT_POST => TRUE,
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_HTTPHEADER => $req_header
-      ));
-      $response = curl_exec($curl);
-      curl_close($curl);
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_POST => TRUE,
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
   }
 }
 
@@ -2510,12 +2508,13 @@ class Object {
 $STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
-$DEST_CONTAINER = 'dest';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
-$object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
+$META_KEY = 'Type';
+$META_VALUE = 'photo';
+$object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 ?>
 ```
 </details>
@@ -2526,7 +2525,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 지정한 오브젝트를 삭제합니다.
 
 > [참고]
-> 멀티 파트 업로드한 오브젝트를 삭제할 때는 세그먼트 데이터를 모두 삭제해야 합니다. 매니페스트만 삭제하면 세그먼트 오브젝트가 그대로 남아 과금될 수 있습니다.
+> 멀티파트 업로드한 오브젝트를 삭제할 때는 세그먼트 데이터를 모두 삭제해야 합니다. 매니페스트만 삭제하면 세그먼트 오브젝트가 그대로 남아 과금될 수 있습니다.
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}
@@ -2577,11 +2576,11 @@ public class ObjectService {
 
         // 헤더 생성
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Auth-Token", tokenId);		
+        headers.add("X-Auth-Token", tokenId);
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
         // API 호출
-        this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);			
+        this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);
     }
 
     public static void main(String[] args) {
@@ -2613,7 +2612,7 @@ class ObjectService:
     def delete(self, container, object):
         req_url = self._get_url(container, object)
         req_header = self._get_request_header()
-        requests.delete(req_url, headers=req_header)
+        return requests.delete(req_url, headers=req_header)
 
 
 if __name__ == '__main__':
@@ -2624,7 +2623,7 @@ if __name__ == '__main__':
 
     obj_service = ObjectService(STORAGE_URL, TOKEN_ID)
 
-    obj_service.delete(CONTAINER_NAME, OBJECT_NAME)   
+    obj_service.delete(CONTAINER_NAME, OBJECT_NAME)
 ```
 </details>
 
@@ -2634,20 +2633,20 @@ if __name__ == '__main__':
 ```php
 // object.php
 <?php
-class Object {
+class ObjectService {
   //...
-  function delete($container, $object){
-      $req_url = $this->get_url($container, $object);
-      $req_header = $this->get_request_header();
+  function delete($container, $object) {
+    $req_url = $this->get_url($container, $object);
+    $req_header = $this->get_request_header();
 
-      $curl  = curl_init($req_url);
-      curl_setopt_array($curl, array(
-          CURLOPT_CUSTOMREQUEST => "DELETE",
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_HTTPHEADER => $req_header
-      ));
-      $response = curl_exec($curl);
-      curl_close($curl);
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_CUSTOMREQUEST => "DELETE",
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
   }
 }
 
@@ -2657,7 +2656,7 @@ $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
 $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 ?>

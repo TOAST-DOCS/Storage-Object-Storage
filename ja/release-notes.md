@@ -1,5 +1,9 @@
 ## Storage > Object Storage > release notes
 
+### 2022. 03. 29.
+#### 機能追加
+* [Console]リージョン間のコンテナ複製機能を提供
+
 ### 2022. 01. 25.
 #### 機能追加
 * [Console] S3 API認証情報発行機能の提供
