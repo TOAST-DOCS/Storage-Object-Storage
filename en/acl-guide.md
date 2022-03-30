@@ -312,7 +312,7 @@ $ curl -i -X POST \
 ```
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-  
+
 [Object download]
 
 
