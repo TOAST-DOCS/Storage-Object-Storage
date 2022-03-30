@@ -99,11 +99,7 @@ $ curl -i -X POST \
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-<<<<<<< HEAD
-[Download Object]
-=======
 [Object download]
->>>>>>> alpha
 
 
 $ curl -X GET \
@@ -162,22 +158,14 @@ $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-<<<<<<< HEAD
-[Download Object]
-=======
 [Object download]
->>>>>>> alpha
 
 
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-<<<<<<< HEAD
-[Download Object]
-=======
 [Object download]
->>>>>>> alpha
 ```
 
 If there is no authorized referer address in the API request header or the protocol is not included in the referer address, access is blocked.
@@ -217,22 +205,14 @@ $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-<<<<<<< HEAD
-[Download Object]
-=======
 [Object download]
->>>>>>> alpha
 
 
 $ curl -O -X GET \
   -H 'Referer: https://qux.baz.foo.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-<<<<<<< HEAD
-[Download Object]
-=======
 [Object download]
->>>>>>> alpha
 ```
 
 Requests that do not contain subdomains are blocked.
@@ -259,22 +239,14 @@ $ curl -O -X GET \
   -H 'Referer: https://foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-<<<<<<< HEAD
-[Download Object]
-=======
 [Object download]
->>>>>>> alpha
 
 
 $ curl -O -X GET \
   -H 'Referer: https://baz.foo.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-<<<<<<< HEAD
-[Download Object]
-=======
 [Object download]
->>>>>>> alpha
 ```
 </details>
 
@@ -317,23 +289,13 @@ $ curl -i -X POST \
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-<<<<<<< HEAD
-[Download Object]
+[Object download]
 
 
 $ curl -O -X GET -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-[Download Object]
-=======
 [Object download]
-
-
-$ curl -O -X GET -H 'Referer: https://cloud.nhn.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
-
-[Object download]
->>>>>>> alpha
 ```
 </details>
 
@@ -351,17 +313,10 @@ $ curl -i -X POST \
 $ curl -O -X GET \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-<<<<<<< HEAD
-[Download Object]
-
-
-$ curl -X GET -H 'Referer: https://bar.foo.com' \
-=======
 [Object download]
 
 
-$ curl -X GET -H 'Referer: https://cloud.nhn.com' \
->>>>>>> alpha
+$ curl -X GET -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -400,11 +355,7 @@ $ curl -O -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
-<<<<<<< HEAD
-[Download Object]
-=======
 [Object download]
->>>>>>> alpha
 ```
 </details>
 
