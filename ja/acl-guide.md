@@ -147,7 +147,7 @@ HTTPリファラー(HTTP Referer)は、ハイパーリンクを介してリク�
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:cloud.nhn.com' \
+  -H 'X-Container-Read: .r:bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
@@ -155,14 +155,14 @@ APIリクエストヘッダに、許可されたHTTPリファラーアドレス�
 
 ```
 $ curl -O -X GET \
-  -H 'Referer: https://cloud.nhn.com' \
+  -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
-  -H 'Referer: https://cloud.nhn.com/some/path' \
+  -H 'Referer: https://bar.foo.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
@@ -185,7 +185,7 @@ $ curl -X GET \
 
 
 $ curl -X GET \
-  -H 'Referer: cloud.nhn.com' \
+  -H 'Referer: bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -196,20 +196,20 @@ HTTPリファラー設定に、次のように<code>.</code>で始まるドメ�
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:.nhn.com' \
+  -H 'X-Container-Read: .r:.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  -H 'Referer: https://cloud.nhn.com' \
+  -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
-  -H 'Referer: https://guide.docs.nhn.com/some/path' \
+  -H 'Referer: https://qux.baz.foo.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
@@ -219,7 +219,7 @@ $ curl -O -X GET \
 
 ```
 $ curl -X GET \
-  -H 'Referer: https://nhn.com' \
+  -H 'Referer: https://foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -230,20 +230,20 @@ $ curl -X GET \
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:nhn.com, .r:.nhn.com' \
+  -H 'X-Container-Read: .r:foo.com, .r:.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  -H 'Referer: https://nhn.com' \
+  -H 'Referer: https://foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
-  -H 'Referer: https://container.nhn.com/some/path' \
+  -H 'Referer: https://baz.foo.com/some/path' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
@@ -256,14 +256,14 @@ $ curl -O -X GET \
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:-cloud.nhn.com' \
+  -H 'X-Container-Read: .r:-bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
 HTTPリファラードメイン名の前にハイフンをつけて設定すると、設定されたHTTPリファラーリクエストがブロックされます。
 
 ```
-$ curl -X GET -H 'Referer: https://cloud.nhn.com' \
+$ curl -X GET -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -281,7 +281,7 @@ HTTPリファラーのアクセス許可/ブロックポリシーは、入力し
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:-cloud.nhn.com, .r:*' \
+  -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
@@ -292,7 +292,7 @@ $ curl -O -X GET \
 [オブジェクトのダウンロード]
 
 
-$ curl -O -X GET -H 'Referer: https://cloud.nhn.com' \
+$ curl -O -X GET -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
@@ -305,7 +305,7 @@ $ curl -O -X GET -H 'Referer: https://cloud.nhn.com' \
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:*, .r:-cloud.nhn.com' \
+  -H 'X-Container-Read: .r:*, .r:-bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
@@ -316,7 +316,7 @@ $ curl -O -X GET \
 [オブジェクトのダウンロード]
 
 
-$ curl -X GET -H 'Referer: https://cloud.nhn.com' \
+$ curl -X GET -H 'Referer: https://bar.foo.com' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
