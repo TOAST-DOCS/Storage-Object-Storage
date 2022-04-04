@@ -36,7 +36,7 @@ All objects must be uploaded to containers. One object cannot be larger than 5GB
 > [Note]
 > Files exceeding 5GB cannot be uploaded in a web console.
 > Objects exceeding 5GB must be split by using commands, like  `split`, or programmed to be divided into less than 5GB before uploaded.  
-> Fore more details, refer to [Upload Multiple Parts](api-guide/#_10) of API guide.
+> For more details, refer to [Multipart Upload](api-guide/#multipart-upload) of API guide.
 
 ### Download Objects
 

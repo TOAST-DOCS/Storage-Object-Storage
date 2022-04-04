@@ -1,38 +1,38 @@
-## Storage > Object Storage > 概述
+## Storage > Object Storage > Overview
 
-对象存储是指可以存储大量数据的在线存储服务。
+Object Storage is an online storage service that can store large-capacity data.
 
-## 服务特点
+## Features
 
-### 扩展性
+### Scalable
 
-可以无限量的增设容量。用户无需考虑存储容量，根据需要随时存储数据。
+Capacity can be expanded almost infinitely. Users can store as much data as they want when they need it, without worrying about storage capacity.
 
-### 限制访问权限
+### Control Accessibility
 
-可以根据Bucket类别设置访问权限。设置为private的Bucket只能由授权用户访问。如果将Bucket设置为public，则任何人都可以使用公开的URL访问Bucket内的文件。
+Access permissions can be set per container. Containers set to private can only be accessed by authorized users. When a container is set to public, anyone can access the objects inside the container using a public URL.
 
-### 数据安全性保障
+### Ensure Data Reliability
 
-为了安全地存储数据，对每个对象创建三个副本。因为创建副本时无法保障数据的完整性，所以无法访问数据。因此，存储数据后若立即发送GET请求，则可能会收到失败响应。如果至少有两个副本相同，则认为复制成功并完成存储，且可以访问数据。
+To store data safely, a total of 3 copies of each object are created. While creating the copies, the integrity of the replicated data cannot be guaranteed and therefore the data is inaccessible. So, if you send a GET request immediately after storing data, you might get a failure response. If at least two copies are identical, the replication is considered successful, and the storing is completed and the data becomes accessible.
 
-### 提供简便的Web控制台
+### Provide a Convenient Web Console
 
-为方便起见，我们提供以分层目录构造来管理数据的Web控制台。当APP访问数据时，可以用对象的ID来使用RESTful API。当用户直接访问数据时，用户可以使用熟悉的目录构造的Web控制台。用户还可以使用文件夹对文件进行分组管理。
+For user convenience, a web console is provided to manage data in a hierarchical directory structure. When an application accesses data, the RESTful API can be used with the object ID. When a user directly accesses data, they can use a web console with a familiar directory structure. You can manage objects by grouping them using folders.
 
-### 提供RESTful API
+### Provide RESTful API
 
-提供基于HTTP(s)的REST API控制Bucket和对象。使用API可以在用户的APP中使用对象存储。
+HTTP(s)-based REST API is provided to control containers and objects. The API allows you to use object storage in your applications.
 
 
-## 用语
-#### 对象(object)
-是对象存储的基本管理单位。通常把文件当作对象。
-#### 文件夹(folder)
-是管理对象的虚拟单位。它类似于Windows的文件夹或Linux的目录，帮助用户分层管理对象。
-#### Bucket(container)
-表示最上层文件夹。通常作为对象存储上的存储空间，也是计费、权限控制、日志记录等高级功能的管理实体。且存储在对象存储上的每个文件必须都包含在某个存储Bucket中。
-#### 存储账户(account)
-对象存储的用户账户。NHN Cloud的对象存储以账户为单位隔离。
+## Glossary
+#### Object
+The basic management unit of object storage, which refers to the data to be stored. Generally a file is used as an object.
+#### Folder
+A virtual unit that binds multiple objects. It helps to manage objects hierarchically, similar to folders in Windows or directories in Linux.
+#### Container
+Refers to the top-level folder. Basically, a container becomes the unit of access permission setting. All objects must exist in a container.
+#### Storage Account
+A user account for object storage. NHN Cloud Object Storage is isolated on a per-account basis.
 #### API Endpoint
-为了访问对象存储而提供的HTTP URL。对该URL请求可以访问对象存储。
+HTTP URL provided to access object storage with REST API. You can access object storage by making a request with the URL.

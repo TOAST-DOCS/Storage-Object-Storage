@@ -6,7 +6,7 @@ To use the Object Storage API, you must obtain an authentication token first. An
 
 <br/>
 
-### Check Tenant ID and API Endpoint
+### Check the Tenant ID and API Endpoint
 
 Click **API Endpoint Setting** on the Object Storage service page to check the tenant ID and API endpoint to issue a token.
 
@@ -18,7 +18,7 @@ Click **API Endpoint Setting** on the Object Storage service page to check the t
 
 <br/>
 
-### Set API Password
+### Set the API Password
 
 To set the API password, go to the Object Storage service page and click **API Endpoint Setting**.
 
@@ -180,8 +180,8 @@ public class AuthService {
     private TokenRequest tokenRequest;
     private RestTemplate restTemplate;
 
-    public AuthService(String authUrl, String tenantId, String username, String password) {		
-        this.authUrl = authUrl;		
+    public AuthService(String authUrl, String tenantId, String username, String password) {
+        this.authUrl = authUrl;
 
         // Create request body
         this.tokenRequest = new TokenRequest();
@@ -270,13 +270,13 @@ if __name__ == '__main__':
 function get_token($auth_url, $tenant_id, $username, $password) {
   $url = "$auth_url/tokens";
   $req_body = array(
-      'auth' => array(
-          'tenantId' => $tenant_id,
-          'passwordCredentials' => array(
-              'username' => $username,
-              'password' => $password
-          )
+    'auth' => array(
+      'tenantId' => $tenant_id,
+      'passwordCredentials' => array(
+        'username' => $username,
+        'password' => $password
       )
+    )
   );  // Create request body
   $req_header = array(
     'Content-Type: application/json'
@@ -309,9 +309,9 @@ printf("%s\n", $token);
 <br/>
 
 ## Storage Account
-A storage account is a character string in the `AUTH_*****`format, included in the Object-Store API endpoint.
+A storage account is a character string in the `AUTH_*****` format, included in the Object-Store API endpoint.
 
-### Query Storage Account
+### Query the Storage Account
 Retrieves usage status of a storage account.
 
 ```
@@ -454,11 +454,11 @@ class Account {
   private $token_id;
 
   function __construct($storage_url,  $token_id) {
-     $this->storage_url = $storage_url;
-     $this->token_id = $token_id;
+   $this->storage_url = $storage_url;
+   $this->token_id = $token_id;
   }
 
-  function get_request_header(){
+  function get_request_header() {
     return array(
       'X-Auth-Token: ' . $this->token_id
     );
@@ -479,9 +479,9 @@ class Account {
 
     // parse response headers
     $headers = [];
-    foreach($data as $part){
-        $middle = explode(":", $part, 2);
-        $headers[trim($middle[0])] = trim($middle[1]);
+    foreach($data as $part) {
+      $middle = explode(":", $part, 2);
+      $headers[trim($middle[0])] = trim($middle[1]);
     }
     return $headers;
   }
@@ -554,7 +554,7 @@ public class AccountService {
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
         // Call API
-        ResponseEntity<String>response
+        ResponseEntity<String> response
             = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
 
         List<String> containerList = null;
@@ -596,7 +596,7 @@ class AccountService:
     def get_container_list(self):
       req_header = self._get_request_header()
       resp = requests.get(self.storage_url, headers=req_header)
-      return resp.content.split('\n')
+      return resp.text.split('\n')
 
 
 if __name__ == '__main__':
@@ -641,8 +641,8 @@ $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
 $container_list = $account->get_container_list();
-foreach($container_list as $container){
-    printf("%s\n", $container);
+foreach($container_list as $container) {
+  printf("%s\n", $container);
 }
 ?>
 ```
@@ -652,11 +652,13 @@ foreach($container_list as $container){
 
 ## Containers
 
-### Create Container
+### Create a Container
 Creates a container. To upload files to object storage, a container must be created.
 
 > [Caution]
 > A container name cannot include the special characters `' " < > ;`,spaces, and relative path characters (`. ..`).
+
+<!-- This is a comment for line break, so it must be included. -->
 
 > [Note]
 > If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL-encoded (percent-encoding). These are reserved characters that are considered important for URL. If you send an API request without URL-encoding a path including these characters, you won't get the desired response.
@@ -794,11 +796,11 @@ class Container {
   private $token_id;
 
   function __construct($storage_url,  $token_id) {
-     $this->storage_url = $storage_url;
-     $this->token_id = $token_id;
+   $this->storage_url = $storage_url;
+   $this->token_id = $token_id;
   }
 
-  function get_url($container = null){
+  function get_url($container = null) {
     $url = $this->storage_url;
     if ($container != null) {
       $url .= '/' . $container;
@@ -806,13 +808,13 @@ class Container {
     return $url;
   }
 
-  function get_request_header(){
+  function get_request_header() {
     return array(
       'X-Auth-Token: ' . $this->token_id
     );
   }
 
-  function create($container){
+  function create($container) {
     $req_url = $this->get_url($container);
     $req_header = $this->get_request_header();
 
@@ -842,7 +844,7 @@ $container->create($CONTAINER_NAME);
 
 <br/>
 
-### Get Container
+### Get a Container
 Retrieves the information of the specified container and the list of the objects stored in the container. The container's information can be viewed in the response header.
 
 ```
@@ -930,16 +932,15 @@ public class ContainerService {
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
         // Call API
-        ResponseEntity<String>response
+        ResponseEntity<String> response
             = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, String.class);
 
-        List<String> objectList = null;
         if (response.getStatusCode() == HttpStatus.OK) {
             // Convert list received as String to array
-            objectList = Arrays.asList(response.getBody().split("\\r?\\n"));
+            return Arrays.asList(response.getBody().split("\\r?\\n"));
         }
-        // Convert the array to list and return it
-        return new ArrayList<String>(objectList);
+
+        return Collections.emptyList();
     }
 
     public static void main(String[] args) {
@@ -972,7 +973,7 @@ class ContainerService:
     def _get_list(self, req_url):
         req_header = self._get_request_header()
         response = requests.get(req_url, headers=req_header)
-        return response.content.split('\n')
+        return response.text.split('\n')
 
     def get_object_list(self, container):
         req_url = self._get_url(container)
@@ -1014,7 +1015,7 @@ class Container {
     return $object_list;
   }
 
-  function get_object_list($container, $last_object = null){
+  function get_object_list($container, $last_object = null) {
     $req_url = $this->get_url($container);
     return $this->get_list($req_url);
   }
@@ -1028,7 +1029,7 @@ $CONTAINER_NAME = 'test';
 $container = new Container($STORAGE_URL, $TOKEN_ID);
 
 $object_list = $container->get_object_list($CONTAINER_NAME);
-foreach ($object_list as $obj){
+foreach ($object_list as $obj) {
   printf("%s\n", $obj);
 }
 ?>
@@ -1070,17 +1071,17 @@ This API does not require a request body.
 | Container | URL | String | O | The name of the container to edit |
 <br/>
 
-##### Set Access Policy
+##### Set the Access Policy
 You can set the container access policy using the `X-Container-Read` and `X-Container-Write` header. For more details, refer to [Guide to setting up access policy](/Storage/Object%20Storage/en/acl-guide/).
 
 <br/>
 
-##### Set Object Life Cycle
+##### Set the Object Life Cycle
 With the `X-Container-Object-Retention` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
 <br/>
 
-##### Set Version Control Policy
-As described in the [Update Object](/api-guide/#update-object), If there are duplicate object names while uploading objects, the objects are updated. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
+##### Set the Version Control Policy
+As described in the [Update an Object](/api-guide/#update-an-object), if there are duplicate object names while uploading objects, the objects are updated. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
 
 The previous version of objects are stored in the archive container in the following manner:
 ```
@@ -1093,22 +1094,21 @@ If you delete an object from a container where version control policy is already
 With the `X-Versions-Retention` header, you can set the life cycle of a previous object version in days. If set to 1, the stored object will be automatically deleted after a day. If not set, the previous object version will be stored until users delete it. This applies only to previous object versions uploaded after the setting has been applied.
 
 > [Cautions]
-> If the version control policy has been set up, you must not delete the archive container before the original container. An error may occur because the previous versions cannot be stored in the archive container when updating or deleting the objects in the original container. If an error occurs because the archive container was deleted before the original container, create a new archive container or disable the version control policy of the original container.
+> If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
 >
-> It is recommended that you avoid using Unicode characters in container names for archive containers. If the name of the container to set as an archive container contains Unicode characters, it must be URL-encoded and entered in the request header.
+> It is recommended that you avoid using Unicode characters in container names for archive containers. If the name of the container to set as an archive container contains Unicode characters, it must be URL-encoded before being entered in the request header.
 >
 
 <br/>
 
-##### Set Static Website
-You can use container URLs to host a static website if you set static website index document and error document using the `X-Container-Meta-Web-Index` and `X-Container-Meta-Web-Error` header after allowing containers read access to all users.
+##### Set a Static Website
+If you allow the container read access to all users and set the static website's index document and error document using the `X-Container-Meta-Web-Index` and `X-Container-Meta-Web-Error` headers, you can host a static website using the container URL.
 
-The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters, or some special character (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` extension. If the conditions are not met, you may not be able to set it up or your static website may not work.
-
-The name of a static website's error document is in the form of `{error code}{suffix}`, and you must enter a `suffix` to the header. For example, if you requested `X-Container-Meta-Web-Error: error.html`, the name of the error document to be displayed when the 404 error occurs is `404error.html`. An error document can be flexibly uploaded and used according to the context of each error. If you did not define any error document or there is no error document object that fits the error code, the default error document of the web browser will be displayed.
+The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters or some special characters (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` file extension. If the conditions are not met, you may not be able to configure the setting or the static website may not work.
+The format of a static website's error document name is `{response code}{suffix}`. For example, if an error document is set as `error.html`, the name of the error document to be displayed when the 404 error occurs becomes `404error.html`. You can upload and use error documents according to each error condition. If an error document is not defined or an error object that matches the response code does not exist, the default error document of a web browser will be displayed.
 <br/>
 
-##### Unset Container
+##### Unset a Container
 If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Retention: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
 <br/>
 
@@ -1214,9 +1214,9 @@ if __name__ == '__main__':
 <?php
 class Container {
   const PUBLIC_ACL = '.r:*';
-  const PRIVATE_ACL = '';  
-  // ...  
-  function set_acl($container, $is_public){
+  const PRIVATE_ACL = '';
+  // ...
+  function set_acl($container, $is_public) {
     $req_url = $this->get_url($container);
 
     $permission = $is_public ? self::PUBLIC_ACL : self::PRIVATE_ACL;
@@ -1251,7 +1251,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 
 <br/>
 
-### Delete Container
+### Delete a Container
 
 Deletes the specified container. The container to be deleted must be empty.
 
@@ -1298,7 +1298,7 @@ public class ContainerService {
 
     // ContainerService Class ...
 
-    public void deleteContainer(String containerName){
+    public void deleteContainer(String containerName) {
         String url = this.getUrl(containerName);
 
         // Create header
@@ -1307,7 +1307,7 @@ public class ContainerService {
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
-        // Call API         
+        // Call API
         this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);
     }
 
@@ -1359,8 +1359,8 @@ if __name__ == '__main__':
 // container.php
 <?php
 class Container {
-  // ...  
-  function delete($container){
+  // ...
+  function delete($container) {
     $req_url = $this->get_url($container);
     $req_header = $this->get_request_header();
 
@@ -1391,7 +1391,7 @@ $container->delete($CONTAINER_NAME);
 
 ## Objects
 
-### Upload Object
+### Upload an Object
 Uploads a new object to the specified container.
 
 ```
@@ -1497,8 +1497,8 @@ public class ObjectService {
 
         try {
             // Create InputStream from file
-            File objFile = new File(objectPath + "/" + objectName);            
-            InputStream inputStream = FileUtils.openInputStream(objFile);
+            File objFile = new File(objectPath + "/" + objectName);
+            InputStream inputStream = new FileInputStream(objFile);
 
             // Upload
             objectService.uploadObject(containerName, objectName, inputStream);
@@ -1538,7 +1538,7 @@ class ObjectService:
 
         path = '/'.join([object_path, object])
         with open(path, 'rb') as f:
-            requests.put(req_url, headers=req_header, data=f.read())
+            return requests.put(req_url, headers=req_header, data=f.read())
 
 
 if __name__ == '__main__':
@@ -1560,43 +1560,43 @@ if __name__ == '__main__':
 ```php
 // object.php
 <?php
-class Object {
+class ObjectService {
   private $storage_url;
   private $token_id;
 
   function __construct($storage_url,  $token_id) {
-      $this->storage_url = $storage_url;
-      $this->token_id = $token_id;
+    $this->storage_url = $storage_url;
+    $this->token_id = $token_id;
   }
 
-  function get_url($container, $object){
-      return $this->storage_url . '/' . $container . '/' . $object;
+  function get_url($container, $object) {
+    return $this->storage_url . '/' . $container . '/' . $object;
   }
 
-  function get_request_header(){
-      return array(
-          'X-Auth-Token: ' . $this->token_id
-      );
+  function get_request_header() {
+    return array(
+      'X-Auth-Token: ' . $this->token_id
+    );
   }
 
-  function upload($container, $object, $filename){
-      $req_url = $this->get_url($container, $object);
+  function upload($container, $object, $filename) {
+    $req_url = $this->get_url($container, $object);
 
-      $req_header = $this->get_request_header();
+    $req_header = $this->get_request_header();
 
-      $fd = fopen($filename, 'r');  // Open file.
+    $fd = fopen($filename, 'r');  // Open file.
 
-      $curl  = curl_init($req_url);
-      curl_setopt_array($curl, array(
-          CURLOPT_PUT => TRUE,
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_INFILE => $fd,  // Put FileStream as parameter.
-          CURLOPT_HTTPHEADER => $req_header
-      ));
-      $response = curl_exec($curl);
-      curl_close($curl);l
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_PUT => TRUE,
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_INFILE => $fd,  // Put FileStream as parameter.
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);l
 
-      fclose($fd);
+    fclose($fd);
   }
 }
 
@@ -1607,7 +1607,7 @@ $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 $OBJ_PATH = '/home/example';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
 // upload object
 $filename = $OBJ_PATH.'/'.$OBJECT_NAME;
@@ -1618,7 +1618,7 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
-### Upload Multiple Parts
+### Multipart Upload
 An object whose size exceeds 5GB needs to be divided into segments of 5GB or smaller before uploading. If you upload segment objects and create a manifest object, you can use them as if they are a single object.
 
 <br/>
@@ -1654,10 +1654,10 @@ This API does not return a request body. For a valid request, return status code
 <br/>
 
 #### Create a Manifest Object
-A manifest object can be created in two ways: either using **DLO**(Dynamic Large Object) or **SLO**(Static Large Object).
+A manifest object can be created in two ways: either using **DLO** (Dynamic Large Object) or **SLO** (Static Large Object).
 
 > [Note]
-> Because a manifest object has path information for segment objects, there is no need to upload segment objects and the manifest object in the same container. If segment objects and manifest object are in a single container, so it is difficult to manage them, it is recommended to upload segment objects to a separate container and keep only the manifest object in the upload-intended container.
+> Because a manifest object has path information for segment objects, there is no need to upload segment objects and the manifest object in the same container. If segment objects and manifest object are in a single container and it is difficult to manage them, it is recommended to upload segment objects to a separate container and create only the manifest object in the container where you originally intended to upload the objects.
 
 **DLO**
 The DLO manifest object uses the path to the segment objects entered in the `X-Object-Manifest` header to automatically find and connect segment objects.
@@ -1683,7 +1683,8 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}
 <br/>
 
 **SLO**
-When you request an SLO manifest object, you must write segment object list in order in the request body text. If you request to create an SLO manifest object, the system checks if each segment object is in the entered path and if the etag value and the size of the object are identical. If the information does not match, the manifest object creation fails.
+To create an SLO manifest object, you must enter the list of segment objects in order in the request body.
+If you make a request to create an SLO manifest object, the system checks whether each segment object is in the entered path and the etag value matches the size of the object. If the information does not match, the manifest object is not created.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}?multipart-manifest=put
@@ -1730,7 +1731,7 @@ This API does not return a response body. For a valid request, return status cod
 <br/>
 
 #### Code Example
-Example of multipart uploading using the DLO method
+Example of multipart upload using the DLO method
 
 <details>
 <summary>cURL</summary>
@@ -1776,7 +1777,7 @@ public class ObjectService {
 
     // Upload manifest object
     public void uploadManifestObject(String containerName, String objectName) {
-        String url = this.getUrl(containerName, objectName);        
+        String url = this.getUrl(containerName, objectName);
         String manifestName = containerName + "/" + objectName + "/"; // Create manifest name
 
         // Create a header
@@ -1795,7 +1796,7 @@ public class ObjectService {
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectPath = "/home/example/";
-        final String objectName = "46432aa503ab715f288c4922911d2035.jpg";        
+        final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
 
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
 
@@ -1804,12 +1805,12 @@ public class ObjectService {
 
         final int defaultChunkSize = 100 * 1024; // Segment by 100 KB
         int chunkSize = defaultChunkSize;
-        int chunkNo = 0;  // Chunk number to create names for segment objects  
+        int chunkNo = 0;  // Chunk number to create names for segment objects
         int totalBytesRead = 0;
 
         try {
-            // Create InputStream from file  
-            InputStream inputStream = new BufferedInputStream(new FileInputStream(objFile));			
+            // Create InputStream from file
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(objFile));
             while(totalBytesRead < fileSize) {
 
                 // Calculate remaining data size
@@ -1857,7 +1858,7 @@ class ObjectService:
         req_url = self._get_url(container, object)
         req_header = self._get_request_header()
         req_header['X-Object-Manifest'] = '/'.join([container, object])
-        requests.put(req_url, headers=req_header)
+        return requests.put(req_url, headers=req_header)
 
     def upload_large_object(self, container, object, object_path):
         url = self._get_url(container, object)
@@ -1882,7 +1883,7 @@ class ObjectService:
                 f.seek(total_bytes_read)
                 chunk_index += 1
 
-        self._create_manifest(container, object)
+        return self._create_manifest(container, object)
 
 
 if __name__ == '__main__':
@@ -1904,73 +1905,73 @@ if __name__ == '__main__':
 ```php
 // object.php
 <?php
-class Object {
+class ObjectService {
   const CHUNK_SIZE = 100 * 1024;  // 100 KB
   // ...
 
-  function create_manifest($container, $object){
-      $req_url = $this->get_url($container, $object);
-      $req_header = $this->get_request_header();
-      $req_header[] = 'X-Object-Manifest: '.$container.'/'.$object.'/';
+  function create_manifest($container, $object) {
+    $req_url = $this->get_url($container, $object);
+    $req_header = $this->get_request_header();
+    $req_header[] = 'X-Object-Manifest: '.$container.'/'.$object.'/';
+
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_PUT => TRUE,
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
+  }
+
+  function upload_large_object($container, $object, $filename) {
+    $url = $this->get_url($container, $object);
+    $req_header = $this->get_request_header();
+
+    $chunk_index = 1;
+    $chunk_size = self::CHUNK_SIZE;
+    $total_bytes_read = 0;
+    $fd = fopen($filename, 'r');  // Open file.
+    $obj_size = filesize($filename);
+
+    while($total_bytes_read < $obj_size) {
+      // Calculate volume to segment
+      $remained_bytes = $obj_size - $total_bytes_read;
+      if ($remained_bytes < $chunk_size) {
+        $chunk_size = $remained_bytes;
+      }
+      $chunk = fread($fd, $chunk_size);
+      // Create part names
+      $temp_file = sprintf("./multipart-%03d", $chunk_index);
+      $req_url = sprintf("%s/%03d", $url, $chunk_index);
+
+      // Create temporary part files
+      $part_fd = fopen($temp_file, 'w+');
+      fwrite($part_fd, $chunk);
+      fseek($part_fd, 0);
 
       $curl  = curl_init($req_url);
       curl_setopt_array($curl, array(
-          CURLOPT_PUT => TRUE,
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_HTTPHEADER => $req_header
+        CURLOPT_PUT => TRUE,
+        CURLOPT_HEADER => TRUE,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_INFILE => $part_fd,  // Enter part filestream as parameter
+        CURLOPT_HTTPHEADER => $req_header
       ));
       $response = curl_exec($curl);
       curl_close($curl);
-  }
+      printf("$response");
 
-  function upload_large_object($container, $object, $filename){
-      $url = $this->get_url($container, $object);
-      $req_header = $this->get_request_header();
+      // Delete temporary files
+      fclose($part_fd);
+      unlink($temp_file);
 
-      $chunk_index = 1;
-      $chunk_size = self::CHUNK_SIZE;
-      $total_bytes_read = 0;
-      $fd = fopen($filename, 'r');  // Open file.
-      $obj_size = filesize($filename);
+      $total_bytes_read += $chunk_size;
+      $chunk_index += 1;
+    }
+    fclose($fd);
 
-      while($total_bytes_read < $obj_size){
-          // Calculate volume to segment
-          $remained_bytes = $obj_size - $total_bytes_read;
-          if ($remained_bytes < $chunk_size){
-              $chunk_size = $remained_bytes;
-          }
-          $chunk = fread($fd, $chunk_size);
-          // Create part names
-          $temp_file = sprintf("./multipart-%03d", $chunk_index);
-          $req_url = sprintf("%s/%03d", $url, $chunk_index);
-
-          // Create temporary part files
-          $part_fd = fopen($temp_file, 'w+');
-          fwrite($part_fd, $chunk);
-          fseek($part_fd, 0);
-
-          $curl  = curl_init($req_url);
-          curl_setopt_array($curl, array(
-              CURLOPT_PUT => TRUE,
-              CURLOPT_HEADER => TRUE,
-              CURLOPT_RETURNTRANSFER => TRUE,
-              CURLOPT_INFILE => $part_fd,  // Enter part filestream as parameter
-              CURLOPT_HTTPHEADER => $req_header
-          ));
-          $response = curl_exec($curl);
-          curl_close($curl);
-          printf("$response");
-
-          // Delete temporary files
-          fclose($part_fd);
-          unlink($temp_file);
-
-          $total_bytes_read += $chunk_size;
-          $chunk_index += 1;
-      }
-      fclose($fd);
-
-      $this->create_manifest($container, $object);
+    $this->create_manifest($container, $object);
   }
 }
 
@@ -1981,7 +1982,7 @@ $CONTAINER_NAME = 'test';
 $LARGE_OBJECT = '8cb0d624f8c14c69b52f2cd89e5e59b7.jpg';
 $OBJ_PATH = '/home/example';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
 $filename = $OBJ_PATH.'/'.$LARGE_OBJECT;
 $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
@@ -1991,8 +1992,8 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <br/>
 
-### Update Object
-Same as Upload Object API, but if the object is already located in the container, the content of the object is updated.
+### Update an Object
+Same as the Upload an Object API, but if the object is already located in the container, the content of the object is updated.
 
 ```
 PUT   /v1/{Account}/{Container}/{Object}
@@ -2018,7 +2019,7 @@ This API does not return a response body. For a valid request, return status cod
 
 <br/>
 
-### Download Object
+### Download an Object
 Downloads an object.
 
 ```
@@ -2155,25 +2156,25 @@ if __name__ == '__main__':
 ```php
 // object.php
 <?php
-class Object {
+class ObjectService {
   //...
-  function download($container, $object, $filename){
-      $req_url = $this->get_url($container, $object);
+  function download($container, $object, $filename) {
+    $req_url = $this->get_url($container, $object);
 
-      $req_header = $this->get_request_header();
+    $req_header = $this->get_request_header();
 
-      $fd = fopen($filename, 'w');
+    $fd = fopen($filename, 'w');
 
-      $curl  = curl_init($req_url);
-      curl_setopt_array($curl, array(
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_FILE => $fd,
-          CURLOPT_HTTPHEADER => $req_header
-      ));
-      $response = curl_exec($curl);
-      curl_close($curl);
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_FILE => $fd,
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
 
-      fclose($fd);
+    fclose($fd);
   }
 }
 
@@ -2184,7 +2185,7 @@ $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 $DOWNLOAD_PATH = '/home/example/download';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
 $filename = $DOWNLOAD_PATH.'/'.$OBJECT_NAME;
 $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
@@ -2194,11 +2195,11 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
-### Copy Object
+### Copy an Object
 Copies an object to another container.
 
 > [Note]
-> If you create a manifest object in the target container, the object uploaded in multiple parts can be accessed through the path to the target container without having to copy segment objects. However, you cannot access the data if you delete the source segment objects.
+> If you create a manifest object in the target container, the multipart-uploaded object can be accessed through the path to the target container without having to copy segment objects. However, you cannot access the data if you delete the source segment objects.
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
@@ -2269,8 +2270,8 @@ public class ObjectService {
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
         // Call alternative API since the COPY method is not supported by HttpMethod.
-        this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);			
-    }    
+        this.restTemplate.exchange(url, HttpMethod.PUT, requestHttpEntity, String.class);
+    }
 
     public static void main(String[] args) {
         final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
@@ -2303,7 +2304,7 @@ class ObjectService:
         req_url = self._get_url(dest_container, object)
         req_header = self._get_request_header()
         req_header['X-Copy-From'] = '/'.join([src_container, object])
-        requests.put(req_url, headers=req_header)
+        return requests.put(req_url, headers=req_header)
 
 
 if __name__ == '__main__':
@@ -2325,22 +2326,22 @@ if __name__ == '__main__':
 ```php
 // object.php
 <?php
-class Object {
+class ObjectService {
   //...
-  function copy($src_container, $object, $dest_container){
-      $req_url = $this->get_url($dest_container, $object);
+  function copy($src_container, $object, $dest_container) {
+    $req_url = $this->get_url($dest_container, $object);
 
-      $req_header = $this->get_request_header();
-      $req_header[] = 'X-Copy-From: '.$src_container.'/'.$object;
+    $req_header = $this->get_request_header();
+    $req_header[] = 'X-Copy-From: '.$src_container.'/'.$object;
 
-      $curl  = curl_init($req_url);
-      curl_setopt_array($curl, array(
-          CURLOPT_PUT => TRUE,
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_HTTPHEADER => $req_header
-      ));
-      $response = curl_exec($curl);
-      curl_close($curl);l
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_PUT => TRUE,
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);l
   }
 }
 
@@ -2348,13 +2349,12 @@ class Object {
 $STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
+$DEST_CONTAINER = 'dest';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
-$META_KEY = 'Type';
-$META_VALUE = 'photo';
-$object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
+$object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 ?>
 ```
 </details>
@@ -2362,7 +2362,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 <br/>
 
 ### Modify Object Metadata
-Modify metadata of the specified object.
+Modifies metadata of the specified object.
 
 ```
 POST   /v1/{Account}/{Container}/{Object}
@@ -2393,7 +2393,7 @@ This request does not return a response body. For a valid request, return status
 ```
 // Add metadata to object
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
--H "X-Object-Meta-Type: photo' \
+-H "X-Object-Meta-Type: photo" \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 // Check metadata added to object header
@@ -2453,7 +2453,7 @@ public class ObjectService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }    
+    }
 }
 ```
 </details>
@@ -2469,7 +2469,7 @@ class ObjectService:
         req_url = self._get_url(container, object)
         req_header = self._get_request_header()
         req_header['X-Object-Meta-' + key] = value
-        requests.post(req_url, headers=req_header)
+        return requests.post(req_url, headers=req_header)
 
 
 if __name__ == '__main__':
@@ -2482,7 +2482,7 @@ if __name__ == '__main__':
 
     obj_service = ObjectService(STORAGE_URL, TOKEN_ID)
 
-    obj_service.set_metadata(CONTAINER_NAME, OBJECT_NAME, META_KEY, META_VALUE)    
+    obj_service.set_metadata(CONTAINER_NAME, OBJECT_NAME, META_KEY, META_VALUE)
 ```
 </details>
 
@@ -2491,21 +2491,21 @@ if __name__ == '__main__':
 
 ```php
 <?php
-class Object {
+class ObjectService {
   //...
-  function set_metadata($container, $object, $key, $value){
-      $req_url = $this->get_url($container, $object);
-      $req_header = $this->get_request_header();
-      $req_header[] = 'X-Object-Meta-'.$key.': '.$value;  // Add metadata to the header
+  function set_metadata($container, $object, $key, $value) {
+    $req_url = $this->get_url($container, $object);
+    $req_header = $this->get_request_header();
+    $req_header[] = 'X-Object-Meta-'.$key.': '.$value;  // Add metadata to the header
 
-      $curl  = curl_init($req_url);
-      curl_setopt_array($curl, array(
-          CURLOPT_POST => TRUE,
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_HTTPHEADER => $req_header
-      ));
-      $response = curl_exec($curl);
-      curl_close($curl);
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_POST => TRUE,
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
   }
 }
 
@@ -2513,23 +2513,24 @@ class Object {
 $STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
-$DEST_CONTAINER = 'dest';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
-$object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
+$META_KEY = 'Type';
+$META_VALUE = 'photo';
+$object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 ?>
 ```
 </details>
 
 <br/>
 
-### Delete Object
+### Delete an Object
 Deletes a specified object.
 
 > [Note]
-> When deleting an object that was uploaded in multiple parts, you need to delete all segmented data. If you delete only the manifest, the segment objects remain in place and you may be charged for them.
+> When deleting a multipart-uploaded object, you need to delete all segment data. If you delete only the manifest object, the segment objects might be kept intact and you might be charged for them.
 
 ```
 DELETE   /v1/{Account}/{Container}/{Object}
@@ -2580,11 +2581,11 @@ public class ObjectService {
 
         // Create header
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Auth-Token", tokenId);		
+        headers.add("X-Auth-Token", tokenId);
         HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
 
         // Call API
-        this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);			
+        this.restTemplate.exchange(url, HttpMethod.DELETE, requestHttpEntity, String.class);
     }
 
     public static void main(String[] args) {
@@ -2616,7 +2617,7 @@ class ObjectService:
     def delete(self, container, object):
         req_url = self._get_url(container, object)
         req_header = self._get_request_header()
-        requests.delete(req_url, headers=req_header)
+        return requests.delete(req_url, headers=req_header)
 
 
 if __name__ == '__main__':
@@ -2627,7 +2628,7 @@ if __name__ == '__main__':
 
     obj_service = ObjectService(STORAGE_URL, TOKEN_ID)
 
-    obj_service.delete(CONTAINER_NAME, OBJECT_NAME)   
+    obj_service.delete(CONTAINER_NAME, OBJECT_NAME)
 ```
 </details>
 
@@ -2637,20 +2638,20 @@ if __name__ == '__main__':
 ```php
 // object.php
 <?php
-class Object {
+class ObjectService {
   //...
-  function delete($container, $object){
-      $req_url = $this->get_url($container, $object);
-      $req_header = $this->get_request_header();
+  function delete($container, $object) {
+    $req_url = $this->get_url($container, $object);
+    $req_header = $this->get_request_header();
 
-      $curl  = curl_init($req_url);
-      curl_setopt_array($curl, array(
-          CURLOPT_CUSTOMREQUEST => "DELETE",
-          CURLOPT_RETURNTRANSFER => TRUE,
-          CURLOPT_HTTPHEADER => $req_header
-      ));
-      $response = curl_exec($curl);
-      curl_close($curl);
+    $curl  = curl_init($req_url);
+    curl_setopt_array($curl, array(
+      CURLOPT_CUSTOMREQUEST => "DELETE",
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_HTTPHEADER => $req_header
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
   }
 }
 
@@ -2660,7 +2661,7 @@ $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
-$object = new Object($STORAGE_URL, $TOKEN_ID);
+$object = new ObjectService($STORAGE_URL, $TOKEN_ID);
 
 $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 ?>
