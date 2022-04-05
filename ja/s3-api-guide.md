@@ -168,7 +168,7 @@ S3 APIを使用するには、認証情報を利用して署名を作成する�
 | アルゴリズム | AWS4-HMAC-SHA256 |
 | 署名時刻 | YYYYMMDDThhmmssZ形式 |
 | サービス名 | s3 |
-| リージョン名 | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
+| リージョン名 | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(ピョンチョン)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
 | シークレットキー | 認証情報シークレットキー |
 
 
@@ -615,7 +615,7 @@ Default output format [None]: json
 |---|---|
 | access | S3 API認証情報アクセスキー |
 | secret | S3 API認証情報シークレットキー |
-| region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
+| region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(ピョンチョン)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
 
 ### S3コマンド使用方法
 
@@ -625,7 +625,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | 名前 | 説明 |
 |---|---|
-| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(坪村)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン |
+| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(ピョンチョン)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン |
 | command | AWSコマンドラインインターフェイスコマンド |
 | bucket | バケット名 |
 
@@ -721,8 +721,8 @@ AWS SDKを使用するために必要な主要パラメータは次のとおり�
 |---|---|
 | access | S3 API認証情報アクセスキー |
 | secret | S3 API認証情報シークレットキー |
-| region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(坪村)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
-| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(坪村)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン | |
+| region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(ピョンチョン)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
+| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(ピョンチョン)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン | |
 
 
 ### Boto3 - Python SDK
