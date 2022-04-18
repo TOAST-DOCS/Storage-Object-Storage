@@ -2670,6 +2670,12 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 <br/>
 
+## 코드 예시
+
+API 가이드 문서에 적힌 코드 예시들을 다운로드 받을 수 있는 경로를 제공합니다.
+
+[전체 코드 예시 다운로드](https://static.toastoven.net/prod_infrastructure/object_storage/obs_example.zip)
+
 ## References
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
