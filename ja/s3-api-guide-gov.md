@@ -582,7 +582,7 @@ Authorization: AWS {access}:{signature}
 </details>
 
 ## AWSコマンドラインインターフェイス(CLI)
-S3互換APIを利用して[AWSコマンドラインインターフェイス](https://aws.amazon.com/ko/cli/)でNHN Cloudオブジェクトストレージを使用できます。
+S3互換APIを利用して[AWSコマンドラインインターフェイス](https://aws.amazon.com/jp/cli/)でNHN Cloudオブジェクトストレージを使用できます。
 
 ### インストール
 AWSコマンドラインインターフェイスはPythonパッケージで提供されます。Pythonパッケージ管理者(pip)を利用してインストールします。
@@ -623,7 +623,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 > [参考]
 > AWSコマンドラインインターフェイスはAWSを使用するために提供されるツールのため、AWSドメインを使用するように設定されています。したがってTAOSTオブジェクトストレージを使用するには必ずコマンドごとにエンドポイントを指定する必要があります。
-> AWSコマンドラインインターフェイスコマンドは[AWS CLIで高レベル(s3)コマンド使用](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html)文書を参照してください。
+> AWSコマンドラインインターフェイスコマンドは[AWS CLIで高レベル(s3)コマンド使用](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/cli-services-s3-commands.html)文書を参照してください。
 
 <details>
 <summary>バケット作成</summary>
@@ -703,7 +703,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 AWSは多くのプログラミング言語用のSDKを提供しています。S3互換APIを利用してAWS SDKでNHN Cloudオブジェクトストレージを使用できます。
 
 > [参考]
-> この文書ではPythonとJava SDKの簡単な使用例のみ説明します。詳細な内容は[AWS SDK](https://aws.amazon.com/ko/tools)文書を参照してください。
+> この文書ではPythonとJava SDKの簡単な使用例のみ説明します。詳細な内容は[AWS SDK](https://aws.amazon.com/jp/tools)文書を参照してください。
 
 
 AWS SDKを使用するために必要な主要パラメータは次のとおりです。

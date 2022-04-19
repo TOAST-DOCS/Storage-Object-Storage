@@ -40,7 +40,7 @@ The ACL policy elements that can be set are as follows. All policy elements can 
 
 ### Allow read/write only to users in the project to which the container belongs
 This is the default access policy used when no ACL policy elements are set. A valid authentication token is required to access the container using the API.
-If you delete all the `X-Container-Read` and `X-Container-Write` property values of a container, it becomes a [PRIVATE](/Storage/Object%20Storage/ko/acl-guide/#private) container that allows access only to users in the project to which the container belongs.
+If you delete all the `X-Container-Read` and `X-Container-Write` property values of a container, it becomes a [PRIVATE](/Storage/Object%20Storage/en/acl-guide/#private) container that allows access only to users in the project to which the container belongs.
 
 <br/>
 
@@ -82,7 +82,7 @@ $ curl -X GET \
 <br/>
 
 ### Allow read/list query for all users
-Setting the container's `X-Container-Read` property to `.r:*, .rlistings` allows all users to read objects and query an object list. No authentication token is required. It is the same policy as the [PUBLIC](/Storage/Object%20Storage/ko/acl-guide/#public) entry in the console section.
+Setting the container's `X-Container-Read` property to `.r:*, .rlistings` allows all users to read objects and query an object list. No authentication token is required. It is the same policy as the [PUBLIC](/Storage/Object%20Storage/en/acl-guide/#public) entry in the console section.
 <br/>
 
 <details>
