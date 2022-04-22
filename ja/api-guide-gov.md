@@ -2304,7 +2304,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 </details>
 
-### オブジェクト内容修正
+### オブジェクト内容の修正
 オブジェクトアップロードAPIと同じですが、オブジェクトがすでにコンテナにある場合、該当オブジェクトの内容が修正されます。
 
 ```
