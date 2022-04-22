@@ -26,13 +26,13 @@ APIs that are compatible with S3 are provided as follows.
 | [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | List multipart objects under uploading |
 | [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | Delete multipart objects               |
 
-This document describes only the basic usage of API. To use advanced features, see [API Guide for AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html), or [AWS SDK](https://aws.amazon.com/ko/tools) is recommended.
+This document describes only the basic usage of API. To use advanced features, see [API Guide for AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html), or [AWS SDK](https://aws.amazon.com/tools) is recommended.
 
 ## EC2 Credentials
 
 ### Register
 
-To use APIs compatible with S3, register AWS EC2-type credential first. To that end, an authentication token is required. To get a token, see [API Guide for Object Storage](/Storage/Object%20Storage/ko/api-guide-gov/#tenant-id-api-endpoint).
+To use APIs compatible with S3, register AWS EC2-type credential first. To that end, an authentication token is required. To get a token, see [API Guide for Object Storage](/Storage/Object%20Storage/en/api-guide-gov/#tenant-id-api-endpoint).
 
 ```
 POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{User ID}/credentials/OS-EC2
@@ -614,7 +614,7 @@ This API does not require a request body.
 </details>
 
 ## AWS Command Line Interface (CLI)
-TOAST object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) via S3 compatible API.
+TOAST object storage becomes available with [AWS Command Line Interface](https://aws.amazon.com/cli/) via S3 compatible API.
 
 ### Install
 AWS command line interface is prvodied by a Python package, which can be installed by using the Python package manager (pip).  
@@ -655,7 +655,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 
 > [Note]
-> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use TOAST Object Storage, it is required to specify endpoint for every command.  > Regarding commands for AWS command line interface, see [Using Commands for Upper Class Level (s3)](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
+> Since AWS CLI is provided to enable AWS, it is configured to use AWS domain. Therefore, to use TOAST Object Storage, it is required to specify endpoint for every command.  > Regarding commands for AWS command line interface, see [Using Commands for Upper Class Level (s3)](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html).
 <details>
 <summary>Create Bucket</summary>
 
@@ -734,7 +734,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 AWS provides SDKs for many types of programming languages. By using s3 compatible API for AWS SDK, TOAST object storage becomes available.
 
 > [Note]
-> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools).
+> This document describes only simple usage examples of Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/tools).
 
 
 Following are the major parameters required to use AWS SDK.
