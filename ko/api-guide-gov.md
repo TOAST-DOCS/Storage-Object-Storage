@@ -1715,7 +1715,7 @@ X-Auth-Token: {token-id}
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
-| multipart-manifest | Query| String | O | SLO 메니페스트 요청 방식 (고정값) |
+| multipart-manifest | Query| String | O | put |
 | path | Body | String | O | 세그먼트 오브젝트의 경로 |
 | etag | Body | String | O | 세그먼트 오브젝트의 etag |
 | size_bytes | Body | Integer | O | 세그먼트 오브젝트의 크기 (바이트 단위) |
