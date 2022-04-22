@@ -114,24 +114,19 @@ Previous versions that exceed the set life cycle are automatically deleted.
 
 #### Replication Settings
 
-Replication settings allow you to set objects in a container to be replicated to a container in another region. Replication settings are for disaster recovery, and objects are replicated and managed in the target region the same as in the source region. All objects in the container are replicated to the container in the target region at regular intervals.
+Setting up replication allows objects in a container to be replicated to a container in another region. Replication Settings is a feature for disaster recovery, which replicates objects in the source region identically to the target region and manages the objects. Replication takes place at regular intervals in the background.
 
 The replication policies are as follows:
 
-* Uploading, updating, or deleting objects in the source container are all reflected in the same way in the target container.
-* Updates made to the target container are not reflected in the source container.
-* It is recommended to use an empty container as the target container. When a non-empty container is set as the target container, if there is an object with the same name as the object in the source container, replication may not be performed properly.
-* When the Replication setting is changed to **Disabled**, the previously replicated object is maintained and new replication is stopped.
-* If the segment objects of a large object uploaded by multipart are stored in another container, replication of the large object is possible only if the corresponding container is also set for replication.
-* It is recommended to set the name of the source container and the target container to be the same. If they are not the same, access to large replicated objects may fail.
-
-> [Caution]
-> If you delete a replicated object within the target container, it will not be replicated again.
-
-<!-- This is a comment for line break, so it must be included. -->
-
-> [Note]
-> The target container cannot be replicated to another region, and it cannot be set as another container's target container in duplicate.
+* Changes (upload, update, deletion) of objects in the source container are reflected identically in the target container.
+* Changes made to the object in the target container are not reflected in the source container.
+* If a change is made to a replicated object in the target container, that object may not be replicated even if there are subsequent changes to the source object.
+* It is recommended to use an empty container for the target container. If the target container already has an object with the same name as the object in the source container, replication may not be performed properly.
+* If the target container is deleted, replication will not resume even if you create a container with the same name again. To resume replication, you must set up replication again.
+* The target container cannot be replicated to another region, and it cannot be set as another container's target container in duplicate.
+* Changing the replication setting to **Disable** stops replication, but the objects that have already been replicated are maintained.
+* It is recommended to set the name of the source container and the target container to be the same. If the container names are different, access to large replicated objects may fail.
+* If the segment objects of the multipart-uploaded large object are stored in another container, you must also set up the replication for that container to access the replicated large object.
 
 #### Static Website Settings
 

@@ -1081,7 +1081,7 @@ With the `X-Container-Object-Retention` header, you can set the life cycle of th
 <br/>
 
 ##### Set the Version Control Policy
-As described in the [Update an Object](/api-guide/#update-an-object), if there are duplicate object names while uploading objects, the objects are updated. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
+As described in the [Update an Object](api-guide/#update-an-object), if there are duplicate object names while uploading objects, the objects are updated. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
 
 The previous version of objects are stored in the archive container in the following manner:
 ```
