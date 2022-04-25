@@ -26,7 +26,7 @@ The following Amazon S3 compatible API is provided.
 | [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | List multipart objects under uploading |
 | [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | Delete multipart objects               |
 
-This document describes only the basic usage of API. To use advanced features, it is recommended that you see [Amazon S3 API Guide](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html) or use [AWS SDK](https://aws.amazon.com/ko/tools).
+This document describes only the basic usage of API. To use advanced features, it is recommended that you see [Amazon S3 API Guide](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html) or use [AWS SDK](https://aws.amazon.com/tools).
 
 ## S3 API Credentials
 
@@ -621,7 +621,7 @@ This API does not require a request body.
 </details>
 
 ## AWS Command Line Interface (CLI)
-You can use NHN Cloud Object Storage with [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) using the S3 compatible API.
+You can use NHN Cloud Object Storage with [AWS Command Line Interface](https://aws.amazon.com/cli/) using the S3 compatible API.
 
 ### Installation
 The AWS Command Line Interface (CLI) is provided as a Python package, which can be installed by using the Python package manager (pip).  
@@ -663,7 +663,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 > [Note]
 > Since AWS CLI is provided to use AWS, it is configured to use AWS domain. Therefore, to use NHN Cloud Object Storage, it is required to specify endpoint for every command.
-> Regarding commands for AWS Command Line Interface, see [Using high-level (s3) commands with the AWS CLI](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
+> Regarding commands for AWS Command Line Interface, see [Using high-level (s3) commands with the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html).
 
 <details>
 <summary>Create Bucket</summary>
@@ -743,7 +743,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 AWS provides SDKs for many types of programming languages. By using the S3 compatible API, you can use NHN Cloud Object Storage with AWS SDK.
 
 > [Note]
-> This document describes only simple usage examples for Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/ko/tools) documentation.
+> This document describes only simple usage examples for Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/tools) documentation.
 
 
 The following are the major parameters required to use AWS SDK.
