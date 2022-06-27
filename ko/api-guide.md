@@ -1118,9 +1118,19 @@ X-Container-Meta-Access-Control-Allow-Origin: {교차 출처 리소스 공유 �
 <details>
 <summary>CORS 설정 확인 예시</summary>
 
+우선 컨테이너에 CORS 설정을 추가합니다.
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Meta-Access-Control-Allow-Origin: https://example.com' \
+https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+```
+
 Chrome과 같은 브라우저에서 해당 사이트로 이동 후 아래의 스크립트를 실행합니다.
+스크립트는 대부분의 브라우저에서 개발자 도구에 있는 콘솔 화면에서 실행 가능합니다.
+
 <br/>
-ex) http://localhost/index.html
+ex) https://example.com/
 ```
 var token = "****";
 var url = "https://api-storage.cloud.toast.com/v1/AUTH_****/container/object";
@@ -1151,7 +1161,7 @@ x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 
 만약 설정이 완료되지 않았다면 아래와 같이 에러 메시지가 남으면서 요청에 실패합니다.
 ```
-Access to XMLHttpRequest at 'https://api-storage.cloud.toast.com/v1/AUTH_****/container/object' from origin 'http://localhost' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Access to XMLHttpRequest at 'https://api-storage.cloud.toast.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 Status: 0
 ```
