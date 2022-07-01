@@ -40,7 +40,7 @@ Content-Type: application/json
 | Name  | Type | Format | Required | Description |
 |---|---|---|---|---|
 | tenantId | Body | String | O | Tenant ID, which can be found in the API Endpoint setting dialog box |
-| username | Body | String | O | Enter NHN Cloud user ID (email format), IAM member ID |
+| username | Body | String | O | NHN Cloud user ID (email format), IAM member ID |
 | password | Body | String | O | Password saved on the API Endpoint setting dialog box |
 
 <details>
