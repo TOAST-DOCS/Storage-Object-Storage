@@ -40,7 +40,7 @@ Content-Type: application/json
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | tenantId | Body | String | O | テナントID。API Endpoint設定ダイアログボックスで確認可能 |
-| username | Body | String | O | NHN CloudユーザーID(メールまたはIAM ID)入力 |
+| username | Body | String | O | NHN Cloud会員ID(メール形式)、IAMメンバーID |
 | password | Body | String | O | API Endpoint設定ダイアログボックスで保存したパスワード |
 
 <details>
