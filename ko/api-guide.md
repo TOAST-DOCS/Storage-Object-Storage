@@ -1112,13 +1112,13 @@ X-Container-Meta-Access-Control-Allow-Origin: {교차 출처 리소스 공유 �
 
 ##### 교차 출처 리소스 공유(CORS)
 
-브라우저에서 Object Storage API를 직접 호출하기 위해서 교차 출처 리소스 공유(CORS) 설정이 필요합니다. CORS는 `X-Container-Meta-Access-Control-Allow-Origin` 속성에 필요한 출처 목록을 입력합니다. 공백(` `)으로 구분된 하나 이상의 출처를 입력하거나 `*`을 입력하여 모든 출처를 허용할 수 있습니다.
+브라우저에서 Object Storage API를 직접 호출하려면 교차 출처 리소스 공유(CORS) 설정이 필요합니다. `X-Container-Meta-Access-Control-Allow-Origin` 헤더를 이용해 허용할 출처 목록을 설정합니다. 공백(` `)으로 구분된 하나 이상의 출처를 입력하거나 `*`을 입력하여 모든 출처를 허용할 수 있습니다.
 
 
 <details>
 <summary>CORS 설정 확인 예시</summary>
 
-우선 컨테이너에 CORS 설정을 추가합니다.
+컨테이너에 CORS 설정을 추가합니다.
 ```
 $ curl -X POST \
 -H 'X-Auth-Token: ****' \
@@ -1126,8 +1126,7 @@ $ curl -X POST \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
-Chrome과 같은 브라우저에서 해당 사이트로 이동 후 아래의 스크립트를 실행합니다.
-스크립트는 대부분의 브라우저에서 개발자 도구에 있는 콘솔 화면에서 실행 가능합니다.
+브라우저에서 CORS를 허용한 사이트로 이동 후 아래의 스크립트를 실행합니다. 스크립트는 브라우저가 제공하는 개발자 도구의 콘솔에서 실행할 수 있습니다.
 
 <br/>
 ex) https://example.com/
@@ -1147,7 +1146,7 @@ request.setRequestHeader('X-Auth-Token', token);
 request.send(null);
 ```
 
-CORS 설정이 정상적으로 이루어졌다면 아래와 같은 로그가 콘솔에 남으면서 요청에 성공합니다.
+CORS 설정에 문제가 없다면 콘솔에서 아래와 같은 성공 응답을 확인할 수 있습니다.
 ```
 Status: 200
 content-length: 1
@@ -1159,7 +1158,7 @@ x-timestamp: 1653923802.28970
 x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 ```
 
-만약 설정이 완료되지 않았다면 아래와 같이 에러 메시지가 남으면서 요청에 실패합니다.
+CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 호출했다면 아래와 같은 에러 응답을 받게 됩니다.
 ```
 Access to XMLHttpRequest at 'https://api-storage.cloud.toast.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
