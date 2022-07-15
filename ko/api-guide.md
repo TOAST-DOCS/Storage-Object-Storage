@@ -1119,13 +1119,14 @@ X-Container-Meta-Access-Control-Allow-Origin: {교차 출처 리소스 공유 �
 <summary>CORS 설정 확인 예시</summary>
 
 컨테이너에 CORS 설정을 추가합니다.
+
 ```
 $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Meta-Access-Control-Allow-Origin: https://example.com' \
 https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
-
+<br>
 브라우저에서 CORS를 허용한 사이트로 이동 후 아래의 스크립트를 실행합니다. 스크립트는 브라우저가 제공하는 개발자 도구의 콘솔에서 실행할 수 있습니다.
 
 <br/>
@@ -1145,7 +1146,7 @@ request.open('GET', url);
 request.setRequestHeader('X-Auth-Token', token);
 request.send(null);
 ```
-
+<br>
 CORS 설정에 문제가 없다면 콘솔에서 아래와 같은 성공 응답을 확인할 수 있습니다.
 ```
 Status: 200
@@ -1157,7 +1158,7 @@ x-openstack-request-id: tx0b1637089d1841d6833d2-0062a60940
 x-timestamp: 1653923802.28970
 x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 ```
-
+<br>
 CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 호출했다면 아래와 같은 에러 응답을 받게 됩니다.
 ```
 Access to XMLHttpRequest at 'https://api-storage.cloud.toast.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
