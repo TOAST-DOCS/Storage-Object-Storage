@@ -1131,6 +1131,7 @@ https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 
 <br/>
 ex) https://example.com/
+
 ```
 var token = "****";
 var url = "https://api-storage.cloud.toast.com/v1/AUTH_****/container/object";
@@ -1146,8 +1147,10 @@ request.open('GET', url);
 request.setRequestHeader('X-Auth-Token', token);
 request.send(null);
 ```
+
 <br>
 CORS 설정에 문제가 없다면 콘솔에서 아래와 같은 성공 응답을 확인할 수 있습니다.
+
 ```
 Status: 200
 content-length: 1
@@ -1158,8 +1161,10 @@ x-openstack-request-id: tx0b1637089d1841d6833d2-0062a60940
 x-timestamp: 1653923802.28970
 x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 ```
+
 <br>
 CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 호출했다면 아래와 같은 에러 응답을 받게 됩니다.
+
 ```
 Access to XMLHttpRequest at 'https://api-storage.cloud.toast.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
