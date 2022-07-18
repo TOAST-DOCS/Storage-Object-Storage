@@ -1165,6 +1165,7 @@ If you do not set CORS or call an API from a site that is not allowed, you will 
 
 ```
 Access to XMLHttpRequest at 'https://api-storage.cloud.toast.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
 Status: 0
 ```
 
