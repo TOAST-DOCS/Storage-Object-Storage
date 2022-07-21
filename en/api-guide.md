@@ -1052,6 +1052,7 @@ X-History-Location: {Container to store the previous object version}
 X-Versions-Retention: {Life cycle of the previous object version}
 X-Container-Meta-Web-Index: {Static website index document object}
 X-Container-Meta-Web-Error: {Static website error document object suffix}
+X-Container-Meta-Access-Control-Allow-Origin: {List that allows Cross-Origin Resource Sharing}
 ```
 
 #### Request
@@ -1067,6 +1068,7 @@ This API does not require a request body.
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
 | X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | X-Container-Meta-Web-Error | Header | String | - | Sets the static website error document object suffix<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
+| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | List of hosts that allow CORS, List of origins separated by `*` or spaces | 
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | The name of the container to edit |
 <br/>
