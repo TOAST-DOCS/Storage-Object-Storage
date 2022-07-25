@@ -40,7 +40,7 @@ Content-Type: application/json
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | tenantId | Body | String | O | 테넌트 ID, API Endpoint 설정 대화 상자에서 확인 가능 |
-| username | Body | String | O | NHN Cloud 사용자 ID(이메일 또는 IAM ID) 입력 |
+| username | Body | String | O | NHN Cloud 회원 ID(이메일 형식), IAM 멤버 ID |
 | password | Body | String | O | API Endpoint 설정 대화 상자에서 저장한 비밀번호 |
 
 <details>
@@ -1052,6 +1052,7 @@ X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
 X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
 X-Container-Meta-Web-Index: {정적 웹 사이트 인덱스 문서 오브젝트}
 X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접미사}
+X-Container-Meta-Access-Control-Allow-Origin: {교차 출처 리소스 공유 허용 목록}
 ```
 
 #### 요청
@@ -1067,6 +1068,7 @@ X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접
 | X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
 | X-Container-Meta-Web-Index | Header | String | - | 정적 웹 사이트 인덱스 문서 오브젝트 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
 | X-Container-Meta-Web-Error | Header | String | - | 정적 웹 사이트 오류 문서 오브젝트 접미사 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
+| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. | 
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 <br/>
@@ -1107,6 +1109,73 @@ X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접
 정적 웹 사이트의 인덱스 문서, 오류 문서로 사용할 오브젝트는 하나 이상의 영문자, 숫자 또는 일부 특수 문자(`-`, `_`, `.`, `/`)로 구성된 이름이어야 하며, 파일 확장자가 `html`인 하이퍼텍스트 형식이어야 합니다. 조건에 맞지 않으면 설정할 수 없거나 정적 웹 사이트가 동작하지 않을 수 있습니다.
 정적 웹 사이트의 오류 문서 이름은 `{응답 코드}{접미사}` 형태입니다. 예를 들어 오류 문서를 `error.html`로 설정했다면, 404 오류가 발생했을 때 보여줄 오류 문서의 이름은 `404error.html`이 됩니다. 각 오류 상황에 맞게 오류 문서를 업로드해 사용할 수 있습니다. 오류 문서를 정의하지 않거나, 응답 코드에 맞는 오류 문서 오브젝트가 없다면 웹 브라우저의 기본 오류 문서가 표시됩니다.
 <br/>
+
+##### 교차 출처 리소스 공유(CORS)
+
+브라우저에서 Object Storage API를 직접 호출하려면 교차 출처 리소스 공유(CORS) 설정이 필요합니다. `X-Container-Meta-Access-Control-Allow-Origin` 헤더를 이용해 허용할 출처 목록을 설정합니다. 공백(` `)으로 구분된 하나 이상의 출처를 입력하거나 `*`을 입력하여 모든 출처를 허용할 수 있습니다.
+
+
+<details>
+<summary>CORS 설정 확인 예시</summary>
+
+컨테이너에 CORS 설정을 추가합니다.
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Meta-Access-Control-Allow-Origin: https://example.com' \
+https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+```
+<br>
+브라우저에서 CORS를 허용한 사이트로 이동 후 아래의 스크립트를 실행합니다. 스크립트는 브라우저가 제공하는 개발자 도구의 콘솔에서 실행할 수 있습니다.
+
+<br/>
+ex) https://example.com/
+
+```
+var token = "****";
+var url = "https://api-storage.cloud.toast.com/v1/AUTH_****/container/object";
+var request = new XMLHttpRequest();
+request.onreadystatechange = function (oEvent) {
+  if (request.readyState == 4) {
+      result = 'Status: ' + request.status;
+      result = result + '\n' + request.getAllResponseHeaders();
+      console.log(result)
+  }
+}
+request.open('GET', url);
+request.setRequestHeader('X-Auth-Token', token);
+request.send(null);
+```
+
+<br>
+CORS 설정에 문제가 없다면 콘솔에서 아래와 같은 성공 응답을 확인할 수 있습니다.
+
+```
+Status: 200
+content-length: 1
+content-type: application/octet-stream
+etag: bad093d7f49dc495751cb3f7f8b2530c
+last-modified: Mon, 30 May 2022 15:16:43 GMT
+x-openstack-request-id: tx0b1637089d1841d6833d2-0062a60940
+x-timestamp: 1653923802.28970
+x-trans-id: tx0b1637089d1841d6833d2-0062a60940
+```
+
+<br>
+CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 호출했다면 아래와 같은 에러 응답을 받게 됩니다.
+
+```
+Access to XMLHttpRequest at 'https://api-storage.cloud.toast.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+Status: 0
+```
+
+</details>
+
+
+<br/>
+
 
 ##### 컨테이너 설정 해제
 값이 없는 헤더를 사용하면 설정이 해제됩니다. 예를 들어 오브젝트 수명 주기가 3일로 설정되어 있을 때 `'X-Container-Object-Retention: '`를 사용해 컨테이너 수정 요청을 하면, 오브젝트 수명 주기 설정이 해제되어 이후 컨테이너에 저장되는 오브젝트는 자동으로 수명 주기가 설정되지 않습니다.

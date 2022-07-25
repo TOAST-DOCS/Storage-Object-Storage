@@ -40,7 +40,7 @@ Content-Type: application/json
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | tenantId | Body | String | O | テナントID。API Endpoint設定ダイアログボックスで確認可能 |
-| username | Body | String | O | NHN CloudユーザーID(メールまたはIAM ID)入力 |
+| username | Body | String | O | NHN Cloud会員ID(メール形式)、IAMメンバーID |
 | password | Body | String | O | API Endpoint設定ダイアログボックスで保存したパスワード |
 
 <details>
@@ -1050,6 +1050,7 @@ X-History-Location: {オブジェクトの以前バージョンを保存する�
 X-Versions-Retention: {オブジェクトの以前のバージョンのライフサイクル}
 X-Container-Meta-Web-Index: {静的Webサイトインデックス文書オブジェクト}
 X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクトのサフィックス}
+X-Container-Meta-Access-Control-Allow-Origin: {オリジン間リソース共有許可リスト}
 ```
 
 #### リクエスト
@@ -1065,6 +1066,7 @@ X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクト
 | X-Versions-Retention | Header | Integer | - | オブジェクトの以前のバージョンのライフサイクルを日単位で設定 |
 | X-Container-Meta-Web-Index | Header | String | - | 静的Webサイトインデックス文書オブジェクト設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
 | X-Container-Meta-Web-Error | Header | String | - | 静的Webサイトエラー文書オブジェクトサフィックス設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
+| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS許可ホストリスト。 `*`またはスペースで区切られたソースリスト | 
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 修正するコンテナ名 |
 <br/>
@@ -1104,6 +1106,71 @@ X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクト
 
 静的Webサイトのインデックス文書、エラー文書に使用するオブジェクトは、1つ以上の英字、数字または一部特殊文字(`-`, `_`, `.`, `/`)で構成された名前でなければならず、拡張子が`html`のハイパーテキスト形式でなければいけません。この条件を満たさない場合は、設定できなかったり、静的Webサイトが動作しない可能性があります。
 静的Webサイトのエラー文書名は`{エラーコード}{サフィックス}`形式で、ヘッダには`サフィックス`を入力する必要があります。例えば`X-Container-Meta-Web-Error: error.html`をリクエストした場合、404エラーが発生した時に表示されるエラー文書の名前は`404error.html`になります。各エラーの状況に合わせてエラー文書をアップロードして使用できます。エラー文書を定義していなかったり、エラーコードに合ったエラー文書オブジェクトがない場合はWebブラウザの基本エラー文書が表示されます。
+<br/>
+
+##### オリジン間リソース共有(CORS)
+
+ブラウザでObject Storage APIを直接呼び出すには、クロスソースリソース共有(CORS)設定が必要です。 `X-Container-Meta-Access-Control-Allow-Origin`ヘッダを利用して許可するソースリストを設定します。スペース(` `)で区切られた1つ以上のソースを入力するか、`*`を入力してすべてのソースを許可できます。
+
+
+<details>
+<summary>CORS設定確認例</summary>
+
+コンテナにCORS設定を追加します。
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Meta-Access-Control-Allow-Origin: https://example.com' \
+https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+```
+<br>
+ブラウザでCORSを許可したサイトに移動し、以下のスクリプトを実行します。スクリプトはブラウザが提供する開発者ツールのコンソールで実行できます。
+
+<br/>
+ex) https://example.com/
+
+```
+var token = "****";
+var url = "https://api-storage.cloud.toast.com/v1/AUTH_****/container/object";
+var request = new XMLHttpRequest();
+request.onreadystatechange = function (oEvent) {
+  if (request.readyState == 4) {
+      result = 'Status: ' + request.status;
+      result = result + '\n' + request.getAllResponseHeaders();
+      console.log(result)
+  }
+}
+request.open('GET', url);
+request.setRequestHeader('X-Auth-Token', token);
+request.send(null);
+```
+
+<br>
+CORS設定に問題がなければ、コンソールで次のような成功レスポンスを確認できます。
+
+```
+Status: 200
+content-length: 1
+content-type: application/octet-stream
+etag: bad093d7f49dc495751cb3f7f8b2530c
+last-modified: Mon, 30 May 2022 15:16:43 GMT
+x-openstack-request-id: tx0b1637089d1841d6833d2-0062a60940
+x-timestamp: 1653923802.28970
+x-trans-id: tx0b1637089d1841d6833d2-0062a60940
+```
+
+<br>
+CORS設定を行っていない場合や、許可されていないサイトでAPIを呼び出すと、次のようなエラーレスポンスを受け取ります。
+
+```
+Access to XMLHttpRequest at 'https://api-storage.cloud.toast.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Status: 0
+```
+
+</details>
+
+
 <br/>
 
 ##### コンテナ設定解除
