@@ -1068,7 +1068,7 @@ This API does not require a request body.
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
 | X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | X-Container-Meta-Web-Error | Header | String | - | Sets the static website error document object suffix<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
-| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | List of hosts that allow CORS, List of origins separated by `*` or spaces | 
+| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | List of hosts that allows CORS. You can either allow all hosts with '*' or enter a list of hosts separated by spaces. | 
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | The name of the container to edit |
 <br/>
