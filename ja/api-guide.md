@@ -1066,7 +1066,7 @@ X-Container-Meta-Access-Control-Allow-Origin: {オリジン間リソース共有
 | X-Versions-Retention | Header | Integer | - | オブジェクトの以前のバージョンのライフサイクルを日単位で設定 |
 | X-Container-Meta-Web-Index | Header | String | - | 静的Webサイトインデックス文書オブジェクト設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
 | X-Container-Meta-Web-Error | Header | String | - | 静的Webサイトエラー文書オブジェクトサフィックス設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
-| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS許可ホストリスト。 `*`またはスペースで区切られたソースリスト | 
+| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS許可ホストリスト。 '*'ですべてのホストを許可するか、スペースで区切られたホストリストを入力できます。 | 
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 修正するコンテナ名 |
 <br/>
