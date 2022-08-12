@@ -1179,7 +1179,7 @@ Status: 0
 <br/>
 
 ##### RFC를 준수하는 ETag 형식 사용 설정
-일부 애플리케이션에서는 [RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3) 사양에 따라 쌍따옴표로 묶인 ETag 값을 요구합니다. `X-Container-Rfc-Compliant-Etags` 헤더를 사용하면 컨테이너에 저장된 오브젝트를 조회할 때 쌍따옴표로 묶인 ETag 값을 반환하도록 설정할 수 있습니다.
+일부 애플리케이션에서는 [RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3) 사양에 따라 큰따옴표로 묶인 ETag 값을 요구합니다. `X-Container-Rfc-Compliant-Etags` 헤더를 사용하면 컨테이너에 저장된 오브젝트를 조회할 때 큰따옴표로 묶인 ETag 값을 반환하도록 설정할 수 있습니다.
 
 <br/>
 
