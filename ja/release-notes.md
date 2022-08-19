@@ -1,5 +1,9 @@
 ## Storage > Object Storage > release notes
 
+### 2022. 08. 23.
+#### 機能追加
+* [API] RFCを遵守するETag形式の使用設定の提供
+
 ### 2022. 03. 29.
 #### 機能追加
 * [Console]リージョン間のコンテナ複製機能を提供

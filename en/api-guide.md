@@ -1053,6 +1053,7 @@ X-Versions-Retention: {Life cycle of the previous object version}
 X-Container-Meta-Web-Index: {Static website index document object}
 X-Container-Meta-Web-Error: {Static website error document object suffix}
 X-Container-Meta-Access-Control-Allow-Origin: {List that allows Cross-Origin Resource Sharing}
+X-Container-Rfc-Compliant-Etags: {Whether to use the RFC compliant ETag format}
 ```
 
 #### Request
@@ -1069,6 +1070,7 @@ This API does not require a request body.
 | X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | X-Container-Meta-Web-Error | Header | String | - | Sets the static website error document object suffix<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | List of hosts that allows CORS. You can either allow all hosts with '*' or enter a list of hosts separated by spaces. | 
+| X-Container-Rfc-Compliant-Etags | Header | String | - | Sets whether to use the RFC compliant ETag format, true or false |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | The name of the container to edit |
 <br/>
@@ -1176,6 +1178,10 @@ Status: 0
 
 <br/>
 
+##### Set the RFC compliant ETag format
+Some applications require the ETag value enclosed in double quotes according to the specification [RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3). If you use the `X-Container-Rfc-Compliant-Etags` header, the ETag value in double quotes can be returned when querying objects stored in a container.
+
+<br/>
 
 ##### Unset a Container
 If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Retention: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.

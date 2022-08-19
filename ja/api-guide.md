@@ -1051,6 +1051,7 @@ X-Versions-Retention: {オブジェクトの以前のバージョンのライフ
 X-Container-Meta-Web-Index: {静的Webサイトインデックス文書オブジェクト}
 X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクトのサフィックス}
 X-Container-Meta-Access-Control-Allow-Origin: {オリジン間リソース共有許可リスト}
+X-Container-Rfc-Compliant-Etags: {RFCを遵守するETag形式を使用するかどうか}
 ```
 
 #### リクエスト
@@ -1067,6 +1068,7 @@ X-Container-Meta-Access-Control-Allow-Origin: {オリジン間リソース共有
 | X-Container-Meta-Web-Index | Header | String | - | 静的Webサイトインデックス文書オブジェクト設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
 | X-Container-Meta-Web-Error | Header | String | - | 静的Webサイトエラー文書オブジェクトサフィックス設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS許可ホストリスト。 '*'ですべてのホストを許可するか、スペースで区切られたホストリストを入力できます。 | 
+| X-Container-Rfc-Compliant-Etags | Header | String | - | RFCを遵守するETag形式を使用するかどうかの設定。trueまたはfalse |
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 修正するコンテナ名 |
 <br/>
@@ -1170,6 +1172,11 @@ Status: 0
 
 </details>
 
+
+<br/>
+
+##### RFCを遵守するETag形式の使用設定
+一部アプリケーションでは[RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3)仕様に基づいて二重引用符で囲まれたETag値を要求します。 `X-Container-Rfc-Compliant-Etags`ヘッダを使用するとコンテナに保存されたオブジェクトを照会するとき、二重引用符で囲まれたETag値を返すように設定できます。
 
 <br/>
 
