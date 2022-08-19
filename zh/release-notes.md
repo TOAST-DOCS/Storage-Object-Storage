@@ -1,5 +1,9 @@
 ## Storage > Object Storage > Release Notes
 
+### August 23, 2022
+#### Added Features
+* [API] Added a feature to set the RFC compliant ETag format
+
 ### March 29, 2022
 #### Added Features
 * [Console] Added the inter-region container replication feature
