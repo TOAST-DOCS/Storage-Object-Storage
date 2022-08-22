@@ -1052,6 +1052,8 @@ X-History-Location: {Container to store the previous object version}
 X-Versions-Retention: {Life cycle of the previous object version}
 X-Container-Meta-Web-Index: {Static website index document object}
 X-Container-Meta-Web-Error: {Static website error document object suffix}
+X-Container-Meta-Access-Control-Allow-Origin: {List that allows Cross-Origin Resource Sharing}
+X-Container-Rfc-Compliant-Etags: {Whether to use the RFC compliant ETag format}
 ```
 
 #### Request
@@ -1067,6 +1069,8 @@ This API does not require a request body.
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
 | X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | X-Container-Meta-Web-Error | Header | String | - | Sets the static website error document object suffix<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
+| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | List of hosts that allows CORS. You can either allow all hosts with '*' or enter a list of hosts separated by spaces. | 
+| X-Container-Rfc-Compliant-Etags | Header | String | - | Sets whether to use the RFC compliant ETag format, true or false |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | The name of the container to edit |
 <br/>
@@ -1106,6 +1110,77 @@ If you allow the container read access to all users and set the static website's
 
 The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters or some special characters (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` file extension. If the conditions are not met, you may not be able to configure the setting or the static website may not work.
 The format of a static website's error document name is `{response code}{suffix}`. For example, if an error document is set as `error.html`, the name of the error document to be displayed when the 404 error occurs becomes `404error.html`. You can upload and use error documents according to each error condition. If an error document is not defined or an error object that matches the response code does not exist, the default error document of a web browser will be displayed.
+<br/>
+
+##### Cross-Origin Resource Sharing (CORS)
+
+If you directly call the Object Storage API from the browser, you need to set Cross-Origin Resource Sharing (CORS). Set an allowed-origin list using the `X-Container-Meta-Access-Control-Allow-Origin` header. You can enter one or more origins separated by spaces(` `) or allow all origins by entering `*`.
+
+
+<details>
+<summary>Example of checking CORS settings</summary>
+
+Add CORS settings to a container.
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Meta-Access-Control-Allow-Origin: https://example.com' \
+https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+```
+<br>
+The script below is run after moving to a site that allows CORS from the browser. You can run the script from the console of the developer tools provided by the browser.
+
+<br/>
+ex) https://example.com/
+
+```
+var token = "****";
+var url = "https://api-storage.cloud.toast.com/v1/AUTH_****/container/object";
+var request = new XMLHttpRequest();
+request.onreadystatechange = function (oEvent) {
+  if (request.readyState == 4) {
+      result = 'Status: ' + request.status;
+      result = result + '\n' + request.getAllResponseHeaders();
+      console.log(result)
+  }
+}
+request.open('GET', url);
+request.setRequestHeader('X-Auth-Token', token);
+request.send(null);
+```
+
+<br>
+If there is no problem in the CORS settings, you can see the success response as follows.
+
+```
+Status: 200
+content-length: 1
+content-type: application/octet-stream
+etag: bad093d7f49dc495751cb3f7f8b2530c
+last-modified: Mon, 30 May 2022 15:16:43 GMT
+x-openstack-request-id: tx0b1637089d1841d6833d2-0062a60940
+x-timestamp: 1653923802.28970
+x-trans-id: tx0b1637089d1841d6833d2-0062a60940
+```
+
+<br>
+If you do not set CORS or call an API from a site that is not allowed, you will receive an error response like the one below.
+
+```
+Access to XMLHttpRequest at 'https://api-storage.cloud.toast.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+Status: 0
+```
+
+</details>
+
+
+<br/>
+
+##### Set the RFC compliant ETag format
+Some applications require the ETag value enclosed in double quotes according to the specification [RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3). If you use the `X-Container-Rfc-Compliant-Etags` header, the ETag value in double quotes can be returned when querying objects stored in a container.
+
 <br/>
 
 ##### Unset a Container
