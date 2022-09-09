@@ -1,5 +1,13 @@
 ## Storage > Object Storage > release notes
 
+### 2022. 09. 27.
+#### 機能追加
+* [Console]暗号化コンテナ設定機能の提供
+* [Console]オリジン間リソース共有(CORS)設定機能の提供
+
+#### 機能改善
+* [Console]コンテナ情報照会、設定UIの改善
+
 ### 2022. 08. 23.
 #### 機能追加
 * [API] RFCを遵守するETag形式の使用設定の提供
