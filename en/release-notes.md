@@ -2,7 +2,7 @@
 
 ### September 27, 2022
 #### Added Features
-* [Console] Added a feature to set encrypted containers
+* [Console] Added a feature to set container encryption
 * [Console] Added a feature to set Cross-Origin Resource Sharing (CORS)
 
 #### Feature Updates
