@@ -26,6 +26,9 @@ To set the API password, go to the Object Storage service page and click **API E
 2. In the **Set API Password** input box under **API Endpoint Setting**, enter the password to use when issuing a token.
 3. Click **Save**.
 
+> [Note]
+> An API password is set by account. You can use the same password set in one project for all of your other projects. 
+
 <br/>
 
 ## Authentication Token Issuance
