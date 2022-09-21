@@ -2277,7 +2277,8 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 Copies an object to another container.
 
 > [Note]
-> If you create a manifest object in the target container, the multipart-uploaded object can be accessed through the path to the target container without having to copy segment objects. However, you cannot access the data if you delete the source segment objects.
+> Multipart objects larger than 5 GB cannot be copied. 
+> If you create a manifest object of the multipart object in a container to copy, the object can be accessed without having to copy segment objects. However, you cannot access the data if you delete the source segment objects.
 
 ```
 COPY   /v1/{Account}/{Container}/{Object}
