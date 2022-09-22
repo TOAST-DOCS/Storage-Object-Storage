@@ -1,5 +1,13 @@
 ## Storage > Object Storage > Release Notes
 
+### September 27, 2022
+#### Added Features
+* [Console] Added a feature to set container encryption
+* [Console] Added a feature to set Cross-Origin Resource Sharing (CORS)
+
+#### Feature Updates
+* [Console] Improved the UI of Get Container and Container Settings
+
 ### August 23, 2022
 #### Added Features
 * [API] Added a feature to set the RFC compliant ETag format
