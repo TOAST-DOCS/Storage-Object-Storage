@@ -2,14 +2,16 @@
 
 ## Container
 ### Create Container
-Creates containers. Uploading objects in an object storage requires one or more containers.
+Creates containers. Uploading objects in an object storage requires one or more containers. If you set encryption, the uploaded object is automatically encrypted and saved.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
+    <th>Category</th>
     <th>Option</th>
     <th>Description</th>
   </tr>
   <tr>
+    <td rowspan="4">Create Container</td>
     <td>Name</td>
     <td>Name of a container is limited to 256 characters in English or 85 characters in Korean.</td>
   </tr>
@@ -23,17 +25,83 @@ Creates containers. Uploading objects in an object storage requires one or more 
   <tr>
     <td>Storage class</td>
     <td><b>Standard</b>: This is the default class.</td>
-  </tr>  
+  </tr>
+  <tr>
+    <td rowspan="2">Encryption settings</td>
+    <td>Encryption</td>
+    <td>Select whether to use object encryption.</td>
+  </tr>
+  <tr>
+    <td>Symmetric key ID </td>
+    <td>Enter the symmetric key ID managed by the Secure Key Manager service.</td>
+  </tr>
 </table>
 
+#### Encryption settings
+Objects uploaded to encryption containers are encrypted using a symmetric key managed by the NHN Cloud's Secure Key Manager service. Therefore, in order to create an encryption container, you must create a symmetric key in the Secure Key Manager service in advance.
+
+The policies for encryption container are as follows.
+
+* Objects uploaded to encryption containers are encrypted and stored using the configured symmetric key.
+* If you download the encrypted object, it is sent after being decrypted. 
+* If you copy an object of the encryption container or copy it to another container through the inter-region container replication, the object is stored re-encrypted or decrypted according to the encryption settings for the container.
+* You cannot change the symmetric key ID that is registered when creating an encryption container. To change the symmetric key, you must use the key rotation feature of Secure Key Manager.
+* If you rotate the symmetric key configured in an encryption container from Secure Key Manager and upload the key to a new object, the object encrypted with the previous version key is re-encrypted with the rotated key. This task can take a long time depending on usage. Be cautious not to delete the previous version key before re-encryption is complete.
+
+> [Caution]
+If you delete the symmetric key configured in an encryption container from Secure Key Manager, the encrypted object cannot be decrypted. You must carefully manage the symmetric key not to delete it accidentally.
+
 ### Delete Container
-Delete selected containers. Check if the containers are empty before deleting them. If any objects are left inside a container, you cannot delete the relevant container.
+Deletes selected containers. Check if the containers are empty before deleting them. If any objects are left inside a container, you cannot delete the relevant container.
 
-### Container Details
-Check detailed information of selected container. Information including basic information and settings of a container are available.
+### Manage Container
+Checks basic information of the selected containers and manage the settings.
 
-### Container Settings
-Change settings of a selected container.
+#### Basic Information
+You can view the container's basic and encryption information, and change settings such as access policies, static websites, and cross-origin resource sharing.
+<br/>
+
+##### Container Access Policy
+
+Sets the access policy.
+
+* **PRIVATE**: Only permitted users can access objects within a container.
+* **PUBLIC**: Allows anyone via a public URL to download and list objects stored in the container.
+<br/>
+
+##### Static Website Settings
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Option</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Index document</td>
+    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+  </tr>
+  <tr>
+    <td>Error document</td>
+    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+  </tr>
+</table>
+
+If you set the access policy of a container to **PUBLIC** and enter the index document and error document, you can host a static website in the container. You can get the URL of the static website by clicking the **Copy URL** button on the container list.
+
+The name for an object to be used as an index document or error document for a static website must consist of one or more alphanumeric characters, or some special characters(`-`, `_`, `.`, `/`), and the file extension must be `html` in hypertext format. If the conditions are not satisfied, you cannot configure the settings or the static website may not work.
+
+The name for an error document of a static website has the form of `{error code}{suffix}`. For example, if you configure the error document as `error.html`, the name for an error document to display when a 404 error occurs is `404error.html`. You can upload and use error documents for each error situation. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
+<br/>
+
+##### Change Cross-Origin Resource Sharing (CORS)
+
+To call the Object Storage API directly from the browser, you need to set Cross-Origin Resource Sharing (CORS). You can register the source URLs to allow by clicking the Change button of the cross-origin resource sharing item. The URL must include the protocols (`https://` or `http://`). You can allow all source URLs by entering `*`.
+
+<br/>
+
+#### Life Cycle and Version Management
+
+Views the life cycle of objects stored in containers and version control policies.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -42,15 +110,10 @@ Change settings of a selected container.
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan="2">Basic Settings</td>
-    <td>Container access policy</td>
-    <td>Select the container access policy between <b>PRIVATE</b> and <b>PUBLIC</b>. </td>
-  </tr>
-  <tr>
     <td>Object life cycle</td>
+    <td></td>
     <td>Enter the object life cycle in days. Life cycle setting will be cleared if it is not filled in.</td>
   </tr>
-
   <tr>
     <td rowspan="3">Object<br/>version control policy</td>
     <td>Version control policy</td>
@@ -63,6 +126,32 @@ Change settings of a selected container.
   <tr>
     <td>Archiving object<br/>life cycle</td>
     <td>Enter the life cycle of previous versions of an object in days. Life cycle setting will be cleared if it is not filled in.</td>
+  </tr>
+  </table>
+
+##### Object Life Cycle
+
+You can set a life cycle of the uploaded object. Objects that have passed the set life cycle are automatically deleted.
+
+> [Note]
+It is applied only to objects uploaded after the object life cycle is set.
+
+##### Object Version Control Settings
+
+Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated or deleted. If you set the life cycle for previous versions, versions that exceed the set life cycle are automatically deleted.
+
+> [Caution]
+If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
+
+#### Replication
+
+Replication settings allow you to replicate objects in a container to another container in a different region. Replication settings are for disaster recovery, and objects in the source region are replicated to the target region and managed. Replication proceed in the background at regular intervals.
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Option</th>
+    <th>Description</th>
   </tr>
   <tr>
     <td rowspan="3">Replication settings</td>
@@ -77,44 +166,7 @@ Change settings of a selected container.
     <td>Target container</td>
     <td>Enter the target container for replication.</td>
   </tr>
-  <tr>
-    <td rowspan="5">Static website settings</td>
-    <td>Index document</td>
-    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
-  </tr>
-  <tr>
-    <td>Error document</td>
-    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
-  </tr>
 </table>
-
-#### Basic Settings
-
-##### Access Policy
-
-You can control access with the access policy.
-
-* **PRIVATE**: Only permitted users can access objects within a container.
-* **PUBLIC**: Anyone can access objects within a container through a public URL.
-
-##### Object Life Cycle
-
-If you set an object life cycle, the objects within the container are automatically deleted after the entered life cycle.
-
-> [Note]
-> It is applied only to objects uploaded after the object life cycle is set.
-
-#### Object Version Control Settings
-
-Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated, and you can enter a lifetime for previous versions through settings.
-Previous versions that exceed the set life cycle are automatically deleted.
-
-> [Caution]
-> If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
-
-#### Replication Settings
-
-Setting up replication allows objects in a container to be replicated to a container in another region. Replication Settings is a feature for disaster recovery, which replicates objects in the source region identically to the target region and manages the objects. Replication takes place at regular intervals in the background.
 
 The replication policies are as follows:
 
@@ -127,13 +179,6 @@ The replication policies are as follows:
 * Changing the replication setting to **Disable** stops replication, but the objects that have already been replicated are maintained.
 * It is recommended to set the name of the source container and the target container to be the same. If the container names are different, access to large replicated objects may fail.
 * If the segment objects of the multipart-uploaded large object are stored in another container, you must also set up the replication for that container to access the replicated large object.
-
-#### Static Website Settings
-
-If you set the access policy of a container to **PUBLIC** and enter the index document and error document, you can host a static website in the container. You can get the URL of the static website by clicking the `Copy URL` button on the container list.
-
-The object to be used as an index document or error document for a static website must have a name consisting of one or more alphanumeric characters or some special characters (`-`, `_`, `.`, `/`), and it must be in hypertext format with an `html` file extension. If the conditions are not met, you may not be able to configure the setting or the static website may not work.
-The format of a static website's error document name is `{response code}{suffix}`. For example, if an error document is set as `error.html`, the name of the error document to be displayed when the 404 error occurs becomes `404error.html`. You can upload and use error documents according to each error condition. If an error document is not defined or an error object that matches the response code does not exist, the default error document of a web browser will be displayed.
 
 
 ## Object
@@ -186,6 +231,8 @@ Copy objects to create new objects. Create an object with a new name in the cont
 > [Note]
 > The maximum length of the path that can be entered depends on the length of the object name. The length of the path to copy plus the object name must be 1024 bytes or less.
 > `{Maximum length of the path} = 1024 - {Length of the object name} - 1`
+>
+> Multipart objects larger than 5 GB cannot be copied. 
 
 ### Delete Object
 Delete selected objects. When a multipart object is deleted, the segment object is also deleted.
