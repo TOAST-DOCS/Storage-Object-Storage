@@ -38,28 +38,64 @@
 
 ##### 컨테이너 접근 정책
 
-접근 정책을 설정합니다.
-
-* **PRIVATE**: 허가된 사용자만 컨테이너에 저장된 오브젝트에 접근할 수 있도록 제한합니다.
-* **PUBLIC**: 공개 URL을 통해 누구에게나 컨테이너에 저장된 오브젝트 다운로드와 목록 조회를 허용합니다.
-<br/>
-
-##### 정적 웹 사이트 설정
+기본 접근 정책을 설정하고, 테넌트 또는 개별 사용자 단위로 접근 권한을 관리합니다. 접근 정책에 대한 자세한 내용은 [접근 정책 설정 가이드](/Storage/Object%20Storage/ko/acl-guide/)를 참조하세요.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
+    <th>분류</th>
     <th>항목</th>
     <th>설명</th>
   </tr>
   <tr>
-    <td>인덱스 문서</td>
-    <td>정적 웹 사이트의 인덱스 문서 오브젝트를 입력합니다. 오브젝트가 폴더 내에 있다면 폴더 경로를 포함해 입력해야 합니다.<br/>최대 1024 바이트, 영문자, 숫자, 일부 특수 문자(<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>)만 입력할 수 있습니다.</td>
+    <td rowspan="2">기본 접근 정책</td>
+    <td>PRIVATE</td>
+    <td>허가된 사용자만 컨테이너 내부의 오브젝트에 접근할 수 있습니다.</td>
   </tr>
   <tr>
-    <td>오류 문서</td>
-    <td>정적 웹 사이트의 오류 문서 오브젝트의 접미사(suffix)를 입력합니다. 오류 문서 접미사에는 폴더 경로가 포함될 수 없습니다.<br/>최대 1024 바이트, 영문자, 숫자, 일부 특수 문자(<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>)만 입력할 수 있습니다.</td>
+    <td>PUBLIC</td>
+    <td>공개 URL을 통해 누구나 컨테이너 내부의 오브젝트에 접근할 수 있습니다.</td>
+  </tr>
+  <tr>
+    <td rowspan="4">ACL 설정</td>
+    <td></td>
+    <td>개별 접근 정책 사용 여부를 선택합니다.</td>
+  </tr>
+  </tr>
+  <tr>
+    <td>테넌트 ID</td>
+    <td>접근을 허용할 테넌트 ID 또는 <code>*</code>를 입력합니다. 테넌트 ID는 콘솔의 API Endpoint 설정 대화 상자에서 확인할 수 있습니다.</td>
+  </tr>
+  <tr>
+    <td>API 사용자 ID</td>
+    <td>접근을 허용할 API 사용자 ID 또는 <code>*</code>를 입력합니다. API 사용자 ID는 콘솔의 API Endpoint 설정 대화 상자에서 확인할 수 있습니다.</td>
+  </tr>
+  <tr>
+    <td>권한</td>
+    <td>허용할 접근 권한(<code>Read</code>, <code>Write</code>)을 선택합니다.</td>
   </tr>
 </table>
+
+<br/>
+
+##### 정적 웹 사이트 설정
+
+ <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+   <tr>
+      <th>분류</th>
+      <th>항목</th>
+      <th>설명</th>
+   </tr>
+   <tr>
+      <td rowspan="4">정적 웹 사이트 설정</td>
+      <td>인덱스 문서</td>
+      <td>정적 웹 사이트의 인덱스 문서 오브젝트를 입력합니다. 오브젝트가 폴더 내에 있다면 폴더 경로를 포함해 입력해야 합니다.<br/>최대 1024 바이트, 영문자, 숫자, 일부 특수 문자(<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>)만 입력할 수 있습니다.</td>
+   </tr>
+   <tr>
+      <td>오류 문서</td>
+      <td>정적 웹 사이트의 오류 문서 오브젝트의 접미사(suffix)를 입력합니다. 오류 문서 접미사에는 폴더 경로가 포함될 수 없습니다.<br/>최대 1024 바이트, 영문자,
+숫자, 일부 특수 문자(<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>)만 입력할 수 있습니다.</td>
+    </tr>
+ </table>
 
 컨테이너의 접근 정책을 **PUBLIC**으로 설정하고 인덱스 문서와 오류 문서를 입력하면 컨테이너에서 정적 웹 사이트를 호스팅할 수 있습니다. 정적 웹 사이트 URL은 컨테이너 목록에서 **URL 복사** 버튼을 클릭해 얻을 수 있습니다.
 
