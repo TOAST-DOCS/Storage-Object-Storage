@@ -36,7 +36,7 @@ Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 �
 API를 이용해 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide-gov/#tenant-id-api-endpoint)를 참조하세요.
 
 ```
-POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-uuid}/credentials/OS-EC2
+POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -47,12 +47,12 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
-| user-uuid | URL | String | O | 사용자 UUID, 인증 토큰에 포함되어 있음 |
+| api-user-id | URL | String | O | API 사용자 ID, API Endpoint 설정 대화 상자에서 확인 가능 |
 | tenant_id | Body | String | O | 테넌트 ID. API Endpoint 설정 대화 상자에서 확인 가능 |
 
 > [참고]
-> 사용자 UUID는 NHN Cloud 사용자 ID가 아닙니다. 인증 토큰 발급 요청의 응답 본문에 포함되어 있습니다. (access.user.id)
-> API 가이드의 [인증 토큰 발급](/Storage/Object%20Storage/ko/api-guide-gov/#_2) 항목을 참조하세요.
+> `{api-user-id}`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
+> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](/Storage/Object%20Storage/ko/api-guide-gov/#_2) 항목을 참조하세요.
 >
 > S3 API 자격 증명은 유효 기간이 없습니다.
 >
