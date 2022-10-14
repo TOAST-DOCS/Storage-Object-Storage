@@ -27,14 +27,14 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write` 속성�
 | `.rlistings` | 읽기 권한이 있는 사용자에게 컨테이너 조회(GET 또는 HEAD 요청)를 허용합니다.<br/>이 정책 요소가 없으면 오브젝트 목록을 조회할 수 없습니다.<br/>이 정책 요소는 단독으로 설정할 수 없습니다. |
 | `.r:<referrer>` | 요청 헤더를 참조하여 설정된 HTTP 리퍼러(HTTP Referer)에게 접근을 허용합니다.<br/>인증 토큰은 필요하지 않습니다. |
 | `.r:-<referrer>` | 요청 헤더를 참조하여 설정된 HTTP 리퍼러의 접근을 제한합니다.<br/>리퍼러 앞에 마이너스 기호(-)를 붙여 설정합니다. |
-| `<tenant-id>:<user-uuid>` | 특정 프로젝트에 속한 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
+| `<tenant-id>:<api-user-id>` | 특정 프로젝트에 속한 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
 | `<tenant-id>:*` | 특정 프로젝트에 속한 모든 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
-| `*:<user-uuid>` | 프로젝트와 관계없이 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
+| `*:<api-user-id>` | 프로젝트와 관계없이 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
 | `*:*` | 프로젝트와 관계없이 인증 토큰을 발급받을 수 있는 사용자라면 누구나 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
 
 > [참고]
-> 사용자 UUID는 NHN Cloud 사용자 ID가 아닙니다. 인증 토큰 발급 요청의 응답 본문에 포함되어 있습니다. (access.user.id)
-> API 가이드의 [인증 토큰 발급](/Storage/Object%20Storage/ko/api-guide-gov/#_2) 항목을 참조하세요.
+> `<api-user-id>`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
+> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](/Storage/Object%20Storage/ko/api-guide-gov/#_2) 항목을 참조하세요.
 
 <br/>
 
@@ -325,7 +325,7 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 <br/>
 
 ### 특정 프로젝트 또는 특정 사용자에게 읽기/쓰기 허용
-컨테이너의 `X-Container-Read`와 `X-Container-Write` 속성에 `<tenant-id>:<user-uuid>` 형태의 ACL 정책 요소를 설정하면, 특정 프로젝트 또는 특정 사용자에게 읽기/쓰기 권한을 각각 부여할 수 있습니다. 테넌트 ID 또는 사용자 UUID 대신 와일드카드 문자 `*`를 입력하면 모든 프로젝트 또는 모든 사용자에게 접근 권한을 부여합니다. 접근 요청을 할 때는 반드시 유효한 인증 토큰이 필요합니다.
+컨테이너의 `X-Container-Read`와 `X-Container-Write` 속성에 `<tenant-id>:<api-user-id>` 형태의 ACL 정책 요소를 설정하면, 특정 프로젝트 또는 특정 사용자에게 읽기/쓰기 권한을 각각 부여할 수 있습니다. 테넌트 ID 또는 API 사용자 ID 대신 와일드카드 문자 `*`를 입력하면 모든 프로젝트 또는 모든 사용자에게 접근 권한을 부여합니다. 접근 요청을 할 때는 반드시 유효한 인증 토큰이 필요합니다.
 
 > [참고]
 > 인증 토큰이 필요한 ACL 정책으로 부여된 읽기 권한에는 오브젝트 목록 조회 권한이 포함되어 있습니다.
@@ -336,8 +336,8 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: {tenant-id}:{user-uuid}' \
-  -H 'X-Container-Write: {tenant-id}:{user-uuid}' \
+  -H 'X-Container-Read: {tenant-id}:{api-user-id}' \
+  -H 'X-Container-Write: {tenant-id}:{api-user-id}' \
   https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
@@ -378,8 +378,8 @@ $ curl -i -X POST \
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: *:{user-uuid}' \
-  -H 'X-Container-Write: *:{user-uuid}' \
+  -H 'X-Container-Read: *:{api-user-id}' \
+  -H 'X-Container-Write: *:{api-user-id}' \
   https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
