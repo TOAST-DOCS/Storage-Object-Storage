@@ -69,7 +69,7 @@ Content-Type: application/json
 | access.token.id | Body | String |	발급된 토큰 ID |
 | access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 테넌트 ID |
 | access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>YYYY-MM-DDThh:mm:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | 대시 없이 32개의 16진수로 구성된 API 사용자 ID<br/>S3 호환 API를 사용하기 위한 EC2 자격 증명을 발급 받거나, 접근 정책을 설정하는데 사용 |
+| access.user.id | Body | String | 32개의 16진수로 구성된 API 사용자 ID<br/>S3 호환 API를 사용하기 위한 EC2 자격 증명을 발급 받거나, 접근 정책을 설정하는 데 사용 |
 
 > [주의]
 > 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
@@ -1053,8 +1053,8 @@ X-Container-Write: {컨테이너 쓰기 정책}
 X-Container-Object-Retention: {컨테이너의 오브젝트 수명 주기}
 X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
 X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
-X-Container-Meta-Web-Index: {정적 웹 사이트 인덱스 문서 오브젝트}
-X-Container-Meta-Web-Error: {정적 웹 사이트 오류 문서 오브젝트 접미사}
+X-Container-Meta-Web-Index: {정적 웹사이트 인덱스 문서 오브젝트}
+X-Container-Meta-Web-Error: {정적 웹사이트 오류 문서 오브젝트 접미사}
 X-Container-Meta-Access-Control-Allow-Origin: {교차 출처 리소스 공유 허용 목록}
 X-Container-Rfc-Compliant-Etags: {RFC를 준수하는 ETag 형식 사용 여부}
 ```
@@ -1070,8 +1070,8 @@ X-Container-Rfc-Compliant-Etags: {RFC를 준수하는 ETag 형식 사용 여부}
 | X-Container-Object-Retention | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
 | X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
 | X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
-| X-Container-Meta-Web-Index | Header | String | - | 정적 웹 사이트 인덱스 문서 오브젝트 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
-| X-Container-Meta-Web-Error | Header | String | - | 정적 웹 사이트 오류 문서 오브젝트 접미사 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
+| X-Container-Meta-Web-Index | Header | String | - | 정적 웹사이트 인덱스 문서 오브젝트 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
+| X-Container-Meta-Web-Error | Header | String | - | 정적 웹사이트 오류 문서 오브젝트 접미사 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. |
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFC를 준수하는 ETag 형식 사용 여부를 설정, true 또는 false |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
@@ -1108,11 +1108,11 @@ X-Container-Rfc-Compliant-Etags: {RFC를 준수하는 ETag 형식 사용 여부}
 
 <br/>
 
-##### 정적 웹 사이트 설정
-컨테이너 읽기 접근 권한을 모든 사용자에게 허용한 다음 `X-Container-Meta-Web-Index`, `X-Container-Meta-Web-Error`헤더를 이용해 정적 웹 사이트 인덱스 문서와 오류 문서를 설정하면 컨테이너 URL을 이용해 정적 웹 사이트를 호스팅할 수 있습니다.
+##### 정적 웹사이트 설정
+컨테이너 읽기 접근 권한을 모든 사용자에게 허용한 다음 `X-Container-Meta-Web-Index`, `X-Container-Meta-Web-Error`헤더를 이용해 정적 웹사이트 인덱스 문서와 오류 문서를 설정하면 컨테이너 URL을 이용해 정적 웹사이트를 호스팅할 수 있습니다.
 
-정적 웹 사이트의 인덱스 문서, 오류 문서로 사용할 오브젝트는 하나 이상의 영문자, 숫자 또는 일부 특수 문자(`-`, `_`, `.`, `/`)로 구성된 이름이어야 하며, 파일 확장자가 `html`인 하이퍼텍스트 형식이어야 합니다. 조건에 맞지 않으면 설정할 수 없거나 정적 웹 사이트가 동작하지 않을 수 있습니다.
-정적 웹 사이트의 오류 문서 이름은 `{응답 코드}{접미사}` 형태입니다. 예를 들어 오류 문서를 `error.html`로 설정했다면, 404 오류가 발생했을 때 보여줄 오류 문서의 이름은 `404error.html`이 됩니다. 각 오류 상황에 맞게 오류 문서를 업로드해 사용할 수 있습니다. 오류 문서를 정의하지 않거나, 응답 코드에 맞는 오류 문서 오브젝트가 없다면 웹 브라우저의 기본 오류 문서가 표시됩니다.
+정적 웹사이트의 인덱스 문서, 오류 문서로 사용할 오브젝트는 하나 이상의 영문자, 숫자 또는 일부 특수 문자(`-`, `_`, `.`, `/`)로 구성된 이름이어야 하며, 파일 확장자가 `.html`인 하이퍼텍스트 형식이어야 합니다. 조건에 맞지 않으면 설정할 수 없거나 정적 웹사이트가 동작하지 않을 수 있습니다.
+정적 웹사이트의 오류 문서 이름은 `{응답 코드}{접미사}` 형태입니다. 예를 들어 오류 문서를 `error.html`로 설정했다면, 404 오류가 발생했을 때 보여줄 오류 문서의 이름은 `404error.html`이 됩니다. 각 오류 상황에 맞게 오류 문서를 업로드해 사용할 수 있습니다. 오류 문서를 정의하지 않거나, 응답 코드에 맞는 오류 문서 오브젝트가 없다면 웹 브라우저의 기본 오류 문서가 표시됩니다.
 <br/>
 
 ##### 교차 출처 리소스 공유(CORS)
