@@ -34,7 +34,7 @@ APIを使用してコンテナの`X-Container-Read`, `X-Container-Write`プロ�
 
 > [参考]
 > `<api-user-id>`は、コンソールのAPI Endpoint設定ダイアログボックスで**APIユーザーID**項目を参照するか、認証トークン発行APIレスポンス本文の**access.user.id**フィールドで確認できます。
-> 認証トークン発行APIを利用するには、APIガイドの[認証トークン発行](/Storage/Object%20Storage/ko/api-guide/#_2)項目を参照してください。
+> 認証トークン発行APIを利用するには、APIガイドの[認証トークン発行](/Storage/Object%20Storage/ja/api-guide/#_2)項目を参照してください。
 
 <br/>
 
