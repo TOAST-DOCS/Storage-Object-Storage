@@ -69,7 +69,7 @@ Content-Type: application/json
 | access.token.id | Body | String |	発行されたトークンID |
 | access.token.tenant.id | Body | String | トークンをリクエストしたプロジェクトに対応するテナントID |
 | access.token.expires | Body | String | 発行したトークンの満了時間 <br/>YYYY-MM-DDThh:mm:ssZの形式。例) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | ダッシュを含まない32個の16進数で構成されたユーザーUUID<br/>S3互換APIを使用するためのEC2資格証明を発行したり、アクセスポリシーを設定するのに使用 |
+| access.user.id | Body | String | 32個の16進数で構成されたAPIユーザーID<br/>S3互換APIを使用するためのEC2資格証明を発行したり、アクセスポリシーを設定するのに使用 |
 
 > [注意]
 > トークンには有効期限があります。トークン発行リクエストのレスポンスに含まれた「expires」項目は、発行されたトークンの有効期限が終了する時間です。トークンが無効になった場合、新しいトークンを発行する必要があります。
@@ -96,7 +96,7 @@ Content-Type: application/json
     },
     "serviceCatalog": [],
     "user": {
-      "id": "{User UUID}",
+      "id": "{API User ID}",
       "name": "{User Name}"
     }
   }
