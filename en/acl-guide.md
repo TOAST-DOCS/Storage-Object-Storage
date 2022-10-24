@@ -34,6 +34,7 @@ The ACL policy elements that can be set are as follows. All policy elements can 
 
 > [Note]
 >  `<api-user-id>` can be found in the **API User ID** item in the API Endpoint Settings dialog box on the console or in the **access.user.id** field in the response body of the Authentication Token Issuance API.
+> To use the Authentication Token Issuance API, see [Authentication Token Issuance](/Storage/Object%20Storage/en/api-guide/#authentication-token-issuance) in the API Guide.
 
 <br/>
 
