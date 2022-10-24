@@ -123,9 +123,9 @@ Sets the basic access policy and manages access rights for each tenant or user. 
 
 If you set the access policy of a container to **PUBLIC** and enter the index document and error document, you can host a static website in the container. You can get the URL of the static website by clicking the **Copy URL** button on the container list.
 
-The name for an object to be used as an index document or error document for a static website must consist of one or more alphanumeric characters, or some special characters(`-`, `_`, `.`, `/`), and the file extension must be ‘html’ in hypertext format. If the conditions are not satisfied, you cannot configure the settings or the static website may not work.
+The name for an object to be used as an index document or error document for a static website must consist of one or more alphanumeric characters, or some special characters(`-`, `_`, `.`, `/`), and the file extension must be `html` in hypertext format. If the conditions are not satisfied, you cannot configure the settings or the static website may not work.
 
-The name for an error document of a static website has the form of \`{error code}{suffix}\`. For example, if you configure the error document as `error.html`, the name for an error document to display when a 404 error occurs is `404error.html`. You can upload and use error documents for each error situation. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
+The name for an error document of a static website has the form of `{error code}{suffix}`. For example, if you configure the error document as `error.html`, the name for an error document to display when a 404 error occurs is `404error.html`. You can upload and use error documents for each error situation. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
 <br/>
 
 ##### Change Cross-Origin Resource Sharing (CORS)
