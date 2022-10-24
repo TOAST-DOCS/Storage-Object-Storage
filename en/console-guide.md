@@ -214,6 +214,7 @@ The replication policies are as follows:
 * Changing the replication setting to **Disable** stops replication, but the objects that have already been replicated are maintained.
 * It is recommended to set the name of the source container and the target container to be the same. If the container names are different, access to large replicated objects may fail.
 * If the segment objects of the multipart-uploaded large object are stored in another container, you must also set up the replication for that container to access the replicated large object.
+* Delete marker objects of the archive container are not replicated.
 
 
 ## Object
