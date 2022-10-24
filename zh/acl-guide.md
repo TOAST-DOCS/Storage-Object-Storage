@@ -3,14 +3,14 @@
 You can use the console or API to grant read/write access to the container to other users.
 
 ## Console
-In the console, you can select a container access policy from the [Create Container](/Storage/Object%20Storage/en/console-guide/#create-container) or [Container Settings](/Storage/Object%20Storage/en/console-guide/#container-settings) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
+In the console, you can select a container access policy from the [Create Container](/Storage/Object%20Storage/zh/console-guide/#create-container) or [Container Settings](/Storage/Object%20Storage/zh/console-guide/#container-settings) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
 
 ### PRIVATE
-`PRIVATE` is the default access policy that grants access only to users of the project to which the container belongs. Users can access the container through the console or through the API by getting an authentication token. It’s the same policy as the [Allow read/write only to users in the project to which the container belongs](/Storage/Object%20Storage/en/acl-guide/#allow-readwrite-only-to-users-in-the-project-to-which-the-container-belongs) in the API section.
+`PRIVATE` is the default access policy that grants access only to users of the project to which the container belongs. Users can access the container through the console or through the API by getting an authentication token. It’s the same policy as the [Allow read/write only to users in the project to which the container belongs](/Storage/Object%20Storage/zh/acl-guide/#allow-readwrite-only-to-users-in-the-project-to-which-the-container-belongs) in the API section.
 <br/>
 
 ### PUBLIC
-`PUBLIC` is a policy that allows anyone to read and query the object list. If you set the container to PUBLIC, you can get the URL from the console. Anyone can access the container using this URL. It's the same policy as the [Allow read for all users](/Storage/Object%20Storage/en/acl-guide/#allow-readlist-query-for-all-users) in the API section.
+`PUBLIC` is a policy that allows anyone to read and query the object list. If you set the container to PUBLIC, you can get the URL from the console. Anyone can access the container using this URL. It's the same policy as the [Allow read for all users](/Storage/Object%20Storage/zh/acl-guide/#allow-readlist-query-for-all-users) in the API section.
 <br/>
 
 ## API
@@ -27,20 +27,20 @@ The ACL policy elements that can be set are as follows. All policy elements can 
 | `.rlistings` | Allows a container query (GET or HEAD request) to users with read permission.<br/>Without this policy element, the list of objects cannot be queried.<br/>This policy element cannot be set alone. |
 | `.r:<referrer>` | Allows access to the HTTP referer set by referring to the request header.<br/>No authentication token is required. |
 | `.r:-<referrer>` | Restricts the access of the HTTP referer set by referring to the request header.<br/>It is set by adding a minus sign (-) in front of the referer. |
-| `<tenant-id>:<user-uuid>` | The object can be accessed with an authentication token issued to a specific user belonging to a specific project.<br/>Both read and write permissions can be granted. |
+| `<tenant-id>:<api-user-id>` | The object can be accessed with an authentication token issued to a specific user belonging to a specific project.<br/>Both read and write permissions can be granted. |
 | `<tenant-id>:*` | The object can be accessed with an authentication token issued to all users belonging to a specific project.<br/>Both read and write permissions can be granted. |
-| `*:<user-uuid>` | The object can be accessed with an authentication token issued to a specific user, regardless of the project.<br/>Both read and write permissions can be granted. |
+| `*:<api-user-id>` | The object can be accessed with an authentication token issued to a specific user, regardless of the project.<br/>Both read and write permissions can be granted. |
 | `*:*` | Regardless of the project, any user who can obtain an authentication token can access the object.<br/>Both read and write permissions can be granted. |
 
 > [Note]
-> A user UUID is not a user ID for NHN Cloud. It is included in the response body of the request to issue an authentication token. (access.user.id)
-> See [Authentication Token Issuance](/Storage/Object%20Storage/en/api-guide/#authentication-token-issuance) in the API Guide.
+>  `<api-user-id>` can be found in the **API User ID** item in the API Endpoint Settings dialog box on the console or in the **access.user.id** field in the response body of the Authentication Token Issuance API.
+> To use the Authentication Token Issuance API, see [Authentication Token Issuance](/Storage/Object%20Storage/zh/api-guide/#authentication-token-issuance) in the API Guide.
 
 <br/>
 
 ### Allow read/write only to users in the project to which the container belongs
 This is the default access policy used when no ACL policy elements are set. A valid authentication token is required to access the container using the API.
-If you delete all the `X-Container-Read` and `X-Container-Write` property values of a container, it becomes a [PRIVATE](/Storage/Object%20Storage/en/acl-guide/#private) container that allows access only to users in the project to which the container belongs.
+If you delete all the `X-Container-Read` and `X-Container-Write` property values of a container, it becomes a [PRIVATE](/Storage/Object%20Storage/zh/acl-guide/#private) container that allows access only to users in the project to which the container belongs.
 
 <br/>
 
@@ -82,7 +82,7 @@ $ curl -X GET \
 <br/>
 
 ### Allow read/list query for all users
-Setting the container's `X-Container-Read` property to `.r:*, .rlistings` allows all users to read objects and query an object list. No authentication token is required. It is the same policy as the [PUBLIC](/Storage/Object%20Storage/en/acl-guide/#public) entry in the console section.
+Setting the container's `X-Container-Read` property to `.r:*, .rlistings` allows all users to read objects and query an object list. No authentication token is required. It is the same policy as the [PUBLIC](/Storage/Object%20Storage/zh/acl-guide/#public) entry in the console section.
 <br/>
 
 <details>
@@ -325,7 +325,7 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 <br/>
 
 ### Allow read/write to specific projects or specific users
-If you set an ACL policy element in the form of `<tenant-id>:<user-uuid>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or user UUID grants access to all projects or all users. A valid authentication token is required when making an access request.
+If you set an ACL policy element in the form of `<tenant-id>:<api-user-id>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API user ID grants access to all projects or all users. A valid authentication token is required when making an access request.
 
 > [Note]
 > The read permission granted by the ACL policy that requires an authentication token includes the object list query permission.
@@ -336,8 +336,8 @@ If you set an ACL policy element in the form of `<tenant-id>:<user-uuid>` in the
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: {tenant-id}:{user-uuid}' \
-  -H 'X-Container-Write: {tenant-id}:{user-uuid}' \
+  -H 'X-Container-Read: {tenant-id}:{api-user-id}' \
+  -H 'X-Container-Write: {tenant-id}:{api-user-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
@@ -380,8 +380,8 @@ When requesting access to an object, a valid authentication token issued by an a
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: *:{user-uuid}' \
-  -H 'X-Container-Write: *:{user-uuid}' \
+  -H 'X-Container-Read: *:{api-user-id}' \
+  -H 'X-Container-Write: *:{api-user-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
@@ -405,7 +405,7 @@ A valid authentication token is required when making an access request to an obj
 <br/>
 
 ### Delete access policies
-By entering an empty header, you can delete all set ACL policy elements. A container with no ACL policy element becomes a **PRIVATE** container, accessible only by authorized users. See [Allow read/write only to users in the project to which the container belongs](/Storage/Object%20Storage/en/acl-guide/#allow-readwrite-only-to-users-in-the-project-to-which-the-container-belongs).
+By entering an empty header, you can delete all set ACL policy elements. A container with no ACL policy element becomes a **PRIVATE** container, accessible only by authorized users. See [Allow read/write only to users in the project to which the container belongs](/Storage/Object%20Storage/zh/acl-guide/#allow-readwrite-only-to-users-in-the-project-to-which-the-container-belongs).
 
 
 ## References

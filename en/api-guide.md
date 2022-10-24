@@ -69,7 +69,7 @@ Content-Type: application/json
 | access.token.id | Body | String |	ID of issued token |
 | access.token.tenant.id | Body | String | Tenant ID corresponding to the project requesting the token |
 | access.token.expires | Body | String | Expiration time of issued token <br/> in the YYYY-MM-DDThh:mm:ssZ format. e.g.) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | A User UUID composed of 32 digits of hexadecimal numbers without dashes<br/>Used to obtain EC2 credentials to use S3 compatible API or to set access policies |
+| access.user.id | Body | String | API User ID composed of 32 digits of hexadecimal numbers <br/>Used to obtain EC2 credentials to use S3 compatible API or to set access policies |
 
 > [Caution]
 > A token has expiration time. The 'expires' item included in the response to the request for token issuance refers to expiration time of the issued token. When a token expires, a new token must be issued.  
@@ -96,7 +96,7 @@ Content-Type: application/json
     },
     "serviceCatalog": [],
     "user": {
-      "id": "{User UUID}",
+      "id": "{API User ID}",
       "name": "{User Name}"
     }
   }
