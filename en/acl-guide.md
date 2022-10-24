@@ -27,14 +27,14 @@ The ACL policy elements that can be set are as follows. All policy elements can 
 | `.rlistings` | Allows a container query (GET or HEAD request) to users with read permission.<br/>Without this policy element, the list of objects cannot be queried.<br/>This policy element cannot be set alone. |
 | `.r:<referrer>` | Allows access to the HTTP referer set by referring to the request header.<br/>No authentication token is required. |
 | `.r:-<referrer>` | Restricts the access of the HTTP referer set by referring to the request header.<br/>It is set by adding a minus sign (-) in front of the referer. |
-| `<tenant-id>:<user-uuid>` | The object can be accessed with an authentication token issued to a specific user belonging to a specific project.<br/>Both read and write permissions can be granted. |
+| `<tenant-id>:<api-user-id>` | The object can be accessed with an authentication token issued to a specific user belonging to a specific project.<br/>Both read and write permissions can be granted. |
 | `<tenant-id>:*` | The object can be accessed with an authentication token issued to all users belonging to a specific project.<br/>Both read and write permissions can be granted. |
-| `*:<user-uuid>` | The object can be accessed with an authentication token issued to a specific user, regardless of the project.<br/>Both read and write permissions can be granted. |
+| `*:<api-user-id>` | The object can be accessed with an authentication token issued to a specific user, regardless of the project.<br/>Both read and write permissions can be granted. |
 | `*:*` | Regardless of the project, any user who can obtain an authentication token can access the object.<br/>Both read and write permissions can be granted. |
 
 > [Note]
-> A user UUID is not a user ID for NHN Cloud. It is included in the response body of the request to issue an authentication token. (access.user.id)
-> See [Authentication Token Issuance](/Storage/Object%20Storage/en/api-guide/#authentication-token-issuance) in the API Guide.
+>  `<api-user-id>` can be found in the **API User ID** item in the API Endpoint Settings dialog box on the console or in the **access.user.id** field in the response body of the Authentication Token Issuance API.
+> To use the Authentication Token Issuance API, see [Authentication Token Issuance](/Storage/Object%20Storage/en/api-guide/#authentication-token-issuance) in the API Guide.
 
 <br/>
 
@@ -325,7 +325,7 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 <br/>
 
 ### Allow read/write to specific projects or specific users
-If you set an ACL policy element in the form of `<tenant-id>:<user-uuid>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or user UUID grants access to all projects or all users. A valid authentication token is required when making an access request.
+If you set an ACL policy element in the form of `<tenant-id>:<api-user-id>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API user ID grants access to all projects or all users. A valid authentication token is required when making an access request.
 
 > [Note]
 > The read permission granted by the ACL policy that requires an authentication token includes the object list query permission.
@@ -336,8 +336,8 @@ If you set an ACL policy element in the form of `<tenant-id>:<user-uuid>` in the
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: {tenant-id}:{user-uuid}' \
-  -H 'X-Container-Write: {tenant-id}:{user-uuid}' \
+  -H 'X-Container-Read: {tenant-id}:{api-user-id}' \
+  -H 'X-Container-Write: {tenant-id}:{api-user-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
@@ -380,8 +380,8 @@ When requesting access to an object, a valid authentication token issued by an a
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: *:{user-uuid}' \
-  -H 'X-Container-Write: *:{user-uuid}' \
+  -H 'X-Container-Read: *:{api-user-id}' \
+  -H 'X-Container-Write: *:{api-user-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 

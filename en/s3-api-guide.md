@@ -36,7 +36,7 @@ To use Amazon S3 compatible API, you must first obtain S3 API credentials in the
 To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to [Object Storage API Guide](/Storage/Object%20Storage/en/api-guide/#tenant-id-api-endpoint).
 
 ```
-POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-uuid}/credentials/OS-EC2
+POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -47,12 +47,12 @@ X-Auth-Token: {token-id}
 | Name         | Type   | Format | Required | Description                                                  |
 | ------------ | ------ | ------ | -------- | ------------------------------------------------------------ |
 | X-Auth-Token | Header | String | O        | Issued token ID                                              |
-| user-id      | URL    | String | O        | User UUID, included in the authentication token                    |
+| api-user-id      | URL    | String | O        | API user ID, which can be found on the API Endpoint setting dialog box   |
 | tenant_id    | Body   | String | O        | Tenant ID, which can be found on the API Endpoint setting dialog box |
 
 > [Note]
-> User UUID is not the NHN Cloud user ID. It is included in the response body of the authentication token issue request. (access.user.id)
-> Refer to [Authentication Token Issuance](/Storage/Object%20Storage/en/api-guide/#authentication-token-issuance) in the API guide.
+> `<api-user-id>` can be found in the **API User ID** item in the API Endpoint settings dialog box on the console or in the **access.user.id** field in the response body of the Authentication Token Issuance API.
+> To use the Authentication Token Issuance API, refer to [Authentication Token Issuance](/Storage/Object%20Storage/en/api-guide/#authentication-token-issuance) in the API guide.
 > 
 > S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
 >
