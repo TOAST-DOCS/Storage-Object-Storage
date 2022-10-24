@@ -1,5 +1,9 @@
 ## Storage > Object Storage > Release Notes
 
+### October 13, 2022
+#### Added Features
+* [Console] Added a feature to set a container ACL 
+
 ### September 27, 2022
 #### Added Features
 * [Console] Added a feature to set container encryption
