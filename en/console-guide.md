@@ -63,7 +63,7 @@ You can view the container's basic and encryption information, and change settin
 
 ##### Container Access Policy
 
-Sets the basic access policy and manages access rights for each tenant or user. For more details, refer to [ACL Configuration Guide.
+Sets the basic access policy and manages access permissions for each tenant or user. For more details, refer to [ACL Configuration Guide](/Storage/Object%20Storage/ko/acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -95,8 +95,8 @@ Sets the basic access policy and manages access rights for each tenant or user. 
     <td>Enter the tenant API user ID or <code>*</code> to allow access. You can check the API user ID in the API Endpoint setting dialog on the console.</td>
   </tr>
   <tr>
-    <td>Access Right</td>
-    <td>Select access rights (<code>Read</code>, <code>Write</code>) to allow.</td>
+    <td>Permission</td>
+    <td>Select access permissions (<code>Read</code>, <code>Write</code>) to allow.</td>
   </tr>
 </table>
 

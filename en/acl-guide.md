@@ -35,9 +35,6 @@ The ACL policy elements that can be set are as follows. All policy elements can 
 > [Note]
 >  `<api-user-id>` can be found in the **API User ID** item in the API Endpoint Settings dialog box on the console or in the **access.user.id** field in the response body of the Authentication Token Issuance API.
 
- A user UUID is not a user ID for NHN Cloud. It is included in the response body of the request to issue an authentication token. (access.user.id)
-> See [Authentication Token Issuance](/Storage/Object%20Storage/en/api-guide/#authentication-token-issuance) in the API Guide.
-
 <br/>
 
 ### Allow read/write only to users in the project to which the container belongs
