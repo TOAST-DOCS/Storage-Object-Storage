@@ -63,28 +63,63 @@ You can view the container's basic and encryption information, and change settin
 
 ##### Container Access Policy
 
-Sets the access policy.
-
-* **PRIVATE**: Only permitted users can access objects within a container.
-* **PUBLIC**: Allows anyone via a public URL to download and list objects stored in the container.
-<br/>
-
-##### Static Website Settings
+Sets the basic access policy and manages access permissions for each tenant or user. For more details, refer to [ACL Configuration Guide](/Storage/Object%20Storage/zh/acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
+    <th>Category</th>
     <th>Option</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td>Index document</td>
-    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+    <td rowspan="2">Basic Access Policy</td>
+    <td>PRIVATE</td>
+    <td>Only permitted users can access objects within a container.</td>
   </tr>
   <tr>
-    <td>Error document</td>
-    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+    <td>PUBLIC</td>
+    <td>Anyone can access objects within a container through a public URL.</td>
+  </tr>
+  <tr>
+    <td rowspan="4">ACL settings</td>
+    <td></td>
+    <td>Selects whether to use an access policy.</td>
+  </tr>
+  </tr>
+  <tr>
+    <td>Tenant ID</td>
+    <td>Enter the tenant ID or <code>*</code> to allow access. You can check the tenant ID in the API Endpoint setting dialog box on the console.</td>
+  </tr>
+  <tr>
+    <td>API User ID</td>
+    <td>Enter the tenant API user ID or <code>*</code> to allow access. You can check the API user ID in the API Endpoint setting dialog on the console.</td>
+  </tr>
+  <tr>
+    <td>Permission</td>
+    <td>Select access permissions (<code>Read</code>, <code>Write</code>) to allow.</td>
   </tr>
 </table>
+
+<br/>
+
+##### Static Website Settings
+
+ <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+   <tr>
+      <th>Category</th>
+      <th>Option</th>
+      <th>Description</th>
+   </tr>
+   <tr>
+      <td rowspan="4">Static Website Settings</td>
+      <td>Index document</td>
+      <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+   </tr>
+   <tr>
+      <td>Error document</td>
+      <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+    </tr>
+ </table>
 
 If you set the access policy of a container to **PUBLIC** and enter the index document and error document, you can host a static website in the container. You can get the URL of the static website by clicking the **Copy URL** button on the container list.
 
@@ -179,6 +214,7 @@ The replication policies are as follows:
 * Changing the replication setting to **Disable** stops replication, but the objects that have already been replicated are maintained.
 * It is recommended to set the name of the source container and the target container to be the same. If the container names are different, access to large replicated objects may fail.
 * If the segment objects of the multipart-uploaded large object are stored in another container, you must also set up the replication for that container to access the replicated large object.
+* Delete marker objects of the archive container are not replicated.
 
 
 ## Object

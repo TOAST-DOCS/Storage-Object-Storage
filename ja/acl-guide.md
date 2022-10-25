@@ -27,14 +27,14 @@ APIを使用してコンテナの`X-Container-Read`, `X-Container-Write`プロ�
 | `.rlistings` | 読み取り権限があるユーザーにコンテナ照会(GETまたはHEADリクエスト)を許可します。<br/>このポリシー要素がなければオブジェクトリストを照会できません。<br/>がポリシー要素は単独で設定できません。 |
 | `.r:<referrer>` | リクエストヘッダを参照して設定されたHTTPリファラー(HTTP Referer)にアクセスを許可します。<br/>認証トークンは必要ありません。 |
 | `.r:-<referrer>` | リクエストヘッダを参照して設定されたHTTPリファラーのアクセスを制限します。<br/>リファラーの前にハイフン(-)をつけて設定します。 |
-| `<tenant-id>:<user-uuid>` | 特定プロジェクトに属す特定ユーザーに発行された認証トークンでオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を付与できます。 |
+| `<tenant-id>:<api-user-id>>` | 特定プロジェクトに属す特定ユーザーに発行された認証トークンでオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を付与できます。 |
 | `<tenant-id>:*` | 特定プロジェクトに属すすべてのユーザーに発行された認証トークンでオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を全て付与できます。 |
-| `*:<user-uuid>` | プロジェクトに関係なく、特定ユーザーに発行された認証トークンでオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を付与できます。 |
+| `*:<api-user-id>` | プロジェクトに関係なく、特定ユーザーに発行された認証トークンでオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を付与できます。 |
 | `*:*` | プロジェクトに関係なく、認証トークンを発行できるユーザーなら誰でもオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を付与できます。 |
 
 > [参考]
-> ユーザーUUIDはNHN CloudユーザーIDではありません。認証トークン発行リクエストのレスポンス本文に含まれています。 (access.user.id)
-> APIガイドの[認証トークン発行](/Storage/Object%20Storage/ja/api-guide/#_2)項目を参照してください。
+> `<api-user-id>`は、コンソールのAPI Endpoint設定ダイアログボックスで**APIユーザーID**項目を参照するか、認証トークン発行APIレスポンス本文の**access.user.id**フィールドで確認できます。
+> 認証トークン発行APIを利用するには、APIガイドの[認証トークン発行](/Storage/Object%20Storage/ja/api-guide/#_2)項目を参照してください。
 
 <br/>
 
@@ -325,7 +325,7 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 <br/>
 
 ### 特定プロジェクトまたは特定ユーザーに書き込み/読み取り許可
-コンテナの`X-Container-Read`と`X-Container-Write`プロパティに`<tenant-id>:<user-uuid>`形式のACLポリシー要素を設定すると、特定プロジェクトまたは特定ユーザーに書き込み/読み取り権限をそれぞれ付与できます。テナントIDまたはユーザーUUIDの代わりにワイルドカード文字`*`を入力すると、すべてのプロジェクトまたはすべてのユーザーにアクセス権限を付与します。アクセスリクエストを行う時は必ず有効な認証トークンが必要です。
+コンテナの`X-Container-Read`と`X-Container-Write`プロパティに`<tenant-id>:<api-user-id>`形式のACLポリシー要素を設定すると、特定プロジェクトまたは特定ユーザーに書き込み/読み取り権限をそれぞれ付与できます。テナントIDまたはAPIユーザーIDの代わりにワイルドカード文字`*`を入力すると、すべてのプロジェクトまたはすべてのユーザーにアクセス権限を付与します。アクセスリクエストを行う時は必ず有効な認証トークンが必要です。
 
 > [参考]
 > 認証トークンが必要なACLポリシーで付与された読み取り権限にはオブジェクトリスト照会権限が含まれています。
@@ -336,8 +336,8 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: {tenant-id}:{user-uuid}' \
-  -H 'X-Container-Write: {tenant-id}:{user-uuid}' \
+  -H 'X-Container-Read: {tenant-id}:{api-user-id}' \
+  -H 'X-Container-Write: {tenant-id}:{api-user-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 
@@ -380,8 +380,8 @@ $ curl -i -X POST \
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: *:{user-uuid}' \
-  -H 'X-Container-Write: *:{user-uuid}' \
+  -H 'X-Container-Read: *:{api-user-id}' \
+  -H 'X-Container-Write: *:{api-user-id}' \
   https://api-storage.cloud.toast.com/v1/AUTH_*****/container
 ```
 

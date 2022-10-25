@@ -1,5 +1,9 @@
 ## Storage > Object Storage > release notes
 
+### 2022. 10. 13.
+#### 機能追加
+* [Console]コンテナACL設定機能を提供
+
 ### 2022. 09. 27.
 #### 機能追加
 * [Console]暗号化コンテナ設定機能の追加
