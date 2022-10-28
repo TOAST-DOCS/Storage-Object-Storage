@@ -104,23 +104,23 @@ Secure Key Managerサービスで暗号化コンテナに設定した対称鍵�
 
 ##### 静的Webサイト設定
 
- <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
-   <tr>
-      <th>分類</th>
-      <th>項目</th>
-      <th>説明</th>
-   </tr>
-   <tr>
-      <td rowspan="4">静的Webサイト設定</td>
-      <td>インデックス文書</td>
-      <td>静的Webサイトのインデックス文書オブジェクトを入力します。オブジェクトがフォルダ内にある場合、フォルダパスを含めて入力する必要があります。<br/>最大1024バイト、英字、数字、一部特殊文字(<code>-</code>、<code>_</code>、<code>.</code>、<code>/</code>)のみ入力できます。</td>
-   </tr>
-   <tr>
-      <td>エラー文書</td>
-      <td>静的Webサイトのエラー文書オブジェクトのサフィックス(suffix)を入力します。エラー文書サフィックスにはフォルダパスを含まられません。<br/>最大1024バイト、英字、
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>分類</th>
+    <th>項目</th>
+    <th>説明</th>
+  </tr>
+  <tr>
+    <td rowspan="4">静的Webサイト設定</td>
+    <td>インデックス文書</td>
+    <td>静的Webサイトのインデックス文書オブジェクトを入力します。オブジェクトがフォルダ内にある場合、フォルダパスを含めて入力する必要があります。<br/>最大256バイト、英字、数字、一部特殊文字(<code>-</code>、<code>_</code>、<code>.</code>、<code>/</code>)のみ入力できます。</td>
+  </tr>
+  <tr>
+    <td>エラー文書</td>
+    <td>静的Webサイトのエラー文書オブジェクトのサフィックス(suffix)を入力します。エラー文書サフィックスにはフォルダパスを含まられません。<br/>最大256バイト、英字、
 数字、一部特殊文字(<code>-</code>、<code>_</code>、<code>.</code>、<code>/</code>)のみ入力できます。</td>
-    </tr>
- </table>
+  </tr>
+</table>
 
 コンテナのアクセスポリシーを**PUBLIC**に設定し、インデックス文書とエラー文書を入力するとコンテナで静的Webサイトをホスティングできます。静的WebサイトURLはコンテナリストで**URLコピー**ボタンをクリックして取得できます。
 

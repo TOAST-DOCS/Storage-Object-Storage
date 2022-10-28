@@ -104,23 +104,23 @@ Secure Key Manager 서비스에서 암호화 컨테이너에 설정한 대칭 �
 
 ##### 정적 웹사이트 설정
 
- <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
-   <tr>
-      <th>분류</th>
-      <th>항목</th>
-      <th>설명</th>
-   </tr>
-   <tr>
-      <td rowspan="4">정적 웹사이트 설정</td>
-      <td>인덱스 문서</td>
-      <td>정적 웹사이트의 인덱스 문서 오브젝트를 입력합니다. 오브젝트가 폴더 내에 있다면 폴더 경로를 포함해 입력해야 합니다.<br/>최대 1024 바이트, 영문자, 숫자, 일부 특수 문자(<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>)만 입력할 수 있습니다.</td>
-   </tr>
-   <tr>
-      <td>오류 문서</td>
-      <td>정적 웹사이트의 오류 문서 오브젝트의 접미사(suffix)를 입력합니다. 오류 문서 접미사에는 폴더 경로가 포함될 수 없습니다.<br/>최대 1024 바이트, 영문자,
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>분류</th>
+    <th>항목</th>
+    <th>설명</th>
+  </tr>
+  <tr>
+    <td rowspan="4">정적 웹사이트 설정</td>
+    <td>인덱스 문서</td>
+    <td>정적 웹사이트의 인덱스 문서 오브젝트를 입력합니다. 오브젝트가 폴더 내에 있다면 폴더 경로를 포함해 입력해야 합니다.<br/>최대 256 바이트, 영문자, 숫자, 일부 특수 문자(<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>)만 입력할 수 있습니다.</td>
+  </tr>
+  <tr>
+    <td>오류 문서</td>
+    <td>정적 웹사이트의 오류 문서 오브젝트의 접미사(suffix)를 입력합니다. 오류 문서 접미사에는 폴더 경로가 포함될 수 없습니다.<br/>최대 256 바이트, 영문자,
 숫자, 일부 특수 문자(<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>)만 입력할 수 있습니다.</td>
-    </tr>
- </table>
+  </tr>
+</table>
 
 컨테이너의 접근 정책을 **PUBLIC**으로 설정하고 인덱스 문서와 오류 문서를 입력하면 컨테이너에서 정적 웹사이트를 호스팅할 수 있습니다. 정적 웹사이트 URL은 컨테이너 목록에서 **URL 복사** 버튼을 클릭해 얻을 수 있습니다.
 
