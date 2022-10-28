@@ -679,10 +679,6 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 생성할 컨테이너 이름 |
-| X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 오브젝트 보존 기간을 일 단위로 설정 |
-
-#### 오브젝트 잠금 컨테이너
-컨테이너 생성 요청에 `X-Container-Worm-Retention-Day` 헤더를 추가하면 오브젝트 잠금 컨테이너를 만들 수 있습니다. 오브젝트 잠금 컨테이너에 업로드한 오브젝트는 **WORM(Write-Once-Read-Many) 모델**을 사용하여 저장되며 지정된 기간동안 덮어쓰거나 삭제할 수 없습니다.
 
 #### 응답
 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
@@ -1061,7 +1057,6 @@ X-Container-Meta-Web-Index: {정적 웹사이트 인덱스 문서 오브젝트}
 X-Container-Meta-Web-Error: {정적 웹사이트 오류 문서 오브젝트 접미사}
 X-Container-Meta-Access-Control-Allow-Origin: {교차 출처 리소스 공유 허용 목록}
 X-Container-Rfc-Compliant-Etags: {RFC를 준수하는 ETag 형식 사용 여부}
-X-Container-Worm-Retention-Day: {컨테이너의 오브젝트 보존 기간}
 ```
 
 #### 요청
@@ -1079,7 +1074,6 @@ X-Container-Worm-Retention-Day: {컨테이너의 오브젝트 보존 기간}
 | X-Container-Meta-Web-Error | Header | String | - | 정적 웹사이트 오류 문서 오브젝트 접미사 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. |
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFC를 준수하는 ETag 형식 사용 여부를 설정, true 또는 false |
-| X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 오브젝트 보존 기간을 일 단위로 설정<br/>오브젝트 잠금 컨테이너에서만 변경 가능 |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 <br/>
@@ -1189,14 +1183,6 @@ Status: 0
 
 ##### RFC를 준수하는 ETag 형식 사용 설정
 일부 애플리케이션에서는 [RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3) 사양에 따라 큰따옴표로 묶인 ETag 값을 요구합니다. `X-Container-Rfc-Compliant-Etags` 헤더를 사용하면 컨테이너에 저장된 오브젝트를 조회할 때 큰따옴표로 묶인 ETag 값을 반환하도록 설정할 수 있습니다.
-
-<br/>
-
-##### 오브젝트 보존 기간 변경
-`X-Container-Worm-Retention-Day` 헤더를 사용해 오브젝트 잠금 컨테이너의 오브젝트 보존 기간을 변경합니다. 보존 기간은 일 단위로 입력할 수 있으며, 해제할 수 없습니다. 변경된 보존 기간은 변경 이후 업로드하는 오브젝트에 적용됩니다. 오브젝트의 보존 기간은 오브젝트 잠금 컨테이너에서만 변경할 수 있습니다.
-
-> [참고]
-> 일반 컨테이너를 오브젝트 잠금 컨테이너로 변경하거나, 오브젝트 잠금 컨테이너를 일반 컨테이너로 변경할 수 없습니다.
 
 <br/>
 
@@ -2472,14 +2458,9 @@ X-Object-Meta-{Key}: {Value}
 | X-Object-Meta-{Key} | Header | String | - | 변경할 메타데이터 |
 | X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
-| X-Object-Worm-Retain-Until | Header | Timestamp | - | 오브젝트 보관 만료 시간, 유닉스 시간(초)<br/>설정된 시간 이후로만 변경할 수 있으며, 오브젝트 잠금 컨테이너에서만 동작 |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
-
-> [참고]
-> 오브젝트 잠금 컨테이너에 업로드된 오브젝트에는 자동으로 보관 만료 시간이 설정됩니다. 보관 만료 시간이 지나지 않은 오브젝트는 덮어씌우거나 삭제할 수 없습니다. 
-> 오브젝트의 메타데이터는 보관 만료 시간이 지나지 않았더라도 변경할 수 있습니다.
 
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
