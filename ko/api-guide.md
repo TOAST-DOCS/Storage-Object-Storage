@@ -1084,7 +1084,7 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 <br/>
 
 ##### 접근 정책 설정
-`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](/Storage/Object%20Storage/ko/acl-guide/)를 참조하세요.
+`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참조하세요.
 
 <br/>
 

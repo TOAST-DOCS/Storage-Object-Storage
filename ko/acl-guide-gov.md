@@ -3,14 +3,14 @@
 콘솔 또는 API를 사용해 다른 사용자에게 컨테이너의 읽기/쓰기 접근 권한을 부여할 수 있습니다.
 
 ## 콘솔
-콘솔에서는 [컨테이너 생성](/Storage/Object%20Storage/ko/console-guide-gov/#_2) 또는 [컨테이너 설정](/Storage/Object%20Storage/ko/console-guide-gov/#_5) 창에서 컨테이너 접근 정책을 선택할 수 있습니다. 선택할 수 있는 정책은 `PRIVATE`과 `PUBLIC` 두 가지로 제한됩니다.
+콘솔에서는 [컨테이너 생성](console-guide-gov/#_2) 대화 상자 또는 [컨테이너 관리](console-guide-gov/#_5) 창의 컨테이너 접근 정책 설정 대화 상자에서 컨테이너 접근 정책을 선택할 수 있습니다. 선택할 수 있는 정책은 `PRIVATE`과 `PUBLIC` 두 가지로 제한됩니다.
 
 ### PRIVATE
-`PRIVATE`은 컨테이너가 속한 프로젝트의 사용자에게만 접근 권한을 부여하는 기본 접근 정책입니다. 콘솔을 이용하거나, 인증 토큰을 발급받아 API로 컨테이너에 접근할 수 있습니다. API 섹션의 [컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용](/Storage/Object%20Storage/ko/acl-guide-gov/#_2) 항목과 같은 정책입니다.
+`PRIVATE`은 컨테이너가 속한 프로젝트의 사용자에게만 접근 권한을 부여하는 기본 접근 정책입니다. 콘솔을 이용하거나, 인증 토큰을 발급받아 API로 컨테이너에 접근할 수 있습니다. API 섹션의 [컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용](acl-guide-gov/#_2) 항목과 같은 정책입니다.
 <br/>
 
 ### PUBLIC
-`PUBLIC`은 누구에게나 읽기와 오브젝트 목록 조회를 허용하는 정책입니다. 컨테이너를 PUBLIC으로 설정하면 콘솔에서 URL을 얻을 수 있습니다. 이 URL을 통해 누구나 컨테이너에 접근할 수 있습니다. API 섹션의 [모든 사용자에게 읽기 허용](/Storage/Object%20Storage/ko/acl-guide-gov/#_2) 항목과 같은 정책입니다.
+`PUBLIC`은 누구에게나 읽기와 오브젝트 목록 조회를 허용하는 정책입니다. 컨테이너를 PUBLIC으로 설정하면 콘솔에서 URL을 얻을 수 있습니다. 이 URL을 통해 누구나 컨테이너에 접근할 수 있습니다. API 섹션의 [모든 사용자에게 읽기 허용](acl-guide-gov/#_2) 항목과 같은 정책입니다.
 <br/>
 
 ## API
@@ -34,13 +34,13 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write` 속성�
 
 > [참고]
 > `<api-user-id>`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
-> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](/Storage/Object%20Storage/ko/api-guide-gov/#_2) 항목을 참조하세요.
+> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide-gov/#_2) 항목을 참조하세요.
 
 <br/>
 
 ### 컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용
 ACL 정책 요소를 설정하지 않았을 때 사용되는 기본 접근 정책입니다. API를 사용해 컨테이너에 접근하려면 반드시 유효한 인증 토큰이 필요합니다.
-컨테이너의 `X-Container-Read`, `X-Container-Write` 속성값을 모두 삭제하면 컨테이너가 속한 프로젝트의 사용자에게만 접근을 허용하는 [PRIVATE](/Storage/Object%20Storage/ko/acl-guide-gov/#private) 컨테이너가 됩니다.
+컨테이너의 `X-Container-Read`, `X-Container-Write` 속성값을 모두 삭제하면 컨테이너가 속한 프로젝트의 사용자에게만 접근을 허용하는 [PRIVATE](acl-guide-gov/#private) 컨테이너가 됩니다.
 
 <br/>
 
@@ -82,7 +82,7 @@ $ curl -X GET \
 <br/>
 
 ### 모든 사용자에게 읽기/목록 조회 허용
-컨테이너의 `X-Container-Read` 속성을 `.r:*, .rlistings`로 설정하면 모든 사용자에게 오브젝트 읽기와 목록 조회를 허용합니다. 인증 토큰은 필요하지 않습니다. 콘솔 섹션의 [PUBLIC](/Storage/Object%20Storage/ko/acl-guide-gov/#public) 항목과 같은 정책입니다.
+컨테이너의 `X-Container-Read` 속성을 `.r:*, .rlistings`로 설정하면 모든 사용자에게 오브젝트 읽기와 목록 조회를 허용합니다. 인증 토큰은 필요하지 않습니다. 콘솔 섹션의 [PUBLIC](acl-guide-gov/#public) 항목과 같은 정책입니다.
 <br/>
 
 <details>
@@ -402,7 +402,7 @@ $ curl -i -X POST \
 <br/>
 
 ### 접근 정책 삭제
-빈 헤더를 입력하면 설정된 ACL 정책 요소를 모두 삭제할 수 있습니다. ACL 정책 요소가 없는 컨테이너는 허가된 사용자만 접근할 수 있는 **PRIVATE** 컨테이너가 됩니다. [컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용](/Storage/Object%20Storage/ko/acl-guide-gov/#_2) 항목을 참고하세요.
+빈 헤더를 입력하면 설정된 ACL 정책 요소를 모두 삭제할 수 있습니다. ACL 정책 요소가 없는 컨테이너는 허가된 사용자만 접근할 수 있는 **PRIVATE** 컨테이너가 됩니다. [컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용](acl-guide-gov/#_2) 항목을 참고하세요.
 
 
 ## References

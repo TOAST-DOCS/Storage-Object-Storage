@@ -75,7 +75,7 @@ Secure Key Manager 서비스에서 암호화 컨테이너에 설정한 대칭 �
 
 ##### 컨테이너 접근 정책
 
-기본 접근 정책을 설정하고, 테넌트 또는 개별 사용자 단위로 접근 권한을 관리합니다. 접근 정책에 대한 자세한 내용은 [접근 정책 설정 가이드](/Storage/Object%20Storage/ko/acl-guide/)를 참조하세요.
+기본 접근 정책을 설정하고, 테넌트 또는 개별 사용자 단위로 접근 권한을 관리합니다. 접근 정책에 대한 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참조하세요.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>

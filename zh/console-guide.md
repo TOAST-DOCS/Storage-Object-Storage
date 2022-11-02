@@ -63,7 +63,7 @@ You can view the container's basic and encryption information, and change settin
 
 ##### Container Access Policy
 
-Sets the basic access policy and manages access permissions for each tenant or user. For more details, refer to [ACL Configuration Guide](/Storage/Object%20Storage/zh/acl-guide/).
+Sets the basic access policy and manages access permissions for each tenant or user. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
