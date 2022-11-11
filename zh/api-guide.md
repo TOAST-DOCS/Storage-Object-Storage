@@ -1079,7 +1079,7 @@ This API does not require a request body.
 <br/>
 
 ##### Set the Access Policy
-You can set the container access policy using the `X-Container-Read` and `X-Container-Write` header. For more details, refer to [Guide to setting up access policy](/Storage/Object%20Storage/zh/acl-guide/).
+You can set the container access policy using the `X-Container-Read` and `X-Container-Write` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <br/>
 

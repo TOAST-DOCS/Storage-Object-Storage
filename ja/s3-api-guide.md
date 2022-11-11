@@ -31,9 +31,9 @@ NHN CloudオブジェクトストレージはAWSのオブジェクトストレ�
 ## S3 API認証情報(S3 API Credential)
 
 ### S3 API認証情報の発行
-Amazon S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報を発行する必要があります。認証情報はWebコンソールまたはAPIを利用して発行できます。Webコンソールを利用した認証情報の発行は[S3 API認証情報](/Storage/Object%20Storage/ja/console-guide/#s3-api)項目を参照してください。
+Amazon S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報を発行する必要があります。認証情報はWebコンソールまたはAPIを利用して発行できます。Webコンソールを利用した認証情報の発行は[S3 API認証情報](console-guide/#s3-api)項目を参照してください。
 
-APIを利用して認証情報を発行するには認証トークンが必要です。認証トークンの発行は[オブジェクトストレージAPIガイド](/Storage/Object%20Storage/ja/api-guide/#tenant-id-api-endpoint)を参照してください。
+APIを利用して認証情報を発行するには認証トークンが必要です。認証トークンの発行は[オブジェクトストレージAPIガイド](api-guide/#tenant-id-api-endpoint)を参照してください。
 
 ```
 POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -52,7 +52,7 @@ X-Auth-Token: {token-id}
 
 > [参考]
 > `{api-user-id}`は、コンソールのAPI Endpoint設定ダイアログボックスで**APIユーザーID**項目を参照するか、認証トークン発行APIレスポンス本文の**access.user.id**フィールドで確認できます。
-> 認証トークン発行APIを利用するにはAPIガイドの[認証トークン発行](/Storage/Object%20Storage/ja/api-guide/#_2)項目を参照してください。
+> 認証トークン発行APIを利用するにはAPIガイドの[認証トークン発行](api-guide/#_2)項目を参照してください。
 >
 > S3 API認証情報は有効期限がなく、ユーザーごとにプロジェクトあたり最大3個まで発行できます。
 

@@ -1079,7 +1079,7 @@ X-Container-Rfc-Compliant-Etags: {RFCを遵守するETag形式を使用するか
 <br/>
 
 ##### アクセスポリシー設定
-`X-Container-Read`と`X-Container-Write`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](/Storage/Object%20Storage/ja/acl-guide/)を参照してください。
+`X-Container-Read`と`X-Container-Write`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
 
 <br/>
 

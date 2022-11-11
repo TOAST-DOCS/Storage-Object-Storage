@@ -63,7 +63,7 @@ You can view the container's basic and encryption information, and change settin
 
 ##### Container Access Policy
 
-Sets the basic access policy and manages access permissions for each tenant or user. For more details, refer to [ACL Configuration Guide](/Storage/Object%20Storage/zh/acl-guide/).
+Sets the basic access policy and manages access permissions for each tenant or user. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -111,7 +111,7 @@ Sets the basic access policy and manages access permissions for each tenant or u
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan="4">Static Website Settings</td>
+    <td rowspan="2">Static Website Settings</td>
     <td>Index document</td>
     <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
   </tr>
