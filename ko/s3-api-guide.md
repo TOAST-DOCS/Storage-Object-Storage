@@ -799,9 +799,8 @@ class Boto3Example(object):
 <summary>오브젝트 업로드</summary>
 
 ```python
-    def upload(self, bucket_name, key, filename):
-        with open(filename, 'rb') as fd:
-            return self.s3.put_object(Bucket=bucket_name, Key=key, Body=fd)
+    def upload_file(filename, bucket_name, key=None):
+        return self.s3.upload_file(filename, bucket_name, key)
 ```
 
 </details>
@@ -912,9 +911,21 @@ public class AwsSdkExapmple {
 <summary>오브젝트 업로드</summary>
 
 ```java
-    public String uploadObject(String bucketName, String objKeyName, String filePath) {
-        PutObjectResult result = s3Client.putObject(bucketName, objKeyName, new File(filePath));
-        return result.getETag();
+    public void uploadMultipart(String bucketName, String objKeyName, String filePath) {
+        try {
+            TransferManager tm = TransferManagerBuilder.standard()
+                .withS3Client(s3Client)
+                .build();
+
+            Upload upload = tm.upload(bucketName, objKeyName, new File(filePath));
+            upload.waitForCompletion();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (AmazonServiceException e) {
+            e.printStackTrace();
+        } catch (SdkClientException e) {
+            e.printStackTrace();
+        }
     }
 ```
 
@@ -939,6 +950,282 @@ public class AwsSdkExapmple {
 ```java
     public void deleteObject(String bucketName, String objKeyName) {
         s3Client.deleteObject(bucketName, objKeyName);
+    }
+```
+
+</details>
+
+
+### .NET SDK
+
+<details>
+<summary>.NET SDK 클라이언트 클래스</summary>
+
+
+```csharp
+  class S3SDKExample
+  {
+    private static string endpoint = "{endpoint}";
+    private static string regionName = "{region name}";
+    private static string accessKey = "{access}";
+    private static string secretKey = "{secret}";
+
+    private static AmazonS3Client GetS3Client()
+    {
+        var amazonS3Config = new AmazonS3Config {
+            ServiceURL = endpoint,
+            AuthenticationRegion = regionName,
+            ForcePathStyle = true,
+        };
+        var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
+
+    }
+  }
+```
+
+</details>
+
+<details>
+<summary>버킷 생성</summary>
+
+
+```csharp
+    static async Task CreateBucketAsync(AmazonS3Client s3Client, string bucketName)
+    {
+        try
+        {
+            if (!(await AmazonS3Util.DoesS3BucketExistAsync(s3Client, bucketName)))
+            {
+                var putBucketRequest = new PutBucketRequest
+                {
+                    BucketName = bucketName,
+                    UseClientRegion = true
+                };
+
+                PutBucketResponse putBucketResponse = await s3Client.PutBucketAsync(putBucketRequest);
+            }
+        }
+        catch (AmazonS3Exception e)
+        {
+            Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+        }
+    }
+```
+
+</details>
+
+<details>
+<summary>버킷 목록 조회</summary>
+
+
+```csharp
+    static async Task ListBucketsAsync(AmazonS3Client s3Client)
+    {
+      var listResponse = await s3Client.ListBucketsAsync();
+      Console.WriteLine($"Number of buckets: {listResponse.Buckets.Count}");
+      foreach(S3Bucket b in listResponse.Buckets)
+      {
+        Console.WriteLine(b.BucketName);
+      }
+    }
+```
+
+</details>
+
+<details>
+<summary>버킷 조회(오브젝트 목록 조회)
+</summary>
+
+
+```csharp
+    static async Task<bool> ListBucketContentsAsync(AmazonS3Client s3Client, string bucketName)
+    {
+        try
+        {
+            var request = new ListObjectsV2Request
+            {
+                BucketName = bucketName,
+                MaxKeys = 5,
+            };
+
+            var response = new ListObjectsV2Response();
+
+            do
+            {
+                response = await s3Client.ListObjectsV2Async(request);
+
+                response.S3Objects
+                    .ForEach(obj => Console.WriteLine($"{obj.Key,-35}{obj.LastModified.ToShortDateString(),10}{obj.Size,10}"));
+
+                request.ContinuationToken = response.NextContinuationToken;
+            }
+            while (response.IsTruncated);
+
+            return true;
+        }
+        catch (AmazonS3Exception ex)
+        {
+            Console.WriteLine($"Error encountered on server. Message:'{ex.Message}' getting list of objects.");
+            return false;
+        }
+    }
+```
+
+</details>
+
+<details>
+<summary>버킷 삭제</summary>
+
+
+```csharp
+    static async Task<bool> DeleteBucketAsync(AmazonS3Client s3Client, string bucketName)
+    {
+        var request = new DeleteBucketRequest
+        {
+            BucketName = bucketName,
+        };
+
+        var response = await s3Client.DeleteBucketAsync(request);
+        return response.HttpStatusCode == System.Net.HttpStatusCode.OK;
+    }
+```
+
+</details>
+
+<details>
+<summary>오브젝트 업로드</summary>
+
+
+```csharp
+    static async Task UploadObjectAsync(AmazonS3Client s3Client, string bucketName, string keyName, string filePath)
+    {
+        List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
+        InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
+        {
+            BucketName = bucketName,
+            Key = keyName
+        };
+
+        InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
+
+        long contentLength = new FileInfo(filePath).Length;
+        long partSize = 10 * (long)Math.Pow(2, 20);
+
+        try
+        {
+            long filePosition = 0;
+            for (int i = 1; filePosition < contentLength; i++)
+            {
+                UploadPartRequest uploadRequest = new UploadPartRequest
+                    {
+                        UseChunkEncoding = false,
+                        BucketName = bucketName,
+                        Key = keyName,
+                        UploadId = initResponse.UploadId,
+                        PartNumber = i,
+                        PartSize = partSize,
+                        FilePosition = filePosition,
+                        FilePath = filePath
+                    };
+                uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
+                filePosition += partSize;
+            }
+
+            CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
+                {
+                    BucketName = bucketName,
+                    Key = keyName,
+                    UploadId = initResponse.UploadId
+                 };
+            completeRequest.AddPartETags(uploadResponses);
+            CompleteMultipartUploadResponse completeUploadResponse = await s3Client.CompleteMultipartUploadAsync(completeRequest);
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine("An AmazonS3Exception was thrown: { 0}", exception.Message);
+
+            AbortMultipartUploadRequest abortMPURequest = new AbortMultipartUploadRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+            };
+           await s3Client.AbortMultipartUploadAsync(abortMPURequest);
+        }
+    }
+```
+
+</details>
+
+<details>
+<summary>오브젝트 다운로드
+</summary>
+
+
+```csharp
+    static async Task ReadObjectDataAsync(AmazonS3Client s3Client, string bucketName, string keyName, string filePath)
+    {
+        try
+        {
+            GetObjectRequest request = new GetObjectRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
+
+            ResponseHeaderOverrides responseHeaders = new ResponseHeaderOverrides();
+            responseHeaders.CacheControl = "No-cache";
+
+            request.ResponseHeaderOverrides = responseHeaders;
+            var appendToFile = false;
+
+            using (var response = await s3Client.GetObjectAsync(request))
+                await response.WriteResponseStreamToFileAsync(filePath, appendToFile, CancellationToken.None);
+        }
+        catch (AmazonS3Exception e)
+        {
+            Console.WriteLine("Error encountered ***. Message:'{0}' when reading object", e.Message);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Unknown encountered on server. Message:'{0}' when reading object", e.Message);
+        }
+    }
+```
+
+</details>
+
+<details>
+<summary>오브젝트 삭제</summary>
+
+
+```csharp
+    static async Task DeleteObjectNonVersionedBucketAsync(AmazonS3Client s3Client, string bucketName, string keyName)
+    {
+        try
+        {
+            var deleteObjectRequest = new DeleteObjectRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
+
+            Console.WriteLine("Deleting an object");
+            await s3Client.DeleteObjectAsync(deleteObjectRequest);
+        }
+        catch (AmazonS3Exception e)
+        {
+            Console.WriteLine("Error encountered on server. Message:'{0}' when deleting an object", e.Message);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Unknown encountered on server. Message:'{0}' when deleting an object", e.Message);
+        }
     }
 ```
 
