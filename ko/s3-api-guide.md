@@ -735,6 +735,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 ```python
 # boto3example.py
 import boto3
+from botocore.exceptions import ClientError
 
 class Boto3Example(object):
     _REGION = '{region name}'
@@ -758,7 +759,10 @@ class Boto3Example(object):
 
 ```python
     def create_bucket(self, bucket_name):
-        return self.s3.create_bucket(Bucket=bucket_name)
+        try:
+            return self.s3.create_bucket(Bucket=bucket_name)
+        except ClientError as e:
+            raise RuntimeError(e)
 ```
 
 </details>
@@ -768,8 +772,10 @@ class Boto3Example(object):
 
 ```python
     def list_buckets(self):
-        response = self.s3.list_buckets()
-        return response.get('Buckets')
+        try:
+            return self.s3.list_buckets().get('Buckets')
+        except ClientError as e:
+            raise RuntimeError(e)
 ```
 
 </details>
@@ -779,8 +785,10 @@ class Boto3Example(object):
 
 ```python
     def list_objs(self, bucket_name):
-        response = self.s3.list_objects_v2(Bucket=bucket_name)
-        return response.get('Contents')
+        try:
+            return self.s3.list_objects_v2(Bucket=bucket_name).get('Contents')
+        except ClientError as e:
+            raise RuntimeError(e)
 ```
 
 </details>
@@ -790,7 +798,10 @@ class Boto3Example(object):
 
 ```python
     def delete_bucket(self, bucket_name):
-        return self.s3.delete_bucket(Bucket=bucket_name)
+        try:
+            return self.s3.delete_bucket(Bucket=bucket_name)
+        except ClientError as e:
+            raise RuntimeError(e)
 ```
 
 </details>
@@ -799,8 +810,12 @@ class Boto3Example(object):
 <summary>오브젝트 업로드</summary>
 
 ```python
-    def upload_file(filename, bucket_name, key=None):
-        return self.s3.upload_file(filename, bucket_name, key)
+    def upload(self, bucket_name, key, filename):
+        try:
+            self.s3.upload_file(
+                Filename=filename, Bucket=bucket_name, Key=key)
+        except ClientError as e:
+            raise RuntimeError(e)
 ```
 
 </details>
@@ -810,12 +825,18 @@ class Boto3Example(object):
 
 ```python
     def download(self, bucket_name, key, filename):
-        response = self.s3.get_object(Bucket=bucket_name, Key=key)
+        try:
+            response = self.s3.get_object(Bucket=bucket_name, Key=key)
 
-        with io.FileIO(filename, 'w') as fd:
-            for chunk in response['Body']:
-                fd.write(chunk)
-        response.pop('Body')
+            with io.FileIO(filename, 'w') as fd:
+                for chunk in response['Body']:
+                    fd.write(chunk)
+
+            response.pop('Body')
+        except ClientError as e:
+            raise RuntimeError(e)
+        except OSError as e:
+            raise RuntimeError(e)
 
         return response
 ```
@@ -827,7 +848,10 @@ class Boto3Example(object):
 
 ```python
     def delete(self, bucket_name, key):
-        return self.s3.delete_object(Bucket=bucket_name, Key=keys)
+        try:
+            return self.s3.delete_object(Bucket=bucket_name, Key=key)
+        except ClientError as e:
+            raise RuntimeError(e)
 ```
 
 </details>
@@ -866,9 +890,14 @@ public class AwsSdkExapmple {
 <summary>버킷 생성</summary>
 
 ```java
-    public String createBucket(String bucketName) {
-        Bucket bucket = s3Client.createBucket(bucketName);
-        return bucket.toString();
+    public String createBucket(String bucketName) throws RuntimeException {
+        try {
+            return s3Client.createBucket(bucketName).toString();
+        } catch (AmazonServiceException e) {
+            throw new RuntimeException(e);
+        } catch (SdkClientException e) {
+            throw new RuntimeException(e);
+        }
     }
 ```
 
@@ -878,8 +907,14 @@ public class AwsSdkExapmple {
 <summary>버킷 목록 조회</summary>
 
 ```java
-    public List<Bucket> listBuckets() {
-        return s3Client.listBuckets();
+    public List<Bucket> listBuckets() throws RuntimeException {
+        try {
+            return s3Client.listBuckets();
+        } catch (AmazonServiceException e) {
+            throw new RuntimeException(e);
+        } catch (SdkClientException e) {
+            throw new RuntimeException(e);
+        }
     }
 ```
 
@@ -889,8 +924,14 @@ public class AwsSdkExapmple {
 <summary>버킷 조회(오브젝트 목록 조회)</summary>
 
 ```java
-    public ListObjectsV2Result listObjects(String bucketName) {
-        return s3Client.listObjectsV2(bucketName);
+    public ListObjectsV2Result listObjects(String bucketName) throws RuntimeException {
+        try {
+            return s3Client.listObjectsV2(bucketName);
+        } catch (AmazonServiceException e) {
+            throw new RuntimeException(e);
+        } catch (SdkClientException e) {
+            throw new RuntimeException(e);
+        }
     }
 ```
 
@@ -900,8 +941,14 @@ public class AwsSdkExapmple {
 <summary>버킷 삭제</summary>
 
 ```java
-    public void deleteBucket(String bucketName) {
-        s3Client.deleteBucket(bucketName);
+    public void deleteBucket(String bucketName) throws RuntimeException {
+        try {
+            s3Client.deleteBucket(bucketName);
+        } catch (AmazonServiceException e) {
+            throw new RuntimeException(e);
+        } catch (SdkClientException e) {
+            throw new RuntimeException(e);
+        }
     }
 ```
 
@@ -911,20 +958,19 @@ public class AwsSdkExapmple {
 <summary>오브젝트 업로드</summary>
 
 ```java
-    public void uploadMultipart(String bucketName, String objKeyName, String filePath) {
+    public void uploadObject(String bucketName, String objectKey, String filePath) throws RuntimeException {
         try {
             TransferManager tm = TransferManagerBuilder.standard()
                 .withS3Client(s3Client)
                 .build();
-
-            Upload upload = tm.upload(bucketName, objKeyName, new File(filePath));
+            Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
             upload.waitForCompletion();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } catch (AmazonServiceException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } catch (SdkClientException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 ```
@@ -935,10 +981,23 @@ public class AwsSdkExapmple {
 <summary>오브젝트 다운로드</summary>
 
 ```java
-    public String downloadObject(String bucketName, String objKeyName, String filePath) {
-        GetObjectRequest request = new GetObjectRequest(bucketName, objKeyName);
-        ObjectMetadata metadata = s3Client.getObject(request, new File(filePath));
-        return metadata.getETag();
+    public String downloadObject(String bucketName, String objKeyName, String filePath) throws RuntimeException {
+        try {
+            return s3Client.getObject(
+                new GetObjectRequest(bucketName, objKeyName),
+                new File(filePath)
+            ).getETag();
+        } catch (NoSuchKeyException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidObjectStateException e) {
+            throw new RuntimeException(e);
+        } catch (S3Exception e) {
+            throw new RuntimeException(e);
+        } catch (AwsServiceException e) {
+            throw new RuntimeException(e);
+        } catch (SdkClientException e) {
+            throw new RuntimeException(e);
+        }
     }
 ```
 
@@ -948,8 +1007,14 @@ public class AwsSdkExapmple {
 <summary>오브젝트 삭제</summary>
 
 ```java
-    public void deleteObject(String bucketName, String objKeyName) {
-        s3Client.deleteObject(bucketName, objKeyName);
+    public void deleteObject(String bucketName, String objKeyName) throws RuntimeException {
+        try {
+            s3Client.deleteObject(bucketName, objKeyName);
+        } catch (AmazonServiceException e) {
+            throw new RuntimeException(e);
+        } catch (SdkClientException e) {
+            throw new RuntimeException(e);
+        }
     }
 ```
 
@@ -978,8 +1043,8 @@ public class AwsSdkExapmple {
             ForcePathStyle = true,
         };
         var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
-        return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
 
+        return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
     }
   }
 ```
@@ -991,7 +1056,7 @@ public class AwsSdkExapmple {
 
 
 ```csharp
-    static async Task CreateBucketAsync(AmazonS3Client s3Client, string bucketName)
+    static async Task<PutBucketResponse> CreateBucketAsync(AmazonS3Client s3Client, string bucketName)
     {
         try
         {
@@ -1003,16 +1068,13 @@ public class AwsSdkExapmple {
                     UseClientRegion = true
                 };
 
-                PutBucketResponse putBucketResponse = await s3Client.PutBucketAsync(putBucketRequest);
+                return await s3Client.PutBucketAsync(putBucketRequest);
             }
+            throw new Exception("Bucket already exist.");
         }
         catch (AmazonS3Exception e)
         {
-            Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+            throw e;
         }
     }
 ```
@@ -1024,14 +1086,16 @@ public class AwsSdkExapmple {
 
 
 ```csharp
-    static async Task ListBucketsAsync(AmazonS3Client s3Client)
+    static async Task<ListBucketsResponse> ListBucketsAsync(AmazonS3Client s3Client)
     {
-      var listResponse = await s3Client.ListBucketsAsync();
-      Console.WriteLine($"Number of buckets: {listResponse.Buckets.Count}");
-      foreach(S3Bucket b in listResponse.Buckets)
-      {
-        Console.WriteLine(b.BucketName);
-      }
+        try
+        {
+            return await s3Client.ListBucketsAsync();
+        }
+        catch (AmazonS3Exception e)
+        {
+            throw e;
+        }
     }
 ```
 
@@ -1043,35 +1107,30 @@ public class AwsSdkExapmple {
 
 
 ```csharp
-    static async Task<bool> ListBucketContentsAsync(AmazonS3Client s3Client, string bucketName)
+    static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(AmazonS3Client s3Client, string bucketName)
     {
         try
         {
+            List<ListObjectsV2Response> responses = new List<ListObjectsV2Response>();
             var request = new ListObjectsV2Request
             {
                 BucketName = bucketName,
                 MaxKeys = 5,
             };
-
             var response = new ListObjectsV2Response();
 
             do
             {
-                response = await s3Client.ListObjectsV2Async(request);
-
-                response.S3Objects
-                    .ForEach(obj => Console.WriteLine($"{obj.Key,-35}{obj.LastModified.ToShortDateString(),10}{obj.Size,10}"));
-
+                responses.Add(await s3Client.ListObjectsV2Async(request));
                 request.ContinuationToken = response.NextContinuationToken;
             }
             while (response.IsTruncated);
 
-            return true;
+            return responses;
         }
-        catch (AmazonS3Exception ex)
+        catch (AmazonS3Exception e)
         {
-            Console.WriteLine($"Error encountered on server. Message:'{ex.Message}' getting list of objects.");
-            return false;
+            throw e;
         }
     }
 ```
@@ -1083,15 +1142,16 @@ public class AwsSdkExapmple {
 
 
 ```csharp
-    static async Task<bool> DeleteBucketAsync(AmazonS3Client s3Client, string bucketName)
+    static async Task<DeleteBucketResponse> DeleteBucketAsync(AmazonS3Client s3Client, string bucketName)
     {
-        var request = new DeleteBucketRequest
+        try
         {
-            BucketName = bucketName,
-        };
-
-        var response = await s3Client.DeleteBucketAsync(request);
-        return response.HttpStatusCode == System.Net.HttpStatusCode.OK;
+            return await s3Client.DeleteBucketAsync(new DeleteBucketRequest{BucketName = bucketName});
+        }
+        catch (AmazonS3Exception e)
+        {
+            throw e;
+        }
     }
 ```
 
@@ -1102,7 +1162,7 @@ public class AwsSdkExapmple {
 
 
 ```csharp
-    static async Task UploadObjectAsync(AmazonS3Client s3Client, string bucketName, string keyName, string filePath)
+    private static async Task UploadObjectAsync(AmazonS3Client s3Client, string bucketName, string keyName, string filePath)
     {
         List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
         InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
@@ -1145,17 +1205,17 @@ public class AwsSdkExapmple {
             completeRequest.AddPartETags(uploadResponses);
             CompleteMultipartUploadResponse completeUploadResponse = await s3Client.CompleteMultipartUploadAsync(completeRequest);
         }
-        catch (Exception exception)
+        catch (Exception e)
         {
-            Console.WriteLine("An AmazonS3Exception was thrown: { 0}", exception.Message);
-
             AbortMultipartUploadRequest abortMPURequest = new AbortMultipartUploadRequest
             {
                 BucketName = bucketName,
-                Key = keyName,
-                UploadId = initResponse.UploadId
+                           Key = keyName,
+                           UploadId = initResponse.UploadId
             };
-           await s3Client.AbortMultipartUploadAsync(abortMPURequest);
+            await s3Client.AbortMultipartUploadAsync(abortMPURequest);
+
+            throw e;
         }
     }
 ```
@@ -1189,11 +1249,7 @@ public class AwsSdkExapmple {
         }
         catch (AmazonS3Exception e)
         {
-            Console.WriteLine("Error encountered ***. Message:'{0}' when reading object", e.Message);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Unknown encountered on server. Message:'{0}' when reading object", e.Message);
+           throw e;
         }
     }
 ```
@@ -1205,7 +1261,7 @@ public class AwsSdkExapmple {
 
 
 ```csharp
-    static async Task DeleteObjectNonVersionedBucketAsync(AmazonS3Client s3Client, string bucketName, string keyName)
+    static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(AmazonS3Client s3Client, string bucketName, string keyName)
     {
         try
         {
@@ -1215,16 +1271,11 @@ public class AwsSdkExapmple {
                 Key = keyName
             };
 
-            Console.WriteLine("Deleting an object");
-            await s3Client.DeleteObjectAsync(deleteObjectRequest);
+            return await s3Client.DeleteObjectAsync(deleteObjectRequest);
         }
         catch (AmazonS3Exception e)
         {
-            Console.WriteLine("Error encountered on server. Message:'{0}' when deleting an object", e.Message);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Unknown encountered on server. Message:'{0}' when deleting an object", e.Message);
+            throw e;
         }
     }
 ```
