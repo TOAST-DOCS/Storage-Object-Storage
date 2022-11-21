@@ -657,6 +657,7 @@ foreach($container_list as $container) {
 
 ### コンテナの作成
 コンテナを作成します。オブジェクトストレージにファイルをアップロードするには、コンテナを作成する必要があります。
+コンテナを作成する時、`X-Container-Worm-Retention-Day`ヘッダを利用してオブジェクトロック周期を設定すると、オブジェクトロックコンテナを作成できます。オブジェクトロックコンテナにアップロードしたオブジェクトは、**WORM (Write-Once-Read-Many)**モデルを使用して保存されます。オブジェクトロックコンテナにアップロードしたオブジェクトにはロック有効期限が設定されます。各オブジェクトに設定されたロック有効期限以前にはオブジェクトの上書きや削除ができません。
 
 > [注意]
 > コンテナ名に特殊文字`' " < > ;`と　、相対パス文字(`. ..`)は使用できません。
@@ -679,6 +680,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 作成するコンテナ名 |
+| X-Container-Worm-Retention-Day | Header | Integer | - | コンテナの基本オブジェクトロック周期を日単位で設定 |
 
 #### レスポンス
 レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
@@ -1057,6 +1059,7 @@ X-Container-Meta-Web-Index: {静的Webサイトインデックス文書オブジ
 X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクトのサフィックス}
 X-Container-Meta-Access-Control-Allow-Origin: {オリジン間リソース共有許可リスト}
 X-Container-Rfc-Compliant-Etags: {RFCを遵守するETag形式を使用するかどうか}
+X-Container-Worm-Retention-Day: {コンテナのオブジェクトロック周期}
 ```
 
 #### リクエスト
@@ -1074,6 +1077,7 @@ X-Container-Rfc-Compliant-Etags: {RFCを遵守するETag形式を使用するか
 | X-Container-Meta-Web-Error | Header | String | - | 静的Webサイトエラー文書オブジェクトサフィックス設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS許可ホストリスト。 '*'ですべてのホストを許可するか、スペースで区切られたホストリストを入力できます。 | 
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFCを遵守するETag形式を使用するかどうかの設定。trueまたはfalse |
+| X-Container-Worm-Retention-Day | Header | Integer | - | コンテナの基本オブジェクトロック周期を日単位で設定<br/>オブジェクトロックコンテナでのみ変更可能 |
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 修正するコンテナ名 |
 <br/>
@@ -1183,6 +1187,14 @@ Status: 0
 ##### RFCを遵守するETag形式の使用設定
 一部アプリケーションでは[RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3)仕様に基づいて二重引用符で囲まれたETag値を要求します。 `X-Container-Rfc-Compliant-Etags`ヘッダを使用するとコンテナに保存されたオブジェクトを照会するとき、二重引用符で囲まれたETag値を返すように設定できます。
 
+<br/>
+
+##### オブジェクトロック期間の変更
+`X-Container-Worm-Retention-Day`ヘッダを使用してオブジェクトロックコンテナのオブジェクトロック周期を変更します。ロック周期は日単位で入力でき、解除できません。変更されたロック周期は変更後にアップロードするオブジェクトに適用されます。オブジェクトロック周期はオブジェクトロックコンテナでのみ変更できます。
+
+> [参考]
+> 一般コンテナをオブジェクトロックコンテナに変更したり、オブジェクトロックコンテナを一般コンテナに変更できません。
+> オブジェクトロックコンテナはアーカイブコンテナまたは複製対象コンテナに指定できません。
 <br/>
 
 ##### コンテナ設定解除
@@ -1483,7 +1495,7 @@ Content-Type: {content-type}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
 | Content-type | Header | String | O | オブジェクトのコンテンツタイプ |
-| X-Delete-At | Header | Timestamp | - | オブジェクトを削除するUNIX時間(秒) |
+| X-Delete-At | Header | Timestamp | - | オブジェクトの有効期限、UNIX時間(秒) |
 | X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、 UNIX時間(秒) |
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container |	URL | String | O | コンテナ名 |
@@ -2085,7 +2097,7 @@ Content-Type: {content-type}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
 | Content-type | Header | String | O | オブジェクトのコンテンツタイプ |
-| X-Delete-At | Header | Timestamp | - | オブジェクトを削除するUNIX時間(秒) |
+| X-Delete-At | Header | Timestamp | - | オブジェクトの有効期限、UNIX時間(秒) |
 | X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、UNIX時間(秒) |
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container |	URL | String | O | コンテナ名 |
@@ -2455,11 +2467,17 @@ X-Object-Meta-{Key}: {Value}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
 | X-Object-Meta-{Key} | Header | String | - | 変更するメタデータ |
-| X-Delete-At | Header | Timestamp | - | オブジェクトを削除するUNIX時間(秒) |
+| X-Delete-At | Header | Timestamp | - | オブジェクトの有効期限、UNIX時間(秒) |
 | X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、UNIX時間(秒) |
+| X-Object-Worm-Retain-Until | Header | Timestamp | - | オブジェクトロック有効期限、UNIX時間(秒)<br/>設定された時間以降にのみ変更でき、オブジェクトロックコンテナでのみ変更可能 |
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL| String |	 O | コンテナ名 |
 | Object | URL| String |  O | メタデータを修正するオブジェクト名 |
+
+> [参考]
+> オブジェクトロックコンテナにアップロードされたオブジェクトには自動的にロック有効期限が設定されます。 
+> ロック有効期限が過ぎていないオブジェクトは、上書きまたは削除できません。 
+> オブジェクトのメタデータはロック有効期限より前でも変更できます。
 
 #### レスポンス
 このリクエストはレスポンス本文を返しません。リクエストが正しければステータスコード202を返します。
