@@ -31,9 +31,9 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 ## S3 API 자격 증명(S3 API Credential)
 
 ### S3 API 자격 증명 발급
-Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급받아야 합니다. 자격 증명은 API를 이용해 발급받을 수 있습니다.
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급 받아야 합니다. 자격 증명은 API를 이용해 발급 받을 수 있습니다.
 
-API를 이용해 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](/Storage/Object%20Storage/ko/api-guide-gov/#tenant-id-api-endpoint)를 참조하세요.
+API를 이용해 자격 증명을 발급 받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide-gov/#tenant-id-api-endpoint)를 참조하세요.
 
 ```
 POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -46,18 +46,20 @@ X-Auth-Token: {token-id}
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
+| X-Auth-Token | Header | String | O | 발급 받은 토큰 ID |
 | api-user-id | URL | String | O | API 사용자 ID, API Endpoint 설정 대화 상자에서 확인 가능 |
 | tenant_id | Body | String | O | 테넌트 ID. API Endpoint 설정 대화 상자에서 확인 가능 |
 
 > [참고]
 > `{api-user-id}`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
-> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](/Storage/Object%20Storage/ko/api-guide-gov/#_2) 항목을 참조하세요.
+> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide-gov/#_2) 항목을 참조하세요.
 >
 > S3 API 자격 증명은 유효 기간이 없습니다.
->
+
+<!-- 개행을 위한 주석이므로 필수로 포함되어야 합니다. -->
+
 > [주의]
-> S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 이용해 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급받아 사용하는 것을 권장합니다.
+> S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 이용해 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급 받아 사용하는 것을 권장합니다.
 
 
 <details>
@@ -96,7 +98,7 @@ X-Auth-Token: {token-id}
 </details>
 
 ### S3 API 자격 증명 조회
-발급받은 S3 API 자격 증명을 조회합니다.
+발급 받은 S3 API 자격 증명을 조회합니다.
 
 **[Method, URL]**
 ```
@@ -109,7 +111,7 @@ X-Auth-Token: {token-id}
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
+| X-Auth-Token | Header | String | O | 발급 받은 토큰 ID |
 | user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
 
 #### 응답
@@ -139,7 +141,7 @@ X-Auth-Token: {token-id}
 </details>
 
 ### S3 API 자격 증명 삭제
-발급받은 S3 API 자격 증명을 삭제합니다.
+발급 받은 S3 API 자격 증명을 삭제합니다.
 
 **[Method, URL]**
 ```
@@ -152,7 +154,7 @@ X-Auth-Token: {token-id}
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
+| X-Auth-Token | Header | String | O | 발급 받은 토큰 ID |
 | user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
 | access | URL | String | O | S3 API 자격 증명 접근 키 |
 

@@ -63,7 +63,7 @@ You can view the container's basic and encryption information, and change settin
 
 ##### Container Access Policy
 
-Sets the basic access policy and manages access permissions for each tenant or user. For more details, refer to [ACL Configuration Guide](/Storage/Object%20Storage/zh/acl-guide/).
+Sets the basic access policy and manages access permissions for each tenant or user. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -104,22 +104,22 @@ Sets the basic access policy and manages access permissions for each tenant or u
 
 ##### Static Website Settings
 
- <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
-   <tr>
-      <th>Category</th>
-      <th>Option</th>
-      <th>Description</th>
-   </tr>
-   <tr>
-      <td rowspan="4">Static Website Settings</td>
-      <td>Index document</td>
-      <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
-   </tr>
-   <tr>
-      <td>Error document</td>
-      <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 1024 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
-    </tr>
- </table>
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Option</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Static Website Settings</td>
+    <td>Index document</td>
+    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+  </tr>
+  <tr>
+    <td>Error document</td>
+    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+  </tr>
+</table>
 
 If you set the access policy of a container to **PUBLIC** and enter the index document and error document, you can host a static website in the container. You can get the URL of the static website by clicking the **Copy URL** button on the container list.
 

@@ -2,7 +2,7 @@
 
 ## 사전 준비
 
-오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 NHN Cloud 계정별로 관리됩니다.
+오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급 받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 NHN Cloud 계정별로 관리됩니다.
 
 <br/>
 
@@ -72,7 +72,7 @@ Content-Type: application/json
 | access.user.id | Body | String | 32개의 16진수로 구성된 API 사용자 ID<br/>S3 호환 API를 사용하기 위한 EC2 자격 증명을 발급 받거나, 접근 정책을 설정하는 데 사용 |
 
 > [주의]
-> 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급받아야 합니다.
+> 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급 받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급 받아야 합니다.
 
 <details>
 <summary>예시</summary>
@@ -657,6 +657,7 @@ foreach($container_list as $container) {
 
 ### 컨테이너 생성
 컨테이너를 생성합니다. 오브젝트 스토리지에 파일을 업로드하려면 반드시 컨테이너를 생성해야 합니다.
+컨테이너를 만들 때 `X-Container-Worm-Retention-Day` 헤더를 이용해 객체 잠금 주기를 설정하면 객체 잠금 컨테이너를 만들 수 있습니다. 객체 잠금 컨테이너에 업로드한 오브젝트는 **WORM (Write-Once-Read-Many)** 모델을 사용하여 저장됩니다. 객체 잠금 컨테이너에 업로드한 오브젝트에는 잠금 만료 날짜가 설정됩니다. 각 오브젝트에 설정된 잠금 만료 날짜 이전에는 오브젝트를 덮어쓰거나 삭제할 수 없습니다.
 
 > [주의]
 > 컨테이너 이름에 특수 문자 `' " < > ;`과 공백, 상대 경로 문자(`. ..`)는 사용할 수 없습니다.
@@ -679,6 +680,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 생성할 컨테이너 이름 |
+| X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정 |
 
 #### 응답
 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
@@ -1057,6 +1059,7 @@ X-Container-Meta-Web-Index: {정적 웹사이트 인덱스 문서 오브젝트}
 X-Container-Meta-Web-Error: {정적 웹사이트 오류 문서 오브젝트 접미사}
 X-Container-Meta-Access-Control-Allow-Origin: {교차 출처 리소스 공유 허용 목록}
 X-Container-Rfc-Compliant-Etags: {RFC를 준수하는 ETag 형식 사용 여부}
+X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 ```
 
 #### 요청
@@ -1074,12 +1077,13 @@ X-Container-Rfc-Compliant-Etags: {RFC를 준수하는 ETag 형식 사용 여부}
 | X-Container-Meta-Web-Error | Header | String | - | 정적 웹사이트 오류 문서 오브젝트 접미사 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. |
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFC를 준수하는 ETag 형식 사용 여부를 설정, true 또는 false |
+| X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정<br/>객체 잠금 컨테이너에서만 변경 가능 |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 <br/>
 
 ##### 접근 정책 설정
-`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](/Storage/Object%20Storage/ko/acl-guide-gov/)를 참조하세요.
+`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide-gov/)를 참조하세요.
 
 <br/>
 
@@ -1183,6 +1187,15 @@ Status: 0
 
 ##### RFC를 준수하는 ETag 형식 사용 설정
 일부 애플리케이션에서는 [RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3) 사양에 따라 큰따옴표로 묶인 ETag 값을 요구합니다. `X-Container-Rfc-Compliant-Etags` 헤더를 사용하면 컨테이너에 저장된 오브젝트를 조회할 때 큰따옴표로 묶인 ETag 값을 반환하도록 설정할 수 있습니다.
+
+<br/>
+
+##### 객체 잠금 기간 변경
+`X-Container-Worm-Retention-Day` 헤더를 사용해 객체 잠금 컨테이너의 객체 잠금 주기를 변경합니다. 잠금 주기는 일 단위로 입력할 수 있으며, 해제할 수 없습니다. 변경된 잠금 주기는 변경 이후 업로드하는 오브젝트에 적용됩니다. 객체 잠금 주기는 객체 잠금 컨테이너에서만 변경할 수 있습니다.
+
+> [참고]
+> 일반 컨테이너를 객체 잠금 컨테이너로 변경하거나, 객체 잠금 컨테이너를 일반 컨테이너로 변경할 수 없습니다.
+> 객체 잠금 컨테이너는 아카이브 컨테이너로 지정할 수 없습니다.
 
 <br/>
 
@@ -1484,7 +1497,7 @@ Content-Type: {content-type}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
-| X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
+| X-Delete-At | Header | Timestamp | - | 오브젝트 만료 날짜, 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
@@ -2086,7 +2099,7 @@ Content-Type: {content-type}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
-| X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
+| X-Delete-At | Header | Timestamp | - | 오브젝트 만료 날짜, 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
@@ -2456,11 +2469,17 @@ X-Object-Meta-{Key}: {Value}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | X-Object-Meta-{Key} | Header | String | - | 변경할 메타데이터 |
-| X-Delete-At | Header | Timestamp | - | 오브젝트를 삭제할 유닉스 시간(초) |
+| X-Delete-At | Header | Timestamp | - | 오브젝트 만료 날짜, 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
+| X-Object-Worm-Retain-Until | Header | Timestamp | - | 오브젝트 잠금 만료 날짜, 유닉스 시간(초)<br/>설정된 시간 이후로만 변경할 수 있으며, 객체 잠금 컨테이너에서만 변경 가능 |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
+
+> [참고]
+> 객체 잠금 컨테이너에 업로드된 오브젝트에는 자동으로 잠금 만료 날짜가 설정됩니다. 
+> 잠금 만료 날짜가 지나지 않은 오브젝트는 덮어씌우거나 삭제할 수 없습니다. 
+> 오브젝트의 메타데이터는 잠금 만료 날짜 이전이라도 변경할 수 있습니다.
 
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
