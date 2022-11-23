@@ -682,10 +682,10 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>오브젝트 업로드</summary>
 
-+ 파일 사이즈가 8 MB 이상일 경우, 동적으로 8 MB 단위로 멀티파트 업로드됩니다.
-+ 각 파트는 `{container_name}+segment/{object_name}/{random_key}/` 아래에 시퀀스 순번을 이름으로 생성되고, 추가로 매니페스트 `{container_name}/{object_name}`가 생성됩니다.
++ 오부젝트 사이즈가 8 MB 이상일 경우, 동적으로 8 MB 단위로 멀티파트 업로드됩니다.
++ 각 파트 `{container_name}+segment/{object_name}/{random_key}/{sequence_number}`로 생성되고, 이후 매니페스트 `{container_name}/{object_name}`가 생성됩니다.
 + 매니페스트를 통해 대상 오브젝트를 다운로드할 수 있으며, 해당 파트 집합의 무결성 손상되면 매니페스트를 통한 다운로드가 불가합니다.
-+ 매니페스트를 삭제하면 해당 파트 집합 `{containerName}+segment/{objectName}`이 삭제됩니다.
++ 매니페스트를 삭제하면 해당 파트 집합 `{container_name}+segment/{object_name}`이 삭제됩니다.
 + 각 파트는 고유의 Etag를 가지고, 매니페스트는 이들 디코딩된 이진 시퀀스 연결의 해시값을 Etag로 가집니다.
 + 다음은 S3 멀티파트 업로드 코어 사양입니다.
 
