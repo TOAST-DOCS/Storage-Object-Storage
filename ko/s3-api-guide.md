@@ -682,10 +682,10 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>오브젝트 업로드</summary>
 
-+ 오부젝트 사이즈가 8 MB 이상일 경우, 동적으로 8 MB 단위로 멀티파트 업로드됩니다.
-+ 각 파트 `{container_name}+segment/{object_name}/{random_key}/{sequence_number}`로 생성되고, 이후 매니페스트 `{container_name}/{object_name}`가 생성됩니다.
++ 오브젝트 사이즈가 8 MB 이상일 경우, 동적으로 8 MB 단위로 멀티파트 업로드됩니다.
++ 각 파트는 `{container_name}+segment/{object_name}/{random_key}/{sequence_number}`로 생성되고, 이후 매니페스트 `{container_name}/{object_name}`가 생성됩니다.
 + 매니페스트를 통해 대상 오브젝트를 다운로드할 수 있으며, 해당 파트 집합의 무결성 손상되면 매니페스트를 통한 다운로드가 불가합니다.
-+ 매니페스트를 삭제하면 해당 파트 집합 `{container_name}+segment/{object_name}`이 삭제됩니다.
++ 매니페스트를 삭제할 경우, 해당 파트 집합 `{container_name}+segment/{object_name}/{random_key}`가 삭제되며, 만약 해당 폴더의 유일한 개체였다면 `{container_name}+segment/{object_name}` 폴더 역시 삭제됩니다.
 + 각 파트는 고유의 Etag를 가지고, 매니페스트는 이들 디코딩된 이진 시퀀스 연결의 해시값을 Etag로 가집니다.
 + 다음은 S3 멀티파트 업로드 코어 사양입니다.
 
@@ -694,7 +694,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 | 최대 오브젝트 사이즈 | 5 TB |
 | 업로드당 최대 파트 개수 | 10,000 |
 | 파트 번호 | 1 ~ 10,000 |
-| 파트 사이즈 | 5 MB ~ 5 GB (마지막 파트는 최소 제한 없음) |
+| 파트 사이즈 | 5 MB ~ 5 GB (마지막 파트는 최소 사이즈 제한 없음) |
 
 ```
 $  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
