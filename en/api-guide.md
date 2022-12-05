@@ -2099,7 +2099,7 @@ This API does not require a request body.
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | Content-type | Header | String | O | Content type of object |
-| X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
+| X-Delete-At | Header | Timestamp | - | Object expiration date, Unix time (seconds) |
 | X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container |	URL | String | O | Container name |
@@ -2469,7 +2469,7 @@ This API does not require a request body.
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
 | X-Object-Meta-{Key} | Header | String | - | Metadata to change |
-| X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
+| X-Delete-At | Header | Timestamp | - | Object expiration date, Unix time (seconds) |
 | X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
 | X-Object-Worm-Retain-Until | Header | Timestamp | - | Object lock expiration date, Unix time (seconds)<br/>You can change the date after a set time, and only possible in object lock containers |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
