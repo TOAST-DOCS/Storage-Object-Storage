@@ -657,6 +657,7 @@ foreach($container_list as $container) {
 
 ### Create a Container
 Creates a container. To upload files to object storage, a container must be created.
+You can create an object lock container by setting the object lock cycle using the `X-Container-Worm-Retention-Day` header when creating a container. Objects uploaded to the object lock container are stored using the **WORM (Write-Once-Read-Many)** model. For the objects uploaded to the object lock container, lock expiration date is configured. You cannot overwrite or delete the object before the set lock expiration date.
 
 > [Caution]
 > A container name cannot include the special characters `' " < > ;`,spaces, and relative path characters (`. ..`).
@@ -679,6 +680,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | Name of container to be created  |
+| X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days |
 
 #### Response
 This API does not return a response body. When a container is created, return status code 201.
@@ -1057,6 +1059,7 @@ X-Container-Meta-Web-Index: {Static website index document object}
 X-Container-Meta-Web-Error: {Static website error document object suffix}
 X-Container-Meta-Access-Control-Allow-Origin: {List that allows Cross-Origin Resource Sharing}
 X-Container-Rfc-Compliant-Etags: {Whether to use the RFC compliant ETag format}
+X-Container-Worm-Retention-Day: {Container's object lock cycle}
 ```
 
 #### Request
@@ -1076,6 +1079,7 @@ This API does not require a request body.
 | X-Container-Rfc-Compliant-Etags | Header | String | - | Sets whether to use the RFC compliant ETag format, true or false |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | The name of the container to edit |
+| X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days <br/> Change is only possible in object lock containers |
 <br/>
 
 ##### Set the Access Policy
@@ -1183,6 +1187,15 @@ Status: 0
 
 ##### Set the RFC compliant ETag format
 Some applications require the ETag value enclosed in double quotes according to the specification [RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3). If you use the `X-Container-Rfc-Compliant-Etags` header, the ETag value in double quotes can be returned when querying objects stored in a container.
+
+<br/>
+
+##### Change Object Lock Cycle
+You can change the object lock cycle of the object lock container using the `X-Container-Worm-Retention-Day` header. The lock cycle can be entered in days and cannot be turned off. The changed lock cycle is applied to objects uploaded after the change. The object lock cycle can only be changed on object lock containers.
+
+> [Note]
+> You cannot change a general container to an object lock container and vice versa.
+> You cannot specify an object lock container as an archive container or replication target containger. 
 
 <br/>
 
@@ -2458,9 +2471,15 @@ This API does not require a request body.
 | X-Object-Meta-{Key} | Header | String | - | Metadata to change |
 | X-Delete-At | Header | Timestamp | - | Unix time to delete object (seconds) |
 | X-Delete-After | Header | Timestamp | - | Object's expiration time, unix time (seconds) |
+| X-Object-Worm-Retain-Until | Header | Timestamp | - | Object lock expiration date, Unix time (seconds)<br/>You can change the date after a set time, and only possible in object lock containers |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL| String |	 O | Container name |
 | Object | URL| String |  O | Name of the object for which metadata is to be modified |
+
+> [Note]
+> For objects uploaded to object lock containers, lock expiration dates are configured automatically. 
+> You cannot overwrite or delete objects that have not passed the lock expiration date. 
+> You can change the object's metadata even before the lock expiration date.
 
 #### Response
 This request does not return a response body. For a valid request, return status code 202.
