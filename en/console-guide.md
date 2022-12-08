@@ -129,8 +129,7 @@ Sets the basic access policy and manages access permissions for each tenant or u
   </tr>
   <tr>
     <td>Error document</td>
-    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 256 bytes, only alphanumeric characters 
-    and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
   </tr>
 </table>
 
