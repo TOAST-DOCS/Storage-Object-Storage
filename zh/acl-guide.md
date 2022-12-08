@@ -3,7 +3,7 @@
 You can use the console or API to grant read/write access to the container to other users.
 
 ## Console
-In the console, you can select a container access policy from the [Create Container](console-guide/#create-container) or [Container Settings](console-guide/#manage-container) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
+In the console, you can select a container access policy from the [Create Container](console-guide/#create-container) dialog box or the container access policy settings dialog box within [Manage Container](console-guide/#manage-container) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
 
 ### PRIVATE
 `PRIVATE` is the default access policy that grants access only to users of the project to which the container belongs. Users can access the container through the console or through the API by getting an authentication token. It’s the same policy as the [Allow read/write only to users in the project to which the container belongs](acl-guide/#allow-readwrite-only-to-users-in-the-project-to-which-the-container-belongs) in the API section.
