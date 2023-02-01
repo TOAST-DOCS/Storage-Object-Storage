@@ -100,6 +100,7 @@ X-Auth-Token: {token-id}
 발급 받은 S3 API 자격 증명을 조회합니다.
 
 **[Method, URL]**
+
 ```
 GET   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
 
@@ -143,6 +144,7 @@ X-Auth-Token: {token-id}
 발급 받은 S3 API 자격 증명을 삭제합니다.
 
 **[Method, URL]**
+
 ```
 DELETE   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
@@ -206,42 +208,15 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Location | Body | String | 생성한 버킷 경로 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "txfad4e17792b1432fb106f-005e5ef0e4",
-    "HostId": "txfad4e17792b1432fb106f-005e5ef0e4",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "content-length": "0",
-      "x-amz-request-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "content-type": "text/html; charset=UTF-8",
-      "location": "/new-container",
-      "x-trans-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "x-openstack-request-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "Location": "/new-container"
-}
-```
-
-</details>
+| Location | Header | String | 생성한 버킷 경로 |
 
 ### 버킷 목록 조회
 버킷 목록을 조회합니다.
+
 ```
 GET /
 
@@ -258,48 +233,41 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
+요청이 올바르면 상태 코드 200을 반환합니다.
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Buckets.Name | Body | String | 버킷 이름 |
-| Buckets.CreationDate | Body | String | 생성 시각 |
+```
+[스토리지 계정에 속한 컨테이너 목록]
+```
 
 <details>
 <summary>예시</summary>
 
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "txbf73f4d73ad34344a21bb-005e5ef141",
-    "HostId": "txbf73f4d73ad34344a21bb-005e5ef141",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "content-length": "750",
-      "x-amz-request-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "content-type": "application/xml",
-      "x-trans-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "x-openstack-request-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "Buckets": [
-    {
-      "Name": "new-container",
-      "CreationDate": "2020-02-22T22:22:22+00:00"
-    }
-  ],
-  "Owner": {}
-}
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<ListAllMyBucketsResult
+	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+	<Owner>
+		<ID>admin:admin</ID>
+		<DisplayName>admin:admin</DisplayName>
+	</Owner>
+	<Buckets>
+		<Bucket>
+			<Name>arbitrary-1674809990-68ef0dc1-4288-4369-b13b-66a816ec0145</Name>
+			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
+		</Bucket>
+		<Bucket>
+			<Name>arbitrary-1674810397-82103576-6fbd-4471-8966-7468a6f39fdc</Name>
+			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
+		</Bucket>
+	</Buckets>
+</ListAllMyBucketsResult>
 ```
 
 </details>
 
 ### 버킷 조회
 지정한 버킷의 정보와 내부에 저장된 오브젝트 목록을 조회합니다.
+
 ```
 GET /{bucket}
 
@@ -317,62 +285,54 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
+요청이 올바르면 상태 코드 200을 반환합니다.
 
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Contents | Body | Object | 오브젝트 목록 객체 |  
-| Contents.Key | Body | String | 오브젝트 이름 |
-| Contents.LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| Contents.ETag | Body | String | 오브젝트의 MD5 해시값 |
-| Contents.Size | Body | String | 오브젝트의 크기 |
-| Contents.StorageClass | Body | String | 오브젝트가 저장된 저장소 종류 |
-| Name | Body | String | 버킷 이름 |
-| KeyCount | Body | Integer | 목록의 오브젝트 수 |
+```
+[컨테이너의 오브젝트 목록]
+```
 
 <details>
 <summary>예시</summary>
 
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "tx75a3242dac55411fac69b-005e5ef1f1",
-    "HostId": "tx75a3242dac55411fac69b-005e5ef1f1",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "content-length": "1273",
-      "x-amz-request-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "content-type": "application/xml",
-      "x-trans-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "x-openstack-request-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "IsTruncated": false,
-  "Contents": [
-    {
-       "Key": "benjamin-ashton-Af9X4A8qMtM-unsplash.jpg",
-       "LastModified": "2020-02-22T22:22:22.222222+00:00",
-       "ETag": "\"2e95b028564c14371939358d3e88a771\"",
-       "Size": 3267226,
-       "StorageClass": "STANDARD"
-    }
-  ],
-  "Name": "new-container",
-  "Prefix": "",
-  "MaxKeys": 1000,
-  "EncodingType": "url",
-  "KeyCount": 1
-}
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<ListBucketResult
+	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+	<Name>arbitrary-1675226992-0829cce3-559b-44a9-a776-60f19af7df10</Name>
+	<Prefix/>
+	<Marker/>
+	<MaxKeys>1000</MaxKeys>
+	<IsTruncated>false</IsTruncated>
+	<Contents>
+		<Key>arbitrary-1675226992-44790c33-b9dd-4806-bf0a-c3b7e1cb1cac</Key>
+		<LastModified>2023-02-01T04:49:52.995Z</LastModified>
+		<ETag>"7d793037a0760186574b0282f2f435e7"</ETag>
+		<Size>5</Size>
+		<Owner>
+			<ID>admin:admin</ID>
+			<DisplayName>admin:admin</DisplayName>
+		</Owner>
+		<StorageClass>STANDARD</StorageClass>
+	</Contents>
+	<Contents>
+		<Key>arbitrary-1675226992-ff08d805-118f-49b4-8515-d8668c96b6cc</Key>
+		<LastModified>2023-02-01T04:49:52.685Z</LastModified>
+		<ETag>"5d41402abc4b2a76b9719d911017c592"</ETag>
+		<Size>5</Size>
+		<Owner>
+			<ID>admin:admin</ID>
+			<DisplayName>admin:admin</DisplayName>
+		</Owner>
+		<StorageClass>STANDARD</StorageClass>
+	</Contents>
+</ListBucketResult>
 ```
 
 </details>
 
 ### 버킷 삭제
 지정한 버킷을 삭제합니다. 삭제할 버킷은 비어 있어야 합니다.
+
 ```
 DELETE /{bucket}
 
@@ -390,40 +350,12 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx9b01c2e650e746ecba298-005e5ef28b",
-        "HostId": "tx9b01c2e650e746ecba298-005e5ef28b",
-        "HTTPStatusCode": 204,
-        "HTTPHeaders": {
-            "x-amz-id-2": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "content-length": "0",
-            "x-amz-request-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "content-type": "text/html; charset=UTF-8",
-            "x-trans-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "x-openstack-request-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-        },
-        "RetryAttempts": 0
-    }
-}
-```
-
-</details>
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## 오브젝트
 ### 오브젝트 업로드
 지정한 버킷에 오브젝트를 업로드합니다.
+
 ```
 PUT /{bucket}/{obj}
 
@@ -442,43 +374,16 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| ETag | Body | String | 업로드한 오브젝트의 MD5 해시값 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-    "HostId": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "content-length": "0",
-      "x-amz-id-2": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "last-modified": "Sat, 22 Feb 2020 22:22:22 GMT",
-      "etag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-      "x-amz-request-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "content-type": "text/html; charset=UTF-8",
-      "x-trans-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "x-openstack-request-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "ETag": "\"01463f775ef4f4dbbc7525f88120df09\""
-}
-```
-
-</details>
+| ETag | Header | String | 오브젝트의 MD5 해시값 |
+| Last-Modified | Header | String | 오브젝트의 마지막 수정 일시 (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 ### 오브젝트 다운로드
 오브젝트를 다운로드합니다.
+
 ```
 GET /{bucket}/{obj}
 
@@ -498,47 +403,12 @@ Authorization: AWS {access}:{signature}
 
 #### 응답
 
+요청이 올바르면 상태 코드 200을 반환합니다.
+
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| ContentLength | Body | String | 다운로드한 오브젝트의 크기 |
-| ETag | Body | String | 오브젝트의 MD5 해시값 |
-| ContentType | Body | String | 오브젝트의 콘텐츠 타입 |
-| Metadata | Body | Object | 오브젝트의 메타데이터 객체 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx637d5de3c27f4b0a9664e-005e5ef491",
-        "HostId": "tx637d5de3c27f4b0a9664e-005e5ef491",
-        "HTTPStatusCode": 200,
-        "HTTPHeaders": {
-            "content-length": "124352",
-            "x-amz-id-2": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "last-modified": "Sat, 22 Feb 2020 22:22:22 GMT",
-            "etag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-            "x-amz-request-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "content-type": "image/jpeg",
-            "x-trans-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "x-openstack-request-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-        },
-        "RetryAttempts": 0
-    },
-    "LastModified": "2020-02-22T22:22:22+00:00",
-    "ContentLength": 124352,
-    "ETag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-    "ContentType": "image/jpeg",
-    "Metadata": {}
-}
-```
-
-</details>
+| Last-Modified | Header | String | 오브젝트의 마지막 수정 일시 (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
+| ETag | Header | String | 오브젝트의 MD5 해시값 |
 
 ### 오브젝트 삭제
 지정한 오브젝트를 삭제합니다.
@@ -561,36 +431,7 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx04a548072068487a8a5be-005e5ef648",
-        "HostId": "tx04a548072068487a8a5be-005e5ef648",
-        "HTTPStatusCode": 204,
-        "HTTPHeaders": {
-            "x-amz-id-2": "tx04a548072068487a8a5be-005e5ef648",
-            "content-length": "0",
-            "x-amz-request-id": "tx04a548072068487a8a5be-005e5ef648",
-            "content-type": "text/html; charset=UTF-8",
-            "x-trans-id": "tx04a548072068487a8a5be-005e5ef648",
-            "x-openstack-request-id": "tx04a548072068487a8a5be-005e5ef648",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-        },
-        "RetryAttempts": 0
-    }
-}
-```
-
-</details>
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## AWS 명령줄 인터페이스(CLI)
 S3 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
