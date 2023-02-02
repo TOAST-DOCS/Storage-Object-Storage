@@ -523,11 +523,11 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>오브젝트 업로드</summary>
 
-+ 오브젝트 사이즈가 8 MB 이상일 경우, 동적으로 8 MB 단위로 멀티파트 업로드됩니다.
-+ 각 파트는 `{container_name}+segment/{object_name}/{random_key}/{sequence_number}`로 생성되고, 이후 매니페스트 `{container_name}/{object_name}`가 생성됩니다.
-+ 매니페스트를 통해 대상 오브젝트를 다운로드할 수 있으며, 해당 파트 집합의 무결성이 손상되면 매니페스트를 통한 다운로드가 불가합니다.
-+ 매니페스트를 삭제할 경우, 해당 파트 집합 `{container_name}+segment/{object_name}/{random_key}`가 삭제되며, 만약 해당 폴더의 유일한 개체였다면 `{container_name}+segment/{object_name}` 폴더 역시 삭제됩니다.
-+ 각 파트는 고유의 Etag를 가지고, 매니페스트는 이들 디코딩된 이진 시퀀스 연결의 해시값을 Etag로 가집니다.
++ 오브젝트 사이즈가 8 MB 이상일 경우, 동적으로 8 MB 단위로 분할되어 업로드되며, 업로드된 실제 파일의 각 부분을 세그먼트, 최종적으로 세그먼트 집합을 가리키는 단일 오브젝트를 매니페스트라 칭합니다.
++ 각 세그먼트는 `{container_name}+segment/{object_name}/{random_key}/{sequence_number}`를,  매니페스트는 `{container_name}/{object_name}`를 경로로 생성됩니다.
++ 매니페스트를 통해 대상 오브젝트를 다운로드할 수 있으며, 세그먼트의 무결성이 손상되면 매니페스트를 통한 다운로드가 불가합니다.
++ 매니페스트를 삭제할 경우, 해당 세그먼트가 위치한  `{container_name}+segment/{object_name}/{random_key}` 폴더가 삭제되며, 만약 상위 폴더에 위치한 유일한 오브젝트였다면 `{container_name}+segment/{object_name}` 폴더 역시 삭제됩니다.
++ 각 세그먼트는 고유의 Etag를 가지고, 매니페스트는 전체 세그먼트의 Etag를 연결한 값에 대한 해시 다이제스트를 Etag로 가집니다.
 + 다음은 S3 멀티파트 업로드 코어 사양입니다.
 
 | 항목 | 사양 |
@@ -569,8 +569,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
 > [참고]
-> 이 문서에서는 Python과 Java SDK의 간단한 사용 예시만 설명합니다. 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
-
+> 보다 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
 
 AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
 
@@ -581,8 +580,19 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 | region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
 | endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 | |
 
-
 ### Boto3 - Python SDK
+
+pip로 boto3를 설치합니다.
+
+```shell
+python3 -m pip install boto3
+```
+
+> [참고]
+> 보다 자세한 내용은 [AWS SDK for Python (Boto3)](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+
+#### Context
+
 
 <details>
 <summary>Boto3 클라이언트 클래스</summary>
@@ -711,8 +721,14 @@ class Boto3Example(object):
 
 </details>
 
-
 ### Java SDK
+
+SDK를 사용하여 Amazon S3와 상호작용하는 Java 애플리케이션을 빌드할 수 있습니다.
+
+> [참고]
+> 보다 자세한 내용은 [AWS SDK for Java 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html) 문서를 참조하세요.
+
+#### Context
 
 <details>
 <summary>Java SDK 클라이언트 클래스</summary>
@@ -875,13 +891,17 @@ public class AwsSdkExapmple {
 
 </details>
 
-
 ### .NET SDK
+
+[Install .NET on Windows, Linux, and macOS](https://learn.microsoft.com/en-us/dotnet/core/install/)에서 플랫폼에 맞는 .NET을 내려받아 설치합니다.
+
+> [참고]
+> 보다 자세한 내용은 [AWS SDK for .NET 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+
+#### Context
 
 <details>
 <summary>.NET SDK 클라이언트 클래스</summary>
-
-
 ```csharp
   class S3SDKExample
   {
@@ -908,8 +928,6 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>버킷 생성</summary>
-
-
 ```csharp
     static async Task<PutBucketResponse> CreateBucketAsync(AmazonS3Client s3Client, string bucketName)
     {
@@ -938,8 +956,6 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>버킷 목록 조회</summary>
-
-
 ```csharp
     static async Task<ListBucketsResponse> ListBucketsAsync(AmazonS3Client s3Client)
     {
@@ -959,8 +975,6 @@ public class AwsSdkExapmple {
 <details>
 <summary>버킷 조회(오브젝트 목록 조회)
 </summary>
-
-
 ```csharp
     static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(AmazonS3Client s3Client, string bucketName)
     {
@@ -994,8 +1008,6 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>버킷 삭제</summary>
-
-
 ```csharp
     static async Task<DeleteBucketResponse> DeleteBucketAsync(AmazonS3Client s3Client, string bucketName)
     {
@@ -1014,8 +1026,6 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>오브젝트 업로드</summary>
-
-
 ```csharp
     private static async Task UploadObjectAsync(AmazonS3Client s3Client, string bucketName, string keyName, string filePath)
     {
@@ -1080,8 +1090,6 @@ public class AwsSdkExapmple {
 <details>
 <summary>오브젝트 다운로드
 </summary>
-
-
 ```csharp
     static async Task ReadObjectDataAsync(AmazonS3Client s3Client, string bucketName, string keyName, string filePath)
     {
@@ -1113,8 +1121,6 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>오브젝트 삭제</summary>
-
-
 ```csharp
     static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(AmazonS3Client s3Client, string bucketName, string keyName)
     {
