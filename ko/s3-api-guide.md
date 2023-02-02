@@ -247,16 +247,16 @@ Authorization: AWS {access}:{signature}
 <ListAllMyBucketsResult
 	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
 	<Owner>
-		<ID>admin:admin</ID>
-		<DisplayName>admin:admin</DisplayName>
+		<ID>user:panther</ID>
+		<DisplayName>user:panther</DisplayName>
 	</Owner>
 	<Buckets>
 		<Bucket>
-			<Name>arbitrary-1674809990-68ef0dc1-4288-4369-b13b-66a816ec0145</Name>
+			<Name>log</Name>
 			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
 		</Bucket>
 		<Bucket>
-			<Name>arbitrary-1674810397-82103576-6fbd-4471-8966-7468a6f39fdc</Name>
+			<Name>snapshot</Name>
 			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
 		</Bucket>
 	</Buckets>
@@ -298,30 +298,30 @@ Authorization: AWS {access}:{signature}
 <?xml version='1.0' encoding='UTF-8'?>
 <ListBucketResult
 	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-	<Name>arbitrary-1675226992-0829cce3-559b-44a9-a776-60f19af7df10</Name>
+	<Name>snapshot</Name>
 	<Prefix/>
 	<Marker/>
 	<MaxKeys>1000</MaxKeys>
 	<IsTruncated>false</IsTruncated>
 	<Contents>
-		<Key>arbitrary-1675226992-44790c33-b9dd-4806-bf0a-c3b7e1cb1cac</Key>
+		<Key>cheetah</Key>
 		<LastModified>2023-02-01T04:49:52.995Z</LastModified>
 		<ETag>"7d793037a0760186574b0282f2f435e7"</ETag>
 		<Size>5</Size>
 		<Owner>
-			<ID>admin:admin</ID>
-			<DisplayName>admin:admin</DisplayName>
+			<ID>user:panther</ID>
+			<DisplayName>user:panther</DisplayName>
 		</Owner>
 		<StorageClass>STANDARD</StorageClass>
 	</Contents>
 	<Contents>
-		<Key>arbitrary-1675226992-ff08d805-118f-49b4-8515-d8668c96b6cc</Key>
+		<Key>leopard</Key>
 		<LastModified>2023-02-01T04:49:52.685Z</LastModified>
 		<ETag>"5d41402abc4b2a76b9719d911017c592"</ETag>
 		<Size>5</Size>
 		<Owner>
-			<ID>admin:admin</ID>
-			<DisplayName>admin:admin</DisplayName>
+			<ID>user:panther</ID>
+			<DisplayName>user:panther</DisplayName>
 		</Owner>
 		<StorageClass>STANDARD</StorageClass>
 	</Contents>
@@ -523,19 +523,11 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>오브젝트 업로드</summary>
 
-+ 오브젝트 사이즈가 8 MB 이상일 경우, 동적으로 8 MB 단위로 분할되어 업로드되며, 업로드된 실제 파일의 각 부분을 세그먼트, 최종적으로 세그먼트 집합을 가리키는 단일 오브젝트를 매니페스트라 칭합니다.
-+ 각 세그먼트는 `{container_name}+segment/{object_name}/{random_key}/{sequence_number}`를,  매니페스트는 `{container_name}/{object_name}`를 경로로 생성됩니다.
-+ 매니페스트를 통해 대상 오브젝트를 다운로드할 수 있으며, 세그먼트의 무결성이 손상되면 매니페스트를 통한 다운로드가 불가합니다.
-+ 매니페스트를 삭제할 경우, 해당 세그먼트가 위치한  `{container_name}+segment/{object_name}/{random_key}` 폴더가 삭제되며, 만약 상위 폴더에 위치한 유일한 오브젝트였다면 `{container_name}+segment/{object_name}` 폴더 역시 삭제됩니다.
-+ 각 세그먼트는 고유의 Etag를 가지고, 매니페스트는 전체 세그먼트의 Etag를 연결한 값에 대한 해시 다이제스트를 Etag로 가집니다.
-+ 다음은 S3 멀티파트 업로드 코어 사양입니다.
-
-| 항목 | 사양 |
-|---|---|
-| 최대 오브젝트 사이즈 | 5 TB |
-| 업로드당 최대 파트 개수 | 10,000 |
-| 파트 번호 | 1 ~ 10,000 |
-| 파트 사이즈 | 5 MB ~ 5 GB (마지막 파트는 최소 사이즈 제한 없음) |
++ 오브젝트 사이즈가 8MB(default threshold) 이상이면 분할 업로드되고 이를 세그먼트라고 합니다. 세그먼트 업로드가 끝나면 전체 세그먼트 정보를 갖는 오브젝트가 업로드되고 이를 매니페스트라고 합니다.
++ 각 세그먼트의 경로는 `{bucketName}+segment/{objectName}/{randomKey}/{partNumber}`,  매니페스트의 경로는 `{bucketName}/{objectName}` 입니다.
++ 세그먼트의 무결성이 유지되는 동안 매니페스트를 통해 대상 오브젝트를 다운로드할 수 있습니다.
++ 매니페스트를 삭제하면 대응하는 해당 세그먼트 역시 삭제됩니다.
++ Etag(Entity Tag)는 오브젝트의 해시입니다. 모든 세그먼트는 고유한 Etag를 갖습니다. 매니페스트의 Etag는 전체 세그먼트의 Etag를 연결(Concatenate)한 값의 해시입니다.
 
 ```
 $  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
@@ -581,12 +573,6 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 | endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 | |
 
 ### Boto3 - Python SDK
-
-pip로 boto3를 설치합니다.
-
-```shell
-python3 -m pip install boto3
-```
 
 > [참고]
 > 보다 자세한 내용은 [AWS SDK for Python (Boto3)](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
@@ -723,8 +709,6 @@ class Boto3Example(object):
 
 ### Java SDK
 
-SDK를 사용하여 Amazon S3와 상호작용하는 Java 애플리케이션을 빌드할 수 있습니다.
-
 > [참고]
 > 보다 자세한 내용은 [AWS SDK for Java 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html) 문서를 참조하세요.
 
@@ -734,8 +718,8 @@ SDK를 사용하여 Amazon S3와 상호작용하는 Java 애플리케이션을 �
 <summary>Java SDK 클라이언트 클래스</summary>
 
 ```java
-// AwsSdkExapmple.java
-public class AwsSdkExapmple {
+// AwsSdkExample.java
+public class AwsSdkExample {
     private static final String access = "{access}";
     private static final String secret = "{secret}";
     private static final String region = "{region name}";
@@ -743,7 +727,7 @@ public class AwsSdkExapmple {
 
     private AmazonS3 s3Client;
 
-    public AwsSdkExapmple() {
+    public AwsSdkExample() {
         BasicAWSCredentials awsCredentials = new BasicAWSCredentials(access, secret);
         s3Client = AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(ednpoint, region))
@@ -893,8 +877,6 @@ public class AwsSdkExapmple {
 
 ### .NET SDK
 
-[Install .NET on Windows, Linux, and macOS](https://learn.microsoft.com/en-us/dotnet/core/install/)에서 플랫폼에 맞는 .NET을 내려받아 설치합니다.
-
 > [참고]
 > 보다 자세한 내용은 [AWS SDK for .NET 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
 
@@ -902,6 +884,7 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>.NET SDK 클라이언트 클래스</summary>
+
 ```csharp
   class S3SDKExample
   {
@@ -928,6 +911,7 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>버킷 생성</summary>
+
 ```csharp
     static async Task<PutBucketResponse> CreateBucketAsync(AmazonS3Client s3Client, string bucketName)
     {
@@ -956,6 +940,7 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>버킷 목록 조회</summary>
+
 ```csharp
     static async Task<ListBucketsResponse> ListBucketsAsync(AmazonS3Client s3Client)
     {
@@ -975,6 +960,7 @@ public class AwsSdkExapmple {
 <details>
 <summary>버킷 조회(오브젝트 목록 조회)
 </summary>
+
 ```csharp
     static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(AmazonS3Client s3Client, string bucketName)
     {
@@ -1008,6 +994,7 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>버킷 삭제</summary>
+
 ```csharp
     static async Task<DeleteBucketResponse> DeleteBucketAsync(AmazonS3Client s3Client, string bucketName)
     {
@@ -1026,6 +1013,7 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>오브젝트 업로드</summary>
+
 ```csharp
     private static async Task UploadObjectAsync(AmazonS3Client s3Client, string bucketName, string keyName, string filePath)
     {
@@ -1088,8 +1076,8 @@ public class AwsSdkExapmple {
 </details>
 
 <details>
-<summary>오브젝트 다운로드
-</summary>
+<summary>오브젝트 다운로드</summary>
+
 ```csharp
     static async Task ReadObjectDataAsync(AmazonS3Client s3Client, string bucketName, string keyName, string filePath)
     {
@@ -1121,6 +1109,7 @@ public class AwsSdkExapmple {
 
 <details>
 <summary>오브젝트 삭제</summary>
+
 ```csharp
     static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(AmazonS3Client s3Client, string bucketName, string keyName)
     {
