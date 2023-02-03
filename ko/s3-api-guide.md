@@ -578,10 +578,9 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 ### Boto3 - Python SDK
 
 > [참고]
-> 보다 자세한 내용은 [AWS SDK for Python (Boto3)](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+> 보다 자세한 내용은 [AWS SDK for Python (Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
 
 #### Context
-
 
 <details>
 <summary>Boto3 클라이언트 클래스</summary>
@@ -911,11 +910,13 @@ class S3SDKExample
 
     private static AmazonS3Client GetS3Client()
     {
-        var amazonS3Config = new AmazonS3Config {
-            ServiceURL = endpoint,
-            AuthenticationRegion = regionName,
-            ForcePathStyle = true,
-        };
+        var amazonS3Config =
+            new AmazonS3Config
+            {
+                ServiceURL = endpoint,
+                AuthenticationRegion = regionName,
+                ForcePathStyle = true,
+            };
         var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
 
         return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
@@ -937,11 +938,12 @@ static async Task<PutBucketResponse> CreateBucketAsync(
     {
         if (!(await AmazonS3Util.DoesS3BucketExistAsync(s3Client, bucketName)))
         {
-            var putBucketRequest = new PutBucketRequest
-            {
-                BucketName = bucketName,
-                UseClientRegion = true
-            };
+            var putBucketRequest =
+                new PutBucketRequest
+                {
+                    BucketName = bucketName,
+                    UseClientRegion = true
+                };
 
             return await s3Client.PutBucketAsync(putBucketRequest);
         }
@@ -987,11 +989,12 @@ static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(
     {
         List<ListObjectsV2Response> responses =
             new List<ListObjectsV2Response>();
-        var request = new ListObjectsV2Request
-        {
-            BucketName = bucketName,
-            MaxKeys = 5,
-        };
+        var request =
+            new ListObjectsV2Request
+            {
+                BucketName = bucketName,
+                MaxKeys = 5,
+            };
         var response = new ListObjectsV2Response();
 
         do
@@ -1023,7 +1026,10 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
     try
     {
         return await s3Client.DeleteBucketAsync(
-            new DeleteBucketRequest{BucketName = bucketName});
+            new DeleteBucketRequest
+            {
+                BucketName = bucketName
+            });
     }
     catch (AmazonS3Exception e)
     {
@@ -1047,10 +1053,10 @@ private static async Task UploadObjectAsync(
     List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
     InitiateMultipartUploadRequest initiateRequest =
         new InitiateMultipartUploadRequest
-    {
-        BucketName = bucketName,
-        Key = keyName
-    };
+        {
+            BucketName = bucketName,
+            Key = keyName
+        };
 
     InitiateMultipartUploadResponse initResponse =
         await s3Client.InitiateMultipartUploadAsync(initiateRequest);
@@ -1063,7 +1069,8 @@ private static async Task UploadObjectAsync(
         long filePosition = 0;
         for (int i = 1; filePosition < contentLength; i++)
         {
-            UploadPartRequest uploadRequest = new UploadPartRequest
+            UploadPartRequest uploadRequest =
+                new UploadPartRequest
                 {
                     UseChunkEncoding = false,
                     BucketName = bucketName,
@@ -1079,11 +1086,12 @@ private static async Task UploadObjectAsync(
         }
 
         CompleteMultipartUploadRequest completeRequest =
-            new CompleteMultipartUploadRequest {
+            new CompleteMultipartUploadRequest
+            {
                 BucketName = bucketName,
                 Key = keyName,
                 UploadId = initResponse.UploadId
-             };
+            };
         completeRequest.AddPartETags(uploadResponses);
         CompleteMultipartUploadResponse completeUploadResponse =
             await s3Client.CompleteMultipartUploadAsync(completeRequest);
@@ -1091,7 +1099,8 @@ private static async Task UploadObjectAsync(
     catch (Exception e)
     {
         AbortMultipartUploadRequest abortMPURequest =
-            new AbortMultipartUploadRequest {
+            new AbortMultipartUploadRequest
+            {
                 BucketName = bucketName,
                 Key = keyName,
                 UploadId = initResponse.UploadId
@@ -1154,11 +1163,12 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 {
     try
     {
-        var deleteObjectRequest = new DeleteObjectRequest
-        {
-            BucketName = bucketName,
-            Key = keyName
-        };
+        var deleteObjectRequest =
+            new DeleteObjectRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
 
         return await s3Client.DeleteObjectAsync(deleteObjectRequest);
     }
