@@ -524,7 +524,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <summary>오브젝트 업로드</summary>
 
 + 오브젝트 사이즈가 8MB(default threshold) 이상이면 분할 업로드되고 이를 세그먼트라고 합니다. 세그먼트 업로드가 끝나면 전체 세그먼트 정보를 갖는 오브젝트가 업로드되고 이를 매니페스트라고 합니다.
-+ 각 세그먼트의 경로는 `{bucketName}+segment/{objectName}/{randomKey}/{partNumber}`,  매니페스트의 경로는 `{bucketName}/{objectName}` 입니다.
++ 각 세그먼트의 경로는 `{bucketName}+segment/{objectName}/{randomKey}/{partNumber}`, 매니페스트의 경로는 `{bucketName}/{objectName}` 입니다.
 + 세그먼트의 무결성이 유지되는 동안 매니페스트를 통해 대상 오브젝트를 다운로드할 수 있습니다.
 + 매니페스트를 삭제하면 대응하는 해당 세그먼트 역시 삭제됩니다.
 + Etag(Entity Tag)는 오브젝트의 해시입니다. 모든 세그먼트는 고유한 Etag를 갖습니다. 매니페스트의 Etag는 전체 세그먼트의 Etag를 연결(Concatenate)한 값의 해시입니다.
@@ -958,8 +958,7 @@ public class AwsSdkExample {
 </details>
 
 <details>
-<summary>버킷 조회(오브젝트 목록 조회)
-</summary>
+<summary>버킷 조회(오브젝트 목록 조회)</summary>
 
 ```csharp
     static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(AmazonS3Client s3Client, string bucketName)
@@ -1131,3 +1130,4 @@ public class AwsSdkExample {
 ```
 
 </details>
+
