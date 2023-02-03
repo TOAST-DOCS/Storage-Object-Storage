@@ -609,11 +609,11 @@ class Boto3Example(object):
 <summary>버킷 생성</summary>
 
 ```python
-    def create_bucket(self, bucket_name):
-        try:
-            return self.s3.create_bucket(Bucket=bucket_name)
-        except ClientError as e:
-            raise RuntimeError(e)
+def create_bucket(self, bucket_name):
+    try:
+        return self.s3.create_bucket(Bucket=bucket_name)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -622,11 +622,11 @@ class Boto3Example(object):
 <summary>버킷 목록 조회</summary>
 
 ```python
-    def list_buckets(self):
-        try:
-            return self.s3.list_buckets().get('Buckets')
-        except ClientError as e:
-            raise RuntimeError(e)
+def list_buckets(self):
+    try:
+        return self.s3.list_buckets().get('Buckets')
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -635,11 +635,11 @@ class Boto3Example(object):
 <summary>버킷 조회(오브젝트 목록 조회)</summary>
 
 ```python
-    def list_objs(self, bucket_name):
-        try:
-            return self.s3.list_objects_v2(Bucket=bucket_name).get('Contents')
-        except ClientError as e:
-            raise RuntimeError(e)
+def list_objs(self, bucket_name):
+    try:
+        return self.s3.list_objects_v2(Bucket=bucket_name).get('Contents')
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -648,11 +648,11 @@ class Boto3Example(object):
 <summary>버킷 삭제</summary>
 
 ```python
-    def delete_bucket(self, bucket_name):
-        try:
-            return self.s3.delete_bucket(Bucket=bucket_name)
-        except ClientError as e:
-            raise RuntimeError(e)
+def delete_bucket(self, bucket_name):
+    try:
+        return self.s3.delete_bucket(Bucket=bucket_name)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -661,12 +661,12 @@ class Boto3Example(object):
 <summary>오브젝트 업로드</summary>
 
 ```python
-    def upload(self, bucket_name, key, filename):
-        try:
-            self.s3.upload_file(
-                Filename=filename, Bucket=bucket_name, Key=key)
-        except ClientError as e:
-            raise RuntimeError(e)
+def upload(self, bucket_name, key, filename):
+    try:
+        self.s3.upload_file(
+            Filename=filename, Bucket=bucket_name, Key=key)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -675,21 +675,21 @@ class Boto3Example(object):
 <summary>오브젝트 다운로드</summary>
 
 ```python
-    def download(self, bucket_name, key, filename):
-        try:
-            response = self.s3.get_object(Bucket=bucket_name, Key=key)
+def download(self, bucket_name, key, filename):
+    try:
+        response = self.s3.get_object(Bucket=bucket_name, Key=key)
 
-            with io.FileIO(filename, 'w') as fd:
-                for chunk in response['Body']:
-                    fd.write(chunk)
+        with io.FileIO(filename, 'w') as fd:
+            for chunk in response['Body']:
+                fd.write(chunk)
 
-            response.pop('Body')
-        except ClientError as e:
-            raise RuntimeError(e)
-        except OSError as e:
-            raise RuntimeError(e)
+        response.pop('Body')
+    except ClientError as e:
+        raise RuntimeError(e)
+    except OSError as e:
+        raise RuntimeError(e)
 
-        return response
+    return response
 ```
 
 </details>
@@ -698,11 +698,11 @@ class Boto3Example(object):
 <summary>오브젝트 삭제</summary>
 
 ```python
-    def delete(self, bucket_name, key):
-        try:
-            return self.s3.delete_object(Bucket=bucket_name, Key=key)
-        except ClientError as e:
-            raise RuntimeError(e)
+def delete(self, bucket_name, key):
+    try:
+        return self.s3.delete_object(Bucket=bucket_name, Key=key)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -728,13 +728,18 @@ public class AwsSdkExample {
     private AmazonS3 s3Client;
 
     public AwsSdkExample() {
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(access, secret);
+        BasicAWSCredentials awsCredentials =
+            new BasicAWSCredentials(access, secret);
         s3Client = AmazonS3ClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(ednpoint, region))
-                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-                .enablePathStyleAccess()
-                .disableChunkedEncoding()
-                .build();
+            .withEndpointConfiguration(
+                new AwsClientBuilder.EndpointConfiguration(ednpoint, region)
+            )
+            .withCredentials(
+                new AWSStaticCredentialsProvider(awsCredentials)
+            )
+            .enablePathStyleAccess()
+            .disableChunkedEncoding()
+            .build();
     }
 }
 ```
@@ -745,15 +750,15 @@ public class AwsSdkExample {
 <summary>버킷 생성</summary>
 
 ```java
-    public String createBucket(String bucketName) throws RuntimeException {
-        try {
-            return s3Client.createBucket(bucketName).toString();
-        } catch (AmazonServiceException e) {
-            throw new RuntimeException(e);
-        } catch (SdkClientException e) {
-            throw new RuntimeException(e);
-        }
+public String createBucket(String bucketName) throws RuntimeException {
+    try {
+        return s3Client.createBucket(bucketName).toString();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -762,15 +767,15 @@ public class AwsSdkExample {
 <summary>버킷 목록 조회</summary>
 
 ```java
-    public List<Bucket> listBuckets() throws RuntimeException {
-        try {
-            return s3Client.listBuckets();
-        } catch (AmazonServiceException e) {
-            throw new RuntimeException(e);
-        } catch (SdkClientException e) {
-            throw new RuntimeException(e);
-        }
+public List<Bucket> listBuckets() throws RuntimeException {
+    try {
+        return s3Client.listBuckets();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -779,15 +784,17 @@ public class AwsSdkExample {
 <summary>버킷 조회(오브젝트 목록 조회)</summary>
 
 ```java
-    public ListObjectsV2Result listObjects(String bucketName) throws RuntimeException {
-        try {
-            return s3Client.listObjectsV2(bucketName);
-        } catch (AmazonServiceException e) {
-            throw new RuntimeException(e);
-        } catch (SdkClientException e) {
-            throw new RuntimeException(e);
-        }
+public ListObjectsV2Result listObjects(
+    String bucketName
+) throws RuntimeException {
+    try {
+        return s3Client.listObjectsV2(bucketName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -796,15 +803,15 @@ public class AwsSdkExample {
 <summary>버킷 삭제</summary>
 
 ```java
-    public void deleteBucket(String bucketName) throws RuntimeException {
-        try {
-            s3Client.deleteBucket(bucketName);
-        } catch (AmazonServiceException e) {
-            throw new RuntimeException(e);
-        } catch (SdkClientException e) {
-            throw new RuntimeException(e);
-        }
+public void deleteBucket(String bucketName) throws RuntimeException {
+    try {
+        s3Client.deleteBucket(bucketName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -813,21 +820,23 @@ public class AwsSdkExample {
 <summary>오브젝트 업로드</summary>
 
 ```java
-    public void uploadObject(String bucketName, String objectKey, String filePath) throws RuntimeException {
-        try {
-            TransferManager tm = TransferManagerBuilder.standard()
-                .withS3Client(s3Client)
-                .build();
-            Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
-            upload.waitForCompletion();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (AmazonServiceException e) {
-            throw new RuntimeException(e);
-        } catch (SdkClientException e) {
-            throw new RuntimeException(e);
-        }
+public void uploadObject(
+    String bucketName, String objectKey, String filePath
+) throws RuntimeException {
+    try {
+        TransferManager tm = TransferManagerBuilder.standard()
+            .withS3Client(s3Client)
+            .build();
+        Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
+        upload.waitForCompletion();
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -836,24 +845,26 @@ public class AwsSdkExample {
 <summary>오브젝트 다운로드</summary>
 
 ```java
-    public String downloadObject(String bucketName, String objKeyName, String filePath) throws RuntimeException {
-        try {
-            return s3Client.getObject(
-                new GetObjectRequest(bucketName, objKeyName),
-                new File(filePath)
-            ).getETag();
-        } catch (NoSuchKeyException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidObjectStateException e) {
-            throw new RuntimeException(e);
-        } catch (S3Exception e) {
-            throw new RuntimeException(e);
-        } catch (AwsServiceException e) {
-            throw new RuntimeException(e);
-        } catch (SdkClientException e) {
-            throw new RuntimeException(e);
-        }
+public String downloadObject(
+    String bucketName, String objKeyName, String filePath
+) throws RuntimeException {
+    try {
+        return s3Client.getObject(
+            new GetObjectRequest(bucketName, objKeyName),
+            new File(filePath)
+        ).getETag();
+    } catch (NoSuchKeyException e) {
+        throw new RuntimeException(e);
+    } catch (InvalidObjectStateException e) {
+        throw new RuntimeException(e);
+    } catch (S3Exception e) {
+        throw new RuntimeException(e);
+    } catch (AwsServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -862,15 +873,17 @@ public class AwsSdkExample {
 <summary>오브젝트 삭제</summary>
 
 ```java
-    public void deleteObject(String bucketName, String objKeyName) throws RuntimeException {
-        try {
-            s3Client.deleteObject(bucketName, objKeyName);
-        } catch (AmazonServiceException e) {
-            throw new RuntimeException(e);
-        } catch (SdkClientException e) {
-            throw new RuntimeException(e);
-        }
+public void deleteObject(
+    String bucketName, String objKeyName
+) throws RuntimeException {
+    try {
+        s3Client.deleteObject(bucketName, objKeyName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -886,8 +899,8 @@ public class AwsSdkExample {
 <summary>.NET SDK 클라이언트 클래스</summary>
 
 ```csharp
-  class S3SDKExample
-  {
+class S3SDKExample
+{
     private static string endpoint = "{endpoint}";
     private static string regionName = "{region name}";
     private static string accessKey = "{access}";
@@ -904,7 +917,7 @@ public class AwsSdkExample {
 
         return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
     }
-  }
+}
 ```
 
 </details>
@@ -913,27 +926,29 @@ public class AwsSdkExample {
 <summary>버킷 생성</summary>
 
 ```csharp
-    static async Task<PutBucketResponse> CreateBucketAsync(AmazonS3Client s3Client, string bucketName)
+static async Task<PutBucketResponse> CreateBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
     {
-        try
+        if (!(await AmazonS3Util.DoesS3BucketExistAsync(s3Client, bucketName)))
         {
-            if (!(await AmazonS3Util.DoesS3BucketExistAsync(s3Client, bucketName)))
+            var putBucketRequest = new PutBucketRequest
             {
-                var putBucketRequest = new PutBucketRequest
-                {
-                    BucketName = bucketName,
-                    UseClientRegion = true
-                };
+                BucketName = bucketName,
+                UseClientRegion = true
+            };
 
-                return await s3Client.PutBucketAsync(putBucketRequest);
-            }
-            throw new Exception("Bucket already exist.");
+            return await s3Client.PutBucketAsync(putBucketRequest);
         }
-        catch (AmazonS3Exception e)
-        {
-            throw e;
-        }
+        throw new Exception("Bucket already exist.");
     }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
 ```
 
 </details>
@@ -942,17 +957,17 @@ public class AwsSdkExample {
 <summary>버킷 목록 조회</summary>
 
 ```csharp
-    static async Task<ListBucketsResponse> ListBucketsAsync(AmazonS3Client s3Client)
+static async Task<ListBucketsResponse> ListBucketsAsync(AmazonS3Client s3Client)
+{
+    try
     {
-        try
-        {
-            return await s3Client.ListBucketsAsync();
-        }
-        catch (AmazonS3Exception e)
-        {
-            throw e;
-        }
+        return await s3Client.ListBucketsAsync();
     }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
 ```
 
 </details>
@@ -961,32 +976,35 @@ public class AwsSdkExample {
 <summary>버킷 조회(오브젝트 목록 조회)</summary>
 
 ```csharp
-    static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(AmazonS3Client s3Client, string bucketName)
+static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
     {
-        try
+        List<ListObjectsV2Response> responses =
+            new List<ListObjectsV2Response>();
+        var request = new ListObjectsV2Request
         {
-            List<ListObjectsV2Response> responses = new List<ListObjectsV2Response>();
-            var request = new ListObjectsV2Request
-            {
-                BucketName = bucketName,
-                MaxKeys = 5,
-            };
-            var response = new ListObjectsV2Response();
+            BucketName = bucketName,
+            MaxKeys = 5,
+        };
+        var response = new ListObjectsV2Response();
 
-            do
-            {
-                responses.Add(await s3Client.ListObjectsV2Async(request));
-                request.ContinuationToken = response.NextContinuationToken;
-            }
-            while (response.IsTruncated);
-
-            return responses;
-        }
-        catch (AmazonS3Exception e)
+        do
         {
-            throw e;
+            responses.Add(await s3Client.ListObjectsV2Async(request));
+            request.ContinuationToken = response.NextContinuationToken;
         }
+        while (response.IsTruncated);
+
+        return responses;
     }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
 ```
 
 </details>
@@ -995,17 +1013,20 @@ public class AwsSdkExample {
 <summary>버킷 삭제</summary>
 
 ```csharp
-    static async Task<DeleteBucketResponse> DeleteBucketAsync(AmazonS3Client s3Client, string bucketName)
+static async Task<DeleteBucketResponse> DeleteBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
     {
-        try
-        {
-            return await s3Client.DeleteBucketAsync(new DeleteBucketRequest{BucketName = bucketName});
-        }
-        catch (AmazonS3Exception e)
-        {
-            throw e;
-        }
+        return await s3Client.DeleteBucketAsync(
+            new DeleteBucketRequest{BucketName = bucketName});
     }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
 ```
 
 </details>
@@ -1014,62 +1035,69 @@ public class AwsSdkExample {
 <summary>오브젝트 업로드</summary>
 
 ```csharp
-    private static async Task UploadObjectAsync(AmazonS3Client s3Client, string bucketName, string keyName, string filePath)
+private static async Task UploadObjectAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName,
+    string filePath)
+{
+    List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
+    InitiateMultipartUploadRequest initiateRequest =
+        new InitiateMultipartUploadRequest
     {
-        List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
-        InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
+        BucketName = bucketName,
+        Key = keyName
+    };
+
+    InitiateMultipartUploadResponse initResponse =
+        await s3Client.InitiateMultipartUploadAsync(initiateRequest);
+
+    long contentLength = new FileInfo(filePath).Length;
+    long partSize = 10 * (long)Math.Pow(2, 20);
+
+    try
+    {
+        long filePosition = 0;
+        for (int i = 1; filePosition < contentLength; i++)
         {
-            BucketName = bucketName,
-            Key = keyName
-        };
-
-        InitiateMultipartUploadResponse initResponse = await s3Client.InitiateMultipartUploadAsync(initiateRequest);
-
-        long contentLength = new FileInfo(filePath).Length;
-        long partSize = 10 * (long)Math.Pow(2, 20);
-
-        try
-        {
-            long filePosition = 0;
-            for (int i = 1; filePosition < contentLength; i++)
-            {
-                UploadPartRequest uploadRequest = new UploadPartRequest
-                    {
-                        UseChunkEncoding = false,
-                        BucketName = bucketName,
-                        Key = keyName,
-                        UploadId = initResponse.UploadId,
-                        PartNumber = i,
-                        PartSize = partSize,
-                        FilePosition = filePosition,
-                        FilePath = filePath
-                    };
-                uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
-                filePosition += partSize;
-            }
-
-            CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
+            UploadPartRequest uploadRequest = new UploadPartRequest
                 {
+                    UseChunkEncoding = false,
                     BucketName = bucketName,
                     Key = keyName,
-                    UploadId = initResponse.UploadId
-                 };
-            completeRequest.AddPartETags(uploadResponses);
-            CompleteMultipartUploadResponse completeUploadResponse = await s3Client.CompleteMultipartUploadAsync(completeRequest);
+                    UploadId = initResponse.UploadId,
+                    PartNumber = i,
+                    PartSize = partSize,
+                    FilePosition = filePosition,
+                    FilePath = filePath
+                };
+            uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
+            filePosition += partSize;
         }
-        catch (Exception e)
-        {
-            AbortMultipartUploadRequest abortMPURequest = new AbortMultipartUploadRequest
-            {
-                BucketName = bucketName,
-                           Key = keyName,
-                           UploadId = initResponse.UploadId
-            };
-            await s3Client.AbortMultipartUploadAsync(abortMPURequest);
 
-            throw e;
-        }
+        CompleteMultipartUploadRequest completeRequest =
+            new CompleteMultipartUploadRequest {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+             };
+        completeRequest.AddPartETags(uploadResponses);
+        CompleteMultipartUploadResponse completeUploadResponse =
+            await s3Client.CompleteMultipartUploadAsync(completeRequest);
     }
+    catch (Exception e)
+    {
+        AbortMultipartUploadRequest abortMPURequest =
+            new AbortMultipartUploadRequest {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+            };
+        await s3Client.AbortMultipartUploadAsync(abortMPURequest);
+
+        throw e;
+    }
+}
 ```
 
 </details>
@@ -1078,30 +1106,36 @@ public class AwsSdkExample {
 <summary>오브젝트 다운로드</summary>
 
 ```csharp
-    static async Task ReadObjectDataAsync(AmazonS3Client s3Client, string bucketName, string keyName, string filePath)
+static async Task ReadObjectDataAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName,
+    string filePath)
+{
+    try
     {
-        try
+        GetObjectRequest request = new GetObjectRequest
         {
-            GetObjectRequest request = new GetObjectRequest
-            {
-                BucketName = bucketName,
-                Key = keyName
-            };
+            BucketName = bucketName,
+            Key = keyName
+        };
 
-            ResponseHeaderOverrides responseHeaders = new ResponseHeaderOverrides();
-            responseHeaders.CacheControl = "No-cache";
+        ResponseHeaderOverrides responseHeaders =
+            new ResponseHeaderOverrides();
+        responseHeaders.CacheControl = "No-cache";
 
-            request.ResponseHeaderOverrides = responseHeaders;
-            var appendToFile = false;
+        request.ResponseHeaderOverrides = responseHeaders;
+        var appendToFile = false;
 
-            using (var response = await s3Client.GetObjectAsync(request))
-                await response.WriteResponseStreamToFileAsync(filePath, appendToFile, CancellationToken.None);
-        }
-        catch (AmazonS3Exception e)
-        {
-           throw e;
-        }
+        using (var response = await s3Client.GetObjectAsync(request))
+        await response.WriteResponseStreamToFileAsync(
+            filePath, appendToFile, CancellationToken.None);
     }
+    catch (AmazonS3Exception e)
+    {
+       throw e;
+    }
+}
 ```
 
 </details>
@@ -1110,23 +1144,26 @@ public class AwsSdkExample {
 <summary>오브젝트 삭제</summary>
 
 ```csharp
-    static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(AmazonS3Client s3Client, string bucketName, string keyName)
+static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName)
+{
+    try
     {
-        try
+        var deleteObjectRequest = new DeleteObjectRequest
         {
-            var deleteObjectRequest = new DeleteObjectRequest
-            {
-                BucketName = bucketName,
-                Key = keyName
-            };
+            BucketName = bucketName,
+            Key = keyName
+        };
 
-            return await s3Client.DeleteObjectAsync(deleteObjectRequest);
-        }
-        catch (AmazonS3Exception e)
-        {
-            throw e;
-        }
+        return await s3Client.DeleteObjectAsync(deleteObjectRequest);
     }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
 ```
 
 </details>
