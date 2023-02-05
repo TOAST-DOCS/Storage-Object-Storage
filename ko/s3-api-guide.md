@@ -1126,11 +1126,12 @@ static async Task ReadObjectDataAsync(
 {
     try
     {
-        GetObjectRequest request = new GetObjectRequest
-        {
-            BucketName = bucketName,
-            Key = keyName
-        };
+        GetObjectRequest request =
+            new GetObjectRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
 
         ResponseHeaderOverrides responseHeaders =
             new ResponseHeaderOverrides();
