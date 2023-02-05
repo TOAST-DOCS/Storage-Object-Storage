@@ -524,11 +524,11 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <summary>오브젝트 업로드</summary>
 
 <ul style="margin: 0; padding: 0;">
-<li>오브젝트 사이즈가 8MB(기본 임계치) 이상이면 분할 업로드되고 이를 세그먼트라고 합니다. 세그먼트 업로드가 끝나면 전체 세그먼트 정보를 갖는 오브젝트가 업로드되고 이를 매니페스트라고 합니다.</li>
-<li>각 세그먼트의 경로는 <code style="display: inline;">{bucketName}+segment/{objectName}/{randomKey}/{partNumber}</code>, 매니페스트의 경로는 <code style="display: inline;">{bucketName}/{objectName}</code> 입니다.</li>
-<li>세그먼트의 무결성이 유지되는 동안 매니페스트를 통해 대상 오브젝트를 다운로드할 수 있습니다.</li>
-<li>매니페스트를 삭제하면 대응하는 해당 세그먼트 역시 삭제됩니다.</li>
-<li>Etag(Entity Tag)는 오브젝트의 해시입니다. 모든 세그먼트는 고유한 Etag를 갖습니다. 매니페스트의 Etag는 전체 세그먼트의 Etag를 연결(Concatenate)한 값의 해시입니다.</li>
+<li>파일 사이즈가 일정 사이즈 이상이면 여러 파트로 분할 업로드됩니다.</li>
+<li>오브젝트를 구성하는 각 파트의 경로는 <code style="display: inline;">{bucketName}+segments/{objectName}/{randomKey}/{partNumber}</code>입니다.</li>
+<li>전체 파트의 무결성이 유지되는 동안 오브젝트를 통해 완전한 파일을 다운로드할 수 있습니다.</li>
+<li>오브젝트를 삭제하면 대응 파트 역시 삭제됩니다.</li>
+<li>각 파트는 고유한 Etag(Entity Tag)를 갖습니다. 최종 오브젝트의 Etag는 각 파트의 Etag를 연결(Concatenate)한 값의 해시입니다.</li>
 </ul>
 </br>
 
