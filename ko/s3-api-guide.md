@@ -439,14 +439,14 @@ S3 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.co
 ### 설치
 AWS 명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 이용해 설치합니다.
 
-```
+```shell
 $ sudo pip install awscli
 ```
 
 ### 설정
 AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 S3 API 자격 증명과 환경을 설정해야 합니다.
 
-```
+```shell
 $ aws configure
 AWS Access Key ID [None]: {access}
 AWS Secret Access Key [None]: {secret}
@@ -462,7 +462,7 @@ Default output format [None]: json
 
 ### S3 명령 사용 방법
 
-```
+```shell
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 ```
 
@@ -480,7 +480,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 <details>
 <summary>버킷 생성</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
@@ -490,7 +490,7 @@ make_bucket: example-bucket
 <details>
 <summary>버킷 목록 조회</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
@@ -501,7 +501,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 <details>
 <summary>버킷 조회</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
@@ -512,7 +512,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>버킷 삭제</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
@@ -523,26 +523,33 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>오브젝트 업로드</summary>
 
-<ul style="margin: 0; padding: 0;">
-<li>파일 사이즈가 일정 사이즈 이상이면 여러 파트로 분할 업로드됩니다.</li>
-<li>오브젝트를 구성하는 각 파트의 경로는 <code style="display: inline;">{bucketName}+segments/{objectName}/{randomKey}/{partNumber}</code>입니다.</li>
-<li>전체 파트의 무결성이 유지되는 동안 오브젝트를 통해 완전한 파일을 다운로드할 수 있습니다.</li>
-<li>오브젝트를 삭제하면 대응 파트 역시 삭제됩니다.</li>
-<li>각 파트는 고유한 Etag(Entity Tag)를 갖습니다. 최종 오브젝트의 Etag는 각 파트의 Etag를 연결(Concatenate)한 값의 해시입니다.</li>
-</ul>
-</br>
-
-```
+```shell
 $  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
+
+<blockquote>
+[참고]
+</br>
+오브젝트의 용량이 8MB 이상이면 AWS 명령줄 인터페이스는 오브젝트를 여러 개의 파트로 나누어 업로드합니다. 파트 오브젝트는 <code style="display: inline;">{bucket}+segments</code>라는 버킷에 <code style="display: inline;">{object-name}/{upload-id}/{part-number}</code> 형태의 이름으로 저장되고, 모든 파트 업로드가 끝나면 업로드 요청한 버킷에 파트 오브젝트를 연결한 오브젝트가 만들어집니다.
+</br></br>
+파트 오브젝트가 저장되는 <code style="display: inline;">{bucket}+segments</code> 버킷은 S3 호환 API로는 접근할 수 없고, Object Storage API 또는 콘솔을 통해 접근할 수 있습니다.
+</br></br>
+멀티파트 오브젝트의 ETag는 각 파트 오브젝트의 ETag 값을 이진 데이터로 변환하고 순서대로 연결해(concatenate) MD5 해시한 값입니다.
+</blockquote>
+
+<blockquote>
+[주의]
+</br>
+멀티파트로 업로드한 오브젝트의 일부 또는 전체 파트 오브젝트를 삭제하면 오브젝트에 접근할 수 없습니다.
+</blockquote>
 
 </details>
 
 <details>
 <summary>오브젝트 다운로드</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
@@ -552,7 +559,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <details>
 <summary>오브젝트 삭제</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
