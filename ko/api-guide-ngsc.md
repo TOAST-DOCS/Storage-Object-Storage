@@ -12,8 +12,8 @@
 
 | 항목 | API 엔드포인트 | 용도 |
 |---|---|---|
-| Identity | https://api-identity-infrastructure.ngsc-nhncloudservice.go.kr/v2.0 | 인증 토큰 발급 |
-| Object-Store | https://api-storage.ngsc-nhncloudservice.go.kr/v1/AUTH_***** | 오브젝트 스토리지 제어, 리전에 따라 다름 |
+| Identity | https://api-identity-infrastructure.gncloud.go.kr/v2.0 | 인증 토큰 발급 |
+| Object-Store | https://api-object-storage.gncloud.go.kr/v1/AUTH_***** | 오브젝트 스토리지 제어, 리전에 따라 다름 |
 | Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
 
 <br/>
