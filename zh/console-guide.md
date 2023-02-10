@@ -26,7 +26,15 @@ Creates containers. Uploading objects in an object storage requires one or more 
     <td>Storage class</td>
     <td><b>Standard</b>: This is the default class.</td>
   </tr>
+   <tr>
+    <td rowspan="2">Object lock settings</td>
+    <td>Object lock</td>
+    <td>Select whather to use the obejct lock.</td>
+  </tr>
   <tr>
+    <td>Lock cycle</td>
+    <td>Enter the object lock cycle in days.</td>
+  </tr>
     <td rowspan="2">Encryption settings</td>
     <td>Encryption</td>
     <td>Select whether to use object encryption.</td>
@@ -37,7 +45,11 @@ Creates containers. Uploading objects in an object storage requires one or more 
   </tr>
 </table>
 
-#### Encryption settings
+
+#### Object Lock Settings
+Objects uploaded to the Object Lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
+
+#### Encryption Settings
 Objects uploaded to encryption containers are encrypted using a symmetric key managed by the NHN Cloud's Secure Key Manager service. Therefore, in order to create an encryption container, you must create a symmetric key in the Secure Key Manager service in advance.
 
 The policies for encryption container are as follows.
@@ -178,6 +190,32 @@ Object version control settings allow you to keep previous versions of objects. 
 > [Caution]
 If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
 
+#### Object Lock
+
+You can check and change the object lock cycle of object lock containers. The object lock cycle can be entered in days, and cannot be turned off.
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Option</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Object lock settings</td>
+    <td>Objecy lock</td>
+    <td>Select whether to use the object lock.</td>
+  </tr>
+  <tr>
+    <td>Lock cycle</td>
+    <td>Enter the object lock cycle in days.</td>
+  </tr>
+</table>
+
+> [Note]
+> The changed object lock cycle is applied to obejcts uploaded after changing the settings. 
+> You cannot change a general container to an object lock container and vice versa.
+> You cannot specify an object lock container as an archive container or replication target containger.
+
 #### Replication
 
 Replication settings allow you to replicate objects in a container to another container in a different region. Replication settings are for disaster recovery, and objects in the source region are replicated to the target region and managed. Replication proceed in the background at regular intervals.
@@ -272,6 +310,21 @@ Copy objects to create new objects. Create an object with a new name in the cont
 
 ### Delete Object
 Delete selected objects. When a multipart object is deleted, the segment object is also deleted.
+
+
+### Manage Object
+Check the selected object information and manage the properties.
+
+> [Note]
+If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
+
+##### Change Object Expriation Date
+
+You cannot change the expiration date for selected objects.
+
+#### Change Object Lock Date
+
+You can change the lock expiration date for selected objects. It cannot be changed prior to the previously set expiration date.
 
 ## Prefix Search
 If you enter a prefix in the search bar and click the **Search** button, you can search for containers, folders, and objects that begin with the prefix you entered. You can search for containers in the container list, and search for folders and objects in the object list.
