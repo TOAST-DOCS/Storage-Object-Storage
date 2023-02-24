@@ -6,28 +6,17 @@
 
 Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 
-### Cyberduck 다운로드
+### Cyberduck 설치
 
-[Cyberduck 다운로드 페이지](https://cyberduck.io/download/)를 통해서 사용 중인 운영 체제에 맞는 파일을 다운로드합니다.
+[Cyberduck 다운로드 페이지](https://cyberduck.io/download/)에서 사용 중인 운영 체제에 맞는 설치 파일을 다운로드해 설치합니다.
 
 ### 오브젝트 스토리지 연결 설정
 
-#### Cyberduck 프로필 / 책갈피 설정
+#### Cyberduck 책갈피 설정
 
 브라우저 상단의 `새 연결` 버튼을 클릭하여 새로운 프로필을 생성하고 추가 내용을 입력합니다.
 
-드롭다운 메뉴에서 `Openstack Swift (Keystone 2.0)`, `Openstack Swift (Keystone 3)` 중 한 가지를 선택합니다.
-
-**Openstack Swift (Keystone 2.0) 선택 시 추가 내용**
-
-| 항목 | 설명 |
-|---|---|
-| 별명 | 책갈피의 별칭입니다. 원하는 값으로 자유롭게 설정할 수 있습니다. |
-| 서버 | 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭하여 확인할 수 있습니다.<br/> 콘솔 > **Storage** > **Object Storage** > **API 엔드포인트 설정** > **신원 서비스(identity)** 의 주소를 입력합니다. |
-| Tenant ID:Access Key | Tenant ID : 사용자의 Project ID 입니다. <br/> 콘솔 상단 프로젝트 우측의 톱니바퀴 클릭 > **프로젝트 기본 정보** > **프로젝트 ID** 에서 확인할 수 있습니다.<br/><br/> Access ID : NHN Cloud 사용자는 Email 주소를, IAM 사용자는 ID를 입력합니다. |
-| Secret Key | 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 설정한 비밀번호를 입력합니다. |
-
-**Openstack Swift (Keystone 3) 선택 시 추가 내용**
+드롭다운 메뉴에서 `Openstack Swift (Keystone 3)` 를 선택합니다.
 
 | 항목 | 설명 |
 |---|---|
@@ -62,7 +51,7 @@ API 비밀번호 설정 방법은 [오브젝트 스토리지 API 가이드](api-
 
 ### 오브젝트 업로드
 
-컨테이너를 선택한 뒤 브라우저 상단의 `동작` > `업로드...` 를 클릭하거나 우클릭 메뉴 > `업로드...` 를 클릭하여 파일을 선택하고 업로드합니다. 끌어다 놓기로도 파일을 업로드할 수 있습니다.
+컨테이너를 선택한 뒤 브라우저 상단의 `동작` > `업로드...` 를 클릭하거나 우클릭 메뉴 > `업로드...` 를 클릭하여 파일을 선택하고 업로드합니다. 끌어다 놓기로 파일을 업로드할 수도 있습니다.
 
 > [참고]
 >
@@ -70,7 +59,7 @@ API 비밀번호 설정 방법은 [오브젝트 스토리지 API 가이드](api-
 
 ### 오브젝트 다운로드
 
-오브젝트를 선택한 후 우클릭 메뉴 > `내려받기` 를 클릭하여 다운로드합니다. 끌어다 놓기로도 오브젝트를 다운로드할 수 있습니다.
+오브젝트를 선택한 후 우클릭 메뉴 > `내려받기` 를 클릭하여 다운로드합니다. 끌어다 놓기로 오브젝트를 다운로드할 수도 있습니다.
 
 
 > [참고]
@@ -93,7 +82,7 @@ API 비밀번호 설정 방법은 [오브젝트 스토리지 API 가이드](api-
 
 폴더를 직접 업로드 / 다운로드하여 오브젝트 스토리지와 동기화합니다.
 
-폴더를 선택하고 우클릭 메뉴 > `동기화`를 클릭하여 로컬과 오브젝트 스토리지 간의 동기화를 진행할 수 있습니다. 동기화 방식은 다운로드 / 업로드 / 미러 3가지로 설정할 수 있습니다.
+컨테이너 또는 폴더를 선택하고 우클릭 메뉴 > `동기화`를 클릭하면 로컬 폴더를 선택한 컨테이너 또는 폴더와 동기화할 수 있습니다. 다운로드, 업로드, 미러, 세 가지 방식을 제공합니다.
 
 #### 다운로드
 
@@ -108,21 +97,21 @@ API 비밀번호 설정 방법은 [오브젝트 스토리지 API 가이드](api-
 파일들은 로컬과 오브젝트 스토리지 양방향으로 전달되며, 변경되거나 누락된 파일 / 오브젝트를 업로드 / 다운로드합니다.
 
 > [참고]
-> 업로드, 다운로드의 자세한 기준은 [Cyberduck 가이드](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 를 참조하세요.
+> 동기화에 대한 보다 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하세요.
 
 ## SwiftStack Client
 
-SwiftStack Client는 오브젝트 스토리지 구성 및 관리에 사용되는 클라이언트입니다.
+SwiftStack Client는 오브젝트 스토리지 플랫폼 SwiftStack에 포함된 클라이언트입니다.
 
-### SwiftStack Client 다운로드
+### SwiftStack Client 설치
 
-[SwiftStack 다운로드 페이지](https://platform.swiftstack.com/docs/install/swiftstack_client.html)에서 사용 중인 운영 체제에 맞는 파일을 다운로드합니다.
+[SwiftStack Client 웹페이지](https://platform.swiftstack.com/docs/install/swiftstack_client.html)에서 사용 중인 운영 체제에 맞는 설치 파일을 다운로드해 설치합니다.
 
 ### 오브젝트 스토리지 연결 설정
 
 #### 어카운트(Account) 등록
 
-브라우저 좌측의 `Accounts` > `Add account` 를 통해서 어카운트를 생성합니다. 생성에 필요한 정보는 아래와 같습니다.
+브라우저 좌측의 `Accounts` > `Add account` 를 통해서 어카운트를 등록합니다. 생성에 필요한 정보는 아래와 같습니다.
 
 | 항목 | 설명 |
 |---|---|
@@ -133,12 +122,12 @@ SwiftStack Client는 오브젝트 스토리지 구성 및 관리에 사용되는
 | Project Name | 사용자의 Project ID 입니다. <br/> 콘솔 상단 프로젝트 우측의 톱니바퀴 클릭 > **프로젝트 기본 정보** > **프로젝트 ID**에서 확인할 수 있습니다. |
 | Region | 사용할 리전을 지정할 수 있습니다. |
 
+입력값을 올바르게 입력한 뒤, 하단의 `Save`를 클릭해 새로운 어카운트를 생성합니다.
+
 > [참고]
 >
-> API 비밀번호 설정 방법은 [오브젝트 스토리지 API 가이드](api-guide/#_1) 항목을 참조하세요.
+> API 비밀번호 설정 방법은 [오브젝트 스토리지 API 가이드](api-guide/#_1)의 `API 비밀번호 설정` 항목을 참조하세요.
 > 입력값이 올바르지 않으면 Region을 지정할 때 오류 팝업창이 나타납니다.
-
-입력값을 올바르게 입력한 뒤, 하단의 `Save`를 클릭해 새로운 어카운트를 생성합니다.
 
 ### 오브젝트 스토리지 연결
 
@@ -150,16 +139,14 @@ SwiftStack Client는 오브젝트 스토리지 구성 및 관리에 사용되는
 
 ### 컨테이너 생성
 
-브라우저 상단의 `Add Container` > `Edit Before Creation` 을 통해서 생성할 컨테이너의 이름을 지정합니다.
-
-이름을 입력한 후 하단의 `Create`를 클릭해서 컨테이너 생성을 요청합니다.
+브라우저 상단의 `Add Container` > `Edit Before Creation` 을 클릭하고 대화 상자에서 컨테이너 이름을 입력합니다. 이름을 입력한 후 하단의 `Create`를 클릭해서 컨테이너 생성을 요청합니다.
 
 > [참고]
 > 생성 완료 후 컨테이너 목록에 변화가 없을 떄 브라우저 상단의 `Refresh` 를 클릭하여 목록을 업데이트할 수 있습니다.
 
 ### 오브젝트 업로드
 
-브라우저 상단의 `Upload` > `Choose File(s)` 버튼을 클릭하여 업로드할 파일을 선택하고 업로드합니다. 끌어다 놓기로도 파일을 업로드할 수 있습니다.
+오브젝트를 업로드할 컨테이너에서 브라우저 상단의 `Upload` 버튼을 클릭하면 업로드 대화 상자가 나타납니다. Choose File(s) 버튼을 클릭하여 업로드할 파일을 선택하고 `Upload` 버튼을 클릭해 업로드합니다. 끌어다 놓기로 업로드할 수도 있습니다.
 
 > [참고]
 >
@@ -171,12 +158,13 @@ SwiftStack Client는 오브젝트 스토리지 구성 및 관리에 사용되는
 
 ### 오브젝트 다운로드
 
-원하는 오브젝트를 목록 좌측 체크박스에서 체크한 뒤, 브라우저 상단의 `Selection` > `Download` 를 통해서 다운로드합니다.
+오브젝트 이름을 클릭해 오브젝트 하나를 다운로드 할 수 있습니다.
+오브젝트 목록의 좌측 체크박스를 이용해 다수의 오브젝트를 선택한 다음 브라우저 상단의 `Selection` > `Download`를 클릭하면 선택한 오브젝트를 모두 다운로드 할 수 있습니다.
 
 ### TempURLs
 
-원하는 오브젝트 우측의 `Actions` 항목에 있는 `Copy Quick Temporary URL` 버튼을 클릭하여 일시적으로 공유 가능한 공개 URL을 클립보드에 복사할 수 있습니다. 이 URL을 통해서 하이퍼링크를 만들거나 오브젝트를 직접 다운로드할 수 있습니다.
-TempURL의 기한은 브라우저 상단의 `Temp URLs`를 클릭하여 설정 가능합니다.
+오브젝트 우측의 `Actions` 항목에 있는 `Copy Quick Temporary URL` 버튼을 클릭하면 사용 기한이 있는 접근 URL이 클립보드에 복사됩니다. 이 URL을 통해서 하이퍼링크를 만들거나 오브젝트를 직접 다운로드할 수 있습니다.
+TempURL의 기본 사용 기한은 24시간이며, 브라우저 상단의 `Temp URLs`를 클릭해 변경할 수 있습니다.
 
 > [주의]
 > TempURL을 가진 사람은 누구나 기한 내에 오브젝트를 다운로드할 수 있습니다.
@@ -193,3 +181,7 @@ TempURL의 기한은 브라우저 상단의 `Temp URLs`를 클릭하여 설정 �
 
 오브젝트 / 폴더 목록 우측의 `Actions` 항목에 있는 삭제 버튼을 통해서 원하는 오브젝트를 삭제합니다. 원하는 오브젝트들을 목록 좌측 체크박스에서 체크한 뒤, 브라우저 상단의 `Selection` > `Delete` 로도 삭제할 수 있습니다.
 
+## 참고 사이트
+Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
+
+SwiftStack Client - [https://platform.swiftstack.com/docs/install/swiftstack_client.html](https://platform.swiftstack.com/docs/install/swiftstack_client.html)
