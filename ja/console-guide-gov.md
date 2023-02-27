@@ -50,7 +50,7 @@
 # cat > index.html
 <html>
 <body> hello world!
-<a href="https://api-object-storage.gov-nhncloudservice.com/v1/{account}/{container}/{object}">Download</a>
+<a href="https://kr1-api-object-storage.gov-nhncloudservice.com/v1/{account}/{container}/{object}">Download</a>
 </body>
 </html>
 ```

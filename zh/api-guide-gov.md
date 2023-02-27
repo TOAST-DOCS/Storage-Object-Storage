@@ -11,7 +11,7 @@ Click **API Endpoint Setting** on the object storage service page to check tenan
 | Item | API Endpoint | Usage |
 |---|---|---|
 | Identity | https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0 | Issue certificate token |
-| Object-Store | https://api-object-storage.gov-nhncloudservice.com/v1/{Account} | Control object storage: depends on each region  |
+| Object-Store | https://kr1-api-object-storage.gov-nhncloudservice.com/v1/{Account} | Control object storage: depends on each region  |
 | Tenant ID | Character strings composed of 32 characters in combination of numbers and alphabets | Issue certificate token  |
 
 ### Set API Password
@@ -126,7 +126,7 @@ https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/tokens \
         "endpoints": [
           {
             "region": "KR1",
-            "publicURL": "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****"
+            "publicURL": "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****"
           }
         ],
         "type": "object-store",
@@ -339,7 +339,7 @@ This API does not return a response body. Usage status is included in the header
 
 ```
 $ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****
 ```
 
 </details>
@@ -380,7 +380,7 @@ public class AccountService {
         return status;
     }
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         AccountService accountService = new AccountService(storageUrl, tokenId);
         try {
@@ -415,7 +415,7 @@ class AccountService:
         resp = requests.head(self.storage_url, headers=req_header)
         return resp.headers
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
     # Get the account status
@@ -464,7 +464,7 @@ class Account {
   }
 }
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $account = new Account($STORAGE_URL, $TOKEN_ID);
 $status = $account->get_status();
@@ -504,7 +504,7 @@ This API does not require a request body.
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****
 ```
 
 </details>
@@ -536,7 +536,7 @@ public class AccountService {
         return new ArrayList<String>(containerList);
     }
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         AccountService accountService = new AccountService(storageUrl, tokenId);
         try {
@@ -569,7 +569,7 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
     # Get the container list
@@ -602,7 +602,7 @@ class Account {
   }
 }
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $account = new Account($STORAGE_URL, $TOKEN_ID);
 $container_list = $account->get_container_list();
@@ -645,7 +645,7 @@ This API does not return a response body. When a container is created, return st
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
 ```
 
 </details>
@@ -691,7 +691,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -735,7 +735,7 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
 
     con_service = ContainerService(STORAGE_URL, TOKEN_ID)
@@ -792,7 +792,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -834,7 +834,7 @@ This API does not require a request body.
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
 ba6610.jpg
 20d33f.jpg
 31466f.jpg
@@ -879,7 +879,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -916,7 +916,7 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -958,7 +958,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1006,7 +1006,7 @@ This API does not require a request body.
 ```
 // List objects after '20d33f.jpg'
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
 [List after specified object (20d33f.jpg)]
 ```
 
@@ -1112,7 +1112,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1157,7 +1157,7 @@ This API does not require a request body.
 ```
 // List objects of the ex folder
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?path=ex
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?path=ex
 ex/20d33f.jpg
 ex/31466f.jpg
 ```
@@ -1253,7 +1253,7 @@ This API does not require a request body.
 ```
 // List objects starting with 314
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?prefix=314
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?prefix=314
 3146f0.jpg
 3147a6.jpg
 31486f.jpg
@@ -1351,7 +1351,7 @@ This API does not require a request body.
 ```curl
 // Get only 10 objects
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?limit=10
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?limit=10
 ...{9 objects}...
 31466f0.jpg
 ```
@@ -1453,7 +1453,7 @@ $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
 -H 'X-Container-Write: *:*' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
 ```
 
 </details>
@@ -1492,7 +1492,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -1524,7 +1524,7 @@ class ContainerService:
         return requests.post(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -1566,7 +1566,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1585,7 +1585,7 @@ After setting public for the permission to read, you may use tools such as `curl
 <summary>Example</summary>
 
 ```
-$ curl https://api-object-storage.gov-nhncloudservice.com/v1/{Account}/{Container}/{Object}
+$ curl https://kr1-api-object-storage.gov-nhncloudservice.com/v1/{Account}/{Container}/{Object}
 
 {Object Details}
 ```
@@ -1619,7 +1619,7 @@ This request does not return a response body. For a valid request, return status
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
 ```
 
 </details>
@@ -1652,7 +1652,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -1683,7 +1683,7 @@ class ContainerService:
         return requests.delete(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -1718,7 +1718,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1767,7 +1767,7 @@ This API does not return a response body. For a valid request, return status cod
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 -T ./ba6610.jpg
 ```
 
@@ -1824,7 +1824,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectPath = "/home/example/";
@@ -1880,7 +1880,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'd03bda22ffb649a97958d4a5bf4b6eaf.jpg'
@@ -1940,7 +1940,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2016,21 +2016,21 @@ $ split -d -b 209715200 large_obj.img large_obj.img.
 
 // Upload segmented object
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
 -T large_obj.img.00
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/002 \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/002 \
 -T large_obj.img.01
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/003 \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/003 \
 -T large_obj.img.02
 
 // Upload manifest object
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Object-Manifest: curl_example/large_obj.img/' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img \
 -d ''
 ```
 
@@ -2067,7 +2067,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectPath = "/home/example/";
@@ -2163,7 +2163,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     LARGE_OBJECT = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2253,7 +2253,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $LARGE_OBJECT = '8cb0d624f8c14c69b52f2cd89e5e59b7.jpg';
@@ -2320,7 +2320,7 @@ Object details are returned to stream. For a valid request, return status code 2
 
 ```
 $ curl -O -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -2362,7 +2362,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2414,7 +2414,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2456,7 +2456,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2509,12 +2509,12 @@ This request does not return a response body. For a valid request, return status
 // COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/3a45e9.jpg' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/3a45e9.jpg
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/3a45e9.jpg
 
 // PUT method
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/3a45e9.jpg' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/copy_con/3a45e9.jpg
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/copy_con/3a45e9.jpg
 ```
 
 </details>
@@ -2548,7 +2548,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String srcContainerName = "test";
         final String destContainerName = "test2";
@@ -2583,7 +2583,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2622,7 +2622,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $DEST_CONTAINER = 'dest';
@@ -2669,11 +2669,11 @@ This request does not return a response body. For a valid request, return status
 // Add metada to object
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo" \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 // Check metadata added to object header
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
 ...
 X-Object-Meta-Type: photo
@@ -2714,7 +2714,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2750,7 +2750,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2788,7 +2788,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2838,7 +2838,7 @@ This request does not return a response body. For a valid request, return status
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 ```
 
 </details>
@@ -2870,7 +2870,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2903,7 +2903,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2939,7 +2939,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';

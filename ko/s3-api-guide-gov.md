@@ -452,7 +452,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | 이름 | 설명 |
 |---|---|
-| endpoint | https://api-object-storage.gov-nhncloudservice.com |
+| endpoint | https://kr1-api-object-storage.gov-nhncloudservice.com |
 | command | AWS 명령줄 인터페이스 명령 |
 | bucket | 버킷 이름 |
 
@@ -465,7 +465,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 <summary>버킷 생성</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.gov-nhncloudservice.com s3 mb s3://example-bucket
+$ aws --endpoint-url=https://kr1-api-object-storage.gov-nhncloudservice.com s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
 
@@ -475,7 +475,7 @@ make_bucket: example-bucket
 <summary>버킷 목록 조회</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.gov-nhncloudservice.com s3 ls
+$ aws --endpoint-url=https://kr1-api-object-storage.gov-nhncloudservice.com s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
 
@@ -486,7 +486,7 @@ $ aws --endpoint-url=https://api-object-storage.gov-nhncloudservice.com s3 ls
 <summary>버킷 조회</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.gov-nhncloudservice.com s3 ls s3://example-bucket
+$ aws --endpoint-url=https://kr1-api-object-storage.gov-nhncloudservice.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -497,7 +497,7 @@ $ aws --endpoint-url=https://api-object-storage.gov-nhncloudservice.com s3 ls s3
 <summary>버킷 삭제</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.gov-nhncloudservice.com s3 ls s3://example-bucket
+$ aws --endpoint-url=https://kr1-api-object-storage.gov-nhncloudservice.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -508,7 +508,7 @@ $ aws --endpoint-url=https://api-object-storage.gov-nhncloudservice.com s3 ls s3
 <summary>오브젝트 업로드</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.gov-nhncloudservice.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=https://kr1-api-object-storage.gov-nhncloudservice.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -534,7 +534,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 <summary>오브젝트 다운로드</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.gov-nhncloudservice.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=https://kr1-api-object-storage.gov-nhncloudservice.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
 
@@ -544,7 +544,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <summary>오브젝트 삭제</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.gov-nhncloudservice.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=https://kr1-api-object-storage.gov-nhncloudservice.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -564,7 +564,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
 | region name | gov |
-| endpoint | https://api-object-storage.gov-nhncloudservice.com |
+| endpoint | https://kr1-api-object-storage.gov-nhncloudservice.com |
 
 ### Boto3 - Python SDK
 

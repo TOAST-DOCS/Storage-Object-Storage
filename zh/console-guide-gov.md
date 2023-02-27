@@ -50,7 +50,7 @@ For creating a container, if container access policy is set private, only allowe
 # cat > index.html
 <html>
 <body> hello world!
-<a href="https://api-object-storage.gov-nhncloudservice.com/v1/{account}/{container}/{object}">Download</a>
+<a href="https://kr1-api-object-storage.gov-nhncloudservice.com/v1/{account}/{container}/{object}">Download</a>
 </body>
 </html>
 ```
