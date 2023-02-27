@@ -1052,7 +1052,7 @@ POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Container-Read: {Container read policy}
 X-Container-Write: {Container write policy}
-X-Container-Object-Retention: {Life cycle of objects in container}
+X-Container-Object-Lifecycle: {Life cycle of objects in container}
 X-History-Location: {Container to store the previous object version}
 X-Versions-Retention: {Life cycle of the previous object version}
 X-Container-Meta-Web-Index: {Static website index document object}
@@ -1070,7 +1070,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | X-Container-Read | Header | String | - | Sets the access rules for container read |
 | X-Container-Write | Header | String | - | Sets the access rules for container write |
-| X-Container-Object-Retention | Header | Integer | - | Sets the life cycle of the container's base object in days |
+| X-Container-Object-Lifecycle | Header | Integer | - | Sets the life cycle of the container's base object in days |
 | X-History-Location | Header | String | - | Sets the container to store the previous version of the object |
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
 | X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
@@ -1088,7 +1088,7 @@ You can set the container access policy using the `X-Container-Read` and `X-Cont
 <br/>
 
 ##### Set the Object Life Cycle
-With the `X-Container-Object-Retention` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
+With the `X-Container-Object-Lifecycle` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
 <br/>
 
 ##### Set the Version Control Policy
@@ -1200,7 +1200,7 @@ You can change the object lock cycle of the object lock container using the `X-C
 <br/>
 
 ##### Unset a Container
-If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Retention: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
+If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Lifecycle: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
 <br/>
 
 #### Response

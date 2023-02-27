@@ -1052,7 +1052,7 @@ POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Container-Read: {コンテナ読み取りポリシー}
 X-Container-Write: {コンテナ書き込みポリシー}
-X-Container-Object-Retention: {コンテナのオブジェクトのライフサイクル}
+X-Container-Object-Lifecycle: {コンテナのオブジェクトのライフサイクル}
 X-History-Location: {オブジェクトの以前バージョンを保存するコンテナ}
 X-Versions-Retention: {オブジェクトの以前のバージョンのライフサイクル}
 X-Container-Meta-Web-Index: {静的Webサイトインデックス文書オブジェクト}
@@ -1070,7 +1070,7 @@ X-Container-Worm-Retention-Day: {コンテナのオブジェクトロック周�
 | X-Auth-Token | Header | String | O | トークンID |
 | X-Container-Read | Header | String | - | コンテナ読み取りルール設定 |
 | X-Container-Write | Header | String | - | コンテナ書き込みルール設定 |
-| X-Container-Object-Retention | Header | Integer | - | コンテナの基本オブジェクトライフサイクルを日単位で設定 |
+| X-Container-Object-Lifecycle | Header | Integer | - | コンテナの基本オブジェクトライフサイクルを日単位で設定 |
 | X-History-Location | Header | String | - | オブジェクトの以前バージョンを保管するコンテナを設定 |
 | X-Versions-Retention | Header | Integer | - | オブジェクトの以前のバージョンのライフサイクルを日単位で設定 |
 | X-Container-Meta-Web-Index | Header | String | - | 静的Webサイトインデックス文書オブジェクト設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
@@ -1088,7 +1088,7 @@ X-Container-Worm-Retention-Day: {コンテナのオブジェクトロック周�
 <br/>
 
 ##### オブジェクトライフサイクル設定
-`X-Container-Object-Retention`ヘッダを使用するとコンテナに保存されるオブジェクトのライフサイクルを日単位で設定できます。設定後にアップロードしたオブジェクトにのみ適用されます。
+`X-Container-Object-Lifecycle`ヘッダを使用するとコンテナに保存されるオブジェクトのライフサイクルを日単位で設定できます。設定後にアップロードしたオブジェクトにのみ適用されます。
 <br/>
 
 ##### バージョン管理ポリシー設定
@@ -1198,7 +1198,7 @@ Status: 0
 <br/>
 
 ##### コンテナ設定解除
-値がないヘッダを使用すると設定が解除されます。例えばオブジェクトライフサイクルが3日に設定されている時、`'X-Container-Object-Retention: '`を使用してコンテナ修正リクエストを行うと、オブジェクトライフサイクル設定が解除され、その後にコンテナに保存されるオブジェクトは自動的にライフサイクルが設定されません。
+値がないヘッダを使用すると設定が解除されます。例えばオブジェクトライフサイクルが3日に設定されている時、`'X-Container-Object-Lifecycle: '`を使用してコンテナ修正リクエストを行うと、オブジェクトライフサイクル設定が解除され、その後にコンテナに保存されるオブジェクトは自動的にライフサイクルが設定されません。
 <br/>
 
 #### レスポンス

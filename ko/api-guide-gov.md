@@ -1052,7 +1052,7 @@ POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Container-Read: {컨테이너 읽기 정책}
 X-Container-Write: {컨테이너 쓰기 정책}
-X-Container-Object-Retention: {컨테이너의 오브젝트 수명 주기}
+X-Container-Object-Lifecycle: {컨테이너의 오브젝트 수명 주기}
 X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
 X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
 X-Container-Meta-Web-Index: {정적 웹사이트 인덱스 문서 오브젝트}
@@ -1070,7 +1070,7 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 설정 |
 | X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 접근 규칙 설정 |
-| X-Container-Object-Retention | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
+| X-Container-Object-Lifecycle | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
 | X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
 | X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
 | X-Container-Meta-Web-Index | Header | String | - | 정적 웹사이트 인덱스 문서 오브젝트 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
@@ -1088,7 +1088,7 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 <br/>
 
 ##### 오브젝트 수명 주기 설정
-`X-Container-Object-Retention` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
+`X-Container-Object-Lifecycle` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
 <br/>
 
 ##### 버전 관리 정책 설정
@@ -1200,7 +1200,7 @@ Status: 0
 <br/>
 
 ##### 컨테이너 설정 해제
-값이 없는 헤더를 사용하면 설정이 해제됩니다. 예를 들어 오브젝트 수명 주기가 3일로 설정되어 있을 때 `'X-Container-Object-Retention: '`를 사용해 컨테이너 수정 요청을 하면, 오브젝트 수명 주기 설정이 해제되어 이후 컨테이너에 저장되는 오브젝트는 자동으로 수명 주기가 설정되지 않습니다.
+값이 없는 헤더를 사용하면 설정이 해제됩니다. 예를 들어 오브젝트 수명 주기가 3일로 설정되어 있을 때 `'X-Container-Object-Lifecycle: '`를 사용해 컨테이너 수정 요청을 하면, 오브젝트 수명 주기 설정이 해제되어 이후 컨테이너에 저장되는 오브젝트는 자동으로 수명 주기가 설정되지 않습니다.
 <br/>
 
 #### 응답
