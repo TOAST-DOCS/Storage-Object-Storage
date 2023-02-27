@@ -100,6 +100,7 @@ X-Auth-Token: {token-id}
 발급 받은 S3 API 자격 증명을 조회합니다.
 
 **[Method, URL]**
+
 ```
 GET   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
 
@@ -143,6 +144,7 @@ X-Auth-Token: {token-id}
 발급 받은 S3 API 자격 증명을 삭제합니다.
 
 **[Method, URL]**
+
 ```
 DELETE   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
@@ -176,7 +178,7 @@ S3 API를 사용하려면 자격 증명을 이용해 서명을 생성해야 합�
 
 ## 버킷(Bucket)
 ### 버킷 생성
-버킷(컨테이너)을 생성합니다. 버킷 이름은 다음과 같은 Amazon S3의 버킷 명명 규칙을 따라야 합니다.
+버킷을 생성합니다. 버킷 이름은 다음과 같은 Amazon S3의 명명 규칙을 따라야 합니다.
 
 * 버킷 이름은 3자에서 63자 사이여야 합니다.
 * 버킷 이름은 소문자, 숫자, 점(.) 및 하이픈(-)으로만 구성될 수 있습니다.
@@ -206,42 +208,15 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Location | Body | String | 생성한 버킷 경로 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "txfad4e17792b1432fb106f-005e5ef0e4",
-    "HostId": "txfad4e17792b1432fb106f-005e5ef0e4",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "content-length": "0",
-      "x-amz-request-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "content-type": "text/html; charset=UTF-8",
-      "location": "/new-container",
-      "x-trans-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "x-openstack-request-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "Location": "/new-container"
-}
-```
-
-</details>
+| Location | Header | String | 생성한 버킷 경로 |
 
 ### 버킷 목록 조회
 버킷 목록을 조회합니다.
+
 ```
 GET /
 
@@ -258,48 +233,37 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Buckets.Name | Body | String | 버킷 이름 |
-| Buckets.CreationDate | Body | String | 생성 시각 |
+요청이 올바르면 상태 코드 200과 XML 형식으로 구성된 버킷 목록을 반환합니다.
 
 <details>
 <summary>예시</summary>
 
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "txbf73f4d73ad34344a21bb-005e5ef141",
-    "HostId": "txbf73f4d73ad34344a21bb-005e5ef141",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "content-length": "750",
-      "x-amz-request-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "content-type": "application/xml",
-      "x-trans-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "x-openstack-request-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "Buckets": [
-    {
-      "Name": "new-container",
-      "CreationDate": "2020-02-22T22:22:22+00:00"
-    }
-  ],
-  "Owner": {}
-}
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<ListAllMyBucketsResult
+	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+	<Owner>
+		<ID>user:panther</ID>
+		<DisplayName>user:panther</DisplayName>
+	</Owner>
+	<Buckets>
+		<Bucket>
+			<Name>log</Name>
+			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
+		</Bucket>
+		<Bucket>
+			<Name>snapshot</Name>
+			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
+		</Bucket>
+	</Buckets>
+</ListAllMyBucketsResult>
 ```
 
 </details>
 
 ### 버킷 조회
 지정한 버킷의 정보와 내부에 저장된 오브젝트 목록을 조회합니다.
+
 ```
 GET /{bucket}
 
@@ -317,62 +281,50 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| Contents | Body | Object | 오브젝트 목록 객체 |  
-| Contents.Key | Body | String | 오브젝트 이름 |
-| Contents.LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| Contents.ETag | Body | String | 오브젝트의 MD5 해시값 |
-| Contents.Size | Body | String | 오브젝트의 크기 |
-| Contents.StorageClass | Body | String | 오브젝트가 저장된 저장소 종류 |
-| Name | Body | String | 버킷 이름 |
-| KeyCount | Body | Integer | 목록의 오브젝트 수 |
+요청이 올바르면 상태 코드 200과 XML 형식으로 구성된 오브젝트 목록을 반환합니다.
 
 <details>
 <summary>예시</summary>
 
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "tx75a3242dac55411fac69b-005e5ef1f1",
-    "HostId": "tx75a3242dac55411fac69b-005e5ef1f1",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "content-length": "1273",
-      "x-amz-request-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "content-type": "application/xml",
-      "x-trans-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "x-openstack-request-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "IsTruncated": false,
-  "Contents": [
-    {
-       "Key": "benjamin-ashton-Af9X4A8qMtM-unsplash.jpg",
-       "LastModified": "2020-02-22T22:22:22.222222+00:00",
-       "ETag": "\"2e95b028564c14371939358d3e88a771\"",
-       "Size": 3267226,
-       "StorageClass": "STANDARD"
-    }
-  ],
-  "Name": "new-container",
-  "Prefix": "",
-  "MaxKeys": 1000,
-  "EncodingType": "url",
-  "KeyCount": 1
-}
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<ListBucketResult
+	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+	<Name>snapshot</Name>
+	<Prefix/>
+	<Marker/>
+	<MaxKeys>1000</MaxKeys>
+	<IsTruncated>false</IsTruncated>
+	<Contents>
+		<Key>cheetah</Key>
+		<LastModified>2023-02-01T04:49:52.995Z</LastModified>
+		<ETag>"7d793037a0760186574b0282f2f435e7"</ETag>
+		<Size>5</Size>
+		<Owner>
+			<ID>user:panther</ID>
+			<DisplayName>user:panther</DisplayName>
+		</Owner>
+		<StorageClass>STANDARD</StorageClass>
+	</Contents>
+	<Contents>
+		<Key>leopard</Key>
+		<LastModified>2023-02-01T04:49:52.685Z</LastModified>
+		<ETag>"5d41402abc4b2a76b9719d911017c592"</ETag>
+		<Size>5</Size>
+		<Owner>
+			<ID>user:panther</ID>
+			<DisplayName>user:panther</DisplayName>
+		</Owner>
+		<StorageClass>STANDARD</StorageClass>
+	</Contents>
+</ListBucketResult>
 ```
 
 </details>
 
 ### 버킷 삭제
 지정한 버킷을 삭제합니다. 삭제할 버킷은 비어 있어야 합니다.
+
 ```
 DELETE /{bucket}
 
@@ -390,40 +342,12 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx9b01c2e650e746ecba298-005e5ef28b",
-        "HostId": "tx9b01c2e650e746ecba298-005e5ef28b",
-        "HTTPStatusCode": 204,
-        "HTTPHeaders": {
-            "x-amz-id-2": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "content-length": "0",
-            "x-amz-request-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "content-type": "text/html; charset=UTF-8",
-            "x-trans-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "x-openstack-request-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-        },
-        "RetryAttempts": 0
-    }
-}
-```
-
-</details>
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## 오브젝트
 ### 오브젝트 업로드
 지정한 버킷에 오브젝트를 업로드합니다.
+
 ```
 PUT /{bucket}/{obj}
 
@@ -442,43 +366,16 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| ETag | Body | String | 업로드한 오브젝트의 MD5 해시값 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-    "HostId": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "content-length": "0",
-      "x-amz-id-2": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "last-modified": "Sat, 22 Feb 2020 22:22:22 GMT",
-      "etag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-      "x-amz-request-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "content-type": "text/html; charset=UTF-8",
-      "x-trans-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "x-openstack-request-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "ETag": "\"01463f775ef4f4dbbc7525f88120df09\""
-}
-```
-
-</details>
+| ETag | Header | String | 오브젝트의 MD5 해시값 |
+| Last-Modified | Header | String | 오브젝트의 마지막 수정 일시 (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 ### 오브젝트 다운로드
 오브젝트를 다운로드합니다.
+
 ```
 GET /{bucket}/{obj}
 
@@ -497,48 +394,12 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
+요청이 올바르면 상태 코드 200을 반환합니다.
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-| LastModified | Body | String | 오브젝트의 최근 수정 시각, YYYY-MM-DDThh:mm:ssZ |
-| ContentLength | Body | String | 다운로드한 오브젝트의 크기 |
-| ETag | Body | String | 오브젝트의 MD5 해시값 |
-| ContentType | Body | String | 오브젝트의 콘텐츠 타입 |
-| Metadata | Body | Object | 오브젝트의 메타데이터 객체 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx637d5de3c27f4b0a9664e-005e5ef491",
-        "HostId": "tx637d5de3c27f4b0a9664e-005e5ef491",
-        "HTTPStatusCode": 200,
-        "HTTPHeaders": {
-            "content-length": "124352",
-            "x-amz-id-2": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "last-modified": "Sat, 22 Feb 2020 22:22:22 GMT",
-            "etag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-            "x-amz-request-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "content-type": "image/jpeg",
-            "x-trans-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "x-openstack-request-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-        },
-        "RetryAttempts": 0
-    },
-    "LastModified": "2020-02-22T22:22:22+00:00",
-    "ContentLength": 124352,
-    "ETag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-    "ContentType": "image/jpeg",
-    "Metadata": {}
-}
-```
-
-</details>
+| Last-Modified | Header | String | 오브젝트의 마지막 수정 일시 (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
+| ETag | Header | String | 오브젝트의 MD5 해시값 |
 
 ### 오브젝트 삭제
 지정한 오브젝트를 삭제합니다.
@@ -561,36 +422,7 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
 #### 응답
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | 응답 메타데이터 객체 |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | 응답 상태 코드 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx04a548072068487a8a5be-005e5ef648",
-        "HostId": "tx04a548072068487a8a5be-005e5ef648",
-        "HTTPStatusCode": 204,
-        "HTTPHeaders": {
-            "x-amz-id-2": "tx04a548072068487a8a5be-005e5ef648",
-            "content-length": "0",
-            "x-amz-request-id": "tx04a548072068487a8a5be-005e5ef648",
-            "content-type": "text/html; charset=UTF-8",
-            "x-trans-id": "tx04a548072068487a8a5be-005e5ef648",
-            "x-openstack-request-id": "tx04a548072068487a8a5be-005e5ef648",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-        },
-        "RetryAttempts": 0
-    }
-}
-```
-
-</details>
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## AWS 명령줄 인터페이스(CLI)
 S3 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
@@ -598,14 +430,14 @@ S3 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.co
 ### 설치
 AWS 명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 이용해 설치합니다.
 
-```
+```shell
 $ sudo pip install awscli
 ```
 
 ### 설정
 AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 S3 API 자격 증명과 환경을 설정해야 합니다.
 
-```
+```shell
 $ aws configure
 AWS Access Key ID [None]: {access}
 AWS Secret Access Key [None]: {secret}
@@ -621,7 +453,7 @@ Default output format [None]: json
 
 ### S3 명령 사용 방법
 
-```
+```shell
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 ```
 
@@ -639,7 +471,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 <details>
 <summary>버킷 생성</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
@@ -649,7 +481,7 @@ make_bucket: example-bucket
 <details>
 <summary>버킷 목록 조회</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
@@ -660,7 +492,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 <details>
 <summary>버킷 조회</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
@@ -671,7 +503,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>버킷 삭제</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
@@ -682,17 +514,33 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>오브젝트 업로드</summary>
 
-```
-$  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```shell
+$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
+
+<blockquote>
+[참고]
+</br>
+오브젝트의 용량이 8MB 이상이면 AWS 명령줄 인터페이스는 오브젝트를 여러 개의 파트로 나누어 업로드합니다. 파트 오브젝트는 <code style="display: inline;">{bucket}+segments</code>라는 버킷에 <code style="display: inline;">{object-name}/{upload-id}/{part-number}</code> 형태의 이름으로 저장되고, 모든 파트 업로드가 끝나면 업로드 요청한 버킷에 파트 오브젝트를 연결한 오브젝트가 만들어집니다.
+</br></br>
+파트 오브젝트가 저장되는 <code style="display: inline;">{bucket}+segments</code> 버킷은 S3 호환 API로는 접근할 수 없고, Object Storage API 또는 콘솔을 통해 접근할 수 있습니다.
+</br></br>
+멀티파트 오브젝트의 ETag는 각 파트 오브젝트의 ETag 값을 이진 데이터로 변환하고 순서대로 연결해(concatenate) MD5 해시한 값입니다.
+</blockquote>
+
+<blockquote>
+[주의]
+</br>
+멀티파트로 업로드한 오브젝트의 일부 또는 전체 파트 오브젝트를 삭제하면 오브젝트에 접근할 수 없습니다.
+</blockquote>
 
 </details>
 
 <details>
 <summary>오브젝트 다운로드</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
@@ -702,7 +550,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <details>
 <summary>오브젝트 삭제</summary>
 
-```
+```shell
 $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
@@ -714,8 +562,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
 > [참고]
-> 이 문서에서는 Python과 Java SDK의 간단한 사용 예시만 설명합니다. 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
-
+> 보다 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
 
 AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
 
@@ -726,8 +573,12 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 | region name | KR1 - 한국(판교)리전<br/>KR2 - 한국(평촌)리전<br/>JP1 - 일본(도쿄)리전<br/>US1 - 미국(캘리포니아)리전 |
 | endpoint | https://api-storage.cloud.toast.com - 한국(판교)리전<br/>https://kr2-api-storage.cloud.toast.com - 한국(평촌)리전<br/>https://jp1-api-storage.cloud.toast.com - 일본(도쿄)리전<br/>https://us1-api-storage.cloud.toast.com - 미국(캘리포니아)리전 | |
 
-
 ### Boto3 - Python SDK
+
+> [참고]
+> 보다 자세한 내용은 [AWS SDK for Python (Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+
+#### Context
 
 <details>
 <summary>Boto3 클라이언트 클래스</summary>
@@ -735,6 +586,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 ```python
 # boto3example.py
 import boto3
+from botocore.exceptions import ClientError
 
 class Boto3Example(object):
     _REGION = '{region name}'
@@ -757,8 +609,11 @@ class Boto3Example(object):
 <summary>버킷 생성</summary>
 
 ```python
-    def create_bucket(self, bucket_name):
+def create_bucket(self, bucket_name):
+    try:
         return self.s3.create_bucket(Bucket=bucket_name)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -767,9 +622,11 @@ class Boto3Example(object):
 <summary>버킷 목록 조회</summary>
 
 ```python
-    def list_buckets(self):
-        response = self.s3.list_buckets()
-        return response.get('Buckets')
+def list_buckets(self):
+    try:
+        return self.s3.list_buckets().get('Buckets')
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -778,9 +635,11 @@ class Boto3Example(object):
 <summary>버킷 조회(오브젝트 목록 조회)</summary>
 
 ```python
-    def list_objs(self, bucket_name):
-        response = self.s3.list_objects_v2(Bucket=bucket_name)
-        return response.get('Contents')
+def list_objs(self, bucket_name):
+    try:
+        return self.s3.list_objects_v2(Bucket=bucket_name).get('Contents')
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -789,8 +648,11 @@ class Boto3Example(object):
 <summary>버킷 삭제</summary>
 
 ```python
-    def delete_bucket(self, bucket_name):
+def delete_bucket(self, bucket_name):
+    try:
         return self.s3.delete_bucket(Bucket=bucket_name)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -799,9 +661,12 @@ class Boto3Example(object):
 <summary>오브젝트 업로드</summary>
 
 ```python
-    def upload(self, bucket_name, key, filename):
-        with open(filename, 'rb') as fd:
-            return self.s3.put_object(Bucket=bucket_name, Key=key, Body=fd)
+def upload(self, bucket_name, key, filename):
+    try:
+        self.s3.upload_file(
+            Filename=filename, Bucket=bucket_name, Key=key)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -810,15 +675,21 @@ class Boto3Example(object):
 <summary>오브젝트 다운로드</summary>
 
 ```python
-    def download(self, bucket_name, key, filename):
+def download(self, bucket_name, key, filename):
+    try:
         response = self.s3.get_object(Bucket=bucket_name, Key=key)
 
         with io.FileIO(filename, 'w') as fd:
             for chunk in response['Body']:
                 fd.write(chunk)
-        response.pop('Body')
 
-        return response
+        response.pop('Body')
+    except ClientError as e:
+        raise RuntimeError(e)
+    except OSError as e:
+        raise RuntimeError(e)
+
+    return response
 ```
 
 </details>
@@ -827,21 +698,28 @@ class Boto3Example(object):
 <summary>오브젝트 삭제</summary>
 
 ```python
-    def delete(self, bucket_name, key):
-        return self.s3.delete_object(Bucket=bucket_name, Key=keys)
+def delete(self, bucket_name, key):
+    try:
+        return self.s3.delete_object(Bucket=bucket_name, Key=key)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
 
-
 ### Java SDK
+
+> [참고]
+> 보다 자세한 내용은 [AWS SDK for Java 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html) 문서를 참조하세요.
+
+#### Context
 
 <details>
 <summary>Java SDK 클라이언트 클래스</summary>
 
 ```java
-// AwsSdkExapmple.java
-public class AwsSdkExapmple {
+// AwsSdkExample.java
+public class AwsSdkExample {
     private static final String access = "{access}";
     private static final String secret = "{secret}";
     private static final String region = "{region name}";
@@ -849,14 +727,19 @@ public class AwsSdkExapmple {
 
     private AmazonS3 s3Client;
 
-    public AwsSdkExapmple() {
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(access, secret);
+    public AwsSdkExample() {
+        BasicAWSCredentials awsCredentials =
+            new BasicAWSCredentials(access, secret);
         s3Client = AmazonS3ClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(ednpoint, region))
-                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-                .enablePathStyleAccess()
-                .disableChunkedEncoding()
-                .build();
+            .withEndpointConfiguration(
+                new AwsClientBuilder.EndpointConfiguration(ednpoint, region)
+            )
+            .withCredentials(
+                new AWSStaticCredentialsProvider(awsCredentials)
+            )
+            .enablePathStyleAccess()
+            .disableChunkedEncoding()
+            .build();
     }
 }
 ```
@@ -867,10 +750,15 @@ public class AwsSdkExapmple {
 <summary>버킷 생성</summary>
 
 ```java
-    public String createBucket(String bucketName) {
-        Bucket bucket = s3Client.createBucket(bucketName);
-        return bucket.toString();
+public String createBucket(String bucketName) throws RuntimeException {
+    try {
+        return s3Client.createBucket(bucketName).toString();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -879,9 +767,15 @@ public class AwsSdkExapmple {
 <summary>버킷 목록 조회</summary>
 
 ```java
-    public List<Bucket> listBuckets() {
+public List<Bucket> listBuckets() throws RuntimeException {
+    try {
         return s3Client.listBuckets();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -890,9 +784,17 @@ public class AwsSdkExapmple {
 <summary>버킷 조회(오브젝트 목록 조회)</summary>
 
 ```java
-    public ListObjectsV2Result listObjects(String bucketName) {
+public ListObjectsV2Result listObjects(
+    String bucketName
+) throws RuntimeException {
+    try {
         return s3Client.listObjectsV2(bucketName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -901,9 +803,15 @@ public class AwsSdkExapmple {
 <summary>버킷 삭제</summary>
 
 ```java
-    public void deleteBucket(String bucketName) {
+public void deleteBucket(String bucketName) throws RuntimeException {
+    try {
         s3Client.deleteBucket(bucketName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -912,10 +820,23 @@ public class AwsSdkExapmple {
 <summary>오브젝트 업로드</summary>
 
 ```java
-    public String uploadObject(String bucketName, String objKeyName, String filePath) {
-        PutObjectResult result = s3Client.putObject(bucketName, objKeyName, new File(filePath));
-        return result.getETag();
+public void uploadObject(
+    String bucketName, String objectKey, String filePath
+) throws RuntimeException {
+    try {
+        TransferManager tm = TransferManagerBuilder.standard()
+            .withS3Client(s3Client)
+            .build();
+        Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
+        upload.waitForCompletion();
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -924,11 +845,26 @@ public class AwsSdkExapmple {
 <summary>오브젝트 다운로드</summary>
 
 ```java
-    public String downloadObject(String bucketName, String objKeyName, String filePath) {
-        GetObjectRequest request = new GetObjectRequest(bucketName, objKeyName);
-        ObjectMetadata metadata = s3Client.getObject(request, new File(filePath));
-        return metadata.getETag();
+public String downloadObject(
+    String bucketName, String objKeyName, String filePath
+) throws RuntimeException {
+    try {
+        return s3Client.getObject(
+            new GetObjectRequest(bucketName, objKeyName),
+            new File(filePath)
+        ).getETag();
+    } catch (NoSuchKeyException e) {
+        throw new RuntimeException(e);
+    } catch (InvalidObjectStateException e) {
+        throw new RuntimeException(e);
+    } catch (S3Exception e) {
+        throw new RuntimeException(e);
+    } catch (AwsServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -937,9 +873,310 @@ public class AwsSdkExapmple {
 <summary>오브젝트 삭제</summary>
 
 ```java
-    public void deleteObject(String bucketName, String objKeyName) {
+public void deleteObject(
+    String bucketName, String objKeyName
+) throws RuntimeException {
+    try {
         s3Client.deleteObject(bucketName, objKeyName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
+
+### .NET SDK
+
+> [참고]
+> 보다 자세한 내용은 [AWS SDK for .NET 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+
+#### Context
+
+<details>
+<summary>.NET SDK 클라이언트 클래스</summary>
+
+```csharp
+class S3SDKExample
+{
+    private static string endpoint = "{endpoint}";
+    private static string regionName = "{region name}";
+    private static string accessKey = "{access}";
+    private static string secretKey = "{secret}";
+
+    private static AmazonS3Client GetS3Client()
+    {
+        var amazonS3Config =
+            new AmazonS3Config
+            {
+                ServiceURL = endpoint,
+                AuthenticationRegion = regionName,
+                ForcePathStyle = true,
+            };
+        var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+
+        return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>버킷 생성</summary>
+
+```csharp
+static async Task<PutBucketResponse> CreateBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        if (!(await AmazonS3Util.DoesS3BucketExistAsync(s3Client, bucketName)))
+        {
+            var putBucketRequest =
+                new PutBucketRequest
+                {
+                    BucketName = bucketName,
+                    UseClientRegion = true
+                };
+
+            return await s3Client.PutBucketAsync(putBucketRequest);
+        }
+        throw new Exception("Bucket already exist.");
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>버킷 목록 조회</summary>
+
+```csharp
+static async Task<ListBucketsResponse> ListBucketsAsync(AmazonS3Client s3Client)
+{
+    try
+    {
+        return await s3Client.ListBucketsAsync();
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>버킷 조회(오브젝트 목록 조회)</summary>
+
+```csharp
+static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        List<ListObjectsV2Response> responses =
+            new List<ListObjectsV2Response>();
+        var request =
+            new ListObjectsV2Request
+            {
+                BucketName = bucketName,
+                MaxKeys = 5,
+            };
+        var response = new ListObjectsV2Response();
+
+        do
+        {
+            responses.Add(await s3Client.ListObjectsV2Async(request));
+            request.ContinuationToken = response.NextContinuationToken;
+        }
+        while (response.IsTruncated);
+
+        return responses;
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>버킷 삭제</summary>
+
+```csharp
+static async Task<DeleteBucketResponse> DeleteBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        return await s3Client.DeleteBucketAsync(
+            new DeleteBucketRequest
+            {
+                BucketName = bucketName
+            });
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>오브젝트 업로드</summary>
+
+```csharp
+private static async Task UploadObjectAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName,
+    string filePath)
+{
+    List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
+    InitiateMultipartUploadRequest initiateRequest =
+        new InitiateMultipartUploadRequest
+        {
+            BucketName = bucketName,
+            Key = keyName
+        };
+
+    InitiateMultipartUploadResponse initResponse =
+        await s3Client.InitiateMultipartUploadAsync(initiateRequest);
+
+    long contentLength = new FileInfo(filePath).Length;
+    long partSize = 10 * (long)Math.Pow(2, 20);
+
+    try
+    {
+        long filePosition = 0;
+        for (int i = 1; filePosition < contentLength; i++)
+        {
+            UploadPartRequest uploadRequest =
+                new UploadPartRequest
+                {
+                    UseChunkEncoding = false,
+                    BucketName = bucketName,
+                    Key = keyName,
+                    UploadId = initResponse.UploadId,
+                    PartNumber = i,
+                    PartSize = partSize,
+                    FilePosition = filePosition,
+                    FilePath = filePath
+                };
+            uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
+            filePosition += partSize;
+        }
+
+        CompleteMultipartUploadRequest completeRequest =
+            new CompleteMultipartUploadRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+            };
+        completeRequest.AddPartETags(uploadResponses);
+        CompleteMultipartUploadResponse completeUploadResponse =
+            await s3Client.CompleteMultipartUploadAsync(completeRequest);
+    }
+    catch (Exception e)
+    {
+        AbortMultipartUploadRequest abortMPURequest =
+            new AbortMultipartUploadRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+            };
+        await s3Client.AbortMultipartUploadAsync(abortMPURequest);
+
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>오브젝트 다운로드</summary>
+
+```csharp
+static async Task ReadObjectDataAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName,
+    string filePath)
+{
+    try
+    {
+        GetObjectRequest request =
+            new GetObjectRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
+
+        ResponseHeaderOverrides responseHeaders =
+            new ResponseHeaderOverrides();
+        responseHeaders.CacheControl = "No-cache";
+
+        request.ResponseHeaderOverrides = responseHeaders;
+        var appendToFile = false;
+
+        using (var response = await s3Client.GetObjectAsync(request))
+        await response.WriteResponseStreamToFileAsync(
+            filePath, appendToFile, CancellationToken.None);
+    }
+    catch (AmazonS3Exception e)
+    {
+       throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>오브젝트 삭제</summary>
+
+```csharp
+static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName)
+{
+    try
+    {
+        var deleteObjectRequest =
+            new DeleteObjectRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
+
+        return await s3Client.DeleteObjectAsync(deleteObjectRequest);
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
