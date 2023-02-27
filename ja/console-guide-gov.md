@@ -50,7 +50,7 @@
 # cat > index.html
 <html>
 <body> hello world!
-<a href="https://gov-api-storage.cloud.toast.com/v1/{account}/{container}/{object}">Download</a>
+<a href="https://api-object-storage.gov-nhncloudservice.com/v1/{account}/{container}/{object}">Download</a>
 </body>
 </html>
 ```

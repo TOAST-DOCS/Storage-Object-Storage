@@ -10,8 +10,8 @@
 
 | 項目 | APIエンドポイント | 用途 |
 |---|---|---|
-| Identity | https://gov-api-identity.infrastructure.cloud.toast.com/v2.0 | 認証トークン発行 |
-| Object-Store | https://gov-api-storage.cloud.toast.com/v1/{Account} | オブジェクトストレージ制御、リージョンによって異なる |
+| Identity | https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0 | 認証トークン発行 |
+| Object-Store | https://api-object-storage.gov-nhncloudservice.com/v1/{Account} | オブジェクトストレージ制御、リージョンによって異なる |
 | Tenant ID | 数字 + 英字で構成された32文字の文字列 | 認証トークン発行 |
 
 ### APIパスワード設定
@@ -25,7 +25,7 @@ APIパスワードはオブジェクトストレージサービスページの**
 ## 認証トークン発行
 
 ```
-POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/tokens
+POST    https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/tokens
 Content-Type: application/json
 ```
 
@@ -102,7 +102,7 @@ Content-Type: application/json
 
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
-https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
+https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/tokens \
 -d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
@@ -126,7 +126,7 @@ https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
         "endpoints": [
           {
             "region": "KR1",
-            "publicURL": "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****"
+            "publicURL": "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****"
           }
         ],
         "type": "object-store",
@@ -205,7 +205,7 @@ public class AuthService {
     }
 
     public static void main(String[] args) {
-        final String authUrl = "https://gov-api-identity.infrastructure.cloud.toast.com/v2.0";
+        final String authUrl = "https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0";
         final String tenantId = "{Tenant ID}";
         final String username = "{TOAST Account}";
         final String password = "{API Password}";
@@ -247,7 +247,7 @@ def get_token(auth_url, tenant_id, username, password):
 
 
 if __name__ == '__main__':
-    AUTH_URL = 'https://gov-api-identity.infrastructure.cloud.toast.com/v2.0'
+    AUTH_URL = 'https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0'
     TENANT_ID = '{Tenant ID}'
     USERNAME = '{TOAST Account}'
     PASSWORD = '{API Password}'
@@ -292,7 +292,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
   return $response;
 }
 
-$AUTH_URL = 'https://gov-api-identity.infrastructure.cloud.toast.com/v2.0';
+$AUTH_URL = 'https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0';
 $TENANT_ID = '{Tenant ID}';
 $USERNAME = '{TOAST Account}';
 $PASSWORD = '{API Password}';
@@ -339,7 +339,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****
 ```
 
 </details>
@@ -387,7 +387,7 @@ public class AccountService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
 
         AccountService accountService = new AccountService(storageUrl, tokenId);
@@ -430,7 +430,7 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
 
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
@@ -487,7 +487,7 @@ class Account {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
@@ -529,7 +529,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****
 ```
 
 </details>
@@ -567,7 +567,7 @@ public class AccountService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         AccountService accountService = new AccountService(storageUrl, tokenId);
         try {
@@ -600,7 +600,7 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
 
@@ -637,7 +637,7 @@ class Account {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
@@ -681,7 +681,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
 ```
 
 </details>
@@ -727,7 +727,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -771,7 +771,7 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
 
     con_service = ContainerService(STORAGE_URL, TOKEN_ID)
@@ -828,7 +828,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -870,7 +870,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
 ba6610.jpg
 20d33f.jpg
 31466f.jpg
@@ -915,7 +915,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -952,7 +952,7 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -994,7 +994,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1042,7 +1042,7 @@ X-Auth-Token: {token-id}
 ```
 // `20d33f.jpg`以降のオブジェクトリスト照会
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?maker=20d33f.jpg
 [指定したオブジェクト(20d33f.jpg)以降のリスト]
 ```
 
@@ -1148,7 +1148,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1193,7 +1193,7 @@ X-Auth-Token: {token-id}
 ```
 // exフォルダのオブジェクトリスト照会
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?path=ex
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?path=ex
 ex/20d33f.jpg
 ex/31466f.jpg
 ```
@@ -1289,7 +1289,7 @@ X-Auth-Token: {token-id}
 ```
 // 314で始まるオブジェクトリスト照会
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?prefix=314
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?prefix=314
 3146f0.jpg
 3147a6.jpg
 31486f.jpg
@@ -1387,7 +1387,7 @@ X-Auth-Token: {token-id}
 ```curl
 // 10個のオブジェクトのみ照会
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example?limit=10
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?limit=10
 ...{9個のオブジェクト}...
 31466f0.jpg
 ```
@@ -1489,7 +1489,7 @@ $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
 -H 'X-Container-Write: *:*' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
 ```
 
 </details>
@@ -1528,7 +1528,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -1560,7 +1560,7 @@ class ContainerService:
         return requests.post(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -1602,7 +1602,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1621,7 +1621,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 <summary>例</summary>
 
 ```
-$ curl https://gov-api-storage.cloud.toast.com/v1/{Account}/{Container}/{Object}
+$ curl https://api-object-storage.gov-nhncloudservice.com/v1/{Account}/{Container}/{Object}
 
 {オブジェクトの内容}
 ```
@@ -1655,7 +1655,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
 ```
 
 </details>
@@ -1688,7 +1688,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -1719,7 +1719,7 @@ class ContainerService:
         return requests.delete(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -1754,7 +1754,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1803,7 +1803,7 @@ Content-Type: {content-type}
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 -T ./ba6610.jpg
 ```
 
@@ -1860,7 +1860,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectPath = "/home/example/";
@@ -1916,7 +1916,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'd03bda22ffb649a97958d4a5bf4b6eaf.jpg'
@@ -1976,7 +1976,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2052,21 +2052,21 @@ $ split -d -b 209715200 large_obj.img large_obj.img.
 
 // 分割されたオブジェクトのアップロード
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
 -T large_obj.img.00
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/002 \
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/002 \
 -T large_obj.img.01
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/003 \
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/003 \
 -T large_obj.img.02
 
 // マニフェストオブジェクトのアップロード
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Object-Manifest: curl_example/large_obj.img/' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img \
 -d ''
 ```
 
@@ -2103,7 +2103,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectPath = "/home/example/";
@@ -2199,7 +2199,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     LARGE_OBJECT = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2289,7 +2289,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $LARGE_OBJECT = '8cb0d624f8c14c69b52f2cd89e5e59b7.jpg';
@@ -2356,7 +2356,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -O -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -2398,7 +2398,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2450,7 +2450,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2492,7 +2492,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2545,12 +2545,12 @@ X-Copy-From：{原本オブジェクト}
 // COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/3a45e9.jpg' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/3a45e9.jpg
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/3a45e9.jpg
 
 // PUT method
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/3a45e9.jpg' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/copy_con/3a45e9.jpg
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/copy_con/3a45e9.jpg
 ```
 
 </details>
@@ -2584,7 +2584,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String srcContainerName = "test";
         final String destContainerName = "test2";
@@ -2619,7 +2619,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2658,7 +2658,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $DEST_CONTAINER = 'dest';
@@ -2705,11 +2705,11 @@ X-Object-Meta-{Key}: {Value}
 // オブジェクトにメタデータを追加
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo" \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 // オブジェクトヘッダで追加したメタデータの確認
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
 ...
 X-Object-Meta-Type: photo
@@ -2750,7 +2750,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2786,7 +2786,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2824,7 +2824,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2874,7 +2874,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://gov-api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 ```
 
 </details>
@@ -2906,7 +2906,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://gov-api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2939,7 +2939,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2975,7 +2975,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://gov-api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';

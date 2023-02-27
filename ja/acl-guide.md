@@ -52,7 +52,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read;' \
   -H 'X-Container-Write;' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 <blockquote>
@@ -64,7 +64,7 @@ curlを利用して値がないヘッダを送る時は、ヘッダ名にセミ�
 
 ```
 $ curl -X GET \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -74,7 +74,7 @@ $ curl -X GET \
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 
 [コンテナのオブジェクトリスト]
 ```
@@ -92,18 +92,18 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .rlistings' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -X GET \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 
 [コンテナのオブジェクトリスト]
 ```
@@ -114,18 +114,18 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -X GET \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -148,7 +148,7 @@ HTTPリファラー(HTTP Referer)は、ハイパーリンクを介してリク�
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:bar.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 APIリクエストヘッダに、許可されたHTTPリファラーアドレスを明示してリクエストすると、オブジェクトにアクセスできます。
@@ -156,14 +156,14 @@ APIリクエストヘッダに、許可されたHTTPリファラーアドレス�
 ```
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com/some/path' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 ```
@@ -172,21 +172,21 @@ APIリクエストヘッダに許可されたリファラーアドレスがな�
 
 ```
 $ curl -X GET \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: https://example.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: bar.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -197,20 +197,20 @@ HTTPリファラー設定に、次のように<code>.</code>で始まるドメ�
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://qux.baz.foo.com/some/path' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 ```
@@ -220,7 +220,7 @@ $ curl -O -X GET \
 ```
 $ curl -X GET \
   -H 'Referer: https://foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -231,20 +231,20 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:foo.com, .r:.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://baz.foo.com/some/path' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 ```
@@ -257,14 +257,14 @@ $ curl -O -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:-bar.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 HTTPリファラードメイン名の前にハイフンをつけて設定すると、設定されたHTTPリファラーリクエストがブロックされます。
 
 ```
 $ curl -X GET -H 'Referer: https://bar.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -282,18 +282,18 @@ HTTPリファラーのアクセス許可/ブロックポリシーは、入力し
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -O -X GET -H 'Referer: https://bar.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 ```
@@ -306,18 +306,18 @@ $ curl -O -X GET -H 'Referer: https://bar.foo.com' \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .r:-bar.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -X GET -H 'Referer: https://bar.foo.com' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -338,7 +338,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:{api-user-id}' \
   -H 'X-Container-Write: {tenant-id}:{api-user-id}' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 オブジェクトにアクセスリクエストを行う時は、必ず許可されたテナントIDと、NHN CloudユーザーIDに発行された有効な認証トークンが必要です。
@@ -346,14 +346,14 @@ $ curl -i -X POST \
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 
 [コンテナのオブジェクトリスト]
 
 
 $ curl -O -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container/object
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 ```
@@ -367,7 +367,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:*' \
   -H 'X-Container-Write: {tenant-id}:*' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 オブジェクトにアクセスリクエストを行う時は、必ず許可されたテナントIDと、該当するプロジェクトに属すNHN CloudユーザーIDに発行された有効な認証トークンが必要です。
@@ -382,7 +382,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:{api-user-id}' \
   -H 'X-Container-Write: *:{api-user-id}' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 オブジェクトにアクセスリクエストを行う時は、必ず許可されたNHN CloudユーザーIDに発行された有効な認証トークンが必要です。
@@ -397,7 +397,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:*' \
   -H 'X-Container-Write: *:*' \
-  https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
 オブジェクトにアクセスリクエストを行う時は、必ず有効な認証トークンが必要です。
