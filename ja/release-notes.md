@@ -1,6 +1,7 @@
 ## Storage > Object Storage > release notes
 
 ### 2022. 11. 29.
+#### 機能追加
 * [API]オブジェクトロックコンテナ設定機能を追加
 * [Console]オブジェクトロックコンテナ設定機能を追加
 

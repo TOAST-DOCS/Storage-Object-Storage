@@ -1,6 +1,7 @@
 ## Storage > Object Storage > Release Notes
 
 ### November 29, 2022
+#### Added Features
 * [API] Added a feature to set an object lock container
 * [Console] Added a feature to set an object lock container
 
