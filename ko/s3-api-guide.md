@@ -371,7 +371,7 @@ Authorization: AWS {access}:{signature}
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
 | ETag | Header | String | 오브젝트의 MD5 해시값 |
-| Last-Modified | Header | String | 오브젝트의 마지막 수정 일시 (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
+| Last-Modified | Header | String | 오브젝트의 마지막 수정 일시(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 ### 오브젝트 다운로드
 오브젝트를 다운로드합니다.
@@ -398,7 +398,7 @@ Authorization: AWS {access}:{signature}
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| Last-Modified | Header | String | 오브젝트의 마지막 수정 일시 (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
+| Last-Modified | Header | String | 오브젝트의 마지막 수정 일시(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 | ETag | Header | String | 오브젝트의 MD5 해시값 |
 
 ### 오브젝트 삭제
