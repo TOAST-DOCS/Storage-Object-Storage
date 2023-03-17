@@ -32,7 +32,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
     <td><b>Tenant ID</b>: 사용자의 프로젝트 ID입니다. 웹 콘솔의 <b>프로젝트 관리 > 프로젝트 기본 정보</b>에서 확인할 수 있습니다.</td>
   </tr>
   <tr>
-    <td><b>Access ID</b>: NHN Cloud 회원 ID(이메일 형식) 또는 IAM 사용자 ID를 입력합니다.</td>
+    <td><b>Access ID</b>: NHN Cloud 회원 ID(이메일 형식) 또는 IAM 멤버 ID를 입력합니다.</td>
   </tr>
   <tr>
     <td>Secret Key</td>
