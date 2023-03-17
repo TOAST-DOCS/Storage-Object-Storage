@@ -34,7 +34,7 @@ NHN CloudオブジェクトストレージはAWSのオブジェクトストレ�
 S3と互換性のあるAPIを使用するには、先にAWS EC2の形式の認証情報を登録する必要があります。認証情報を登録するには認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](/Storage/Object%20Storage/ja/api-guide-gov/#tenant-id-api-endpoint)を参照してください。
 
 ```
-POST    https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{User ID}/credentials/OS-EC2
+POST    https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/users/{User ID}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -91,7 +91,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-GET   https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
+GET   https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -134,7 +134,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-DELETE   https://gov-api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE   https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
@@ -616,7 +616,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | 名前 | 説明 |
 |---|---|
-| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(ピョンチョン)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-object-storage.nhncloudservice.com - 韓国(ピョンチョン)リージョン<br/>https://jp1-api-object-storage.nhncloudservice.com - 日本(東京)リージョン<br/>https://us1-api-object-storage.nhncloudservice.com - 米国(カリフォルニア)リージョン |
 | command | AWSコマンドラインインターフェイスコマンド |
 | bucket | バケット名 |
 
@@ -629,7 +629,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 <summary>バケット作成</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
 
@@ -639,7 +639,7 @@ make_bucket: example-bucket
 <summary>バケットリスト照会</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
 
@@ -650,7 +650,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 <summary>バケット照会</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -661,7 +661,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <summary>バケット削除</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -672,7 +672,7 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <summary>オブジェクトアップロード</summary>
 
 ```
-$  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$  aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -682,7 +682,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 <summary>オブジェクトダウンロード</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
 
@@ -692,7 +692,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <summary>オブジェクト削除</summary>
 
 ```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -713,7 +713,7 @@ AWS SDKを使用するために必要な主要パラメータは次のとおり�
 | access | 認証情報アクセスキー |
 | secret | 認証情報シークレットキー |
 | region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(ピョンチョン)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
-| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(ピョンチョン)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-object-storage.nhncloudservice.com - 韓国(ピョンチョン)リージョン<br/>https://jp1-api-object-storage.nhncloudservice.com - 日本(東京)リージョン<br/>https://us1-api-object-storage.nhncloudservice.com - 米国(カリフォルニア)リージョン |
 
 
 ### Boto3 - Python SDK
