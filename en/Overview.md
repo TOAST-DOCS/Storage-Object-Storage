@@ -1,5 +1,4 @@
 ## Storage > Object Storage > Overview
-
 Object storage is an object storage service that allows you to store various types of data as much as you want and import them whenever needed.
 
 ## Service Characteristics
@@ -24,7 +23,6 @@ Provides an API compatible with Amazon S3. S3-compatible API allows you to use A
 ### Life Cycle Control
 Provides a life cycle control feature on a container or individual object basis. Allows for efficient management of storage usage.
 
-Creates a total of three replicas for each object to securely store data. While creating a replica, data cannot be accessed as the integrity of the replicated data cannot be guaranteed. Therefore, if you store the data and send a GET request immediately, you may receive a failure response. If at least two replicas are identical, the replication is considered successful, the save is complete, and then the data is accessible.
 ### Object Lock 
 Provides an WORM (Write Once Read Many) feature to protect data from inadvertent overwriting and deletion requests by users.
 
@@ -34,7 +32,7 @@ Allows you to use a version management feature to manage the history of updating
 ### Disaster Recovery
 The container replication feature allows you to replicate objects in a container to containers in different regions. You can prepare for unexpected disasters by using replicated data.
 
-### Data encryption for improved security
+### Data encryption for Improved Security
 The encryption feature from server-side can improve security by encrypting sensitive data. Symmetric keys used for encryption are managed securely by Secure Key Manager service of NHN Cloud.
 
 ### Convenient Cloud Accessibility
@@ -45,16 +43,16 @@ Provides a history of access to object storage through NHN Cloud's CloudTrail se
 
 ## Terms
 #### Object
-Basic data unit of object storage. It consists of data, user-assigned metadata, and specific addresses.
+Basic data unit of object storage. Object consists of data, user-assigned metadata, and specific addresses.
 
 #### Folder
-A virtual unit that binds objects. Allows you to manage objects hierarchically, similar to folders in Windows or directories in Linux.
+A virtual unit that binds objects. Folder allows you to manage objects hierarchically, similar to folders in Windows or directories in Linux.
 
 #### Container
-Namespace for managing objects. Serves as a unit of various management settings. All objects must exist in a container and have a name that is unique within the container.
+Namespace for managing objects. Container serves as a unit of various management settings. All objects must exist in a container and have a name that is unique within the container.
 
 #### Storage Account
 User account for object storage. NHN Cloud object storage is isolated on an account basis.
 
 #### API Endpoint
-It is an HTTP URL provided to access object storage through REST API.
+An HTTP URL provided to access object storage through REST API.
