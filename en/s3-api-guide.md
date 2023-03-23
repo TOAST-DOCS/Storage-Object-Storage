@@ -223,9 +223,9 @@ This API does not return a response body. It returns a status code of 200 if the
 | ------------------------------- | ---- | ------- | --------------------------- |
 | Location | Header | String | Path for created bucket |
 
-### List Buckets
+### Retrieve Bucket List
 
-Retrieves buckets.
+Retrieves bucket lists.
 
 ```
 GET /
@@ -244,7 +244,7 @@ This API does not require a request body.
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
-If the request is valid, returns a status code of 200 and a bucket list organized in XML format.
+If the request is valid, returns a status code of 200 and a bucket list in XML format.
 
 <details>
 <summary>Example</summary>
@@ -294,7 +294,7 @@ This API does not require a request body.
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
-|If the request is valid, returns a status code of 200 and a object list organized in XML format.
+|If the request is valid, returns a status code of 200 and a object list in XML format.
 
 <details>
 <summary>Example</summary>
@@ -542,7 +542,6 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 [Note]
 </br>
 If the object is larger than 8 MB, the AWS Command Line Interface splits the object into multiple parts and uploads them. The part object is stored in a bucket called <code style="display: inline;">{bucket}+segments</code> It is saved in the form of part-number<code style="display: inline;">{object-name}/{upload-id}/{part-number}</code>, and when all parts are uploaded, an object linked to the part object is created in the bucket requested for upload.
-
 </br></br>
 The <code style="display: inline;">{bucket}+segments</code> bucket where the part object is stored cannot be accessed through the S3 compatible API, but can be accessed through the Object Storage API or the console.
 </br></br>
