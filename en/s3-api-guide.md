@@ -97,7 +97,6 @@ X-Auth-Token: {token-id}
 </details>
 
 ### Get S3 API Credentials
-
 Retrieves the issued S3 API credentials.
 
 **[Method, URL]**
@@ -107,9 +106,7 @@ GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-i
 
 X-Auth-Token: {token-id}
 ```
-
 #### Request
-
 This API does not require a request body.
 
 | Name         | Type   | Format | Required | Description                               |
@@ -144,7 +141,6 @@ This API does not require a request body.
 </details>
 
 ### Delete S3 API Credentials
-
 Deletes the issued S3 API credentials.
 
 **[Method, URL]**
@@ -154,9 +150,7 @@ DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{use
 
 X-Auth-Token: {token-id}
 ```
-
 #### Request
-
 This API does not require a request body.
 
 | Name         | Type   | Format | Required | Description                               |
@@ -166,11 +160,9 @@ This API does not require a request body.
 | access       | URL    | String | O        | S3 API credentials access key                     |
 
 #### Response
-
 This API does not return request body. When the request is appropriate, return status code 204.
 
 ## Create Signature
-
 To use S3 API, you must create a signature use credentials. Regarding how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
 
 The following information is required to create a signature.
@@ -183,9 +175,9 @@ The following information is required to create a signature.
 | Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - KOREA (Pyeongchon) Region<br/>JP1 - JAPAN (Tokyo) Region<br/>US1 - USA (California) Region   |
 | Secret Key    | S3 API credentials secret key          |
 
+
 ## Bucket
 ### Create Bucket
-
 Creates a bucket. Bucket names must follow Amazon S3's naming rules.
 
 * Bucket names must be between 3 and 63 characters long.
@@ -207,7 +199,6 @@ Authorization: AWS {access}:{signature}
 > If a container name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -223,8 +214,7 @@ This API does not return a response body. It returns a status code of 200 if the
 | ------------------------------- | ---- | ------- | --------------------------- |
 | Location | Header | String | Path for created bucket |
 
-### Retrieve Bucket List
-
+### List Buckets
 Retrieves bucket lists.
 
 ```
@@ -235,7 +225,6 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -273,7 +262,6 @@ If the request is valid, returns a status code of 200 and a bucket list in XML f
 </details>
 
 ### Get Bucket
-
 Retrieves the information of the specified bucket and the list of objects that are stored in the bucket.
 
 ```
@@ -284,7 +272,6 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -294,7 +281,7 @@ This API does not require a request body.
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
-|If the request is valid, returns a status code of 200 and a object list in XML format.
+If the request is valid, returns a status code of 200 and a object list in XML format.
 
 <details>
 <summary>Example</summary>
@@ -336,7 +323,6 @@ This API does not require a request body.
 </details>
 
 ### Delete Bucket
-
 Deletes the specified bucket. The bucket to be deleted must be empty.
 
 ```
@@ -347,7 +333,6 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -371,7 +356,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-This API does not return a response body; it returns status code 204 if the request is valid.
+This API does not return a response body. It returns status code 204 if the request is valid.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
@@ -381,6 +366,7 @@ This API does not return a response body; it returns status code 204 if the requ
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
+This API does not return a response body. It returns a status code of 200 if the request is valid.
 
 | Name                            | Type | Format  | Description                 |
 | ------------------------------- | ---- | ------- | --------------------------- |
@@ -388,7 +374,6 @@ This API does not return a response body; it returns status code 204 if the requ
 | Last-Modified | Header | String | The object's last modified date (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 ### Download Object
-
 Downloads an object.
 
 ```
@@ -399,7 +384,6 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -418,7 +402,6 @@ If the request is valid, returns the status code of 200.
 | ETag | Header | String | MD5 hash value of the obejct |
 
 ### Delete Object
-
 Delete the specified object.
 
 ```
@@ -429,7 +412,6 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -468,7 +450,6 @@ Default output format [None]: json
 | access | S3 API credentials access key |
 | secret | S3 API credentials secret key |
 | region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
-
 
 ### How to Use the S3 Commands
 
@@ -583,7 +564,6 @@ AWS provides SDKs for many types of programming languages. By using the S3 compa
 > [Note]
 > For more information, see [AWS SDK](https://aws.amazon.com/ko/tools).
 
-
 The following are the major parameters required to use AWS SDK.
 
 | Name | Description |
@@ -592,7 +572,6 @@ The following are the major parameters required to use AWS SDK.
 | secret | S3 API credentials secret key |
 | region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region <br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
 | endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region<br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region | |
-
 
 ### Boto3 - Python SDK
 
@@ -727,7 +706,6 @@ def delete(self, bucket_name, key):
 ```
 
 </details>
-
 
 ### Java SDK
 
@@ -867,10 +845,6 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 <summary>Download Object</summary>
 
 ```java
-    public String downloadObject(String bucketName, String objKeyName, String filePath) {
-        GetObjectRequest request = new GetObjectRequest(bucketName, objKeyName);
-        ObjectMetadata metadata = s3Client.getObject(request, new File(filePath));
-        return metadata.getETag();
 public String downloadObject(
     String bucketName, String objKeyName, String filePath
 ) throws RuntimeException {
@@ -894,11 +868,11 @@ public String downloadObject(
 ```
 
 </details>
-@@ -937,9 +873,310 @@ public class AwsSdkExapmple {
+
+</details>
 <summary>Delete Object</summary>
 
 ```java
-    public void deleteObject(String bucketName, String objKeyName) {
 public void deleteObject(
     String bucketName, String objKeyName
 ) throws RuntimeException {
@@ -918,6 +892,7 @@ public void deleteObject(
 
 > [Note]
 > For more information, see [AWS SDK for .NET](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits).
+
 #### Context
 
 <details>
@@ -930,6 +905,7 @@ class S3SDKExample
     private static string regionName = "{region name}";
     private static string accessKey = "{access}";
     private static string secretKey = "{secret}";
+    
     private static AmazonS3Client GetS3Client()
     {
         var amazonS3Config =
@@ -940,6 +916,7 @@ class S3SDKExample
                 ForcePathStyle = true,
             };
         var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        
         return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
     }
 }
@@ -965,6 +942,7 @@ static async Task<PutBucketResponse> CreateBucketAsync(
                     BucketName = bucketName,
                     UseClientRegion = true
                 };
+
             return await s3Client.PutBucketAsync(putBucketRequest);
         }
         throw new Exception("Bucket already exist.");
@@ -1016,12 +994,14 @@ static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(
                 MaxKeys = 5,
             };
         var response = new ListObjectsV2Response();
+
         do
         {
             responses.Add(await s3Client.ListObjectsV2Async(request));
             request.ContinuationToken = response.NextContinuationToken;
         }
         while (response.IsTruncated);
+
         return responses;
     }
     catch (AmazonS3Exception e)
@@ -1075,10 +1055,13 @@ private static async Task UploadObjectAsync(
             BucketName = bucketName,
             Key = keyName
         };
+        
     InitiateMultipartUploadResponse initResponse =
         await s3Client.InitiateMultipartUploadAsync(initiateRequest);
+
     long contentLength = new FileInfo(filePath).Length;
     long partSize = 10 * (long)Math.Pow(2, 20);
+
     try
     {
         long filePosition = 0;
@@ -1099,6 +1082,7 @@ private static async Task UploadObjectAsync(
             uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
             filePosition += partSize;
         }
+
         CompleteMultipartUploadRequest completeRequest =
             new CompleteMultipartUploadRequest
             {
@@ -1120,6 +1104,7 @@ private static async Task UploadObjectAsync(
                 UploadId = initResponse.UploadId
             };
         await s3Client.AbortMultipartUploadAsync(abortMPURequest);
+
         throw e;
     }
 }
@@ -1145,11 +1130,14 @@ static async Task ReadObjectDataAsync(
                 BucketName = bucketName,
                 Key = keyName
             };
+
         ResponseHeaderOverrides responseHeaders =
             new ResponseHeaderOverrides();
         responseHeaders.CacheControl = "No-cache";
+
         request.ResponseHeaderOverrides = responseHeaders;
         var appendToFile = false;
+
         using (var response = await s3Client.GetObjectAsync(request))
         await response.WriteResponseStreamToFileAsync(
             filePath, appendToFile, CancellationToken.None);
@@ -1180,6 +1168,7 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
                 BucketName = bucketName,
                 Key = keyName
             };
+
         return await s3Client.DeleteObjectAsync(deleteObjectRequest);
     }
     catch (AmazonS3Exception e)
@@ -1190,3 +1179,4 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 ```
 
 </details>
+

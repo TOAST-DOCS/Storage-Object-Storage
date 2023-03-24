@@ -57,7 +57,7 @@ When accessing object storage, a list of containers for **All Regions** appear i
 
 ### Create Container
 
-You can create a new container by right-clicking an empty space in the container list and selecting **New Folder...**. After entering the container's name and region, click the `Create` button to create a container.
+You can create a new container by right-clicking an empty space in the container list and selecting **New Folder...**. After entering the container's name and region, click the **Create** button to create a container.
 
 > [Note] 
 >  You can refresh the container list by right-clicking an empty space in the list and selecting **View Again**.
