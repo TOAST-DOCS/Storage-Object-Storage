@@ -284,7 +284,7 @@ Secure Key Manager 서비스에서 암호화 컨테이너에 설정한 대칭 �
 # cat > index.html
 <html>
 <body> hello world!
-<a href="https://api-storage.cloud.toast.com/v1/{account}/{container}/{object}">Download</a>
+<a href="https://kr1-api-object-storage.nhncloudservice.com/v1/{account}/{container}/{object}">Download</a>
 </body>
 </html>
 ```

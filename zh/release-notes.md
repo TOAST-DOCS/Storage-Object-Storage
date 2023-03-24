@@ -1,6 +1,15 @@
 ## Storage > Object Storage > Release Notes
 
+### March 28, 2023
+#### Feature Updates
+* [API] Changed API endpoints
+
+#### Bug Fixes
+* [API] Fixed an issue where, when a segment object of a multipart object uploaded to PUBLIC containers is in another container, it could not be downloaded without a token
+* [API] Fixed an issue where, when a multipart object with the same name is updated using the S3 compatible API, the previous part object could not be deleted 
+
 ### November 29, 2022
+#### Added Features
 * [API] Added a feature to set an object lock container
 * [Console] Added a feature to set an object lock container
 
@@ -81,8 +90,8 @@
 ### December 22, 2016
 
 #### Bug Fixes
-* [Console] Fixed an issue in which folders starting with "/" in the name were not properly shown when created
-* [Console] Fixed an issue in which files that are named the same as the folder name could not be deleted
+* [Console] Fixed an issue where folders starting with "/" in the name were not properly shown when created
+* [Console] Fixed an issue where files that are named the same as the folder name could not be deleted
 * [Console] Fixed an issue where files including "#" as part of the title could not be downloaded
 * [Console] Fixed an issue where the copy button on the pop-up for API Endpoint Setting did not work
 * [Console] Fixed an issue where 0 byte files could not be downloaded

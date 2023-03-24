@@ -283,7 +283,7 @@ Download selected objects. If you have set up the container access policy as **P
 # cat > index.html
 <html>
 <body> hello world!
-<a href="https://api-storage.cloud.toast.com/v1/{account}/{container}/{object}">Download</a>
+<a href="https://kr1-api-object-storage.nhncloudservice.com/v1/{account}/{container}/{object}">Download</a>
 </body>
 </html>
 ```
