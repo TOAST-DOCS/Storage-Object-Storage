@@ -1,38 +1,58 @@
 ## Storage > Object Storage > Overview
+Object storage is an object storage service that allows you to store various types of data as much as you want and import them whenever needed.
 
-Object Storage is an online storage service that can store large-capacity data.
+## Service Characteristics
+### Outstanding Scalability
+With unlimited capacity, you can store as much data as you need when needed without having to consider storage capacity.
 
-## Features
-
-### Scalable
-
-Capacity can be expanded almost infinitely. Users can store as much data as they want when they need it, without worrying about storage capacity.
+### High Stability and Restoration Capability
+Stores objects redundantly on different hardware to safely store data. Even if some replicas have unexpected problems, they are quickly restored from the intact replicas.
 
 ### Control Accessibility
+You can control access rights per container. You can set containers to public for anyone to view, and Role-based access control (RBAC) enables you to grant differential read/write permissions to a project or individual user.
 
-Access permissions can be set per container. Containers set to private can only be accessed by authorized users. When a container is set to public, anyone can access the objects inside the container using a public URL.
+### Convenient Web Console
+Provides a web console that allows you to manage data in a familiar hierarchical directory structure for user convenience. Allows you to create virtual folders within a container to group and manage objects.
 
-### Ensure Data Reliability
+### REST API
+Provides HTTP-based REST APIs to control containers and objects. REST APIs allows you to use object storage in your application.
 
-To store data safely, a total of 3 copies of each object are created. While creating the copies, the integrity of the replicated data cannot be guaranteed and therefore the data is inaccessible. So, if you send a GET request immediately after storing data, you might get a failure response. If at least two copies are identical, the replication is considered successful, and the storing is completed and the data becomes accessible.
+### Amazon S3-compatible API
+Provides an API compatible with Amazon S3. S3-compatible API allows you to use Amazon Web Service Software Development Kit (SDK)-based applications and various third-party tools.
 
-### Provide a Convenient Web Console
+### Life Cycle Control
+Provides a life cycle control feature on a container or individual object basis. This allows for efficient management of storage usage.
 
-For user convenience, a web console is provided to manage data in a hierarchical directory structure. When an application accesses data, the RESTful API can be used with the object ID. When a user directly accesses data, they can use a web console with a familiar directory structure. You can manage objects by grouping them using folders.
+### Object Lock 
+Provides an WORM (Write Once Read Many) feature to protect data from inadvertent overwriting and deletion requests by users.
 
-### Provide RESTful API
+### Version Management
+The version management feature allows you to manage the history of updating and deleting objects and to restore the objects to their previous versions.
 
-HTTP(s)-based REST API is provided to control containers and objects. The API allows you to use object storage in your applications.
+### Disaster Recovery
+The container replication feature allows you to replicate objects in a container to another containers in different regions. Replicated data allows you to prepare for unexpected disasters.
 
+### Data Encryption for Improved Security
+The encryption feature from server-side can improve security by encrypting sensitive data. Symmetric keys used for encryption are managed securely by Secure Key Manager service of NHN Cloud.
 
-## Glossary
+### Convenient Cloud Accessibility
+NHN Cloud's Service Gateway provides access to object storage over a private network from instances within user VPCs isolated from external networks.
+
+### Access History
+Provides a history of access to object storage through NHN Cloud's CloudTrail service.
+
+## Terminology
 #### Object
-The basic management unit of object storage, which refers to the data to be stored. Generally a file is used as an object.
+A basic data unit of object storage. It consists of data, user-assigned metadata, and unique addresses.
+
 #### Folder
-A virtual unit that binds multiple objects. It helps to manage objects hierarchically, similar to folders in Windows or directories in Linux.
+A virtual unit that binds objects. It allows you to manage objects hierarchically, similar to folders in Windows or directories in Linux.
+
 #### Container
-Refers to the top-level folder. Basically, a container becomes the unit of access permission setting. All objects must exist in a container.
+A namespace for managing objects. It serves as a unit for various management settings. All objects must exist in a container and have a name that is unique within the container.
+
 #### Storage Account
-A user account for object storage. NHN Cloud Object Storage is isolated on a per-account basis.
+A user account for object storage. NHN Cloud object storage is isolated on an account basis.
+
 #### API Endpoint
-HTTP URL provided to access object storage with REST API. You can access object storage by making a request with the URL.
+An HTTP URL provided to access object storages through REST APIs.
