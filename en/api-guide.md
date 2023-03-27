@@ -12,8 +12,8 @@ Click **API Endpoint Setting** on the Object Storage service page to check the t
 
 | Item | API Endpoint | Usage |
 |---|---|---|
-| Identity | https://api-identity.infrastructure.cloud.toast.com/v2.0 | Issue authentication token |
-| Object-Store | https://api-storage.cloud.toast.com/v1/AUTH_***** | Control object storage: depends on each region  |
+| Identity | https://api-identity-infrastructure.nhncloudservice.com/v2.0 | Issue authentication token |
+| Object-Store | https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_***** | Control object storage: depends on each region  |
 | Tenant ID | A string in 32 characters consisting of numbers and alphabets | Issue authentication token  |
 
 <br/>
@@ -34,7 +34,7 @@ To set the API password, go to the Object Storage service page and click **API E
 ## Authentication Token Issuance
 
 ```
-POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens
+POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens
 Content-Type: application/json
 ```
 
@@ -111,7 +111,7 @@ Content-Type: application/json
 
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
-https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
+https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens \
 -d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
@@ -135,7 +135,7 @@ https://api-identity.infrastructure.cloud.toast.com/v2.0/tokens \
         "endpoints": [
           {
             "region": "KR1",
-            "publicURL": "https://api-storage.cloud.toast.com/v1/AUTH_*****"
+            "publicURL": "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****"
           }
         ],
         "type": "object-store",
@@ -213,7 +213,7 @@ public class AuthService {
     }
 
     public static void main(String[] args) {
-        final String authUrl = "https://api-identity.infrastructure.cloud.toast.com/v2.0";
+        final String authUrl = "https://api-identity-infrastructure.nhncloudservice.com/v2.0";
         final String tenantId = "{Tenant ID}";
         final String username = "{NHN Cloud Account}";
         final String password = "{API Password}";
@@ -254,7 +254,7 @@ def get_token(auth_url, tenant_id, username, password):
 
 
 if __name__ == '__main__':
-    AUTH_URL = 'https://api-identity.infrastructure.cloud.toast.com/v2.0'
+    AUTH_URL = 'https://api-identity-infrastructure.nhncloudservice.com/v2.0'
     TENANT_ID = '{Tenant ID}'
     USERNAME = '{NHN Cloud Account}'
     PASSWORD = '{API Password}'
@@ -298,7 +298,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
   return $response;
 }
 
-$AUTH_URL = 'https://api-identity.infrastructure.cloud.toast.com/v2.0';
+$AUTH_URL = 'https://api-identity-infrastructure.nhncloudservice.com/v2.0';
 $TENANT_ID = '{Tenant ID}';
 $USERNAME = '{NHN Cloud Account}';
 $PASSWORD = '{API Password}';
@@ -346,7 +346,7 @@ This API does not return a response body. Usage status is included in the header
 
 ```
 $ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****
 ```
 </details>
 
@@ -393,7 +393,7 @@ public class AccountService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
 
         AccountService accountService = new AccountService(storageUrl, tokenId);
@@ -435,7 +435,7 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
 
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
@@ -491,7 +491,7 @@ class Account {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
@@ -534,7 +534,7 @@ This API does not require a request body.
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****
 ```
 </details>
 
@@ -571,7 +571,7 @@ public class AccountService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         AccountService accountService = new AccountService(storageUrl, tokenId);
         try {
@@ -603,7 +603,7 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
 
@@ -639,7 +639,7 @@ class Account {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
@@ -691,7 +691,7 @@ This API does not return a response body. When a container is created, return st
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example
 ```
 </details>
 
@@ -736,7 +736,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -779,7 +779,7 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
 
     con_service = ContainerService(STORAGE_URL, TOKEN_ID)
@@ -835,7 +835,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -905,7 +905,7 @@ Using the `limit` query allows you to specify the maximum number of objects in t
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example
 ba6610.jpg
 20d33f.jpg
 31466f.jpg
@@ -949,7 +949,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -986,7 +986,7 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -1027,7 +1027,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1052,7 +1052,7 @@ POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Container-Read: {Container read policy}
 X-Container-Write: {Container write policy}
-X-Container-Object-Retention: {Life cycle of objects in container}
+X-Container-Object-Lifecycle: {Life cycle of objects in container}
 X-History-Location: {Container to store the previous object version}
 X-Versions-Retention: {Life cycle of the previous object version}
 X-Container-Meta-Web-Index: {Static website index document object}
@@ -1070,7 +1070,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | X-Container-Read | Header | String | - | Sets the access rules for container read |
 | X-Container-Write | Header | String | - | Sets the access rules for container write |
-| X-Container-Object-Retention | Header | Integer | - | Sets the life cycle of the container's base object in days |
+| X-Container-Object-Lifecycle | Header | Integer | - | Sets the life cycle of the container's base object in days |
 | X-History-Location | Header | String | - | Sets the container to store the previous version of the object |
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
 | X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
@@ -1088,7 +1088,7 @@ You can set the container access policy using the `X-Container-Read` and `X-Cont
 <br/>
 
 ##### Set the Object Life Cycle
-With the `X-Container-Object-Retention` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
+With the `X-Container-Object-Lifecycle` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
 <br/>
 
 ##### Set the Version Control Policy
@@ -1133,7 +1133,7 @@ Add CORS settings to a container.
 $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Meta-Access-Control-Allow-Origin: https://example.com' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/container
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 <br>
 The script below is run after moving to a site that allows CORS from the browser. You can run the script from the console of the developer tools provided by the browser.
@@ -1143,7 +1143,7 @@ ex) https://example.com/
 
 ```
 var token = "****";
-var url = "https://api-storage.cloud.toast.com/v1/AUTH_****/container/object";
+var url = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_****/container/object";
 var request = new XMLHttpRequest();
 request.onreadystatechange = function (oEvent) {
   if (request.readyState == 4) {
@@ -1175,7 +1175,7 @@ x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 If you do not set CORS or call an API from a site that is not allowed, you will receive an error response like the one below.
 
 ```
-Access to XMLHttpRequest at 'https://api-storage.cloud.toast.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Access to XMLHttpRequest at 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 Status: 0
 ```
@@ -1200,7 +1200,7 @@ You can change the object lock cycle of the object lock container using the `X-C
 <br/>
 
 ##### Unset a Container
-If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Retention: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
+If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Lifecycle: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
 <br/>
 
 #### Response
@@ -1218,7 +1218,7 @@ $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
 -H 'X-Container-Write: *:*' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example
 ```
 </details>
 
@@ -1256,7 +1256,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -1287,7 +1287,7 @@ class ContainerService:
         return requests.post(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -1328,7 +1328,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1371,7 +1371,7 @@ This request does not return a response body. For a valid request, status code 2
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example
 ```
 </details>
 
@@ -1403,7 +1403,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -1433,7 +1433,7 @@ class ContainerService:
         return requests.delete(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -1467,7 +1467,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1522,7 +1522,7 @@ This API does not return a response body. For a valid request, return status cod
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg \
 -T ./ba6610.jpg
 ```
 </details>
@@ -1578,7 +1578,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectPath = "/home/example/";
@@ -1633,7 +1633,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'd03bda22ffb649a97958d4a5bf4b6eaf.jpg'
@@ -1692,7 +1692,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -1833,21 +1833,21 @@ $ split -d -b 209715200 large_obj.img large_obj.img.
 
 // Upload segment object
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/001 \
 -T large_obj.img.00
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/002 \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/002 \
 -T large_obj.img.01
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img/003 \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img/003 \
 -T large_obj.img.02
 
 // Upload manifest object
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Object-Manifest: curl_example/large_obj.img/' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/large_obj.img \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/large_obj.img \
 -d ''
 ```
 </details>
@@ -1883,7 +1883,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectPath = "/home/example/";
@@ -1978,7 +1978,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     LARGE_OBJECT = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2067,7 +2067,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $LARGE_OBJECT = '8cb0d624f8c14c69b52f2cd89e5e59b7.jpg';
@@ -2137,7 +2137,7 @@ Data content of the object is returned to stream. For a valid request, return st
 
 ```
 $ curl -O -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -2178,7 +2178,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2229,7 +2229,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2270,7 +2270,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2328,12 +2328,12 @@ This request does not return a response body. For a valid request, return status
 // COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/3a45e9.jpg' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/3a45e9.jpg
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/3a45e9.jpg
 
 // PUT method
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/3a45e9.jpg' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/copy_con/3a45e9.jpg
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/copy_con/3a45e9.jpg
 ```
 </details>
 
@@ -2366,7 +2366,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String srcContainerName = "test";
         final String destContainerName = "test2";
@@ -2400,7 +2400,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2438,7 +2438,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $DEST_CONTAINER = 'dest';
@@ -2492,11 +2492,11 @@ This request does not return a response body. For a valid request, return status
 // Add metadata to object
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo" \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 
 // Check metadata added to object header
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
 ...
 X-Object-Meta-Type: photo
@@ -2536,7 +2536,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2571,7 +2571,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2608,7 +2608,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2656,7 +2656,7 @@ This request does not return a response body. For a valid request, return status
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://api-storage.cloud.toast.com/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
 ```
 </details>
 
@@ -2687,7 +2687,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://api-storage.cloud.toast.com/v1/AUTH_*****";
+        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2719,7 +2719,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****'
+    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2754,7 +2754,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://api-storage.cloud.toast.com/v1/AUTH_*****';
+$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';

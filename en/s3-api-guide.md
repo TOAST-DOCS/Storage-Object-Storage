@@ -36,7 +36,7 @@ To use Amazon S3 compatible API, you must first obtain S3 API credentials in the
 To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to [Object Storage API Guide](api-guide/#tenant-id-api-endpoint).
 
 ```
-POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{api-user-id}/credentials/OS-EC2
+POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -97,19 +97,16 @@ X-Auth-Token: {token-id}
 </details>
 
 ### Get S3 API Credentials
-
 Retrieves the issued S3 API credentials.
 
 **[Method, URL]**
 
 ```
-GET   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
+GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
-
 #### Request
-
 This API does not require a request body.
 
 | Name         | Type   | Format | Required | Description                               |
@@ -144,19 +141,16 @@ This API does not require a request body.
 </details>
 
 ### Delete S3 API Credentials
-
 Deletes the issued S3 API credentials.
 
 **[Method, URL]**
 
 ```
-DELETE   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
-
 #### Request
-
 This API does not require a request body.
 
 | Name         | Type   | Format | Required | Description                               |
@@ -166,11 +160,9 @@ This API does not require a request body.
 | access       | URL    | String | O        | S3 API credentials access key                     |
 
 #### Response
-
 This API does not return request body. When the request is appropriate, return status code 204.
 
 ## Create Signature
-
 To use S3 API, you must create a signature use credentials. Regarding how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
 
 The following information is required to create a signature.
@@ -183,11 +175,10 @@ The following information is required to create a signature.
 | Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - KOREA (Pyeongchon) Region<br/>JP1 - JAPAN (Tokyo) Region<br/>US1 - USA (California) Region   |
 | Secret Key    | S3 API credentials secret key          |
 
+
 ## Bucket
-
 ### Create Bucket
-
-Creates a bucket (container). Bucket names must follow Amazon S3's bucket naming rules:
+Creates a bucket. Bucket names must follow Amazon S3's naming rules.
 
 * Bucket names must be between 3 and 63 characters long.
 * Bucket names can consist only of lowercase letters, numbers, dots (.), and hyphens (-).
@@ -208,7 +199,6 @@ Authorization: AWS {access}:{signature}
 > If a container name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -218,43 +208,14 @@ This API does not require a request body.
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
+This API does not return a response body. It returns a status code of 200 if the request is valid.
 
 | Name                            | Type | Format  | Description                 |
 | ------------------------------- | ---- | ------- | --------------------------- |
-| ResponseMetadata                | Body | Object  | Response metadata object |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code        |
-| Location                        | Body | String  | Created bucket path         |
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "txfad4e17792b1432fb106f-005e5ef0e4",
-    "HostId": "txfad4e17792b1432fb106f-005e5ef0e4",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "content-length": "0",
-      "x-amz-request-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "content-type": "text/html; charset=UTF-8",
-      "location": "/new-container",
-      "x-trans-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "x-openstack-request-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "date": "22:22:22 GMT, Sat, 22 Feb 2020"
-    },
-    "RetryAttempts": 0
-  },
-  "Location": "/new-container"
-}
-```
-
-</details>
+| Location | Header | String | Path for created bucket |
 
 ### List Buckets
-
-Lists buckets.
+Retrieves bucket lists.
 
 ```
 GET /
@@ -264,7 +225,6 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -273,48 +233,35 @@ This API does not require a request body.
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
-
-| Name                            | Type | Format  | Description                 |
-| ------------------------------- | ---- | ------- | --------------------------- |
-| ResponseMetadata                | Body | Object  | Response metadata object |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code        |
-| Buckets.Name                    | Body | String  | Bucket name                 |
-| Buckets.CreationDate            | Body | String  | Created time                |
+If the request is valid, returns a status code of 200 and a bucket list in XML format.
 
 <details>
 <summary>Example</summary>
 
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "txbf73f4d73ad34344a21bb-005e5ef141",
-    "HostId": "txbf73f4d73ad34344a21bb-005e5ef141",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "content-length": "750",
-      "x-amz-request-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "content-type": "application/xml",
-      "x-trans-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "x-openstack-request-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "date": "22:22:22 GMT, 22 Feb 2020"
-    },
-    "RetryAttempts": 0
-  },
-  "Buckets": [
-    {
-      "Name": "new-container",
-      "CreationDate": "T22:22:22+00:00,22 Feb 2020"
-    }
-  ],
-  "Owner": {}
-}
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<ListAllMyBucketsResult
+	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+	<Owner>
+		<ID>user:panther</ID>
+		<DisplayName>user:panther</DisplayName>
+	</Owner>
+	<Buckets>
+		<Bucket>
+			<Name>log</Name>
+			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
+		</Bucket>
+		<Bucket>
+			<Name>snapshot</Name>
+			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
+		</Bucket>
+	</Buckets>
+</ListAllMyBucketsResult>
 ```
 
 </details>
 
 ### Get Bucket
-
 Retrieves the information of the specified bucket and the list of objects that are stored in the bucket.
 
 ```
@@ -325,7 +272,6 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -335,62 +281,48 @@ This API does not require a request body.
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
-
-| Name                            | Type | Format  | Description                                         |
-| ------------------------------- | ---- | ------- | --------------------------------------------------- |
-| ResponseMetadata                | Body | Object  | Response metadata object                         |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code                                |
-| Contents                        | Body | Object  | Object of the object list                               |
-| Contents.Key                    | Body | String  | Object name                                         |
-| Contents.LastModified           | Body | String  | The latest object update time, ssZ:mm:hhTDD-MM-YYYY |
-| Contents.ETag                   | Body | String  | MD5 hash of object                                  |
-| Contents.Size                   | Body | String  | Size of object                                      |
-| Contents.StorageClass           | Body | String  | Type of storage for object                          |
-| Name                            | Body | String  | Bucket name                                         |
-| KeyCount                        | Body | Integer | Number of objects on the list                                |
+If the request is valid, returns a status code of 200 and a object list in XML format.
 
 <details>
 <summary>Example</summary>
 
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "tx75a3242dac55411fac69b-005e5ef1f1",
-    "HostId": "tx75a3242dac55411fac69b-005e5ef1f1",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "content-length": "1273",
-      "x-amz-request-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "content-type": "application/xml",
-      "x-trans-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "x-openstack-request-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "date": "22:22:22 GMT, Sat, 22 Feb 2020"
-    },
-    "RetryAttempts": 0
-  },
-  "IsTruncated": false,
-  "Contents": [
-    {
-       "Key": "benjamin-ashton-Af9X4A8qMtM-unsplash.jpg",
-       "LastModified": "2020-02-22T22:22:22.222222+00:00",
-       "ETag": "\"2e95b028564c14371939358d3e88a771\"",
-       "Size": 3267226,
-       "StorageClass": "STANDARD"
-    }
-  ],
-  "Name": "new-container",
-  "Prefix": "",
-  "MaxKeys": 1000,
-  "EncodingType": "url",
-  "KeyCount": 1
-}
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<ListBucketResult
+	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+	<Name>snapshot</Name>
+	<Prefix/>
+	<Marker/>
+	<MaxKeys>1000</MaxKeys>
+	<IsTruncated>false</IsTruncated>
+	<Contents>
+		<Key>cheetah</Key>
+		<LastModified>2023-02-01T04:49:52.995Z</LastModified>
+		<ETag>"7d793037a0760186574b0282f2f435e7"</ETag>
+		<Size>5</Size>
+		<Owner>
+			<ID>user:panther</ID>
+			<DisplayName>user:panther</DisplayName>
+		</Owner>
+		<StorageClass>STANDARD</StorageClass>
+	</Contents>
+	<Contents>
+		<Key>leopard</Key>
+		<LastModified>2023-02-01T04:49:52.685Z</LastModified>
+		<ETag>"5d41402abc4b2a76b9719d911017c592"</ETag>
+		<Size>5</Size>
+		<Owner>
+			<ID>user:panther</ID>
+			<DisplayName>user:panther</DisplayName>
+		</Owner>
+		<StorageClass>STANDARD</StorageClass>
+	</Contents>
+</ListBucketResult>
 ```
 
 </details>
 
 ### Delete Bucket
-
 Deletes the specified bucket. The bucket to be deleted must be empty.
 
 ```
@@ -401,7 +333,6 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -411,41 +342,10 @@ This API does not require a request body.
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
-
-| Name                            | Type | Format  | Description                 |
-| ------------------------------- | ---- | ------- | --------------------------- |
-| ResponseMetadata                | Body | Object  | Response metadata object |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code        |
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx9b01c2e650e746ecba298-005e5ef28b",
-        "HostId": "tx9b01c2e650e746ecba298-005e5ef28b",
-        "HTTPStatusCode": 204,
-        "HTTPHeaders": {
-            "x-amz-id-2": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "content-length": "0",
-            "x-amz-request-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "content-type": "text/html; charset=UTF-8",
-            "x-trans-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "x-openstack-request-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "date": "22:22:22 GMT, Sat, 22 Feb 2020"
-        },
-        "RetryAttempts": 0
-    }
-}
-```
-
-</details>
+This API does not return a response body; it returns status code 204 if the request is valid.
 
 ## Object
-
 ### Upload Object
-
 Uploads an object to the specified bucket.
 
 ```
@@ -456,8 +356,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
-This API does not require a request body.
+This API does not return a response body. It returns status code 204 if the request is valid.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
@@ -467,43 +366,14 @@ This API does not require a request body.
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
+This API does not return a response body. It returns a status code of 200 if the request is valid.
 
 | Name                            | Type | Format  | Description                 |
 | ------------------------------- | ---- | ------- | --------------------------- |
-| ResponseMetadata                | Body | Object  | Response metadata object |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code        |
-| ETag                            | Body | String  | MD5 hash of uploaded object |
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-    "HostId": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "content-length": "0",
-      "x-amz-id-2": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "last-modified": "22:22:22 GMT, Sat, 22 Feb 2020",
-      "etag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-      "x-amz-request-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "content-type": "text/html; charset=UTF-8",
-      "x-trans-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "x-openstack-request-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "date": "22:22:22 GMT, Sat, 22 Feb 2020"
-    },
-    "RetryAttempts": 0
-  },
-  "ETag": "\"01463f775ef4f4dbbc7525f88120df09\""
-}
-```
-
-</details>
+| ETag | Header | String | MD5 hash value of the object|
+| Last-Modified | Header | String | The object's last modified date (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 ### Download Object
-
 Downloads an object.
 
 ```
@@ -514,7 +384,6 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -525,51 +394,14 @@ This API does not require a request body.
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
+If the request is valid, returns the status code of 200.
 
 | Name                            | Type | Format  | Description                                             |
 | ------------------------------- | ---- | ------- | ------------------------------------------------------- |
-| ResponseMetadata                | Body | Object  | Response metadata object                             |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code                                    |
-| LastModified                    | Body | String  | The latest update time of object, ssZ:mm:Thh DD-MM-YYYY |
-| ContentLength                   | Body | String  | Size of downloaded object                               |
-| ETag                            | Body | String  | MD5 hash of object                                      |
-| ContentType                     | Body | String  | Content type of object                                  |
-| Metadata                        | Body | Object  | Metadata object of the object                                      |
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx637d5de3c27f4b0a9664e-005e5ef491",
-        "HostId": "tx637d5de3c27f4b0a9664e-005e5ef491",
-        "HTTPStatusCode": 200,
-        "HTTPHeaders": {
-            "content-length": "124352",
-            "x-amz-id-2": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "last-modified": "22:22:22 GMT, Sat, 22 Feb 2020",
-            "etag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-            "x-amz-request-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "content-type": "image/jpeg",
-            "x-trans-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "x-openstack-request-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "date": "22:22:22 GMT, Sat, 22 Feb 2020"
-        },
-        "RetryAttempts": 0
-    },
-    "LastModified": "T22:22:22+00:00 2020-02-22",
-    "ContentLength": 124352,
-    "ETag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-    "ContentType": "image/jpeg",
-    "Metadata": {}
-}
-```
-
-</details>
+| Last-Modified | Header | String | The object's last modified date (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
+| ETag | Header | String | MD5 hash value of the obejct |
 
 ### Delete Object
-
 Delete the specified object.
 
 ```
@@ -580,7 +412,6 @@ Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-
 This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
@@ -591,36 +422,7 @@ This API does not require a request body.
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
 #### Response
-
-| Name                            | Type | Format  | Description                 |
-| ------------------------------- | ---- | ------- | --------------------------- |
-| ResponseMetadata                | Body | Object  | Response metadata object |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | Response status code        |
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx04a548072068487a8a5be-005e5ef648",
-        "HostId": "tx04a548072068487a8a5be-005e5ef648",
-        "HTTPStatusCode": 204,
-        "HTTPHeaders": {
-            "x-amz-id-2": "tx04a548072068487a8a5be-005e5ef648",
-            "content-length": "0",
-            "x-amz-request-id": "tx04a548072068487a8a5be-005e5ef648",
-            "content-type": "text/html; charset=UTF-8",
-            "x-trans-id": "tx04a548072068487a8a5be-005e5ef648",
-            "x-openstack-request-id": "tx04a548072068487a8a5be-005e5ef648",
-            "date": "22:22:22 GMT, Sat, 22 Feb 2020"
-        },
-        "RetryAttempts": 0
-    }
-}
-```
-
-</details>
+This API does not return a response body. It returns status code 204 if the request is valid.
 
 ## AWS Command Line Interface (CLI)
 You can use NHN Cloud Object Storage with [AWS Command Line Interface](https://aws.amazon.com/cli/) using the S3 compatible API.
@@ -628,14 +430,14 @@ You can use NHN Cloud Object Storage with [AWS Command Line Interface](https://a
 ### Installation
 The AWS Command Line Interface (CLI) is provided as a Python package, which can be installed by using the Python package manager (pip).  
 
-```
+```shell
 $ sudo pip install awscli
 ```
 
 ### Configuration
 To use AWS CLI, you must set up S3 API credentials and environment first.
 
-```
+```shell
 $ aws configure
 AWS Access Key ID [None]: {access}
 AWS Secret Access Key [None]: {secret}
@@ -649,16 +451,15 @@ Default output format [None]: json
 | secret | S3 API credentials secret key |
 | region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
 
-
 ### How to Use the S3 Commands
 
-```
+```shell
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 ```
 
 | Name | Description |
 |---|---|
-| endpoint | https://api-storage.cloud.toast.com - Korea (Pangyo) region <br/>https://kr2-api-storage.cloud.toast.com - Korea (Pyeongcheon) region <br/>https://jp1-api-storage.cloud.toast.com - Japan (Tokyo) region <br/>https://us1-api-storage.cloud.toast.com - US (California) region |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region <br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongcheon) region <br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region <br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region |
 | command | Command for AWS Command Line Interface |
 | bucket | Bucket name |
 
@@ -670,8 +471,8 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 <details>
 <summary>Create Bucket</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
 
@@ -680,8 +481,8 @@ make_bucket: example-bucket
 <details>
 <summary>List Buckets</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
 
@@ -691,8 +492,8 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 <details>
 <summary>Get Bucket</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -702,8 +503,8 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>Delete Bucket</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -713,18 +514,34 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>Upload Object</summary>
 
-```
-$  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```shell
+$  aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
+
+<blockquote>
+[Note]
+</br>
+If the object is larger than 8 MB, the AWS Command Line Interface splits the object into multiple parts and uploads them. The part object is stored in a bucket called <code style="display: inline;">{bucket}+segments</code> It is saved in the form of part-number<code style="display: inline;">{object-name}/{upload-id}/{part-number}</code>, and when all parts are uploaded, an object linked to the part object is created in the bucket requested for upload.
+</br></br>
+The <code style="display: inline;">{bucket}+segments</code> bucket where the part object is stored cannot be accessed through the S3 compatible API, but can be accessed through the Object Storage API or the console.
+</br></br>
+The ETag of a multipart object is an MD5 hashed value by converting the ETag values of each part object into binary data and concatenating them in order.
+</blockquote>
+
+<blockquote>
+[Caution]
+</br>
+If you delete some or all parts of an object uploaded as multipart, the object cannot be accessed.
+</blockquote>
 
 </details>
 
 <details>
 <summary>Download Object</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
 
@@ -733,8 +550,8 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <details>
 <summary>Delete Object</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -745,8 +562,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 AWS provides SDKs for many types of programming languages. By using the S3 compatible API, you can use NHN Cloud Object Storage with AWS SDK.
 
 > [Note]
-> This document describes only simple usage examples for Python and Java SDK. For more details, see [AWS SDK](https://aws.amazon.com/tools) documentation.
-
+> For more information, see [AWS SDK](https://aws.amazon.com/ko/tools).
 
 The following are the major parameters required to use AWS SDK.
 
@@ -755,10 +571,14 @@ The following are the major parameters required to use AWS SDK.
 | access | S3 API credentials access key |
 | secret | S3 API credentials secret key |
 | region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region <br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
-| endpoint | https://api-storage.cloud.toast.com - Korea (Pangyo) region <br/>https://kr2-api-storage.cloud.toast.com - Korea (Pyeongchon) region <br/>https://jp1-api-storage.cloud.toast.com - Japan (Tokyo) region <br/>https://us1-api-storage.cloud.toast.com - US (California) region |
-
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region<br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region | |
 
 ### Boto3 - Python SDK
+
+> [Note]
+> For more information, see [AWS SDK for Python (Boto3)](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits).
+
+#### Context
 
 <details>
 <summary>Boto3 Client Class</summary>
@@ -766,6 +586,7 @@ The following are the major parameters required to use AWS SDK.
 ```python
 # boto3example.py
 import boto3
+from botocore.exceptions import ClientError
 
 class Boto3Example(object):
     _REGION = '{region name}'
@@ -788,8 +609,11 @@ class Boto3Example(object):
 <summary>Create Bucket</summary>
 
 ```python
-    def create_bucket(self, bucket_name):
-        return self.s3.create_bucket(Bucket=bucket_name)
+def create_bucket(self, bucket_name):
+  try:
+      return self.s3.create_bucket(Bucket=bucket_name)
+  except ClientError as e:
+      raise RuntimeError(e)
 ```
 
 </details>
@@ -798,9 +622,11 @@ class Boto3Example(object):
 <summary>List Buckets</summary>
 
 ```python
-    def list_buckets(self):
-        response = self.s3.list_buckets()
-        return response.get('Buckets')
+def list_buckets(self):
+    try:
+        return self.s3.list_buckets().get('Buckets')
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -809,9 +635,11 @@ class Boto3Example(object):
 <summary>Get Bucket (List Objects)</summary>
 
 ```python
-    def list_objs(self, bucket_name):
-        response = self.s3.list_objects_v2(Bucket=bucket_name)
-        return response.get('Contents')
+def list_objs(self, bucket_name):
+    try:
+        return self.s3.list_objects_v2(Bucket=bucket_name).get('Contents')
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -820,8 +648,11 @@ class Boto3Example(object):
 <summary>Delete Bucket</summary>
 
 ```python
-    def delete_bucket(self, bucket_name):
+def delete_bucket(self, bucket_name):
+    try:
         return self.s3.delete_bucket(Bucket=bucket_name)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -830,9 +661,12 @@ class Boto3Example(object):
 <summary>Upload Object</summary>
 
 ```python
-    def upload(self, bucket_name, key, filename):
-        with open(filename, 'rb') as fd:
-            return self.s3.put_object(Bucket=bucket_name, Key=key, Body=fd)
+def upload(self, bucket_name, key, filename):
+    try:
+        self.s3.upload_file(
+            Filename=filename, Bucket=bucket_name, Key=key)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -841,15 +675,21 @@ class Boto3Example(object):
 <summary>Download Object</summary>
 
 ```python
-    def download(self, bucket_name, key, filename):
+def download(self, bucket_name, key, filename):
+    try:
         response = self.s3.get_object(Bucket=bucket_name, Key=key)
 
         with io.FileIO(filename, 'w') as fd:
             for chunk in response['Body']:
                 fd.write(chunk)
-        response.pop('Body')
 
-        return response
+        response.pop('Body')
+    except ClientError as e:
+        raise RuntimeError(e)
+    except OSError as e:
+        raise RuntimeError(e)
+
+    return response
 ```
 
 </details>
@@ -858,21 +698,28 @@ class Boto3Example(object):
 <summary>Delete Object</summary>
 
 ```python
-    def delete(self, bucket_name, key):
-        return self.s3.delete_object(Bucket=bucket_name, Key=keys)
+def delete(self, bucket_name, key):
+    try:
+        return self.s3.delete_object(Bucket=bucket_name, Key=key)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
 
-
 ### Java SDK
+
+> [Note]
+> For more information, see [AWS SDK for Java](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html).
+
+#### Context
 
 <details>
 <summary>Java SDK Client Class</summary>
 
 ```java
-// AwsSdkExapmple.java
-public class AwsSdkExapmple {
+// AwsSdkExample.java
+public class AwsSdkExample {
     private static final String access = "{access}";
     private static final String secret = "{secret}";
     private static final String region = "{region name}";
@@ -880,14 +727,19 @@ public class AwsSdkExapmple {
 
     private AmazonS3 s3Client;
 
-    public AwsSdkExapmple() {
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(access, secret);
+    public AwsSdkExample() {
+        BasicAWSCredentials awsCredentials =
+            new BasicAWSCredentials(access, secret);
         s3Client = AmazonS3ClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(ednpoint, region))
-                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-                .enablePathStyleAccess()
-                .disableChunkedEncoding()
-                .build();
+                    .withEndpointConfiguration(
+                new AwsClientBuilder.EndpointConfiguration(ednpoint, region)
+            )
+            .withCredentials(
+                new AWSStaticCredentialsProvider(awsCredentials)
+            )
+            .enablePathStyleAccess()
+            .disableChunkedEncoding()
+            .build();
     }
 }
 ```
@@ -898,10 +750,15 @@ public class AwsSdkExapmple {
 <summary>Create Bucket</summary>
 
 ```java
-    public String createBucket(String bucketName) {
-        Bucket bucket = s3Client.createBucket(bucketName);
-        return bucket.toString();
+public String createBucket(String bucketName) throws RuntimeException {
+    try {
+        return s3Client.createBucket(bucketName).toString();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -910,9 +767,15 @@ public class AwsSdkExapmple {
 <summary>List Buckets</summary>
 
 ```java
-    public List<Bucket> listBuckets() {
+public List<Bucket> listBuckets() throws RuntimeException {
+    try {
         return s3Client.listBuckets();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -921,9 +784,17 @@ public class AwsSdkExapmple {
 <summary>Get Bucket (List Objects)</summary>
 
 ```java
-    public ListObjectsV2Result listObjects(String bucketName) {
+public ListObjectsV2Result listObjects(
+    String bucketName
+) throws RuntimeException {
+    try {
         return s3Client.listObjectsV2(bucketName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -932,9 +803,15 @@ public class AwsSdkExapmple {
 <summary>Delete Bucket</summary>
 
 ```java
-    public void deleteBucket(String bucketName) {
+public void deleteBucket(String bucketName) throws RuntimeException {
+    try {
         s3Client.deleteBucket(bucketName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -943,10 +820,23 @@ public class AwsSdkExapmple {
 <summary>Upload Object</summary>
 
 ```java
-    public String uploadObject(String bucketName, String objKeyName, String filePath) {
-        PutObjectResult result = s3Client.putObject(bucketName, objKeyName, new File(filePath));
-        return result.getETag();
+    public void uploadObject(
+    String bucketName, String objectKey, String filePath
+) throws RuntimeException {
+    try {
+        TransferManager tm = TransferManagerBuilder.standard()
+            .withS3Client(s3Client)
+            .build();
+        Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
+        upload.waitForCompletion();
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -955,11 +845,308 @@ public class AwsSdkExapmple {
 <summary>Download Object</summary>
 
 ```java
-    public String downloadObject(String bucketName, String objKeyName, String filePath) {
-        GetObjectRequest request = new GetObjectRequest(bucketName, objKeyName);
-        ObjectMetadata metadata = s3Client.getObject(request, new File(filePath));
-        return metadata.getETag();
+public String downloadObject(
+    String bucketName, String objKeyName, String filePath
+) throws RuntimeException {
+    try {
+        return s3Client.getObject(
+            new GetObjectRequest(bucketName, objKeyName),
+            new File(filePath)
+        ).getETag();
+    } catch (NoSuchKeyException e) {
+        throw new RuntimeException(e);
+    } catch (InvalidObjectStateException e) {
+        throw new RuntimeException(e);
+    } catch (S3Exception e) {
+        throw new RuntimeException(e);
+    } catch (AwsServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
+```
+
+</details>
+
+</details>
+<summary>Delete Object</summary>
+
+```java
+public void deleteObject(
+    String bucketName, String objKeyName
+) throws RuntimeException {
+    try {
+        s3Client.deleteObject(bucketName, objKeyName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+</details>
+
+### .NET SDK
+
+> [Note]
+> For more information, see [AWS SDK for .NET](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits).
+
+#### Context
+
+<details>
+<summary>.NET SDK client class</summary>
+
+```csharp
+class S3SDKExample
+{
+    private static string endpoint = "{endpoint}";
+    private static string regionName = "{region name}";
+    private static string accessKey = "{access}";
+    private static string secretKey = "{secret}";
+    
+    private static AmazonS3Client GetS3Client()
+    {
+        var amazonS3Config =
+            new AmazonS3Config
+            {
+                ServiceURL = endpoint,
+                AuthenticationRegion = regionName,
+                ForcePathStyle = true,
+            };
+        var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        
+        return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Create Bucket</summary>
+
+```csharp
+static async Task<PutBucketResponse> CreateBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        if (!(await AmazonS3Util.DoesS3BucketExistAsync(s3Client, bucketName)))
+        {
+            var putBucketRequest =
+                new PutBucketRequest
+                {
+                    BucketName = bucketName,
+                    UseClientRegion = true
+                };
+
+            return await s3Client.PutBucketAsync(putBucketRequest);
+        }
+        throw new Exception("Bucket already exist.");
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>List Buckets</summary>
+
+```csharp
+static async Task<ListBucketsResponse> ListBucketsAsync(AmazonS3Client s3Client)
+{
+    try
+    {
+        return await s3Client.ListBucketsAsync();
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>List Bucket (List objects)</summary>
+
+```csharp
+static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        List<ListObjectsV2Response> responses =
+            new List<ListObjectsV2Response>();
+        var request =
+            new ListObjectsV2Request
+            {
+                BucketName = bucketName,
+                MaxKeys = 5,
+            };
+        var response = new ListObjectsV2Response();
+
+        do
+        {
+            responses.Add(await s3Client.ListObjectsV2Async(request));
+            request.ContinuationToken = response.NextContinuationToken;
+        }
+        while (response.IsTruncated);
+
+        return responses;
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Delete Bucket</summary>
+
+```csharp
+static async Task<DeleteBucketResponse> DeleteBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        return await s3Client.DeleteBucketAsync(
+            new DeleteBucketRequest
+            {
+                BucketName = bucketName
+            });
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Upload Object</summary>
+
+```csharp
+private static async Task UploadObjectAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName,
+    string filePath)
+{
+    List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
+    InitiateMultipartUploadRequest initiateRequest =
+        new InitiateMultipartUploadRequest
+        {
+            BucketName = bucketName,
+            Key = keyName
+        };
+        
+    InitiateMultipartUploadResponse initResponse =
+        await s3Client.InitiateMultipartUploadAsync(initiateRequest);
+
+    long contentLength = new FileInfo(filePath).Length;
+    long partSize = 10 * (long)Math.Pow(2, 20);
+
+    try
+    {
+        long filePosition = 0;
+        for (int i = 1; filePosition < contentLength; i++)
+        {
+            UploadPartRequest uploadRequest =
+                new UploadPartRequest
+                {
+                    UseChunkEncoding = false,
+                    BucketName = bucketName,
+                    Key = keyName,
+                    UploadId = initResponse.UploadId,
+                    PartNumber = i,
+                    PartSize = partSize,
+                    FilePosition = filePosition,
+                    FilePath = filePath
+                };
+            uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
+            filePosition += partSize;
+        }
+
+        CompleteMultipartUploadRequest completeRequest =
+            new CompleteMultipartUploadRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+            };
+        completeRequest.AddPartETags(uploadResponses);
+        CompleteMultipartUploadResponse completeUploadResponse =
+            await s3Client.CompleteMultipartUploadAsync(completeRequest);
+    }
+    catch (Exception e)
+    {
+        AbortMultipartUploadRequest abortMPURequest =
+            new AbortMultipartUploadRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+            };
+        await s3Client.AbortMultipartUploadAsync(abortMPURequest);
+
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Download Object</summary>
+
+```csharp
+static async Task ReadObjectDataAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName,
+    string filePath)
+{
+    try
+    {
+        GetObjectRequest request =
+            new GetObjectRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
+
+        ResponseHeaderOverrides responseHeaders =
+            new ResponseHeaderOverrides();
+        responseHeaders.CacheControl = "No-cache";
+
+        request.ResponseHeaderOverrides = responseHeaders;
+        var appendToFile = false;
+
+        using (var response = await s3Client.GetObjectAsync(request))
+        await response.WriteResponseStreamToFileAsync(
+            filePath, appendToFile, CancellationToken.None);
+    }
+    catch (AmazonS3Exception e)
+    {
+       throw e;
+    }
+}
 ```
 
 </details>
@@ -967,10 +1154,29 @@ public class AwsSdkExapmple {
 <details>
 <summary>Delete Object</summary>
 
-```java
-    public void deleteObject(String bucketName, String objKeyName) {
-        s3Client.deleteObject(bucketName, objKeyName);
+```csharp
+static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName)
+{
+    try
+    {
+        var deleteObjectRequest =
+            new DeleteObjectRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
+
+        return await s3Client.DeleteObjectAsync(deleteObjectRequest);
     }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
 ```
 
 </details>
+

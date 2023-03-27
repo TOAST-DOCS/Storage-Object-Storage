@@ -36,7 +36,7 @@ Amazon S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情�
 APIを利用して認証情報を発行するには認証トークンが必要です。認証トークンの発行は[オブジェクトストレージAPIガイド](api-guide/#tenant-id-api-endpoint)を参照してください。
 
 ```
-POST    https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{api-user-id}/credentials/OS-EC2
+POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -101,7 +101,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-GET   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2
+GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -144,7 +144,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-DELETE   https://api-identity.infrastructure.cloud.toast.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
@@ -176,7 +176,7 @@ S3 APIを使用するには、認証情報を利用して署名を作成する�
 
 ## バケット(Bucket)
 ### バケット作成
-バケット(コンテナ)を作成します。バケット名は次のようにAmazon S3のバケット命名ルールに従う必要があります。
+バケットを作成します。バケット名は次のようにAmazon S3の命名ルールに従う必要があります。
 
 * バケット名は3文字から63文字にする必要があります。
 * バケット名は英字(小文字)、数字、ドット(.)およびハイフン(-)のみ使用できます。
@@ -206,42 +206,15 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
+このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード200を返します。
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
-| Location | Body | String | 作成したバケットのパス |
-
-<details>
-<summary>例</summary>
-
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "txfad4e17792b1432fb106f-005e5ef0e4",
-    "HostId": "txfad4e17792b1432fb106f-005e5ef0e4",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "content-length": "0",
-      "x-amz-request-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "content-type": "text/html; charset=UTF-8",
-      "location": "/new-container",
-      "x-trans-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "x-openstack-request-id": "txfad4e17792b1432fb106f-005e5ef0e4",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "Location": "/new-container"
-}
-```
-
-</details>
+| Location | Header | String | 作成したバケットパス |
 
 ### バケットリスト照会
 バケットリストを照会します。
+
 ```
 GET /
 
@@ -258,48 +231,37 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
-| Buckets.Name | Body | String | バケット名 |
-| Buckets.CreationDate | Body | String | 作成時刻 |
+リクエストが正しい場合、ステータスコード200とXML形式で構成されたバケットリストを返します。
 
 <details>
 <summary>例</summary>
 
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "txbf73f4d73ad34344a21bb-005e5ef141",
-    "HostId": "txbf73f4d73ad34344a21bb-005e5ef141",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "content-length": "750",
-      "x-amz-request-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "content-type": "application/xml",
-      "x-trans-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "x-openstack-request-id": "txbf73f4d73ad34344a21bb-005e5ef141",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "Buckets": [
-    {
-      "Name": "new-container",
-      "CreationDate": "2020-02-22T22:22:22+00:00"
-    }
-  ],
-  "Owner": {}
-}
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<ListAllMyBucketsResult
+	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+	<Owner>
+		<ID>user:panther</ID>
+		<DisplayName>user:panther</DisplayName>
+	</Owner>
+	<Buckets>
+		<Bucket>
+			<Name>log</Name>
+			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
+		</Bucket>
+		<Bucket>
+			<Name>snapshot</Name>
+			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
+		</Bucket>
+	</Buckets>
+</ListAllMyBucketsResult>
 ```
 
 </details>
 
 ### バケット照会
 指定したバケットの情報と内部に保存されたオブジェクトリストを照会します。
+
 ```
 GET /{bucket}
 
@@ -317,62 +279,50 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
-| Contents | Body | Object | オブジェクトリストオブジェクト |  
-| Contents.Key | Body | String | オブジェクト名 |
-| Contents.LastModified | Body | String | オブジェクトの最終修正時刻、 YYYY-MM-DDThh:mm:ssZ |
-| Contents.ETag | Body | String | オブジェクトのMD5ハッシュ値 |
-| Contents.Size | Body | String | オブジェクトのサイズ |
-| Contents.StorageClass | Body | String | オブジェクトが保存された場所の種類 |
-| Name | Body | String | バケット名 |
-| KeyCount | Body | Integer | リストのオブジェクト数 |
+リクエストが正しい場合、ステータスコード200とXML形式で構成されたオブジェクトリストトを返します。
 
 <details>
 <summary>例</summary>
 
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "tx75a3242dac55411fac69b-005e5ef1f1",
-    "HostId": "tx75a3242dac55411fac69b-005e5ef1f1",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "x-amz-id-2": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "content-length": "1273",
-      "x-amz-request-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "content-type": "application/xml",
-      "x-trans-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "x-openstack-request-id": "tx75a3242dac55411fac69b-005e5ef1f1",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "IsTruncated": false,
-  "Contents": [
-    {
-       "Key": "benjamin-ashton-Af9X4A8qMtM-unsplash.jpg",
-       "LastModified": "2020-02-22T22:22:22.222222+00:00",
-       "ETag": "\"2e95b028564c14371939358d3e88a771\"",
-       "Size": 3267226,
-       "StorageClass": "STANDARD"
-    }
-  ],
-  "Name": "new-container",
-  "Prefix": "",
-  "MaxKeys": 1000,
-  "EncodingType": "url",
-  "KeyCount": 1
-}
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<ListBucketResult
+	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+	<Name>snapshot</Name>
+	<Prefix/>
+	<Marker/>
+	<MaxKeys>1000</MaxKeys>
+	<IsTruncated>false</IsTruncated>
+	<Contents>
+		<Key>cheetah</Key>
+		<LastModified>2023-02-01T04:49:52.995Z</LastModified>
+		<ETag>"7d793037a0760186574b0282f2f435e7"</ETag>
+		<Size>5</Size>
+		<Owner>
+			<ID>user:panther</ID>
+			<DisplayName>user:panther</DisplayName>
+		</Owner>
+		<StorageClass>STANDARD</StorageClass>
+	</Contents>
+	<Contents>
+		<Key>leopard</Key>
+		<LastModified>2023-02-01T04:49:52.685Z</LastModified>
+		<ETag>"5d41402abc4b2a76b9719d911017c592"</ETag>
+		<Size>5</Size>
+		<Owner>
+			<ID>user:panther</ID>
+			<DisplayName>user:panther</DisplayName>
+		</Owner>
+		<StorageClass>STANDARD</StorageClass>
+	</Contents>
+</ListBucketResult>
 ```
 
 </details>
 
 ### バケットの削除
 指定したバケットを削除します。削除するバケットは空になっている必要があります。
+
 ```
 DELETE /{bucket}
 
@@ -390,40 +340,12 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
-
-<details>
-<summary>例</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx9b01c2e650e746ecba298-005e5ef28b",
-        "HostId": "tx9b01c2e650e746ecba298-005e5ef28b",
-        "HTTPStatusCode": 204,
-        "HTTPHeaders": {
-            "x-amz-id-2": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "content-length": "0",
-            "x-amz-request-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "content-type": "text/html; charset=UTF-8",
-            "x-trans-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "x-openstack-request-id": "tx9b01c2e650e746ecba298-005e5ef28b",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-        },
-        "RetryAttempts": 0
-    }
-}
-```
-
-</details>
+このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード204を返します。
 
 ## オブジェクト
 ### オブジェクトのアップロード
 指定したバケットにオブジェクトをアップロードします。
+
 ```
 PUT /{bucket}/{obj}
 
@@ -445,41 +367,13 @@ Authorization: AWS {access}:{signature}
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
-| ETag | Body | String | アップロードしたオブジェクトのMD5ハッシュ値 |
-
-<details>
-<summary>例</summary>
-
-```json
-{
-  "ResponseMetadata": {
-    "RequestId": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-    "HostId": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-    "HTTPStatusCode": 200,
-    "HTTPHeaders": {
-      "content-length": "0",
-      "x-amz-id-2": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "last-modified": "Sat, 22 Feb 2020 22:22:22 GMT",
-      "etag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-      "x-amz-request-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "content-type": "text/html; charset=UTF-8",
-      "x-trans-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "x-openstack-request-id": "tx1d914107987d4bd98b7f3-005e5ef3ef",
-      "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-    },
-    "RetryAttempts": 0
-  },
-  "ETag": "\"01463f775ef4f4dbbc7525f88120df09\""
-}
-```
-
-</details>
+| ETag | Header | String | オブジェクトのMD5ハッシュ値 |
+| Last-Modified | Header | String | オブジェクトの最後の修正日時(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 ### オブジェクトのダウンロード
 オブジェクトをダウンロードします。
 ```
+
 GET /{bucket}/{obj}
 
 Date: Sat, 22 Feb 2020 22:22:22 +0000
@@ -500,45 +394,8 @@ Authorization: AWS {access}:{signature}
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
-| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
-| LastModified | Body | String | オブジェクトの最終修正時刻、 YYYY-MM-DDThh:mm:ssZ |
-| ContentLength | Body | String | ダウンロードしたオブジェクトのサイズ |
-| ETag | Body | String | オブジェクトのMD5ハッシュ値 |
-| ContentType | Body | String | オブジェクトのコンテンツタイプ |
-| Metadata | Body | Object | オブジェクトのメタデータオブジェクト |
-
-<details>
-<summary>例</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx637d5de3c27f4b0a9664e-005e5ef491",
-        "HostId": "tx637d5de3c27f4b0a9664e-005e5ef491",
-        "HTTPStatusCode": 200,
-        "HTTPHeaders": {
-            "content-length": "124352",
-            "x-amz-id-2": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "last-modified": "Sat, 22 Feb 2020 22:22:22 GMT",
-            "etag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-            "x-amz-request-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "content-type": "image/jpeg",
-            "x-trans-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "x-openstack-request-id": "tx637d5de3c27f4b0a9664e-005e5ef491",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-        },
-        "RetryAttempts": 0
-    },
-    "LastModified": "2020-02-22T22:22:22+00:00",
-    "ContentLength": 124352,
-    "ETag": "\"01463f775ef4f4dbbc7525f88120df09\"",
-    "ContentType": "image/jpeg",
-    "Metadata": {}
-}
-```
-
-</details>
+| ETag | Header | String | オブジェクトのMD5ハッシュ値 |
+| Last-Modified | Header | String | オブジェクトの最後の修正日時(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 ### オブジェクトの削除
 指定したオブジェクトを削除します。
@@ -561,36 +418,7 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| ResponseMetadata | Body | Object | レスポンスメタデータオブジェクト |
-| ResponseMetadata.HTTPStatusCode | Body | Integer | レスポンスステータスコード |
-
-<details>
-<summary>例</summary>
-
-```json
-{
-    "ResponseMetadata": {
-        "RequestId": "tx04a548072068487a8a5be-005e5ef648",
-        "HostId": "tx04a548072068487a8a5be-005e5ef648",
-        "HTTPStatusCode": 204,
-        "HTTPHeaders": {
-            "x-amz-id-2": "tx04a548072068487a8a5be-005e5ef648",
-            "content-length": "0",
-            "x-amz-request-id": "tx04a548072068487a8a5be-005e5ef648",
-            "content-type": "text/html; charset=UTF-8",
-            "x-trans-id": "tx04a548072068487a8a5be-005e5ef648",
-            "x-openstack-request-id": "tx04a548072068487a8a5be-005e5ef648",
-            "date": "Sat, 22 Feb 2020 22:22:22 GMT"
-        },
-        "RetryAttempts": 0
-    }
-}
-```
-
-</details>
+このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード204を返します。
 
 ## AWSコマンドラインインターフェイス(CLI)
 S3互換APIを利用して[AWSコマンドラインインターフェイス](https://aws.amazon.com/jp/cli/)でNHN Cloudオブジェクトストレージを使用できます。
@@ -598,14 +426,14 @@ S3互換APIを利用して[AWSコマンドラインインターフェイス](htt
 ### インストール
 AWSコマンドラインインターフェイスはPythonパッケージで提供されます。Pythonパッケージ管理者(pip)を利用してインストールします。
 
-```
+```shell
 $ sudo pip install awscli
 ```
 
 ### 設定
 AWSコマンドラインインターフェイスを使用するには、先にS3 API認証情報と環境を設定する必要があります。
 
-```
+```shell
 $ aws configure
 AWS Access Key ID [None]: {access}
 AWS Secret Access Key [None]: {secret}
@@ -621,13 +449,13 @@ Default output format [None]: json
 
 ### S3コマンド使用方法
 
-```
+```shell
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 ```
 
 | 名前 | 説明 |
 |---|---|
-| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(ピョンチョン)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-object-storage.nhncloudservice.com - 韓国(ピョンチョン)リージョン<br/>https://jp1-api-object-storage.nhncloudservice.com - 日本(東京)リージョン<br/>https://us1-api-object-storage.nhncloudservice.com - 米国(カリフォルニア)リージョン |
 | command | AWSコマンドラインインターフェイスコマンド |
 | bucket | バケット名 |
 
@@ -639,8 +467,8 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 <details>
 <summary>バケット作成</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 mb s3://example-bucket
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
 
@@ -649,8 +477,8 @@ make_bucket: example-bucket
 <details>
 <summary>バケットリスト照会</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
 
@@ -660,8 +488,8 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls
 <details>
 <summary>バケット照会</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -671,8 +499,8 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>バケット削除</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-bucket
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -682,18 +510,34 @@ $ aws --endpoint-url=https://api-storage.cloud.toast.com s3 ls s3://example-buck
 <details>
 <summary>オブジェクトアップロード</summary>
 
-```
-$  aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
+
+<blockquote>
+[参考]
+</br>
+オブジェクトの容量が8MB以上の場合、AWSコマンドラインインタフェースはオブジェクトを複数のパートに分けてアップロードします。パートオブジェクトは <code style="display: inline;">{bucket}+segments</code>というバケットに <code style="display: inline;">{object-name}/{upload-id}/{part-number}</code>の形の名前で保存され、すべてのパートアップロードが終わったらアップロードをリクエストしたバケットにパートオブジェクトを接続したオブジェクトが作られます。
+</br></br>
+パートオブジェクトが保存される<code style="display: inline;">{bucket}+segments</code> バケットはS3互換APIではアクセスできず、Object Storage APIまたはコンソールからアクセスできます。
+</br></br>
+マルチパートオブジェクトのEtagは、各パートオブジェクトのETag値をバイナリデータに変換し、順番に接続して(concatenate) MD5ハッシュした値です。
+</blockquote>
+
+<blockquote>
+[注意]
+</br>
+マルチパートでアップロードしたオブジェクトの一部または全体のパートオブジェクトを削除すると、オブジェクトにアクセスできなくなります。
+</blockquote>
 
 </details>
 
 <details>
 <summary>オブジェクトダウンロード</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
 
@@ -702,8 +546,8 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <details>
 <summary>オブジェクト削除</summary>
 
-```
-$ aws --endpoint-url=https://api-storage.cloud.toast.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -714,7 +558,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 AWSは多くのプログラミング言語用のSDKを提供しています。S3互換APIを利用してAWS SDKでNHN Cloudオブジェクトストレージを使用できます。
 
 > [参考]
-> この文書ではPythonとJava SDKの簡単な使用例のみ説明します。詳細な内容は[AWS SDK](https://aws.amazon.com/jp/tools)文書を参照してください。
+> 詳細については[AWS SDK](https://aws.amazon.com/ko/tools)文書を参照してください。
 
 
 AWS SDKを使用するために必要な主要パラメータは次のとおりです。
@@ -724,10 +568,14 @@ AWS SDKを使用するために必要な主要パラメータは次のとおり�
 | access | S3 API認証情報アクセスキー |
 | secret | S3 API認証情報シークレットキー |
 | region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(ピョンチョン)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
-| endpoint | https://api-storage.cloud.toast.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-storage.cloud.toast.com - 韓国(ピョンチョン)リージョン<br/>https://jp1-api-storage.cloud.toast.com - 日本(東京)リージョン<br/>https://us1-api-storage.cloud.toast.com - 米国(カリフォルニア)リージョン | |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-object-storage.nhncloudservice.com - 韓国(ピョンチョン)リージョン<br/>https://jp1-api-object-storage.nhncloudservice.com - 日本(東京)リージョン<br/>https://us1-api-object-storage.nhncloudservice.com - 米国(カリフォルニア)リージョン | |
 
 
 ### Boto3 - Python SDK
+
+> [参考]
+> 詳細については[AWS SDK for Python (Boto3)説明書](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits)文書を参照してください。
+#### Context
 
 <details>
 <summary>Boto3クライアントクラス</summary>
@@ -735,6 +583,7 @@ AWS SDKを使用するために必要な主要パラメータは次のとおり�
 ```python
 # boto3example.py
 import boto3
+from botocore.exceptions import ClientError
 
 class Boto3Example(object):
     _REGION = '{region name}'
@@ -767,9 +616,11 @@ class Boto3Example(object):
 <summary>バケットリスト照会</summary>
 
 ```python
-    def list_buckets(self):
-        response = self.s3.list_buckets()
-        return response.get('Buckets')
+def create_bucket(self, bucket_name):
+    try:
+        return self.s3.create_bucket(Bucket=bucket_name)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -778,9 +629,11 @@ class Boto3Example(object):
 <summary>バケット照会(オブジェクトリスト照会)</summary>
 
 ```python
-    def list_objs(self, bucket_name):
-        response = self.s3.list_objects_v2(Bucket=bucket_name)
-        return response.get('Contents')
+def list_buckets(self):
+    try:
+        return self.s3.list_buckets().get('Buckets')
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -789,8 +642,11 @@ class Boto3Example(object):
 <summary>バケット削除</summary>
 
 ```python
-    def delete_bucket(self, bucket_name):
+def delete_bucket(self, bucket_name):
+    try:
         return self.s3.delete_bucket(Bucket=bucket_name)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -799,9 +655,12 @@ class Boto3Example(object):
 <summary>オブジェクトアップロード</summary>
 
 ```python
-    def upload(self, bucket_name, key, filename):
-        with open(filename, 'rb') as fd:
-            return self.s3.put_object(Bucket=bucket_name, Key=key, Body=fd)
+def upload(self, bucket_name, key, filename):
+    try:
+        self.s3.upload_file(
+            Filename=filename, Bucket=bucket_name, Key=key)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -810,15 +669,19 @@ class Boto3Example(object):
 <summary>オブジェクトダウンロード</summary>
 
 ```python
-    def download(self, bucket_name, key, filename):
+def download(self, bucket_name, key, filename):
+    try:
         response = self.s3.get_object(Bucket=bucket_name, Key=key)
-
         with io.FileIO(filename, 'w') as fd:
             for chunk in response['Body']:
                 fd.write(chunk)
         response.pop('Body')
+    except ClientError as e:
+        raise RuntimeError(e)
+    except OSError as e:
+        raise RuntimeError(e)
 
-        return response
+    return response
 ```
 
 </details>
@@ -827,8 +690,11 @@ class Boto3Example(object):
 <summary>オブジェクト削除</summary>
 
 ```python
-    def delete(self, bucket_name, key):
-        return self.s3.delete_object(Bucket=bucket_name, Key=keys)
+def delete(self, bucket_name, key):
+    try:
+        return self.s3.delete_object(Bucket=bucket_name, Key=key)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -836,12 +702,16 @@ class Boto3Example(object):
 
 ### Java SDK
 
+> [参考]
+> 詳細については[AWS SDK for Java説明書](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html)文書を参照してください。
+#### Context
+
 <details>
 <summary>Java SDKクライアントクラス</summary>
 
 ```java
-// AwsSdkExapmple.java
-public class AwsSdkExapmple {
+// AwsSdkExample.java
+public class AwsSdkExample {
     private static final String access = "{access}";
     private static final String secret = "{secret}";
     private static final String region = "{region name}";
@@ -849,14 +719,19 @@ public class AwsSdkExapmple {
 
     private AmazonS3 s3Client;
 
-    public AwsSdkExapmple() {
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(access, secret);
+    public AwsSdkExample() {
+        BasicAWSCredentials awsCredentials =
+            new BasicAWSCredentials(access, secret);
         s3Client = AmazonS3ClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(ednpoint, region))
-                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-                .enablePathStyleAccess()
-                .disableChunkedEncoding()
-                .build();
+            .withEndpointConfiguration(
+                new AwsClientBuilder.EndpointConfiguration(ednpoint, region)
+            )
+            .withCredentials(
+                new AWSStaticCredentialsProvider(awsCredentials)
+            )
+            .enablePathStyleAccess()
+            .disableChunkedEncoding()
+            .build();        
     }
 }
 ```
@@ -867,10 +742,15 @@ public class AwsSdkExapmple {
 <summary>バケット作成</summary>
 
 ```java
-    public String createBucket(String bucketName) {
-        Bucket bucket = s3Client.createBucket(bucketName);
-        return bucket.toString();
+public String createBucket(String bucketName) throws RuntimeException {
+    try {
+        return s3Client.createBucket(bucketName).toString();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -879,9 +759,15 @@ public class AwsSdkExapmple {
 <summary>バケットリスト照会</summary>
 
 ```java
-    public List<Bucket> listBuckets() {
+public List<Bucket> listBuckets() throws RuntimeException {
+    try {
         return s3Client.listBuckets();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -890,8 +776,17 @@ public class AwsSdkExapmple {
 <summary>バケット照会(オブジェクトリスト照会)</summary>
 
 ```java
-    public ListObjectsV2Result listObjects(String bucketName) {
+public ListObjectsV2Result listObjects(
+    String bucketName
+) throws RuntimeException {
+    try {
         return s3Client.listObjectsV2(bucketName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
     }
 ```
 
@@ -901,8 +796,15 @@ public class AwsSdkExapmple {
 <summary>バケット削除</summary>
 
 ```java
-    public void deleteBucket(String bucketName) {
+public void deleteBucket(String bucketName) throws RuntimeException {
+    try {
         s3Client.deleteBucket(bucketName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
     }
 ```
 
@@ -912,10 +814,23 @@ public class AwsSdkExapmple {
 <summary>オブジェクトアップロード</summary>
 
 ```java
-    public String uploadObject(String bucketName, String objKeyName, String filePath) {
-        PutObjectResult result = s3Client.putObject(bucketName, objKeyName, new File(filePath));
-        return result.getETag();
+public void uploadObject(
+    String bucketName, String objectKey, String filePath
+) throws RuntimeException {
+    try {
+        TransferManager tm = TransferManagerBuilder.standard()
+            .withS3Client(s3Client)
+            .build();
+        Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
+        upload.waitForCompletion();
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -924,11 +839,26 @@ public class AwsSdkExapmple {
 <summary>オブジェクトダウンロード</summary>
 
 ```java
-    public String downloadObject(String bucketName, String objKeyName, String filePath) {
-        GetObjectRequest request = new GetObjectRequest(bucketName, objKeyName);
-        ObjectMetadata metadata = s3Client.getObject(request, new File(filePath));
-        return metadata.getETag();
+public String downloadObject(
+    String bucketName, String objKeyName, String filePath
+) throws RuntimeException {
+    try {
+        return s3Client.getObject(
+            new GetObjectRequest(bucketName, objKeyName),
+            new File(filePath)
+        ).getETag();
+    } catch (NoSuchKeyException e) {
+        throw new RuntimeException(e);
+    } catch (InvalidObjectStateException e) {
+        throw new RuntimeException(e);
+    } catch (S3Exception e) {
+        throw new RuntimeException(e);
+    } catch (AwsServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
 
 </details>
@@ -937,9 +867,305 @@ public class AwsSdkExapmple {
 <summary>オブジェクト削除</summary>
 
 ```java
-    public void deleteObject(String bucketName, String objKeyName) {
+public void deleteObject(
+    String bucketName, String objKeyName
+) throws RuntimeException {
+    try {
         s3Client.deleteObject(bucketName, objKeyName);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
     }
+}
+```
+
+</details>
+
+### .NET SDK
+
+> [参考]
+> 詳細については[AWS SDK for .NET説明書](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits)文書を参照してください。
+#### Context
+
+<details>
+<summary>.NET SDKクライアントクラス</summary>
+
+```csharp
+class S3SDKExample
+{
+    private static string endpoint = "{endpoint}";
+    private static string regionName = "{region name}";
+    private static string accessKey = "{access}";
+    private static string secretKey = "{secret}";
+    private static AmazonS3Client GetS3Client()
+    {
+        var amazonS3Config =
+            new AmazonS3Config
+            {
+                ServiceURL = endpoint,
+                AuthenticationRegion = regionName,
+                ForcePathStyle = true,
+            };
+        var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>バケットの作成</summary>
+
+```csharp
+static async Task<PutBucketResponse> CreateBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        if (!(await AmazonS3Util.DoesS3BucketExistAsync(s3Client, bucketName)))
+        {
+            var putBucketRequest =
+                new PutBucketRequest
+                {
+                    BucketName = bucketName,
+                    UseClientRegion = true
+                };
+            return await s3Client.PutBucketAsync(putBucketRequest);
+        }
+        throw new Exception("Bucket already exist.");
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>バケットリストの照会</summary>
+
+```csharp
+static async Task<ListBucketsResponse> ListBucketsAsync(AmazonS3Client s3Client)
+{
+    try
+    {
+        return await s3Client.ListBucketsAsync();
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>バケットの照会(オブジェクトリスト照会)</summary>
+
+```csharp
+static async Task<List<ListObjectsV2Response>> ListBucketContentsAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        List<ListObjectsV2Response> responses =
+            new List<ListObjectsV2Response>();
+        var request =
+            new ListObjectsV2Request
+            {
+                BucketName = bucketName,
+                MaxKeys = 5,
+            };
+        var response = new ListObjectsV2Response();
+
+        do
+        {
+            responses.Add(await s3Client.ListObjectsV2Async(request));
+            request.ContinuationToken = response.NextContinuationToken;
+        }
+        while (response.IsTruncated);
+
+        return responses;
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>バケットの削除</summary>
+
+```csharp
+static async Task<DeleteBucketResponse> DeleteBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        return await s3Client.DeleteBucketAsync(
+            new DeleteBucketRequest
+            {
+                BucketName = bucketName
+            });
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>オブジェクトのアップロード</summary>
+
+```csharp
+private static async Task UploadObjectAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName,
+    string filePath)
+{
+    List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
+    InitiateMultipartUploadRequest initiateRequest =
+        new InitiateMultipartUploadRequest
+        {
+            BucketName = bucketName,
+            Key = keyName
+        };
+
+    InitiateMultipartUploadResponse initResponse =
+        await s3Client.InitiateMultipartUploadAsync(initiateRequest);
+
+    long contentLength = new FileInfo(filePath).Length;
+    long partSize = 10 * (long)Math.Pow(2, 20);
+
+    try
+    {
+        long filePosition = 0;
+        for (int i = 1; filePosition < contentLength; i++)
+        {
+            UploadPartRequest uploadRequest =
+                new UploadPartRequest
+                {
+                    UseChunkEncoding = false,
+                    BucketName = bucketName,
+                    Key = keyName,
+                    UploadId = initResponse.UploadId,
+                    PartNumber = i,
+                    PartSize = partSize,
+                    FilePosition = filePosition,
+                    FilePath = filePath
+                };
+            uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
+            filePosition += partSize;
+        }
+
+        CompleteMultipartUploadRequest completeRequest =
+            new CompleteMultipartUploadRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+            };
+        completeRequest.AddPartETags(uploadResponses);
+        CompleteMultipartUploadResponse completeUploadResponse =
+            await s3Client.CompleteMultipartUploadAsync(completeRequest);
+    }
+    catch (Exception e)
+    {
+        AbortMultipartUploadRequest abortMPURequest =
+            new AbortMultipartUploadRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+            };
+        await s3Client.AbortMultipartUploadAsync(abortMPURequest);
+
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>オブジェクトのダウンロード</summary>
+
+```csharp
+static async Task ReadObjectDataAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName,
+    string filePath)
+{
+    try
+    {
+        GetObjectRequest request =
+            new GetObjectRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
+
+        ResponseHeaderOverrides responseHeaders =
+            new ResponseHeaderOverrides();
+        responseHeaders.CacheControl = "No-cache";
+
+        request.ResponseHeaderOverrides = responseHeaders;
+        var appendToFile = false;
+
+        using (var response = await s3Client.GetObjectAsync(request))
+        await response.WriteResponseStreamToFileAsync(
+            filePath, appendToFile, CancellationToken.None);
+    }
+    catch (AmazonS3Exception e)
+    {
+       throw e;
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>オブジェクトの削除</summary>
+
+```csharp
+static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName)
+{
+    try
+    {
+        var deleteObjectRequest =
+            new DeleteObjectRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
+
+        return await s3Client.DeleteObjectAsync(deleteObjectRequest);
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
 ```
 
 </details>
