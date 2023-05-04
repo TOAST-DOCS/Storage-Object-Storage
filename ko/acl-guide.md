@@ -446,7 +446,7 @@ API를 사용해 컨테이너의 `X-Container-Ip-Acl-Allowed-List`, `X-Container
 | --- | --- |
 | `r` | 읽기 권한, GET, HEAD 요청이 해당됩니다. |
 | `w` | 쓰기 권한, PUT, POST, DELETE, COPY 요청이 해당됩니다.|
-| `a` | 읽기와 쓰기 권한을 모두 허용합니다. GET, HEAD, PUT, POST, DELETE, COPY 요청이 해당됩니다. |
+| `a` | 읽기와 쓰기 권한을 모두 의미합니다. GET, HEAD, PUT, POST, DELETE, COPY 요청이 해당됩니다. |
 
 
 <details>
