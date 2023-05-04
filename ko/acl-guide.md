@@ -450,7 +450,7 @@ API를 사용해 컨테이너의 `X-Container-Ip-Acl-Allowed-List`, `X-Container
 
 
 <details>
-<summary>Allow 정책 설정 </summary>
+<summary>화이트리스트 설정</summary>
 
 ```
 $ curl -i -X POST \
@@ -466,7 +466,7 @@ $ curl -i -X POST \
 </details>
 
 <details>
-<summary>Deny 정책 설정 </summary>
+<summary>블랙리스트 설정</summary>
 
 ```
 $ curl -i -X POST \
@@ -482,7 +482,7 @@ $ curl -i -X POST \
 </details>
 
 <details>
-<summary>ACL 설정 제거 </summary>
+<summary>ACL 설정 제거</summary>
 
 ```
 $ curl -i -X POST \
