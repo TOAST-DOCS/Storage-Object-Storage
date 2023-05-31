@@ -1,5 +1,10 @@
 ## Storage > Object Storage > Release Notes
 
+### May 30, 2023
+#### Added Features
+* [API] Added the IP ACL feature
+* [Console] Added the IP ACL feature
+
 ### March 28, 2023
 #### Feature Updates
 * [API] Changed API endpoints
