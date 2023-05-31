@@ -421,17 +421,17 @@ You can use the console or API to specify whitelists and blacklists to restrict 
 > Incorrect settings can result in containers without write access. In this case, you cannot change the settings. If this causes any problem, please contact the Customer Center.
 
 
-## Console
+### Console
 
 Select IP-based container access policy from the container access policy setting dialog box in the container management windows.
 
 > [Caution]
 > If you don't have read permission, you can no longer handle that container from the console.
 
-### Whitelist
+#### Whitelist
 Denies all requests except from allowed IPs or network bands. You can specify read and write permissions to allow requests.
 
-### Blacklist
+#### Blacklist
 Denies requests from the specified IP or network band. All other requests are permitted. When used with an allow policy, the deny policy is ignored. You can specify read and write permissions to deny requests.
 
 
