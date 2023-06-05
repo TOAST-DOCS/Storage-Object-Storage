@@ -1,5 +1,10 @@
 ## Storage > Object Storage > 릴리스 노트
 
+### 2023. 06. 08.
+#### 기능 추가
+* [API] IP ACL 기능 추가
+* [Console] IP ACL 기능 추가
+
 ### 2023. 04. 04.
 #### 기능 변경
 * [API] API 엔드포인트 변경
