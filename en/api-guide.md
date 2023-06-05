@@ -1109,7 +1109,7 @@ With the `X-Versions-Retention` header, you can set the life cycle of a previous
 >
 > It is recommended that you avoid using Unicode characters in container names for archive containers. If the name of the container to set as an archive container contains Unicode characters, it must be URL-encoded before being entered in the request header.
 >
-> If you specify an encryption container as the replication target container and then delete the symmetric key from Secure Key Manager, the encryption container fails to be replicated.
+> If you specify an encryption container as the archive container and then delete the symetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
 <br/>
 
