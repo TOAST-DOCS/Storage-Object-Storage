@@ -181,7 +181,7 @@ Views the life cycle of objects stored in containers and version control policie
 You can set a life cycle of the uploaded object. Objects that have passed the set life cycle are automatically deleted.
 
 > [Note]
-It is applied only to objects uploaded after the object life cycle is set.
+> It is applied only to objects uploaded after the object life cycle is set.
 
 ##### Object Version Control Settings
 
@@ -189,7 +189,7 @@ Object version control settings allow you to keep previous versions of objects. 
 
 > [Caution]
 > If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
-> If you specify an encryption container as the replication target container and then delete the symmetric key from Secure Key Manager, the encryption container fails to be replicated.
+> If you specify an encryption container as the archive container and then delete the symetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
 #### Object Lock
 
@@ -318,7 +318,7 @@ Delete selected objects. When a multipart object is deleted, the segment object 
 Check the selected object information and manage the properties.
 
 > [Note]
-If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
+> If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
 
 ##### Change Object Expriation Date
 
