@@ -869,6 +869,7 @@ X-Auth-Token: {token-id}
 | path | Query | String | - | 조회할 폴더 이름 |
 | prefix | Query | String | - | 검색할 접두어 |
 | limit | Query | Integer | - | 목록에 표시할 오브젝트 수 |
+| format | Query | String | - | 응답 형식 |
 
 > [참고]
 > 컨테이너 조회 API는 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
