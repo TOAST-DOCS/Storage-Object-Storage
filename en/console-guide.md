@@ -35,6 +35,7 @@ Creates containers. Uploading objects in an object storage requires one or more 
     <td>Lock cycle</td>
     <td>Enter the object lock cycle in days.</td>
   </tr>
+  <tr>
     <td rowspan="2">Encryption settings</td>
     <td>Encryption</td>
     <td>Select whether to use object encryption.</td>
@@ -44,7 +45,6 @@ Creates containers. Uploading objects in an object storage requires one or more 
     <td>Enter the symmetric key ID managed by the Secure Key Manager service.</td>
   </tr>
 </table>
-
 
 #### Object Lock Settings
 Objects uploaded to the Object Lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
@@ -174,21 +174,22 @@ Views the life cycle of objects stored in containers and version control policie
     <td>Archiving object<br/>life cycle</td>
     <td>Enter the life cycle of previous versions of an object in days. Life cycle setting will be cleared if it is not filled in.</td>
   </tr>
-  </table>
+</table>
 
 ##### Object Life Cycle
 
 You can set a life cycle of the uploaded object. Objects that have passed the set life cycle are automatically deleted.
 
 > [Note]
-It is applied only to objects uploaded after the object life cycle is set.
+> It is applied only to objects uploaded after the object life cycle is set.
 
 ##### Object Version Control Settings
 
 Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated or deleted. If you set the life cycle for previous versions, versions that exceed the set life cycle are automatically deleted.
 
 > [Caution]
-If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
+> If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
+> If you specify an encryption container as the archive container and then delete the symetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
 #### Object Lock
 
@@ -254,6 +255,8 @@ The replication policies are as follows:
 * If the segment objects of the multipart-uploaded large object are stored in another container, you must also set up the replication for that container to access the replicated large object.
 * Delete marker objects of the archive container are not replicated.
 
+> [Caution]
+> If you specify an encryption container as the replication target container and then delete the symmetric key from Secure Key Manager, the encryption container fails to be replicated.
 
 ## Object
 ### Create Folder
@@ -311,12 +314,11 @@ Copy objects to create new objects. Create an object with a new name in the cont
 ### Delete Object
 Delete selected objects. When a multipart object is deleted, the segment object is also deleted.
 
-
 ### Manage Object
 Check the selected object information and manage the properties.
 
 > [Note]
-If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
+> If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
 
 ##### Change Object Expriation Date
 
@@ -325,6 +327,7 @@ You cannot change the expiration date for selected objects.
 #### Change Object Lock Date
 
 You can change the lock expiration date for selected objects. It cannot be changed prior to the previously set expiration date.
+
 
 ## Prefix Search
 If you enter a prefix in the search bar and click the **Search** button, you can search for containers, folders, and objects that begin with the prefix you entered. You can search for containers in the container list, and search for folders and objects in the object list.

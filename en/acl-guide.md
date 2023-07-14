@@ -1,23 +1,24 @@
 ## Storage > Object Storage > ACL Configuration Guide
+## Role-based Access Policies
 
 You can use the console or API to grant read/write access to the container to other users.
 
-## Console
+### Console
 In the console, you can select a container access policy from the [Create Container](console-guide/#create-container) dialog box or the container access policy settings dialog box within [Manage Container](console-guide/#manage-container) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
 
-### PRIVATE
-`PRIVATE` is the default access policy that grants access only to users of the project to which the container belongs. Users can access the container through the console or through the API by getting an authentication token. It’s the same policy as the [Allow read/write only to users in the project to which the container belongs](acl-guide/#allow-readwrite-only-to-users-in-the-project-to-which-the-container-belongs) in the API section.
+#### PRIVATE
+`PRIVATE` is the default access policy that grants access only to users of the project to which the container belongs. Users can access the container through the console or through the API by getting an authentication token. It’s the same policy as the `Allow read/write only to users in the project to which the container belongs` in the API section.
 <br/>
 
-### PUBLIC
-`PUBLIC` is a policy that allows anyone to read and query the object list. If you set the container to PUBLIC, you can get the URL from the console. Anyone can access the container using this URL. It's the same policy as the [Allow read for all users](acl-guide/#allow-readlist-query-for-all-users) in the API section.
+#### PUBLIC
+`PUBLIC` is a policy that allows anyone to read and query the object list. If you set the container to PUBLIC, you can get the URL from the console. Anyone can access the container using this URL. It's the same policy as the `Allow read for all users` in the API section.
 <br/>
 
-## API
+### API
 You can use the API to set access policies for different situations by entering ACL policy elements in the `X-Container-Read` and `X-Container-Write` properties of a container.
 <br/>
 
-### ACL Policy Elements
+#### ACL Policy Elements
 
 The ACL policy elements that can be set are as follows. All policy elements can be combined by separating them with commas (`,`).
 
@@ -40,7 +41,7 @@ The ACL policy elements that can be set are as follows. All policy elements can 
 
 ### Allow read/write only to users in the project to which the container belongs
 This is the default access policy used when no ACL policy elements are set. A valid authentication token is required to access the container using the API.
-If you delete all the `X-Container-Read` and `X-Container-Write` property values of a container, it becomes a [PRIVATE](acl-guide/#private) container that allows access only to users in the project to which the container belongs.
+If you delete all the `X-Container-Read` and `X-Container-Write` property values of a container, it becomes a `PRIVATE` container that allows access only to users in the project to which the container belongs.
 
 <br/>
 
@@ -81,8 +82,8 @@ $ curl -X GET \
 </details>
 <br/>
 
-### Allow read/list query for all users
-Setting the container's `X-Container-Read` property to `.r:*, .rlistings` allows all users to read objects and query an object list. No authentication token is required. It is the same policy as the [PUBLIC](acl-guide/#public) entry in the console section.
+#### Allow read/list query for all users
+Setting the container's `X-Container-Read` property to `.r:*, .rlistings` allows all users to read objects and query an object list. No authentication token is required. It is the same policy as the `PUBLIC` entry in the console section.
 <br/>
 
 <details>
@@ -134,7 +135,7 @@ $ curl -X GET \
 <br/>
 
 
-### Allow/deny read for requests from a specific HTTP referer
+#### Allow/deny read for requests from a specific HTTP referer
 HTTP referer is the address information of a web page that is requested through a hyperlink. It is included in the request header.
 If you set an ACL policy element in the form of `.r:<referrer>` or `.r:-<referrer>` in the `X-Container-Read` property of the container, you can allow or block access requests from specific referers. When setting the HTTP referer with an ACL policy element, you must enter the domain name without the protocol and sub-path.
 
@@ -404,9 +405,96 @@ A valid authentication token is required when making an access request to an obj
 </details>
 <br/>
 
-### Delete access policies
-By entering an empty header, you can delete all set ACL policy elements. A container with no ACL policy element becomes a **PRIVATE** container, accessible only by authorized users. See [Allow read/write only to users in the project to which the container belongs](acl-guide/#allow-readwrite-only-to-users-in-the-project-to-which-the-container-belongs).
+#### Delete Access Policies
+By entering an empty header, you can delete all set ACL policy elements. A container with no ACL policy element becomes a **PRIVATE** container, accessible only by authorized users. See `Allow read/write only to users in the project to which the container belongs`.
 
 
-## References
+### References
 Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/overview_acl.html](https://docs.openstack.org/swift/latest/overview_acl.html)
+
+## IP-based Access Policies
+
+You can use the console or API to specify whitelists and blacklists to restrict read/write access to containers from specific IPs. You can't use whitelists and blacklists at the same time. If you enter both a whitelist and a blacklist, only the whitelist is used. IP-based access policies support IPv4 only.
+
+
+> [Caution]
+> Incorrect settings can result in containers without write access. In this case, you cannot change the settings. If this causes any problem, please contact the Customer Center.
+
+
+### Console
+
+Select IP-based container access policy from the container access policy setting dialog box in the container management windows.
+
+> [Caution]
+> If you don't have read permission, you can no longer handle that container from the console.
+
+#### Whitelist
+Denies all requests except from allowed IPs or network bands. You can specify read and write permissions to allow requests.
+
+#### Blacklist
+Denies requests from the specified IP or network band. All other requests are permitted. When used with an allow policy, the deny policy is ignored. You can specify read and write permissions to deny requests.
+
+
+### API
+
+You can use the API to enable IP-based ACLs by entering ACL policy elements in the container's `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties.`X-Container-Ip-Acl-Allowed-List` indicates whitelist, `X-Container-Ip-Acl-Denied-List` indicates blacklist.
+<br>
+
+A policy element consists of access permission and an IP or network band, and you can enter multiple values separated by commas (`, `). The access permissions are shown in the table below.
+
+| Access Permission | Description |
+| --- | --- |
+| `r` | Includes read permission, GET, and HEAD requests. |
+| `w` | Includes Write permission, PUT, POST, DELETE, and COPY requests.|
+| `a` | Indicates both read and write permissions. This includes GET, HEAD, PUT, POST, DELETE, and COPY requests. |
+
+
+<details>
+<summary>Whitelist Setting</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Ip-Acl-Allowed-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+```
+
+The IP of 192.168.0.1 can only make read requests, the IP of 192.168.0.2 can only make write requests, and all IPs in the 172.16.0.0/24 band can make all requests. All other IPs will have their requests denied.<br><br>
+
+Changes to a container require a valid authentication token issued with an authorized tenant ID and NHN Cloud user ID belonging to the project, and must be requested from an allowed IP.
+
+<br/><br/>
+</details>
+
+<details>
+<summary>Blacklist Setting</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Ip-Acl-Denied-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+```
+
+Read requests are denied from the IP of 192.168.0.1, write requests are denied from the IP of 192.168.0.2, and all IPs in the 172.16.0.0/24 band are denied all requests. All other IPs are allowed requests.<br><br>
+
+Changes to a container require a valid authentication token issued with an authorized tenant ID and NHN Cloud user ID belonging to the project, and must be requested from an allowed IP.
+
+<br/><br/>
+</details>
+
+<details>
+<summary>Remove ACL Setting</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Ip-Acl-Allowed-List;' \
+  -H 'X-Container-Ip-Acl-Denied-List;' \
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+```
+
+Changes to a container require a valid authentication token issued with an authorized tenant ID and NHN Cloud user ID belonging to the project, and must be requested from an allowed IP.
+
+<br/><br/>
+</details>

@@ -1075,7 +1075,7 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 | X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
 | X-Container-Meta-Web-Index | Header | String | - | 정적 웹사이트 인덱스 문서 오브젝트 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
 | X-Container-Meta-Web-Error | Header | String | - | 정적 웹사이트 오류 문서 오브젝트 접미사 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
-| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. |
+| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. | 
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFC를 준수하는 ETag 형식 사용 여부를 설정, true 또는 false |
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정<br/>객체 잠금 컨테이너에서만 변경 가능 |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
@@ -1109,6 +1109,7 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 >
 > 아카이브 컨테이너로 사용할 컨테이너 이름에는 가급적 유니코드 문자를 사용하지 않는 것을 권장합니다. 아카이브 컨테이너로 지정할 컨테이너 이름에 유니코드 문자가 포함되어 있다면 반드시 URL 인코딩 후 요청 헤더에 입력해야 합니다.
 >
+
 
 <br/>
 
@@ -1160,7 +1161,6 @@ request.send(null);
 <br>
 CORS 설정에 문제가 없다면 콘솔에서 아래와 같은 성공 응답을 확인할 수 있습니다.
 
-
 ```
 Status: 200
 content-length: 1
@@ -1177,6 +1177,7 @@ CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 �
 
 ```
 Access to XMLHttpRequest at 'https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
 Status: 0
 ```
 
