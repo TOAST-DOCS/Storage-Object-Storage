@@ -1068,8 +1068,10 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 설정 |
-| X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 접근 규칙 설정 |
+| X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 역할 기반 접근 규칙 설정 |
+| X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 역할 기반 접근 규칙 설정 |
+| X-Container-Ip-Acl-Allowed-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
+| X-Container-Ip-Acl-Denied-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Object-Lifecycle | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
 | X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
 | X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
@@ -1083,7 +1085,7 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 <br/>
 
 ##### 접근 정책 설정
-`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참조하세요.
+`X-Container-Read`, `X-Container-Write` `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참조하세요.
 
 <br/>
 
