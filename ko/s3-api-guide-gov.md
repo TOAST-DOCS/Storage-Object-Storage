@@ -653,11 +653,16 @@ def delete_bucket(self, bucket_name):
 <details>
 <summary>오브젝트 업로드</summary>
 
+> [참고]
+> 파일의 크기를 파트의 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
+
 ```python
-def upload(self, bucket_name, key, filename):
+def upload(self, bucket_name, key, filename, part_size):
     try:
         self.s3.upload_file(
-            Filename=filename, Bucket=bucket_name, Key=key)
+            Filename=filename, Bucket=bucket_name, Key=key, Config=(
+                boto3.s3.transfer.TransferConfig(
+                    multipart_chunksize=part_size)))
     except ClientError as e:
         raise RuntimeError(e)
 ```
@@ -812,13 +817,17 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 <details>
 <summary>오브젝트 업로드</summary>
 
+> [참고]
+> 파일의 크기를 파트의 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
+
 ```java
 public void uploadObject(
-    String bucketName, String objectKey, String filePath
+    String bucketName, String objectKey, String filePath, long partSize
 ) throws RuntimeException {
     try {
         TransferManager tm = TransferManagerBuilder.standard()
             .withS3Client(s3Client)
+            .withMinimumUploadPartSize(partSize)
             .build();
         Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
         upload.waitForCompletion();
@@ -1034,70 +1043,31 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 <details>
 <summary>오브젝트 업로드</summary>
 
+> [참고]
+> 파일의 크기를 파트의 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
+
 ```csharp
 private static async Task UploadObjectAsync(
     AmazonS3Client s3Client,
     string bucketName,
     string keyName,
-    string filePath)
+    string filePath,
+    int partSize)
 {
-    List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
-    InitiateMultipartUploadRequest initiateRequest =
-        new InitiateMultipartUploadRequest
-        {
-            BucketName = bucketName,
-            Key = keyName
-        };
-
-    InitiateMultipartUploadResponse initResponse =
-        await s3Client.InitiateMultipartUploadAsync(initiateRequest);
-
-    long contentLength = new FileInfo(filePath).Length;
-    long partSize = 10 * (long)Math.Pow(2, 20);
-
     try
     {
-        long filePosition = 0;
-        for (int i = 1; filePosition < contentLength; i++)
+        TransferUtility uploader = new TransferUtility(s3Client);
+        TransferUtilityUploadRequest uploadRequest = new TransferUtilityUploadRequest()
         {
-            UploadPartRequest uploadRequest =
-                new UploadPartRequest
-                {
-                    UseChunkEncoding = false,
-                    BucketName = bucketName,
-                    Key = keyName,
-                    UploadId = initResponse.UploadId,
-                    PartNumber = i,
-                    PartSize = partSize,
-                    FilePosition = filePosition,
-                    FilePath = filePath
-                };
-            uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
-            filePosition += partSize;
-        }
-
-        CompleteMultipartUploadRequest completeRequest =
-            new CompleteMultipartUploadRequest
-            {
-                BucketName = bucketName,
-                Key = keyName,
-                UploadId = initResponse.UploadId
-            };
-        completeRequest.AddPartETags(uploadResponses);
-        CompleteMultipartUploadResponse completeUploadResponse =
-            await s3Client.CompleteMultipartUploadAsync(completeRequest);
+            FilePath = filePath,
+            BucketName = bucketName,
+            Key = keyName,
+            PartSize = partSize
+        };
+        uploader.Upload(uploadRequest);
     }
-    catch (Exception e)
+    catch (AmazonS3Exception e)
     {
-        AbortMultipartUploadRequest abortMPURequest =
-            new AbortMultipartUploadRequest
-            {
-                BucketName = bucketName,
-                Key = keyName,
-                UploadId = initResponse.UploadId
-            };
-        await s3Client.AbortMultipartUploadAsync(abortMPURequest);
-
         throw e;
     }
 }
