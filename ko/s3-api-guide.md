@@ -585,8 +585,10 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 
 ```python
 # boto3example.py
-import boto3
+from boto3 import client
+from boto3.s3.transfer import TransferConfig
 from botocore.exceptions import ClientError
+
 
 class Boto3Example(object):
     _REGION = '{region name}'
@@ -595,12 +597,11 @@ class Boto3Example(object):
     _SECRET = '{secret}'
 
     def __init__(self):
-        self.s3 = boto3.client(service_name='s3',
-                               region_name=self._REGION,
-                               endpoint_url=self._ENDPOINT,
-                               aws_access_key_id=self._ACCESS,
-                               aws_secret_access_key=self._SECRET)
-
+        self.s3 = client(service_name='s3',
+                         region_name=self._REGION,
+                         endpoint_url=self._ENDPOINT,
+                         aws_access_key_id=self._ACCESS,
+                         aws_secret_access_key=self._SECRET)
 ```
 
 </details>
@@ -661,15 +662,16 @@ def delete_bucket(self, bucket_name):
 <summary>오브젝트 업로드</summary>
 
 > [참고]
-> 파일의 크기를 파트의 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
+> 오브젝트의 용량을 파트 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
 
 ```python
 def upload(self, bucket_name, key, filename, part_size):
+    config = TransferConfig(multipart_chunksize=part_size)
     try:
-        self.s3.upload_file(
-            Filename=filename, Bucket=bucket_name, Key=key, Config=(
-                boto3.s3.transfer.TransferConfig(
-                    multipart_chunksize=part_size)))
+        self.s3.upload_file(Filename=filename,
+                            Bucket=bucket_name,
+                            Key=key,
+                            Config=config)
     except ClientError as e:
         raise RuntimeError(e)
 ```
@@ -825,7 +827,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 <summary>오브젝트 업로드</summary>
 
 > [참고]
-> 파일의 크기를 파트의 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
+> 오브젝트의 용량을 파트 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
 
 ```java
 public void uploadObject(
@@ -1051,7 +1053,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 <summary>오브젝트 업로드</summary>
 
 > [참고]
-> 파일의 크기를 파트의 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
+> 오브젝트의 용량을 파트 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
 
 ```csharp
 private static async Task UploadObjectAsync(
