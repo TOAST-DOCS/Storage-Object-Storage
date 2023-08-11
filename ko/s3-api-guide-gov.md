@@ -442,7 +442,7 @@ Default output format [None]: json
 |---|---|
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
-| region name | gov |
+| region name | gov_kr1 - 한국(판교) 리전<br/>gov_kr2 - 한국(평촌) 리전 |
 
 ### S3 명령 사용 방법
 
@@ -452,7 +452,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | 이름 | 설명 |
 |---|---|
-| endpoint | https://kr1-api-object-storage.gov-nhncloudservice.com |
+| endpoint | https://kr1-api-object-storage.gov-nhncloudservice.com - 한국(판교) 리전<br/>https://kr2-api-object-storage.gov-nhncloudservice.com - 한국(평촌) 리전 |
 | command | AWS 명령줄 인터페이스 명령 |
 | bucket | 버킷 이름 |
 
@@ -563,8 +563,8 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 |---|---|
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
-| region name | gov |
-| endpoint | https://kr1-api-object-storage.gov-nhncloudservice.com |
+| region name | gov_kr1 - 한국(판교) 리전<br/>gov_kr2 - 한국(평촌) 리전 |
+| endpoint | https://kr1-api-object-storage.gov-nhncloudservice.com - 한국(판교) 리전<br/>https://kr2-api-object-storage.gov-nhncloudservice.com - 한국(평촌) 리전 |
 
 ### Boto3 - Python SDK
 

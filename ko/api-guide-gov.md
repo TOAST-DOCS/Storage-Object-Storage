@@ -869,6 +869,7 @@ X-Auth-Token: {token-id}
 | path | Query | String | - | 조회할 폴더 이름 |
 | prefix | Query | String | - | 검색할 접두어 |
 | limit | Query | Integer | - | 목록에 표시할 오브젝트 수 |
+| format | Query | String | - | 응답 형식, json 또는 xml |
 
 > [참고]
 > 컨테이너 조회 API는 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
@@ -890,6 +891,11 @@ X-Auth-Token: {token-id}
 
 #### 목록의 최대 오브젝트 수 지정
 `limit` 질의를 사용하면 반환할 오브젝트 목록의 최대 오브젝트 수를 지정할 수 있습니다.
+
+<br/>
+
+#### 응답 형식 지정
+`format` 질의를 사용하여 `json` 또는 `xml` 응답 형식을 지정할 수 있습니다. 응답 형식을 지정하면 응답 본문에 각 오브젝트의 메타데이터(크기, 콘텐츠 타입, 최종 수정 시간, ETag)가 포함됩니다.
 
 <br/>
 
@@ -1050,8 +1056,10 @@ foreach ($object_list as $obj) {
 ```
 POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
-X-Container-Read: {컨테이너 읽기 정책}
-X-Container-Write: {컨테이너 쓰기 정책}
+X-Container-Read: {컨테이너 읽기에 대한 역할 기반 접근 규칙}
+X-Container-Write: {컨테이너 쓰기에 대한 역할 기반 접근 규칙}
+X-Container-Ip-Acl-Allowed-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
+X-Container-Ip-Acl-Denied-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
 X-Container-Object-Lifecycle: {컨테이너의 오브젝트 수명 주기}
 X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
 X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
@@ -1068,8 +1076,10 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 접근 규칙 설정 |
-| X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 접근 규칙 설정 |
+| X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 역할 기반 접근 규칙 설정 |
+| X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 역할 기반 접근 규칙 설정 |
+| X-Container-Ip-Acl-Allowed-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
+| X-Container-Ip-Acl-Denied-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Object-Lifecycle | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
 | X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
 | X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
@@ -1083,7 +1093,7 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 <br/>
 
 ##### 접근 정책 설정
-`X-Container-Read`와 `X-Container-Write` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide-gov/)를 참조하세요.
+`X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide-gov/)를 참조하세요.
 
 <br/>
 
