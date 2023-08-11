@@ -1056,8 +1056,10 @@ foreach ($object_list as $obj) {
 ```
 POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
-X-Container-Read: {컨테이너 읽기 정책}
-X-Container-Write: {컨테이너 쓰기 정책}
+X-Container-Read: {컨테이너 읽기에 대한 역할 기반 접근 규칙}
+X-Container-Write: {컨테이너 쓰기에 대한 역할 기반 접근 규칙}
+X-Container-Ip-Acl-Allowed-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
+X-Container-Ip-Acl-Denied-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
 X-Container-Object-Lifecycle: {컨테이너의 오브젝트 수명 주기}
 X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
 X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
