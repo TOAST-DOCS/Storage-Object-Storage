@@ -660,7 +660,7 @@ Creates a container. To upload files to object storage, a container must be crea
 You can create an object lock container by setting the object lock cycle using the `X-Container-Worm-Retention-Day` header when creating a container. Objects uploaded to the object lock container are stored using the **WORM (Write-Once-Read-Many)** model. For the objects uploaded to the object lock container, lock expiration date is configured. You cannot overwrite or delete the object before the set lock expiration date.
 
 > [Caution]
-> A container name cannot include the special characters `' " < > ;`,spaces, and relative path characters (`. ..`).
+> A container name cannot include the special characters ``' " ` < > ;``, spaces, and relative path characters (`. ..`).
 
 <!-- This is a comment for line break, so it must be included. -->
 
