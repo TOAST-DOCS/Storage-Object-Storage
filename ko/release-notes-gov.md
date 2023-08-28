@@ -1,5 +1,11 @@
 ## Storage > Object Storage > 릴리스 노트
 
+### 2023. 09. 05.
+#### 기능 변경
+* [API] S3 호환 API region name 설정값 변경 
+    * gov_kr1 - 한국(판교) 리전
+    * gov_kr2 - 한국(평촌) 리전
+
 ### 2023. 06. 08.
 #### 기능 추가
 * [API] IP ACL 기능 추가

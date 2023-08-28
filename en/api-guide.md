@@ -660,7 +660,7 @@ Creates a container. To upload files to object storage, a container must be crea
 You can create an object lock container by setting the object lock cycle using the `X-Container-Worm-Retention-Day` header when creating a container. Objects uploaded to the object lock container are stored using the **WORM (Write-Once-Read-Many)** model. For the objects uploaded to the object lock container, lock expiration date is configured. You cannot overwrite or delete the object before the set lock expiration date.
 
 > [Caution]
-> A container name cannot include the special characters `' " < > ;`,spaces, and relative path characters (`. ..`).
+> A container name cannot include the special characters ``' " ` < > ;``, spaces, and relative path characters (`. ..`).
 
 <!-- This is a comment for line break, so it must be included. -->
 
@@ -869,6 +869,7 @@ This API does not require a request body.
 | path | Query | String | - | Name of the folder to retrieve |
 | prefix | Query | String | - | Prefix to search |
 | limit | Query | Integer | - | The number of objects to display in the list |
+| format | Query | String | - | Response format, json or xml |
 
 > [Note]
 > Get Container API provides a number of queries. Each query can be concatenated using `&`.
@@ -890,6 +891,11 @@ Using the `prefix` query returns the list of objects that start with the specifi
 
 #### Specifying the Maximum Number of Objects in The List
 Using the `limit` query allows you to specify the maximum number of objects in the list of objects to be returned.
+
+<br/>
+
+#### Specifying the Response Format
+Using the `format` query allows you to specify a `json` or `xml` response format. If so, the response body includes the metadata for each object (size, content type, last modified time, Etag).
 
 <br/>
 
@@ -1050,8 +1056,10 @@ Changes the container settings. The container settings can be found in the respo
 ```
 POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
-X-Container-Read: {Container read policy}
-X-Container-Write: {Container write policy}
+X-Container-Read: {role-based access rules for container read}
+X-Container-Write: {role-based access rules for container write}
+X-Container-Ip-Acl-Allowed-List: {IP based access rules for container write}
+X-Container-Ip-Acl-Denied-List: {IP based access rules for container write}
 X-Container-Object-Lifecycle: {Life cycle of objects in container}
 X-History-Location: {Container to store the previous object version}
 X-Versions-Retention: {Life cycle of the previous object version}
@@ -1068,8 +1076,10 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| X-Container-Read | Header | String | - | Sets the access rules for container read |
-| X-Container-Write | Header | String | - | Sets the access rules for container write |
+| X-Container-Read | Header | String | - | Sets the role-based access rules for container read |
+| X-Container-Write | Header | String | - | Sets the role-based access rules for container write |
+| X-Container-Ip-Acl-Allowed-List | Header | String | - | Sets the IP-based access rules for container write |
+| X-Container-Ip-Acl-Denied-List | Header | String | - | Sets the IP-based access rules for container write |
 | X-Container-Object-Lifecycle | Header | Integer | - | Sets the life cycle of the container's base object in days |
 | X-History-Location | Header | String | - | Sets the container to store the previous version of the object |
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
@@ -1083,7 +1093,7 @@ This API does not require a request body.
 <br/>
 
 ##### Set the Access Policy
-You can set the container access policy using the `X-Container-Read` and `X-Container-Write` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
+You can set the container access policy using the `X-Container-Read`, `X-Container-Write`,`X-Container-Ip-Acl-Allowed-List`, and `X-Container-Ip-Acl-Denied-List` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <br/>
 
