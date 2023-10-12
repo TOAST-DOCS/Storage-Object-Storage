@@ -660,7 +660,7 @@ foreach($container_list as $container) {
 コンテナを作成する時、`X-Container-Worm-Retention-Day`ヘッダを利用してオブジェクトロック周期を設定すると、オブジェクトロックコンテナを作成できます。オブジェクトロックコンテナにアップロードしたオブジェクトは、**WORM (Write-Once-Read-Many)**モデルを使用して保存されます。オブジェクトロックコンテナにアップロードしたオブジェクトにはロック有効期限が設定されます。各オブジェクトに設定されたロック有効期限以前にはオブジェクトの上書きや削除ができません。
 
 > [注意]
-> コンテナ名に特殊文字`' " < > ;`と　、相対パス文字(`. ..`)は使用できません。
+> コンテナ名に特殊文字``' " ` < > ;``と　、相対パス文字(`. ..`)は使用できません。
 
 <!-- 改行用。 削除しないでください。 -->
 
@@ -869,6 +869,7 @@ X-Auth-Token: {token-id}
 | path | Query | String | - | 照会するフォルダ名 |
 | prefix | Query | String | - | 検索するプレフィックス |
 | limit | Query | Integer | - | リストに表示するオブジェクト数 |
+| format | Query | String | - | レスポンス形式、 jsonまたはxml |
 
 > [参考]
 > コンテナ照会APIは複数のクエリ(query)を提供します。すべてのクエリは`&`で接続して使用できます。
@@ -890,6 +891,11 @@ X-Auth-Token: {token-id}
 
 #### リストの最大オブジェクト数指定
 `limit`クエリを使用する際に返すオブジェクトリストの最大オブジェクト数を指定できます。
+
+<br/>
+
+#### レスポンス形式指定
+`format`クエリを使用して`json`または`xml`のレスポンス形式を指定できます。レスポンス形式を指定するとレスポンス本文に各オブジェクトのメタデータ(サイズ、コンテンツタイプ、最終修正時刻、ETag)が含まれます。
 
 <br/>
 
@@ -1050,8 +1056,10 @@ foreach ($object_list as $obj) {
 ```
 POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
-X-Container-Read: {コンテナ読み取りポリシー}
-X-Container-Write: {コンテナ書き込みポリシー}
+X-Container-Read: {コンテナ読み取りに対するロールベースのアクセスルール}
+X-Container-Write: {コンテナ書き込みに対するロールベースのアクセスルール}
+X-Container-Ip-Acl-Allowed-List: {コンテナ書き込みに対するIPベースのアクセスルール}
+X-Container-Ip-Acl-Denied-List: {コンテナ書き込みに対するIPベースのアクセスルール}
 X-Container-Object-Lifecycle: {コンテナのオブジェクトのライフサイクル}
 X-History-Location: {オブジェクトの以前バージョンを保存するコンテナ}
 X-Versions-Retention: {オブジェクトの以前のバージョンのライフサイクル}
@@ -1068,8 +1076,10 @@ X-Container-Worm-Retention-Day: {コンテナのオブジェクトロック周�
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | トークンID |
-| X-Container-Read | Header | String | - | コンテナ読み取りルール設定 |
-| X-Container-Write | Header | String | - | コンテナ書き込みルール設定 |
+| X-Container-Read | Header | String | - | コンテナ読み取りに対するロールベースのアクセスルール設定 |
+| X-Container-Write | Header | String | - | コンテナ書き込みに対するロールベースのアクセスルール設定 |
+| X-Container-Ip-Acl-Allowed-List | Header | String | - | コンテナ書き込みに対するIPベースのアクセスルール設定 |
+| X-Container-Ip-Acl-Denied-List | Header | String | - | コンテナ書き込みに対するIPベースのアクセスルール設定 |
 | X-Container-Object-Lifecycle | Header | Integer | - | コンテナの基本オブジェクトライフサイクルを日単位で設定 |
 | X-History-Location | Header | String | - | オブジェクトの以前バージョンを保管するコンテナを設定 |
 | X-Versions-Retention | Header | Integer | - | オブジェクトの以前のバージョンのライフサイクルを日単位で設定 |
@@ -1083,7 +1093,7 @@ X-Container-Worm-Retention-Day: {コンテナのオブジェクトロック周�
 <br/>
 
 ##### アクセスポリシー設定
-`X-Container-Read`と`X-Container-Write`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
+`X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
 
 <br/>
 
