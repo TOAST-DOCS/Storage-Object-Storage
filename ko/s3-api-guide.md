@@ -662,7 +662,7 @@ def delete_bucket(self, bucket_name):
 <summary>오브젝트 업로드</summary>
 
 > [참고]
-> 오브젝트의 용량을 파트 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
+> 파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 8 MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.
 
 ```python
 def upload(self, bucket_name, key, filename, part_size):
@@ -827,7 +827,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 <summary>오브젝트 업로드</summary>
 
 > [참고]
-> 오브젝트의 용량을 파트 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
+> 파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5 MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.
 
 ```java
 public void uploadObject(
@@ -1053,7 +1053,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 <summary>오브젝트 업로드</summary>
 
 > [참고]
-> 오브젝트의 용량을 파트 크기로 나눈 값 만큼 파트 오브젝트가 업로드되며, 파트 오브젝트 개수의 최대치는 1000개입니다.
+> 파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5 MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.
 
 ```csharp
 private static async Task UploadObjectAsync(
