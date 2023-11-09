@@ -1163,14 +1163,6 @@ foreach ($object_list as $obj) {
 
 </details>
 
-#### フォルダ単位のオブジェクトリスト照会
-コンテナに複数のフォルダを作って使用している場合、`path`クエリーを利用してフォルダ単位でオブジェクトリストを照会できます。Pathクエリーは、サブフォルダのオブジェクトリストは照会できません。
-
-```
-GET   /v1/{Account}/{Container}?path={Path}
-X-Auth-Token: {token-id}
-```
-
 ##### リクエスト
 リクエスト本文は必要ありません。
 
@@ -1179,7 +1171,6 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | Account | URL | String | O | ユーザーアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 照会するコンテナ名 |
-| Path | Query | String | O | 照会するフォルダ名 |
 
 ##### レスポンス
 ```
@@ -1191,9 +1182,9 @@ X-Auth-Token: {token-id}
 <summary>cURL</summary>
 
 ```
-// exフォルダのオブジェクトリスト照会
+// オブジェクトリスト照会
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?path=ex
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
 ex/20d33f.jpg
 ex/31466f.jpg
 ```
@@ -1213,14 +1204,14 @@ public class ContainerService {
 
     // ContainerService Class ...
 
-    public List<String> getObjectListOfFolder(String conatinerName, String folderName) {
-        // 指定したフォルダ名を利用してクエリーURLを作成
-        String url = this.getUrl(conatinerName) + "?path=" + folderName;
+    public List<String> getObjectList(String conatinerName) {
+        // URLを作成
+        String url = this.getUrl(conatinerName);
         // コンテナ照会例のgetList()メソッド呼び出し
         return this.getList(url);
     }
 
-    // getObjectListOfFolder()使用例はコンテナ照会と同じ
+    // getObjectList()使用例はコンテナ照会と同じ
 }
 ```
 
@@ -1233,8 +1224,8 @@ public class ContainerService {
 # container.py
 class ContainerService:
     # ...
-    def get_object_list_of_folder(self, container, folder):
-        req_url = self._get_url(container) + "?path=" + folder
+    def get_object_list(self, container):
+        req_url = self._get_url(container)
         return self._get_list(req_url)
 
 ```
@@ -1249,8 +1240,8 @@ class ContainerService:
 <?php
 class Container {
   // ...
-  function get_object_list_of_folder($container, $folder) {
-    $req_url = $this->get_url($container)."?path=".$folder;
+  function get_object_list($container) {
+    $req_url = $this->get_url($container);
     return $this->get_list($req_url);
   }
 }
@@ -1260,7 +1251,7 @@ class Container {
 </details>
 
 #### プレフィックスで始まるオブジェクトリスト照会
-`prefix`クエリーを使用すると、指定したプレフィックスで始まるオブジェクトのリストを返します。Pathクエリーでは照会できないサブフォルダのオブジェクトリストを照会する際に使用できます。
+`prefix`クエリーを使用すると、指定したプレフィックスで始まるオブジェクトのリストを返します。
 
 ```
 GET   /v1/{Account}/{Container}?prefix={Prefix}
