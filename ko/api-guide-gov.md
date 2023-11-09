@@ -866,6 +866,7 @@ X-Auth-Token: {token-id}
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | marker | Query | String | - | 기준 오브젝트 이름 |
+| path | Query | String | - | 조회할 폴더 이름 |
 | prefix | Query | String | - | 검색할 접두어 |
 | limit | Query | Integer | - | 목록에 표시할 오브젝트 수 |
 | format | Query | String | - | 응답 형식, json 또는 xml |
@@ -878,8 +879,13 @@ X-Auth-Token: {token-id}
 
 <br/>
 
+#### 폴더 단위의 오브젝트 목록 조회
+컨테이너에 여러 개의 폴더를 만들어 사용하고 있다면 `path` 질의를 이용해 폴더 단위로 오브젝트 목록을 조회할 수 있습니다. path 질의는 하위 폴더의 오브젝트 목록은 조회할 수 없습니다.
+
+<br/>
+
 #### 접두어로 시작하는 오브젝트 목록 조회
-`prefix` 질의를 사용하면 지정한 접두어로 시작하는 오브젝트들의 목록을 반환합니다. prefix 질의를 통해 하위 폴더의 오브젝트 목록을 조회할 수 있습니다.
+`prefix` 질의를 사용하면 지정한 접두어로 시작하는 오브젝트들의 목록을 반환합니다. path 질의로는 조회할 수 없는 하위 폴더의 오브젝트 목록을 조회하는 데 사용할 수 있습니다.
 
 <br/>
 

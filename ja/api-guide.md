@@ -866,6 +866,7 @@ X-Auth-Token: {token-id}
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 照会するコンテナ名 |
 | marker | Query | String | - | 基準オブジェクト名 |
+| path | Query | String | - | 照会するフォルダ名 |
 | prefix | Query | String | - | 検索するプレフィックス |
 | limit | Query | Integer | - | リストに表示するオブジェクト数 |
 | format | Query | String | - | レスポンス形式、 jsonまたはxml |
@@ -878,8 +879,13 @@ X-Auth-Token: {token-id}
 
 <br/>
 
+#### フォルダ単位のオブジェクトリスト照会
+コンテナに複数のフォルダを作って使用している場合、`path`クエリを利用してフォルダ単位でオブジェクトリストを照会できます。Pathクエリはサブフォルダのオブジェクトリストは照会できません。
+
+<br/>
+
 #### プレフィックスで始まるオブジェクトリスト照会
-`prefix`クエリを使用すると、指定したプレフィックスで始まるオブジェクトのリストを返します。
+`prefix`クエリを使用すると、指定したプレフィックスで始まるオブジェクトのリストを返します。Pathクエリでは照会できないサブフォルダのオブジェクトリストを照会するのに使用できます。
 
 <br/>
 
