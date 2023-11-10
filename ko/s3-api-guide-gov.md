@@ -31,9 +31,9 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 ## S3 API 자격 증명(S3 API Credential)
 
 ### S3 API 자격 증명 발급
-Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급 받아야 합니다. 자격 증명은 API를 이용해 발급 받을 수 있습니다.
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급 받아야 합니다. 자격 증명은 API를 이용하여 발급 받을 수 있습니다.
 
-API를 이용해 자격 증명을 발급 받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide-gov/#tenant-id-api-endpoint)를 참조하세요.
+API를 이용하여 자격 증명을 발급 받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide-gov/#tenant-id-api-endpoint)를 참조하세요.
 
 ```
 POST    https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -59,7 +59,7 @@ X-Auth-Token: {token-id}
 <!-- 개행을 위한 주석이므로 필수로 포함되어야 합니다. -->
 
 > [주의]
-> S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 이용해 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급 받아 사용하는 것을 권장합니다.
+> S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 이용하여 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급 받아 사용하는 것을 권장합니다.
 
 
 <details>
@@ -162,7 +162,7 @@ X-Auth-Token: {token-id}
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## 서명(signature) 생성
-S3 API를 사용하려면 자격 증명을 이용해 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
+S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
 
 서명 생성에 필요한 정보는 다음과 같습니다.
 
@@ -266,6 +266,9 @@ GET /{bucket}
 Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
+
+> [참고]
+> 웹 콘솔 또는 오브젝트 스토리지 API를 통해 생성한 버킷의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
@@ -418,10 +421,10 @@ Authorization: AWS {access}:{signature}
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 ## AWS 명령줄 인터페이스(CLI)
-S3 호환 API를 이용해 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
+S3 호환 API를 이용하여 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
 ### 설치
-AWS 명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 이용해 설치합니다.
+AWS 명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 이용하여 설치합니다.
 
 ```shell
 $ sudo pip install awscli
@@ -552,7 +555,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 
 ## AWS SDK
-AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용해 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
+AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용하여 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
 > [참고]
 > 보다 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
@@ -578,8 +581,10 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 
 ```python
 # boto3example.py
-import boto3
+from boto3 import client
+from boto3.s3.transfer import TransferConfig
 from botocore.exceptions import ClientError
+
 
 class Boto3Example(object):
     _REGION = '{region name}'
@@ -588,12 +593,11 @@ class Boto3Example(object):
     _SECRET = '{secret}'
 
     def __init__(self):
-        self.s3 = boto3.client(service_name='s3',
-                               region_name=self._REGION,
-                               endpoint_url=self._ENDPOINT,
-                               aws_access_key_id=self._ACCESS,
-                               aws_secret_access_key=self._SECRET)
-
+        self.s3 = client(service_name='s3',
+                         region_name=self._REGION,
+                         endpoint_url=self._ENDPOINT,
+                         aws_access_key_id=self._ACCESS,
+                         aws_secret_access_key=self._SECRET)
 ```
 
 </details>
@@ -653,11 +657,17 @@ def delete_bucket(self, bucket_name):
 <details>
 <summary>오브젝트 업로드</summary>
 
+> [참고]
+> 파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 8MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.
+
 ```python
-def upload(self, bucket_name, key, filename):
+def upload(self, bucket_name, key, filename, part_size):
+    config = TransferConfig(multipart_chunksize=part_size)
     try:
-        self.s3.upload_file(
-            Filename=filename, Bucket=bucket_name, Key=key)
+        self.s3.upload_file(Filename=filename,
+                            Bucket=bucket_name,
+                            Key=key,
+                            Config=config)
     except ClientError as e:
         raise RuntimeError(e)
 ```
@@ -812,13 +822,17 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 <details>
 <summary>오브젝트 업로드</summary>
 
+> [참고]
+> 파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.
+
 ```java
 public void uploadObject(
-    String bucketName, String objectKey, String filePath
+    String bucketName, String objectKey, String filePath, long partSize
 ) throws RuntimeException {
     try {
         TransferManager tm = TransferManagerBuilder.standard()
             .withS3Client(s3Client)
+            .withMinimumUploadPartSize(partSize)
             .build();
         Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
         upload.waitForCompletion();
@@ -1034,70 +1048,31 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 <details>
 <summary>오브젝트 업로드</summary>
 
+> [참고]
+> 파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.
+
 ```csharp
 private static async Task UploadObjectAsync(
     AmazonS3Client s3Client,
     string bucketName,
     string keyName,
-    string filePath)
+    string filePath,
+    int partSize)
 {
-    List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
-    InitiateMultipartUploadRequest initiateRequest =
-        new InitiateMultipartUploadRequest
-        {
-            BucketName = bucketName,
-            Key = keyName
-        };
-
-    InitiateMultipartUploadResponse initResponse =
-        await s3Client.InitiateMultipartUploadAsync(initiateRequest);
-
-    long contentLength = new FileInfo(filePath).Length;
-    long partSize = 10 * (long)Math.Pow(2, 20);
-
     try
     {
-        long filePosition = 0;
-        for (int i = 1; filePosition < contentLength; i++)
+        TransferUtility uploader = new TransferUtility(s3Client);
+        TransferUtilityUploadRequest uploadRequest = new TransferUtilityUploadRequest()
         {
-            UploadPartRequest uploadRequest =
-                new UploadPartRequest
-                {
-                    UseChunkEncoding = false,
-                    BucketName = bucketName,
-                    Key = keyName,
-                    UploadId = initResponse.UploadId,
-                    PartNumber = i,
-                    PartSize = partSize,
-                    FilePosition = filePosition,
-                    FilePath = filePath
-                };
-            uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
-            filePosition += partSize;
-        }
-
-        CompleteMultipartUploadRequest completeRequest =
-            new CompleteMultipartUploadRequest
-            {
-                BucketName = bucketName,
-                Key = keyName,
-                UploadId = initResponse.UploadId
-            };
-        completeRequest.AddPartETags(uploadResponses);
-        CompleteMultipartUploadResponse completeUploadResponse =
-            await s3Client.CompleteMultipartUploadAsync(completeRequest);
+            FilePath = filePath,
+            BucketName = bucketName,
+            Key = keyName,
+            PartSize = partSize
+        };
+        uploader.Upload(uploadRequest);
     }
-    catch (Exception e)
+    catch (AmazonS3Exception e)
     {
-        AbortMultipartUploadRequest abortMPURequest =
-            new AbortMultipartUploadRequest
-            {
-                BucketName = bucketName,
-                Key = keyName,
-                UploadId = initResponse.UploadId
-            };
-        await s3Client.AbortMultipartUploadAsync(abortMPURequest);
-
         throw e;
     }
 }
