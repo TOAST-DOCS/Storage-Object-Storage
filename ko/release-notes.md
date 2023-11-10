@@ -1,5 +1,10 @@
 ## Storage > Object Storage > 릴리스 노트
 
+### 2023. 11. 28.
+#### 기능 추가
+* [API] Amazon S3 호환 API, AWS Signature V4 Chunked Upload 지원
+* [Console] 서명된 URL 생성 기능 추가
+
 ### 2023. 05. 30.
 #### 기능 추가
 * [API] IP ACL 기능 추가

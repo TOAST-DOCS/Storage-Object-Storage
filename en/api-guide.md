@@ -866,7 +866,6 @@ This API does not require a request body.
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | Container name to get |
 | marker | Query | String | - | Name of base object |
-| path | Query | String | - | Name of the folder to retrieve |
 | prefix | Query | String | - | Prefix to search |
 | limit | Query | Integer | - | The number of objects to display in the list |
 | format | Query | String | - | Response format, json or xml |
@@ -879,13 +878,8 @@ The number of objects that can be retrieved using Get Container API is limited t
 
 <br/>
 
-#### Listing Objects by Folder
-If you're using multiple folders in a container, use the `path` query to retrieve the list of objects per folder. Note that the path query cannot retrieve any objects in subfolders.
-
-<br/>
-
 #### Listing Objects Starting with a Prefix
-Using the `prefix` query returns the list of objects that start with the specified prefix. Unlike path query, this query can be used to retrieve the list of objects in subfolders.
+Using the `prefix` query returns the list of objects that start with the specified prefix. 
 
 <br/>
 
