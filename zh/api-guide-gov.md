@@ -1127,6 +1127,14 @@ foreach ($object_list as $obj) {
 
 </details>
 
+#### List of Objects by Folder
+If a container has many folders, use the `path` query to list objects by folder. The path query cannot list objects of the lower-level folder.
+
+```
+GET   /v1/{Account}/{Container}?path={Path}
+X-Auth-Token: {token-id}
+```
+
 ##### Request
 This API does not require a request body.
 
@@ -1135,6 +1143,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | User account name for Windows, available on the setup box for API Endpoint  |
 | Container | URL | String | O | Container name to query |
+| Path | Query | String | O | Folder name to query |
 
 ##### Response
 ```
@@ -1146,9 +1155,9 @@ This API does not require a request body.
 <summary>cURL</summary>
 
 ```
-// List objects
+// List objects of the ex folder
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/curl_example?path=ex
 ex/20d33f.jpg
 ex/31466f.jpg
 ```
@@ -1168,14 +1177,14 @@ public class ContainerService {
 
     // ContainerService Class ...
 
-    public List<String> getObjectList(String conatinerName) {
-        // Create query URL
-        String url = this.getUrl(conatinerName);
+    public List<String> getObjectListOfFolder(String conatinerName, String folderName) {
+        // Create query URL by using specified folder name
+        String url = this.getUrl(conatinerName) + "?path=" + folderName;
         // Call getList() method from the get container example
         return this.getList(url);
     }
 
-    // The usage example of getObjectList() is same as get container
+    // The usage example of getObjectListOfFolder() is same as get container
 }
 ```
 
@@ -1188,8 +1197,8 @@ public class ContainerService {
 # container.py
 class ContainerService:
     # ...
-    def get_object_list(self, container):
-        req_url = self._get_url(container)
+    def get_object_list_of_folder(self, container, folder):
+        req_url = self._get_url(container) + "?path=" + folder
         return self._get_list(req_url)
 
 ```
@@ -1204,8 +1213,8 @@ class ContainerService:
 <?php
 class Container {
   // ...
-  function get_object_list($container) {
-    $req_url = $this->get_url($container);
+  function get_object_list_of_folder($container, $folder) {
+    $req_url = $this->get_url($container)."?path=".$folder;
     return $this->get_list($req_url);
   }
 }
@@ -1215,7 +1224,7 @@ class Container {
 </details>
 
 #### List of Objects Starting with Prefix
-The `prefix` query can return list of objects starting with a specified prefix. 
+The `prefix` query can return list of objects starting with a specified prefix. It can be applied to list objects of the lower-level folder which cannot be listed with the path query.  
 
 ```
 GET   /v1/{Account}/{Container}?prefix={Prefix}

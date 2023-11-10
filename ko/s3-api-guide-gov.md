@@ -267,9 +267,6 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-> [참고]
-> 웹 콘솔 또는 오브젝트 스토리지 API를 통해 생성한 버킷의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
-
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -581,10 +578,8 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 
 ```python
 # boto3example.py
-from boto3 import client
-from boto3.s3.transfer import TransferConfig
+import boto3
 from botocore.exceptions import ClientError
-
 
 class Boto3Example(object):
     _REGION = '{region name}'
@@ -593,11 +588,12 @@ class Boto3Example(object):
     _SECRET = '{secret}'
 
     def __init__(self):
-        self.s3 = client(service_name='s3',
-                         region_name=self._REGION,
-                         endpoint_url=self._ENDPOINT,
-                         aws_access_key_id=self._ACCESS,
-                         aws_secret_access_key=self._SECRET)
+        self.s3 = boto3.client(service_name='s3',
+                               region_name=self._REGION,
+                               endpoint_url=self._ENDPOINT,
+                               aws_access_key_id=self._ACCESS,
+                               aws_secret_access_key=self._SECRET)
+
 ```
 
 </details>
@@ -661,13 +657,10 @@ def delete_bucket(self, bucket_name):
 > 파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 8MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.
 
 ```python
-def upload(self, bucket_name, key, filename, part_size):
-    config = TransferConfig(multipart_chunksize=part_size)
+def upload(self, bucket_name, key, filename):
     try:
-        self.s3.upload_file(Filename=filename,
-                            Bucket=bucket_name,
-                            Key=key,
-                            Config=config)
+        self.s3.upload_file(
+            Filename=filename, Bucket=bucket_name, Key=key)
     except ClientError as e:
         raise RuntimeError(e)
 ```
@@ -827,12 +820,11 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 ```java
 public void uploadObject(
-    String bucketName, String objectKey, String filePath, long partSize
+    String bucketName, String objectKey, String filePath
 ) throws RuntimeException {
     try {
         TransferManager tm = TransferManagerBuilder.standard()
             .withS3Client(s3Client)
-            .withMinimumUploadPartSize(partSize)
             .build();
         Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
         upload.waitForCompletion();
@@ -1056,23 +1048,65 @@ private static async Task UploadObjectAsync(
     AmazonS3Client s3Client,
     string bucketName,
     string keyName,
-    string filePath,
-    int partSize)
+    string filePath)
 {
+    List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
+    InitiateMultipartUploadRequest initiateRequest =
+        new InitiateMultipartUploadRequest
+        {
+            BucketName = bucketName,
+            Key = keyName
+        };
+
+    InitiateMultipartUploadResponse initResponse =
+        await s3Client.InitiateMultipartUploadAsync(initiateRequest);
+
+    long contentLength = new FileInfo(filePath).Length;
+    long partSize = 10 * (long)Math.Pow(2, 20);
+
     try
     {
-        TransferUtility uploader = new TransferUtility(s3Client);
-        TransferUtilityUploadRequest uploadRequest = new TransferUtilityUploadRequest()
+        long filePosition = 0;
+        for (int i = 1; filePosition < contentLength; i++)
         {
-            FilePath = filePath,
-            BucketName = bucketName,
-            Key = keyName,
-            PartSize = partSize
-        };
-        uploader.Upload(uploadRequest);
+            UploadPartRequest uploadRequest =
+                new UploadPartRequest
+                {
+                    UseChunkEncoding = false,
+                    BucketName = bucketName,
+                    Key = keyName,
+                    UploadId = initResponse.UploadId,
+                    PartNumber = i,
+                    PartSize = partSize,
+                    FilePosition = filePosition,
+                    FilePath = filePath
+                };
+            uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
+            filePosition += partSize;
+        }
+
+        CompleteMultipartUploadRequest completeRequest =
+            new CompleteMultipartUploadRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+            };
+        completeRequest.AddPartETags(uploadResponses);
+        CompleteMultipartUploadResponse completeUploadResponse =
+            await s3Client.CompleteMultipartUploadAsync(completeRequest);
     }
-    catch (AmazonS3Exception e)
+    catch (Exception e)
     {
+        AbortMultipartUploadRequest abortMPURequest =
+            new AbortMultipartUploadRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                UploadId = initResponse.UploadId
+            };
+        await s3Client.AbortMultipartUploadAsync(abortMPURequest);
+
         throw e;
     }
 }

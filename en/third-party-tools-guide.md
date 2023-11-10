@@ -108,5 +108,82 @@ Compare local and object storage to upload or download changed or missing files 
 > [Note] 
 > For more information on synchronization, see [Cyberduck Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders).
 
+## SwiftStack Client
+
+The SwiftStack Client is a client included in the object storage platform SwiftStack.
+
+### Install SwiftStack Client
+
+Download and install the installation file suitable for your operating system from [SwiftStack Client web page ](https://platform.swiftstack.com/docs/install/swiftstack_client.html).
+
+### Object Storage Connection Settings
+
+#### Register Account
+
+To connect to object storage, you must register an account that stores connection information. If you click **Accounts** on the left side of the browser, an interface for registering an account and managing registered accounts appears. Click **Add account** to register an account. Enter the required information and click **Save** button at the bottom to register an account.
+
+|Item | Description | 
+|---|--- |
+| Auth Type | Select **V2**. | 
+| Username | Enter NHN Cloud member ID (email format) or IAM member ID. | 
+| Password | Enter the API password set in the **Set API Endpoint** dialog box on the object storage service page. | 
+| Auth URL | Enter the address of the **identity service (identity)** checked in the **API Endpoint Settings** dialog box of the Object Storage Service page with `/tokens`.| 
+| Project Name | User's Project ID. <br/> You find it in <b>Project Management > Project Basic Information > Project ID</b> from the web console. | 
+| Region | Select the region to use. |
+
+> [Note] 
+> See [API Password Settings](api-guide/#api) in the API guide for information on how to set API passwords. 
+> If the input value is invalid, an error occurs when selecting Region.
+
+### Connect Object Storage
+
+Double-click the created account to access object storage.
+
+### Retrieve Container/Object
+
+When accessing object storage, a list of containers for the region set up appears in the browser. Double-click the desired container to view the list of objects in the container.
+
+### Create Container 
+
+Click **Add Container** > **Edit Before Creation** at the top of the browser and enter a container name in the dialog box. After entering a name, click **Create** at the bottom to create the container.
+
+> [Note] 
+> You can refresh the container list by clicking **Refresh** at the top of the browser.
+
+### Upload Object
+
+Click the **Upload** button at the top of the browser in the container where you want to upload the object, and the Upload dialog box appears. Click **Choose File(s)** to select a file and click **Upload** to upload the selected file.
+
+> [Note] 
+> If you select two or more files, you can put a prefix to the object name through the **Object Name Prefix** entry in the upload dialog box.
+
+### Download Folder
+
+If you click the **Download** icon among the **Actions** icons at the right of the **Virtual Folder** object, you can download the selected folder and all objects inside. To download multiple folders at once, check a folder you want in the list, and then click **Selection** > **Download** at the top of the browser.
+
+### Download Object
+
+You can download one object by clicking the object name. To download multiple objects at once, check an object you want in the list, and then click **Selection** > **Download** at the top of the browser.
+
+### TempURLs
+
+If you click the **Copy Quick Temporary URL** icon among the **Actions** icons at the right of the object, the access URL with an expiration date is copied to the clipboard. This URL allows you to create hyperlinks or download objects directly. 
+The default time limit for TempURL is 24 hours and can be changed by clicking **Temp URLs** at the top of the browser.
+
+> [Caution] 
+> Anyone with TempURL can download the object within the time limit.
+
+### Delete Container
+
+If you click the **Delete Container** icon in **Actions** icon to the right of the container entry, you can delete a container.
+
+> [Caution] 
+> Be careful because even if there are objects left inside the container, they will all be deleted.
+
+### Delete Object
+
+If you click the **Delete Object** icon among the **Actions** icons at the right of the object item, you can delete an object. To delete multiple objects at once, check objects you want to delete in the list, and then click **Selection** > **Delete** at the top of the browser.
+
 ## References
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
+SwiftStack Client - [https://platform.swiftstack.com/docs/install/swiftstack_client.html](https://platform.swiftstack.com/docs/install/swiftstack_client.html)
