@@ -116,7 +116,7 @@ Sets the basic access policy and manages role-based access policies for each ten
 
 ##### IP ACL
 
-Manages IP-based access policies. For more details, refer to [ACL Configuration Guide](acl-guide/).
+Sets the basic access policy and manages role-based access policies for each tenant or user. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -346,6 +346,17 @@ Copy objects to create new objects. Create an object with a new name in the cont
 ### Delete Object
 Delete selected objects. When a multipart object is deleted, the segment object is also deleted.
 
+## Create Signed URL
+Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies.
+
+> [Note]
+> Only single objects can be selected, not folder objects.
+> The validity period can be set in minutes, up to 720 minutes.
+
+> [Caution]
+> Signed URLs should be used with caution because if they are exposed, anyone can access the selected object. It is recommended that you set an appropriate validity period for your situation and use it to reduce the damage if your signed URL is exposed.
+
+
 ### Manage Object
 Check the selected object information and manage the properties.
 
@@ -354,7 +365,7 @@ Check the selected object information and manage the properties.
 
 ##### Change Object Expriation Date
 
-You cannot change the expiration date for selected objects.
+You can change the expiration date for selected objects.
 
 #### Change Object Lock Date
 

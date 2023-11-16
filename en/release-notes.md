@@ -1,5 +1,10 @@
 ## Storage > Object Storage > Release Notes
 
+### November 28, 2023
+#### Added Features
+* [API] Added support for Amazon S3 compatible API and AWS Signature V4 Chunked Upload
+* [Console] Added the feature to create signed URLs
+
 ### May 30, 2023
 #### Added Features
 * [API] Added the IP ACL feature
