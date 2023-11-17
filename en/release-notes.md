@@ -2,7 +2,7 @@
 
 ### November 28, 2023
 #### Added Features
-* [API] Added support for Amazon S3 compatible API and AWS Signature V4 Chunked Upload
+* [API] Added support for AWS Signature V4 Chunked Upload to Amazon S3 compatible API
 * [Console] Added the feature to create signed URLs
 
 ### May 30, 2023

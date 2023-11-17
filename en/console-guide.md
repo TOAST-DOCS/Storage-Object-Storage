@@ -116,7 +116,7 @@ Sets the basic access policy and manages role-based access policies for each ten
 
 ##### IP ACL
 
-Sets the basic access policy and manages role-based access policies for each tenant or user. For more details, refer to [ACL Configuration Guide](acl-guide/).
+Manages IP-based access policies. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
