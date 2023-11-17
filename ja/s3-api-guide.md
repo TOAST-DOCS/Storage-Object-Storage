@@ -659,7 +659,7 @@ def delete_bucket(self, bucket_name):
 <summary>オブジェクトアップロード</summary>
 
 > [参考]
-> パーツオブジェクトの数は、アップロードするオブジェクトの容量と設定したパーツサイズによって決定されます。基本パーツサイズは8 MiBで、パーツオブジェクトの最大数は1000個です。
+> パーツオブジェクトの数は、アップロードするオブジェクトの容量と設定したパーツサイズによって決定されます。基本パーツサイズは8MiBで、パーツオブジェクトの最大数は1000個です。
 
 ```python
 def upload(self, bucket_name, key, filename, part_size):
@@ -824,7 +824,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 <summary>オブジェクトアップロード</summary>
 
 > [参考]
-> パーツオブジェクトの数は、アップロードするオブジェクトの容量と設定したパーツサイズによって決定されます。基本パーツサイズは8 MiBで、パーツオブジェクトの最大数は1000個です。
+> パーツオブジェクトの数は、アップロードするオブジェクトの容量と設定したパーツサイズによって決定されます。基本パーツサイズは5MiBで、パーツオブジェクトの最大数は1000個です。
 
 ```java
 public void uploadObject(
@@ -1046,7 +1046,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 <summary>オブジェクトのアップロード</summary>
 
 > [参考]
-> パーツオブジェクトの数は、アップロードするオブジェクトの容量と設定したパーツサイズによって決定されます。基本パーツサイズは8 MiBで、パーツオブジェクトの最大数は1000個です。
+> パーツオブジェクトの数は、アップロードするオブジェクトの容量と設定したパーツサイズによって決定されます。基本パーツサイズは5MiBで、パーツオブジェクトの最大数は1000個です。
 
 ```csharp
 private static async Task UploadObjectAsync(
