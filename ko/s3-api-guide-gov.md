@@ -826,22 +826,21 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 > 파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.
 
 ```java
-public void uploadObject(
-    String bucketName, String objectKey, String filePath, long partSize
-) throws RuntimeException {
+public void uploadObject(String bucketName, String objectKey, String filePath, long partSize) {
+    TransferManager tm = TransferManagerBuilder.standard()
+        .withS3Client(s3Client)
+        .withMinimumUploadPartSize(partSize)
+        .build();
+    Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
+
     try {
-        TransferManager tm = TransferManagerBuilder.standard()
-            .withS3Client(s3Client)
-            .withMinimumUploadPartSize(partSize)
-            .build();
-        Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
         upload.waitForCompletion();
-    } catch (InterruptedException e) {
-        throw new RuntimeException(e);
     } catch (AmazonServiceException e) {
-        throw new RuntimeException(e);
-    } catch (SdkClientException e) {
-        throw new RuntimeException(e);
+        upload.abort();
+    } catch (AmazonClientException e) {
+        upload.abort();
+    } catch (InterruptedException e) {
+        upload.abort();
     }
 }
 ```
