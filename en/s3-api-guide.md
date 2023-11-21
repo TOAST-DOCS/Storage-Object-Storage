@@ -832,22 +832,21 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 > The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5 MiB, and the maximum number of part objects is 1000.
 
 ```java
-public void uploadObject(
-    String bucketName, String objectKey, String filePath, long partSize
-) throws RuntimeException {
+public void uploadObject(String bucketName, String objectKey, String filePath, long partSize) {
+    TransferManager tm = TransferManagerBuilder.standard()
+        .withS3Client(s3Client)
+        .withMinimumUploadPartSize(partSize)
+        .build();
+    Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
+
     try {
-        TransferManager tm = TransferManagerBuilder.standard()
-            .withS3Client(s3Client)
-            .withMinimumUploadPartSize(partSize)
-            .build();
-        Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
         upload.waitForCompletion();
-    } catch (InterruptedException e) {
-        throw new RuntimeException(e);
     } catch (AmazonServiceException e) {
-        throw new RuntimeException(e);
-    } catch (SdkClientException e) {
-        throw new RuntimeException(e);
+        upload.abort();
+    } catch (AmazonClientException e) {
+        upload.abort();
+    } catch (InterruptedException e) {
+        upload.abort();
     }
 }
 ```
