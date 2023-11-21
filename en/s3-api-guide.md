@@ -664,7 +664,7 @@ def delete_bucket(self, bucket_name):
 <summary>Upload Object</summary>
 
 > [Note]
-> The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 8 MiB, and the maximum number of part objects is 1000.
+> The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 8MiB, and the maximum number of part objects is 1000.
 
 ```python
 def upload(self, bucket_name, key, filename, part_size):
@@ -829,7 +829,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 <summary>Upload Object</summary>
 
 > [Note]
-> The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5 MiB, and the maximum number of part objects is 1000.
+> The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and the maximum number of part objects is 1000.
 
 ```java
 public void uploadObject(String bucketName, String objectKey, String filePath, long partSize) {
@@ -1054,7 +1054,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 <summary>Upload Object</summary>
 
 > [Note]
-> The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5 MiB, and the maximum number of part objects is 1000.
+> The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and the maximum number of part objects is 1000.
 
 ```csharp
 private static async Task UploadObjectAsync(
