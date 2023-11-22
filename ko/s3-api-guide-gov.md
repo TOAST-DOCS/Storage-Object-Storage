@@ -830,22 +830,21 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 </blockquote>
 
 ```java
-public void uploadObject(
-    String bucketName, String objectKey, String filePath, long partSize
-) throws RuntimeException {
+public void uploadObject(String bucketName, String objectKey, String filePath, long partSize) {
+    TransferManager tm = TransferManagerBuilder.standard()
+        .withS3Client(s3Client)
+        .withMinimumUploadPartSize(partSize)
+        .build();
+    Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
+
     try {
-        TransferManager tm = TransferManagerBuilder.standard()
-            .withS3Client(s3Client)
-            .withMinimumUploadPartSize(partSize)
-            .build();
-        Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
         upload.waitForCompletion();
-    } catch (InterruptedException e) {
-        throw new RuntimeException(e);
     } catch (AmazonServiceException e) {
-        throw new RuntimeException(e);
-    } catch (SdkClientException e) {
-        throw new RuntimeException(e);
+        upload.abort();
+    } catch (AmazonClientException e) {
+        upload.abort();
+    } catch (InterruptedException e) {
+        upload.abort();
     }
 }
 ```

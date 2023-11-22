@@ -1127,6 +1127,7 @@ foreach ($object_list as $obj) {
 
 </details>
 
+
 ##### Request
 This API does not require a request body.
 
@@ -1175,7 +1176,7 @@ public class ContainerService {
         return this.getList(url);
     }
 
-    // The usage example of getObjectList() is same as get container
+    // The usage example of getObjectListOfFolder() is same as get container
 }
 ```
 
@@ -1204,7 +1205,7 @@ class ContainerService:
 <?php
 class Container {
   // ...
-  function get_object_list($container) {
+  function get_object_list_of_folder($container) {
     $req_url = $this->get_url($container);
     return $this->get_list($req_url);
   }
