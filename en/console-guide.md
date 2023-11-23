@@ -346,7 +346,7 @@ Copy objects to create new objects. Create an object with a new name in the cont
 ### Delete Object
 Delete selected objects. When a multipart object is deleted, the segment object is also deleted.
 
-## Create Signed URL
+### Create Signed URL
 Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies.
 
 > [Note]
@@ -380,4 +380,4 @@ You can obtain credentials required to use Amazon S3 compatible API. S3 API cred
 
 > [Caution]
 > If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, it is recommended to delete the leaked credentials and obtain a new one.
->
+
