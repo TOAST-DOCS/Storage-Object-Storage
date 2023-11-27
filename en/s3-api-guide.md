@@ -588,8 +588,10 @@ The following are the major parameters required to use AWS SDK.
 
 ```python
 # boto3example.py
-import boto3
+from boto3 import client
+from boto3.s3.transfer import TransferConfig
 from botocore.exceptions import ClientError
+
 
 class Boto3Example(object):
     _REGION = '{region name}'
@@ -598,12 +600,11 @@ class Boto3Example(object):
     _SECRET = '{secret}'
 
     def __init__(self):
-        self.s3 = boto3.client(service_name='s3',
-                               region_name=self._REGION,
-                               endpoint_url=self._ENDPOINT,
-                               aws_access_key_id=self._ACCESS,
-                               aws_secret_access_key=self._SECRET)
-
+        self.s3 = client(service_name='s3',
+                         region_name=self._REGION,
+                         endpoint_url=self._ENDPOINT,
+                         aws_access_key_id=self._ACCESS,
+                         aws_secret_access_key=self._SECRET)
 ```
 
 </details>
