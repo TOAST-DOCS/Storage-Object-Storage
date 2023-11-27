@@ -172,7 +172,7 @@ The following information is required to create a signature.
 | Algorithm     | AWS4-HMAC-SHA256               |
 | Signed Time   | In the ZssmmhhTDDMMYYYY format |
 | Service Name  | s3                             |
-| Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - KOREA (Pyeongchon) Region<br/>JP1 - JAPAN (Tokyo) Region<br/>US1 - USA (California) Region   |
+| Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - KOREA (Pyeongchon) Region<br/>KR3 - KOREA (Gwangju) Region<br/>JP1 - JAPAN (Tokyo) Region<br/>US1 - USA (California) Region   |
 | Secret Key    | S3 API credentials secret key          |
 
 
@@ -270,6 +270,9 @@ GET /{bucket}
 Date: 22:22:22 +0000, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
+
+> [Note]
+> If a bucket name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
 
 #### Request
 This API does not require a request body.
@@ -449,7 +452,7 @@ Default output format [None]: json
 |---|---|
 | access | S3 API credentials access key |
 | secret | S3 API credentials secret key |
-| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
+| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>KR3 - KOREA (Gwangju) Region<br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
 
 ### How to Use the S3 Commands
 
@@ -459,7 +462,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | Name | Description |
 |---|---|
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region <br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongcheon) region <br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region <br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region <br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongcheon) region<br/>https://kr3-api-object-storage.nhncloudservice.com - Korea(Gwangju) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region <br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region |
 | command | Command for AWS Command Line Interface |
 | bucket | Bucket name |
 
@@ -570,8 +573,8 @@ The following are the major parameters required to use AWS SDK.
 |---|---|
 | access | S3 API credentials access key |
 | secret | S3 API credentials secret key |
-| region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region <br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region<br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region | |
+| region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region<br/>KR3 - Korea (Gwangju) region<br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region<br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region | |
 
 ### Boto3 - Python SDK
 
@@ -585,8 +588,10 @@ The following are the major parameters required to use AWS SDK.
 
 ```python
 # boto3example.py
-import boto3
+from boto3 import client
+from boto3.s3.transfer import TransferConfig
 from botocore.exceptions import ClientError
+
 
 class Boto3Example(object):
     _REGION = '{region name}'
@@ -595,12 +600,11 @@ class Boto3Example(object):
     _SECRET = '{secret}'
 
     def __init__(self):
-        self.s3 = boto3.client(service_name='s3',
-                               region_name=self._REGION,
-                               endpoint_url=self._ENDPOINT,
-                               aws_access_key_id=self._ACCESS,
-                               aws_secret_access_key=self._SECRET)
-
+        self.s3 = client(service_name='s3',
+                         region_name=self._REGION,
+                         endpoint_url=self._ENDPOINT,
+                         aws_access_key_id=self._ACCESS,
+                         aws_secret_access_key=self._SECRET)
 ```
 
 </details>
@@ -660,11 +664,19 @@ def delete_bucket(self, bucket_name):
 <details>
 <summary>Upload Object</summary>
 
+<blockquote>
+<p>[Note]
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 8MiB, and the maximum number of part objects is 1000.</p>
+</blockquote>
+
 ```python
-def upload(self, bucket_name, key, filename):
+def upload(self, bucket_name, key, filename, part_size):
+    config = TransferConfig(multipart_chunksize=part_size)
     try:
-        self.s3.upload_file(
-            Filename=filename, Bucket=bucket_name, Key=key)
+        self.s3.upload_file(Filename=filename,
+                            Bucket=bucket_name,
+                            Key=key,
+                            Config=config)
     except ClientError as e:
         raise RuntimeError(e)
 ```
@@ -819,22 +831,27 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 <details>
 <summary>Upload Object</summary>
 
+<blockquote>
+<p>[Note]
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and the maximum number of part objects is 1000.</p>
+</blockquote>
+
 ```java
-    public void uploadObject(
-    String bucketName, String objectKey, String filePath
-) throws RuntimeException {
+public void uploadObject(String bucketName, String objectKey, String filePath, long partSize) {
+    TransferManager tm = TransferManagerBuilder.standard()
+        .withS3Client(s3Client)
+        .withMinimumUploadPartSize(partSize)
+        .build();
+    Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
+
     try {
-        TransferManager tm = TransferManagerBuilder.standard()
-            .withS3Client(s3Client)
-            .build();
-        Upload upload = tm.upload(bucketName, objectKey, new File(filePath));
         upload.waitForCompletion();
-    } catch (InterruptedException e) {
-        throw new RuntimeException(e);
     } catch (AmazonServiceException e) {
-        throw new RuntimeException(e);
-    } catch (SdkClientException e) {
-        throw new RuntimeException(e);
+        upload.abort();
+    } catch (AmazonClientException e) {
+        upload.abort();
+    } catch (InterruptedException e) {
+        upload.abort();
     }
 }
 ```
@@ -1041,74 +1058,38 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 <details>
 <summary>Upload Object</summary>
 
+<blockquote>
+<p>[Note]
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and the maximum number of part objects is 1000.</p>
+</blockquote>
+
 ```csharp
 private static async Task UploadObjectAsync(
     AmazonS3Client s3Client,
     string bucketName,
     string keyName,
-    string filePath)
+    string filePath,
+    int partSize)
 {
-    List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
-    InitiateMultipartUploadRequest initiateRequest =
-        new InitiateMultipartUploadRequest
-        {
-            BucketName = bucketName,
-            Key = keyName
-        };
-        
-    InitiateMultipartUploadResponse initResponse =
-        await s3Client.InitiateMultipartUploadAsync(initiateRequest);
-
-    long contentLength = new FileInfo(filePath).Length;
-    long partSize = 10 * (long)Math.Pow(2, 20);
-
     try
     {
-        long filePosition = 0;
-        for (int i = 1; filePosition < contentLength; i++)
+        TransferUtility uploader = new TransferUtility(s3Client);
+        TransferUtilityUploadRequest uploadRequest = new TransferUtilityUploadRequest()
         {
-            UploadPartRequest uploadRequest =
-                new UploadPartRequest
-                {
-                    UseChunkEncoding = false,
-                    BucketName = bucketName,
-                    Key = keyName,
-                    UploadId = initResponse.UploadId,
-                    PartNumber = i,
-                    PartSize = partSize,
-                    FilePosition = filePosition,
-                    FilePath = filePath
-                };
-            uploadResponses.Add(await s3Client.UploadPartAsync(uploadRequest));
-            filePosition += partSize;
-        }
-
-        CompleteMultipartUploadRequest completeRequest =
-            new CompleteMultipartUploadRequest
-            {
-                BucketName = bucketName,
-                Key = keyName,
-                UploadId = initResponse.UploadId
-            };
-        completeRequest.AddPartETags(uploadResponses);
-        CompleteMultipartUploadResponse completeUploadResponse =
-            await s3Client.CompleteMultipartUploadAsync(completeRequest);
+            FilePath = filePath,
+            BucketName = bucketName,
+            Key = keyName,
+            PartSize = partSize
+        };
+        uploader.Upload(uploadRequest);
     }
-    catch (Exception e)
+    catch (AmazonS3Exception e)
     {
-        AbortMultipartUploadRequest abortMPURequest =
-            new AbortMultipartUploadRequest
-            {
-                BucketName = bucketName,
-                Key = keyName,
-                UploadId = initResponse.UploadId
-            };
-        await s3Client.AbortMultipartUploadAsync(abortMPURequest);
-
         throw e;
     }
 }
 ```
+
 
 </details>
 

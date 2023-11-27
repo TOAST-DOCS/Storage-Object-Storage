@@ -58,7 +58,7 @@ $ curl -i -X POST \
 
 <blockquote>
 <p>[참고]
-curl을 이용해 값이 없는 헤더를 보낼 때는 헤더 이름에 세미콜론(;)을 붙여야 합니다.</p>
+curl을 이용하여 값이 없는 헤더를 보낼 때는 헤더 이름에 세미콜론(;)을 붙여야 합니다.</p>
 </blockquote>
 
 유효한 인증 토큰 없이 요청하면 에러 메시지를 응답합니다.
@@ -226,7 +226,7 @@ $ curl -X GET \
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
-특정 도메인 이름을 가진 모든 리퍼러의 접근 요청을 허용하려면 다음과 같이 콤마 리스트를 이용해 설정합니다.
+특정 도메인 이름을 가진 모든 리퍼러의 접근 요청을 허용하려면 다음과 같이 콤마 리스트를 이용하여 설정합니다.
 
 ```
 $ curl -i -X POST \
