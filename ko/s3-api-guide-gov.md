@@ -500,9 +500,8 @@ $ aws --endpoint-url=https://kr1-api-object-storage.gov-nhncloudservice.com s3 l
 <summary>버킷 삭제</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.gov-nhncloudservice.com s3 ls s3://example-bucket
-2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
-2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
+$ aws --endpoint-url=https://kr1-api-object-storage.gov-nhncloudservice.com s3 rb s3://example-bucket
+remove_bucket: example-bucket
 ```
 
 </details>
