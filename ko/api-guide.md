@@ -1056,7 +1056,9 @@ X-Container-Ip-Acl-Allowed-List: {컨테이너 쓰기에 대한 IP 기반 접근
 X-Container-Ip-Acl-Denied-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
 X-Container-Object-Lifecycle: {컨테이너의 오브젝트 수명 주기}
 X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
-X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
+X-Versions-Enabled: {오브젝트 버전 관리 사용 여부}
+X-Versions-Lifecycle: {오브젝트의 이전 버전 수명 주기}
+X-Versions-Delete-Marker-Expiration: {삭제 마커 만료 설정}
 X-Container-Meta-Web-Index: {정적 웹사이트 인덱스 문서 오브젝트}
 X-Container-Meta-Web-Error: {정적 웹사이트 오류 문서 오브젝트 접미사}
 X-Container-Meta-Access-Control-Allow-Origin: {교차 출처 리소스 공유 허용 목록}
@@ -1075,8 +1077,10 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Object-Lifecycle | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
-| X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
-| X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
+| X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 (Deprecated)<br/>`X-Versions-Enabled` 헤더와 동시에 사용할 수 없습니다. |
+| X-Versions-Enabled | Header | String | - | 오브젝트 버전 관리 사용 여부를 설정, true 또는 false<br/>`X-History-Location` 헤더와 동시에 사용할 수 없습니다. |
+| X-Versions-Lifecycle | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
+| X-Versions-Delete-Marker-Expiration | Header | Integer | - | 삭제 마커 만료 설정, true 또는 false |
 | X-Container-Meta-Web-Index | Header | String | - | 정적 웹사이트 인덱스 문서 오브젝트 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
 | X-Container-Meta-Web-Error | Header | String | - | 정적 웹사이트 오류 문서 오브젝트 접미사 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. | 
@@ -1095,25 +1099,8 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 `X-Container-Object-Lifecycle` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
 <br/>
 
-##### 버전 관리 정책 설정
-[오브젝트 내용 수정](api-guide/#_52) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
-
-이전 버전 오브젝트는 아카이브 컨테이너에 다음과 같은 형태로 보관됩니다.
-```
-{3자리 16진수로 표현된 오브젝트 이름의 길이}{오브젝트 이름}/{이전 버전 오브젝트가 보관된 유닉스 시간}
-```
-예를 들어 `picture.jpg`라는 오브젝트를 업데이트하면 아카이브 컨테이너에는 `00bpicture.jpg/1610606551.82539`라는 오브젝트가 생성됩니다.
-
-버전 관리 정책이 설정된 컨테이너에서 오브젝트를 삭제하면, 아카이브 컨테이너에 삭제된 오브젝트가 보관되고 삭제 마커 오브젝트가 생성됩니다. 아카이브 컨테이너에 보관된 이전 버전 오브젝트에는 언제든 접근할 수 있습니다.
-
-`X-Versions-Retention` 헤더를 함께 사용하면 이전 버전 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 1을 설정했다면 보관된 오브젝트는 1일 이후에 자동으로 삭제됩니다. 설정하지 않으면 이전 버전 오브젝트는 사용자가 삭제하기 전까지 보관됩니다. 설정 이후 보관된 이전 버전 오브젝트에만 적용됩니다.
-
-> [주의]
-> 아카이브 컨테이너를 원본 컨테이너보다 먼저 삭제하면, 원본 컨테이너의 오브젝트 업데이트 또는 삭제 시에 오류가 발생합니다. 이미 삭제하였다면 아카이브 컨테이너를 새로 생성하거나 원본 컨테이너의 버전 관리 정책을 해제해 해결할 수 있습니다.
->
-> 아카이브 컨테이너로 사용할 컨테이너 이름에는 가급적 유니코드 문자를 사용하지 않는 것을 권장합니다. 아카이브 컨테이너로 지정할 컨테이너 이름에 유니코드 문자가 포함되어 있다면 반드시 URL 인코딩 후 요청 헤더에 입력해야 합니다.
->
-> 암호화 컨테이너를 아카이브 컨테이너로 지정한 뒤 암호화 컨테이너의 대칭 키를 Secure Key Manager 서비스에서 삭제하면 원본 컨테이너의 오브젝트 업로드와 삭제에 실패합니다.
+##### 오브젝트 버전 관리 설정
+`X-Versions-Enabled`, `X-Versions-Lifecycle`, `X-Versions-Delete-Marker-Expiration`, `X-History-Location` 헤더를 사용해 오브젝트 버전 관리 정책을 설정할 수 있습니다. 자세한 내용은 [오브젝트 버전 관리 가이드](object-versioning-guide/)를 참조하세요.
 
 <br/>
 
