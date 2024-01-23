@@ -1,12 +1,18 @@
 ## Storage > Object Storage > 오브젝트 버전 관리 가이드
 
-## 오브젝트 버전 관리 설정
+## 오브젝트 버전 관리
 
-기존 버전 관리 정책의 단점을 보완하여 보다 용이하게 버전 오브젝트를 조회 및 관리할 수 있습니다. 오브젝트 버전 관리 정책을 사용하는 컨테이너에 오브젝트를 업로드하면 자동으로 버전 오브젝트가 생성됩니다. 언제든 버전 오브젝트로부터 복구, 다운로드, 복사 및 서명된 URL을 생성할 수 있습니다.
+기존 버전 관리 정책의 단점을 보완하여 보다 용이하게 버전 오브젝트를 조회 및 관리할 수 있습니다.
+
+오브젝트 버전 관리 정책을 사용하는 컨테이너에서 오브젝트를 업로드 또는 삭제하면 해당 오브젝트에 대한 버전 오브젝트가 생성됩니다. 콘솔 또는 API를 사용하여 버전 오브젝트 목록을 조회하고 특정 버전 오브젝트를 다운로드, 복구, 삭제하거나 서명된 URL을 생성할 수 있습니다.
+
+오브젝트 버전 관리 정책을 사용하는 컨테이너에서 오브젝트를 삭제하면 삭제 마커 오브젝트가 생성됩니다. 삭제 마커 오브젝트는 [버전 오브젝트 목록 조회](object-versioning-guide/#_10)를 사용하여 확인할 수 있습니다. 삭제 마커 오브젝트는 다운로드하거나 복구할 수 없습니다.
 
 > [참고]
 > 레거시 오브젝트 버전 관리 정책을 사용 시, 버전 오브젝트를 직접 관리해야 합니다.
 > 보다 자세한 내용은 [레거시 오브젝트 버전 관리](object-versioning-guide/#_33)를 참고하십시오.
+
+## 오브젝트 버전 관리 설정
 
 ### 콘솔
 
@@ -16,7 +22,7 @@
 | ---- | ---- | ---- |
 | 신규 오브젝트 버전 관리 | 오브젝트 버전 관리 정책 | 오브젝트 버전 관리 정책 사용 여부를 선택합니다. |
 |  | 버전 오브젝트 수명 주기 | 오브젝트의 수명 주기를 일 단위로 입력합니다. 공란으로 두면 수명 주기 설정이 해제됩니다. |
-|  | 삭제 마커 수명 주기 | 삭제 마커에 수명 주기 사용 여부를 선택합니다. |
+|  | 삭제 마커 오브젝트 수명 주기 | 삭제 마커 오브젝트에 수명 주기 적용 여부를 선택합니다. |
 | 레거시 오브젝트 버전 관리 | 오브젝트 버전 관리 정책 | 버전 관리 정책 사용 여부를 선택합니다.<br/>기존에 레거시 버전 관리 정책을 사용하고 있는 컨테이너에만 노출되고, **사용 안 함** 선택 이후에는 신규 오브젝트 버전 관리 설정 화면으로 전환됩니다. |
 |  | 아카이브 컨테이너 | 오브젝트의 이전 버전을 보관할 컨테이너를 입력합니다. |
 |  | 아카이빙 오브젝트 수명 주기 | 오브젝트의 이전 버전의 수명 주기를 일 단위로 입력합니다. 공란으로 두면 수명 주기 설정이 해제됩니다. |
@@ -34,7 +40,7 @@ POST /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Versions-Enabled: {오브젝트 버전 관리 정책 사용 여부}
 X-Versions-Lifecycle: {오브젝트의 이전 버전 수명 주기}
-X-Versions-Delete-Marker-Expiration: {삭제 마커 만료 설정}
+X-Versions-Delete-Marker-Expiration: {삭제 마커 오브젝트 만료 설정}
 ```
 
 #### 요청
@@ -44,9 +50,9 @@ X-Versions-Delete-Marker-Expiration: {삭제 마커 만료 설정}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 | --- | --- | --- | --- | --- |
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| X-Versions-Enabled | Header | String | - | 오브젝트 버전 관리 정책 사용 여부를 설정, true 또는 false<br/>`X-History-Location` 헤더와 동시에 사용할 수 없습니다. |
-| X-Versions-Lifecycle | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
-| X-Versions-Delete-Marker-Expiration | Header | String | - | 삭제 마커 만료 설정, true 또는 false |
+| X-Versions-Enabled | Header | String | - | 오브젝트 버전 관리 정책 사용 여부를 설정, true 또는 false<br/>`X-History-Location` 헤더와 동시에 사용할 수 없습니다. false로 설정하여 모든 오브젝트 버전 관리 설정을 초기화할 수 있습니다. |
+| X-Versions-Lifecycle | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정<br/>`1 ~ 36500` 범위 내에서 지정할 수 있고, `'X-Versions-Lifecycle: '`를 사용하여 해제할 수 있습니다. |
+| X-Versions-Delete-Marker-Expiration | Header | String | - | 버전 오브젝트 수명 주기를 삭제 마커 오브젝트에도 적용, true 또는 false |
 
 <br/>
 
@@ -58,40 +64,13 @@ X-Versions-Delete-Marker-Expiration: {삭제 마커 만료 설정}
 
 ##### 버전 오브젝트 수명 주기
 
-`X-Versions-Lifecycle` 헤더를 사용하여 버전 오브젝트 수명 주기를 일 단위로 설정할 수 있습니다. `1 ~ 36500` 범위 내에서 지정할 수 있고, `'X-Versions-Lifecycle: '`를 사용해 컨테이너 수정을 요청하면 버전 오브젝트 수명 주기 설정이 해제되어 이후 컨테이너에 저장되는 버전 오브젝트는 자동으로 수명 주기가 설정되지 않습니다.
+`X-Versions-Lifecycle` 헤더를 사용하여 버전 오브젝트 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 오브젝트를 업로드하거나 삭제하면 직전 버전 오브젝트에 수명 주기가 적용됩니다.
 
 <br/>
 
-##### 삭제 마커 만료 설정
+##### 삭제 마커 오브젝트 만료 설정
 
-`X-Versions-Delete-Marker-Expiration` 헤더를 사용하여 삭제 마커에 수명 주기를 사용할 수 있습니다.
-
-<br/>
-
-#### 응답
-
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
-
-<br/>
-
-### 레거시 API (Deprecated)
-
-```
-POST /v1/{Account}/{Container}
-X-Auth-Token: {token-id}
-X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
-X-Versions-Lifecycle: {오브젝트의 이전 버전 수명 주기}
-```
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-| --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| X-History-Location | Header | String | - | 오브젝트의 이전 버전을 저장할 컨테이너<br/>`X-Versions-Enabled` 헤더와 동시에 사용할 수 없습니다. |
-| X-Versions-Lifecycle | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
+`X-Versions-Delete-Marker-Expiration` 헤더를 사용하여 버전 오브젝트 수명 주기를 삭제 마커 오브젝트에도 적용할 수 있습니다.
 
 <br/>
 
@@ -105,10 +84,26 @@ X-Versions-Lifecycle: {오브젝트의 이전 버전 수명 주기}
 
 ### 콘솔
 
-**오브젝트 목록 조회** 창의 **객체 모든 버전 보기** 토클 버튼을 클릭하여 이전 버전 오브젝트와 삭제 마커를 포함한 모든 오브젝트 목록을 조회할 수 있습니다.
+#### 오브젝트 모든 버전 보기
+
+**오브젝트 목록 조회** 창의 **객체 모든 버전 보기** 토클 버튼을 클릭하여 이전 버전 오브젝트와 삭제 마커 오브젝트를 포함한 모든 오브젝트 목록을 조회할 수 있습니다.
 
 > [참고]
-> 버전 오브젝트와 삭제 마커를 포함하여 최대 50개까지 한 페이지에 표시됩니다.
+> 버전 오브젝트와 삭제 마커 오브젝트를 포함하여 한 페이지에 최대 50개까지 조회합니다.
+
+<br/>
+
+#### 오브젝트 버전 정보
+
+**오브젝트 상세 정보** 창의 **버전 정보**에서 선택한 오브젝트의 버전 정보를 조회할 수 있습니다.
+
+| 항목 | 설명 |
+| ---- | ---- |
+| 이름 | |
+| 버전 ID | 버전 오브젝트 및 삭제 마커 오브젝트의 ID |
+| 버전 구분 | `현재 버전`, `버전 오브젝트` 또는 `삭제 마커 오브젝트` |
+| 크기 | 오브젝트 크기, 삭제 마커 오브젝트의 크기는 0입니다. |
+| 최근 업데이트 시간 | |
 
 <br/>
 
@@ -132,15 +127,6 @@ X-Auth-Token: {token-id}
 | Container | URL | String | O | 컨테이너 이름 |
 | versions | Query | Flag | O | 버전 오브젝트 목록 조회 |
 | object | Query | String | - | 조회할 오브젝트 이름 |
-| marker | Query | String | - | 지정한 오브젝트의 다음 오브젝트부터 조회 |
-| version_marker | Query | String | - | 지정한 버전의 다음 버전부터 조회 |
-| prefix | Query | String | - | 검색할 접두어 |
-| limit | Query | Integer | - | 목록에 표시할 오브젝트 수 |
-| delimiter | Query | String | - | |
-| reverse | Query | String | - | |
-
-> [참고]
-> 버전 오브젝트 목록 조회 API는 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
 
 <br/>
 
@@ -154,7 +140,7 @@ X-Auth-Token: {token-id}
 | --- | --- | --- | --- |
 | X-Versions-Enabled | Header | String | 오브젝트 버전 관리 정책 사용 여부, 사용 시 True |
 | X-Versions-Lifecycle | Header | Integer | 버전 오브젝트 수명 주기 (일) |
-| X-Versions-Delete-Marker-Expiration | Header | Boolean | 삭제 마커 만료 설정 |
+| X-Versions-Delete-Marker-Expiration | Header | Boolean | 삭제 마커 오브젝트 만료 설정 |
 | X-Container-Bytes-Used | Header | Integer | 컨테이너의 전체 오브젝트 용량 |
 | X-Container-Bytes-Used-By-Versions | Header | Integer | 컨테이너의 버전 오브젝트 용량 |
 | hash | Body | String | 오브젝트 MD5 체크섬 값 |
@@ -162,7 +148,7 @@ X-Auth-Token: {token-id}
 | bytes | Body | Integer | 오브젝트 크기 |
 | name | Body | String | 오브젝트 이름 |
 | content_type | Body | String | 컨텐츠 타입 |
-| version_id | Body | String | 버전 ID |
+| version_id | Body | String | 버전 오브젝트 및 삭제 마커 오브젝트의 ID |
 | is_latest | Body | String | 현재 버전 오브젝트 여부 |
 
 <br/>
@@ -173,75 +159,21 @@ X-Auth-Token: {token-id}
 
 <br/>
 
-##### 삭제 마커
+##### 삭제 마커 오브젝트
 
-`content_type`이 `"application/x-deleted;swift_versions_deleted=1"`이면 삭제 마커입니다.
+`content_type`이 `"application/x-deleted;swift_versions_deleted=1"`이면 삭제 마커 오브젝트입니다.
 
 <br/>
 
 ##### 버전 ID
 
-버전 오브젝트와 삭제 마커는 `version_id`로 고유한 해시값을 갖습니다. 버전 관리되지 않는 오브젝트의 `version_id`는 `"null"`입니다.
+버전 오브젝트와 삭제 마커 오브젝트는 `version_id`로 타임스탬프를 갖습니다. 버전 관리되지 않는 오브젝트의 `version_id`는 `"null"`입니다.
 
 <br/>
 
-## 버전 오브젝트 조회
+## 버전 오브젝트 및 삭제 마커 오브젝트 삭제
 
-### 콘솔
-
-**오브젝트 상세 정보** 창의 **버전 정보**에서 선택한 오브젝트의 버전 정보를 조회할 수 있습니다.
-
-| 항목 | 설명 |
-| ---- | ---- |
-| 이름 | 이전 버전 이름 앞에는 Depth 구분자 `ㄴ` 아이콘이 붙습니다. |
-| 버전 ID | 오브젝트 버전 관리 API에서 사용됩니다. |
-| 버전 구분 | `현재 버전`, `버전 오브젝트` 또는 `삭제 마커` |
-| 크기 | 오브젝트 크기, 삭제 마커의 크기는 0입니다. |
-| 최근 업데이트 시간 | 오브젝트가 생성된 시간 |
-
-<br/>
-
-### API
-
-```
-GET /v1/{Account}/{Container}/{Object}
-X-Auth-Token: {token-id}
-```
-
-<br/>
-
-#### 요청
-
-이 API는 요청 본문을 요구하지 않습니다.
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-| --- | --- | --- | --- | --- |
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O | 컨테이너 이름 |
-| Object | URL | String | O | 오브젝트 이름 |
-| version-id | Query | String | - | 버전 ID, 버전 오브젝트 목록 조회 응답 본문에서 확인 |
-
-<br/>
-
-##### 현재 버전 오브젝트 조회
-
-`version-id`를 지정하지 않으며 현재 버전 오브젝트를 조회합니다.
-
-<br/>
-
-##### 버전 ID 지정 조회
-
-`version-id` 쿼리로 버전 ID를 지정하여 버전 오브젝트를 조회할 수 있습니다.
-
-> [주의]
-> 삭제 마커 오프젝트는 `version-id` 쿼리를 사용하여 조회할 수 없습니다.
-
-<br/>
-
-## 버전 오브젝트 삭제
-
-버전 오브젝트 또는 삭제 마커를 삭제할 수 있습니다. 현재 버전 오브젝트를 지정하여 객체 삭제할 때 삭제 마커를 제외한 이전 버전 오브젝트가 있으면 이전 버전이 복구됩니다.
+버전 오브젝트 또는 삭제 마커 오브젝트를 삭제할 수 있습니다. 현재 버전 오브젝트를 지정하여 삭제할 때 삭제 마커 오브젝트를 제외한 이전 버전 오브젝트가 있으면 이전 버전이 자동으로 복구됩니다.
 
 > [참고]
 > 매니페스트 오브젝트를 삭제하더라도 선택 항목에 포함되지 않은 세그먼트 오브젝트는 함께 삭제되지 않습니다.
@@ -253,14 +185,14 @@ X-Auth-Token: {token-id}
 
 ### 콘솔
 
-**오브젝트 목록 조회** 창 또는 **오브젝트 상세 정보** 창의 **버전 정보**에서 **객체 삭제** 버튼을 클릭하여 선택한 객체를 삭제할 수 있습니다.
+**오브젝트 목록 조회** 창 또는 **오브젝트 상세 정보** 창의 **버전 정보**에서 **객체 삭제** 버튼을 클릭하여 선택한 버전 오브젝트 또는 삭제 마커 오브젝트를 삭제할 수 있습니다.
 
 <br/>
 
 ### API
 
 ```
-DELETE /v1/{Account}/{Container}/{Object}
+DELETE /v1/{Account}/{Container}/{Object}?version-id={version-id}
 X-Auth-Token: {token-id}
 ```
 
@@ -276,12 +208,12 @@ X-Auth-Token: {token-id}
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 오브젝트 이름 |
-| version-id | Query | String | - | 버전 식별자, 버전 오브젝트 목록 조회 응답 본문에서 확인 |
+| version-id | Query | String | O | 버전 ID, 버전 오브젝트 목록 조회 응답 본문에서 확인 |
 
 <br/>
 
 > [참고]
-> `version-id` 쿼리를 사용하여 오브젝트를 삭제하면 삭제 마커가 생성되지 않습니다.
+> `version-id` 쿼리를 사용하여 오브젝트를 삭제하면 삭제 마커 오브젝트가 생성되지 않습니다.
 
 <br/>
 
@@ -291,12 +223,26 @@ X-Auth-Token: {token-id}
 
 <br/>
 
-## 객체 복구 / 다른 이름으로 객체 복사
+## 버전 오브젝트 복구
+
+[버전 오브젝트 복사](object-versioning-guide/#_22)를 사용하여 버전 오브젝트를 복구할 수 있습니다.
+현재 버전 오브젝트를 지정하여 삭제할 때 이전 버전 오브젝트가 있으면 이전 버전이 자동으로 복구됩니다.
 
 ### 콘솔
 
-**오브젝트 목록 조회** 창 또는 **오브젝트 상세 정보** 창의 **버전 정보**에서 **객체 복구** 또는 **다른 이름으로 객체 복사** 버튼을 클릭하여 버전 오브젝트를 복구하거나 다른 이름으로 복사할 수 있습니다.
-객체 복구 진행 시 기존 객체를 선택한 버전의 객체로 대체하며, 기존 객체는 버전 오브젝트로 관리됩니다.
+**오브젝트 목록 조회** 창 또는 **오브젝트 상세 정보** 창의 **버전 정보**에서 **객체 복구** 버튼을 클릭하여 버전 오브젝트를 복구할 수 있습니다.
+버전 오브젝트 복구 진행 시 기존 오브젝트를 선택한 버전의 오브젝트로 대체하며, 기존 오브젝트는 버전 오브젝트로 관리됩니다.
+
+> [주의]
+> 현재 버전 또는 삭제 마커 오브젝트를 선택하여 복구할 수 없습니다.
+
+<br/>
+
+## 버전 오브젝트 복사
+
+### 콘솔
+
+**오브젝트 목록 조회** 창 또는 **오브젝트 상세 정보** 창의 **버전 정보**에서 **다른 이름으로 객체 복사** 버튼을 클릭하여 버전 오브젝트를 다른 이름으로 복사할 수 있습니다.
 
 > [참고]
 > 선택한 컨테이너 내부 폴더 경로를 지정할 수 있습니다. 전체 경로는 경로와 구분자(`/`), 객체 이름을 포함하여 최대 1024바이트 입니다.
@@ -304,17 +250,17 @@ X-Auth-Token: {token-id}
 <!-- 개행을 위한 주석이므로 필수로 포함되어야 합니다. -->
 
 > [주의]
-> 현재 버전 또는 삭제 마커를 선택하여 객체 복구할 수 없습니다.
->
 > 다른 이름으로 특정 형태(`.` 또는 `..`)는 사용할 수 없으며 특수 문자(`'`, `"`, `<`, `>` 또는 `;`)와 공백은 입력할 수 없습니다.
-> 5GB를 초과하는 멀티파트 오브젝트, 폴더, 버전 오브젝트 또는 삭제 마커를 선택하여 객체 복사할 수 없습니다.
+> 5GB를 초과하는 멀티파트 오브젝트, 폴더, 버전 오브젝트 또는 삭제 마커 오브젝트를 복사할 수 없습니다.
+>
+> 삭제 마커 오브젝를 복사할 수 없습니다.
 
 <br/>
 
 ### API
 
 ```
-COPY   /v1/{Account}/{Container}/{Object}
+COPY   /v1/{Account}/{Container}/{Object}?version-id={version-id}
 X-Auth-Token: {token-id}
 Destination: {오브젝트를 복사할 대상}
 ```
@@ -322,7 +268,7 @@ Destination: {오브젝트를 복사할 대상}
 ```
 PUT   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
-X-Copy-From: {원본 오브젝트}
+X-Copy-From: {원본 오브젝트}?version-id={version-id}
 ```
 
 #### 요청
@@ -332,11 +278,12 @@ X-Copy-From: {원본 오브젝트}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Destination | Header | String |	- | 오브젝트를 복사할 대상, `{컨테이너}/{오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
-| X-Copy-From | Header | String |	- | 원본 오브젝트, `{컨테이너}/{오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
+| Destination | Header | String | - | 오브젝트를 복사할 대상, `{컨테이너}/{오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
+| X-Copy-From | Header | String | - | 원본 오브젝트, `{컨테이너}/{오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
-| Container | URL | String | O |	컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 복사할 컨테이너 |
-| Object | URL | String |	복사할 오브젝트 이름 |
+| Container | URL | String | O | 컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 복사할 컨테이너 |
+| Object | URL | String | O | 복사할 오브젝트 이름 |
+| version-id | Query | String | O | 버전 ID, 버전 오브젝트 목록 조회 응답 본문에서 확인 |
 
 #### 응답
 
@@ -367,13 +314,35 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/copy_con/3a45e9
 **오브젝트 목록 조회** 창 또는 **오브젝트 상세 정보** 창의 **버전 정보**에서 버전 오브젝트를 선택하여 다운로드할 수 있습니다.
 
 > [주의]
-> 폴더 또는 삭제 마커를 선택하여 객체 다운로드할 수 없습니다.
+> 폴더 또는 삭제 마커 오브젝트를 선택하여 다운로드할 수 없습니다.
 
 <br/>
 
 ### API
 
-[버전 오브젝트 조회](object-versioning-guide/#_19)를 참고하십시오.
+```
+GET /v1/{Account}/{Container}/{Object}?version-id=${version-id}
+X-Auth-Token: {token-id}
+```
+
+<br/>
+
+#### 요청
+
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| X-Auth-Token | Header | String | O | 토큰 ID |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Container | URL | String | O | 컨테이너 이름 |
+| Object | URL | String | O | 오브젝트 이름 |
+| version-id | Query | String | O | 버전 ID, 버전 오브젝트 목록 조회 응답 본문에서 확인 |
+
+<br/>
+
+> [주의]
+> 삭제 마커 오브젝트는 `version-id` 쿼리를 사용하여 조회할 수 없습니다.
 
 <br/>
 
@@ -390,7 +359,7 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/copy_con/3a45e9
 <!-- 개행을 위한 주석이므로 필수로 포함되어야 합니다. -->
 
 > [주의]
-> 서명된 URL이 유출되면 누구나 선택한 오브젝트에 접근할 수 있으므로 주의해서 사용해야 합니다. 서명된 URL이 유출되어도 피해를 줄일 수 있도록 상황과 용도에 맞게 적절한 유효 기간을 설정하여 사용하는 것을 권장합니다. 폴더 또는 삭제 마커를 선택하여 서명된 URL 생성할 수 없습니다.
+> 서명된 URL이 유출되면 누구나 선택한 오브젝트에 접근할 수 있으므로 주의해서 사용해야 합니다. 서명된 URL이 유출되어도 피해를 줄일 수 있도록 상황과 용도에 맞게 적절한 유효 기간을 설정하여 사용하는 것을 권장합니다. 폴더 또는 삭제 마커 오브젝트를 선택하여 서명된 URL 생성할 수 없습니다.
 
 <br/>
 
@@ -404,10 +373,9 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/copy_con/3a45e9
 ```
 예를 들어 `picture.jpg`라는 오브젝트를 업데이트하면 아카이브 컨테이너에는 `00bpicture.jpg/1610606551.82539`라는 오브젝트가 생성됩니다.
 
-버전 관리 정책이 설정된 컨테이너에서 오브젝트를 삭제하면, 아카이브 컨테이너에 삭제된 오브젝트가 보관되고 삭제 마커가 생성됩니다. 아카이브 컨테이너에 보관된 이전 버전 오브젝트에는 언제든 접근할 수 있습니다.
+버전 관리 정책이 설정된 컨테이너에서 오브젝트를 삭제하면, 아카이브 컨테이너에 삭제된 오브젝트가 보관되고 삭제 마커 오브젝트가 생성됩니다. 아카이브 컨테이너에 보관된 이전 버전 오브젝트에는 언제든 접근할 수 있습니다.
 
 `X-Versions-Retention` 헤더를 함께 사용하면 이전 버전 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 1을 설정했다면 보관된 오브젝트는 1일 이후에 자동으로 삭제됩니다. 설정하지 않으면 이전 버전 오브젝트는 사용자가 삭제하기 전까지 보관됩니다. 설정 이후 보관된 이전 버전 오브젝트에만 적용됩니다.
-
 
 > [참고]
 > 신규 오브젝트 버전 관리 정책을 사용하면 보다  용이하게 버전 오브젝트를 조회 및 관리할 수 있습니다.
