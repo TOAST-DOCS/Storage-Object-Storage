@@ -93,7 +93,7 @@ Secure Key Manager 서비스에서 암호화 컨테이너에 설정한 대칭 �
     <td>공개 URL을 통해 누구나 컨테이너 내부의 오브젝트에 접근할 수 있습니다.</td>
   </tr>
   <tr>
-    <td rowspan="4">ACL 설정</td>
+    <td rowspan="4">역할 기반 접근 정책 설정</td>
     <td></td>
     <td>개별 접근 정책 사용 여부를 선택합니다.</td>
   </tr>
