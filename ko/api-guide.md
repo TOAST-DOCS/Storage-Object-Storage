@@ -1082,6 +1082,11 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. | 
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFC를 준수하는 ETag 형식 사용 여부를 설정, true 또는 false |
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정<br/>객체 잠금 컨테이너에서만 변경 가능 |
+| X-Container-Object-Deny-Extension-Policy
+ | Header | String | - | 오브젝트 업로드 정책의 확장자 블랙리스트 목록 |
+| X-Container-Object-Deny-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 블랙리스트 목록 |
+| X-Container-Object-Allow-Extension-Policy | Header | String | - | 오브젝트 업로드 정책의 확장자 화이트리스트 목록 |
+| X-Container-Object-Allow-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 화이트리스트 목록 |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 <br/>
@@ -1203,6 +1208,26 @@ Status: 0
 > 객체 잠금 컨테이너는 아카이브 컨테이너 또는 복제 대상 컨테이너로 지정할 수 없습니다.
 
 <br/>
+
+##### 업로드 정책 설정 변경
+`X-Container-Object-Deny-Extension-Policy`, `X-Container-Object-Deny-Keyword-Policy`, 
+`X-Container-Object-Allow-Extension-Policy`,
+`X-Container-Object-Allow-Keyword-Policy` 헤더를 사용해 컨테이너의 오브젝트 이름 기반의 업로드 정책을 설정할 수 있습니다. 경로가 포함된 오브젝트는 경로를 포함한 오브젝트명이 정책에 반영되며, 설정된 이후부터 신규 업로드되는 오브젝트에 적용됩니다. 모든 업로드 정책 헤더는 `,` 구분자를 이용하여 여러 값을 입력할 수 있으며, 각각의 값은 URL 인코딩(퍼센트 인코딩) 되어 있어야 합니다.  확장자 규칙은 파일의 확장자를, 파일명 규칙은 오브젝트 이름에 포함 여부를 검사합니다.
+
+헤더의 속성은 아래와 같습니다.
+
+| 이름 | 설명 |
+|---|---|
+| X-Container-Object-Deny-Extension-Policy | 확장자 블랙리스트 목록 |
+| X-Container-Object-Deny-Keyword-Policy | 파일명 블랙리스트 목록 |
+| X-Container-Object-Allow-Extension-Policy | 확장자 화이트리스트 목록  |
+| X-Container-Object-Allow-Keyword-Policy | 파일명 화이트리스트 목록 |
+
+> [주의]
+> 업로드 정책에서 화이트리스트와 블랙리스트를 동시에 사용할 수 없습니다.
+> 구분자로 사용되는 `,`는 URL 인코딩 되어선 안됩니다.
+> 확장자의 경우 `.`이 포함되어선 안됩니다. 예를 들어, `.txt` 가 아닌 `txt`로 요청되어야 합니다.
+
 
 ##### 컨테이너 설정 해제
 값이 없는 헤더를 사용하면 설정이 해제됩니다. 예를 들어 오브젝트 수명 주기가 3일로 설정되어 있을 때 `'X-Container-Object-Lifecycle: '`를 사용해 컨테이너 수정을 요청하면 오브젝트 수명 주기 설정이 해제되어 이후 컨테이너에 저장되는 오브젝트는 자동으로 수명 주기가 설정되지 않습니다.
