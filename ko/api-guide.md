@@ -1086,6 +1086,11 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. | 
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFC를 준수하는 ETag 형식 사용 여부를 설정, true 또는 false |
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정<br/>객체 잠금 컨테이너에서만 변경 가능 |
+| X-Container-Object-Deny-Extension-Policy
+ | Header | String | - | 오브젝트 업로드 정책의 확장자 블랙리스트 목록 |
+| X-Container-Object-Deny-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 블랙리스트 목록 |
+| X-Container-Object-Allow-Extension-Policy | Header | String | - | 오브젝트 업로드 정책의 확장자 화이트리스트 목록 |
+| X-Container-Object-Allow-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 화이트리스트 목록 |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 <br/>
@@ -1190,6 +1195,111 @@ Status: 0
 > 객체 잠금 컨테이너는 아카이브 컨테이너 또는 복제 대상 컨테이너로 지정할 수 없습니다.
 
 <br/>
+
+##### 업로드 정책 설정 변경
+`X-Container-Object-Deny-Extension-Policy`, `X-Container-Object-Deny-Keyword-Policy`, `X-Container-Object-Allow-Extension-Policy`, `X-Container-Object-Allow-Keyword-Policy` 헤더를 사용해 컨테이너에 오브젝트 이름 기반 업로드 정책을 설정할 수 있습니다. 업로드 정책 설정을 활용하면 이름에 특정 확장자나 키워드가 포함된 오브젝트만 업로드하거나 업로드하지 못하도록 제한할 수 있습니다. 
+
+업로드 정책은 정책이 설정된 이후부터 업로드되는 오브젝트에 적용됩니다. 경로가 포함된 오브젝트는 경로를 제외한 오브젝트 이름이 정책에 적용됩니다. 모든 업로드 정책 헤더는 `,` 구분자를 이용하여 여러 규칙을 입력할 수 있으며, 각각의 규칙은 URL 인코딩(퍼센트 인코딩) 되어 있어야 합니다. 구분자 `,`를 제외한 각각의 규칙은 URL 인코딩(퍼센트 인코딩)해야 합니다.
+확장자 규칙은 파일의 확장자를, 파일명 규칙은 오브젝트 이름에 포함 여부를 검사합니다. 확장자 규칙은 `.`을 제외하고 입력해야합니다. 예를 들어, txt 확장자를 입력하려면 `.txt`가 아닌 `txt`만 입력합니다.
+
+업로드 정책은 화이트리스트와 블랙리스트를 동시에 사용할 수 없습니다. 두 속성을 모두 설정하도록 요청하면 실패 응답을 받게 됩니다.
+
+
+<details>
+<summary>화이트리스트 설정 예시 확인</summary>
+
+컨테이너에 화이트리스트 업로드 정책 설정을 추가합니다.
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Allow-Extension-Policy: exe, jpg' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/test.jpg -i
+
+HTTP/1.1 409 Conflict
+Content-Length: 72
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: txddeb34d60f7f4b43a8b2a-0065b8b134
+X-Openstack-Request-Id: txddeb34d60f7f4b43a8b2a-0065b8b134
+Date: Tue, 30 Jan 2024 08:20:04 GMT
+
+Only the objects with the following extensions can be uploaded: exe, jpg
+```
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Allow-Keyword-Policy: example' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/upload.txt -i
+
+HTTP/1.1 409 Conflict
+Content-Length: 60
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx24209f2af02b4de0a4921-0065b8b192
+X-Openstack-Request-Id: tx24209f2af02b4de0a4921-0065b8b192
+Date: Tue, 30 Jan 2024 08:21:38 GMT
+
+The object name must contain the following keywords: example
+```
+
+</details>
+
+
+<details>
+<summary>블랙리스트 설정 예시 확인</summary>
+
+컨테이너에 블랙리스트 업로드 정책 설정을 추가합니다.
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Deny-Extension-Policy: exe, jpg' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/test.jpg -i
+
+HTTP/1.1 409 Conflict
+Content-Length: 70
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx4a0f746118e9453ca8688-0065b8b038
+X-Openstack-Request-Id: tx4a0f746118e9453ca8688-0065b8b038
+Date: Tue, 30 Jan 2024 08:15:52 GMT
+
+The objects with the following extensions cannot be uploaded: exe, jpg
+```
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Deny-Keyword-Policy: example' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/upload_example.txt -i
+
+HTTP/1.1 409 Conflict
+Content-Length: 64
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx60aaa14186d84cca88a8e-0065b8b098
+X-Openstack-Request-Id: tx60aaa14186d84cca88a8e-0065b8b098
+Date: Tue, 30 Jan 2024 08:17:28 GMT
+
+The object name must not contain the following keywords: example
+```
+
+</details>
+
 
 ##### 컨테이너 설정 해제
 값이 없는 헤더를 사용하면 설정이 해제됩니다. 예를 들어 오브젝트 수명 주기가 3일로 설정되어 있을 때 `'X-Container-Object-Lifecycle: '`를 사용해 컨테이너 수정을 요청하면 오브젝트 수명 주기 설정이 해제되어 이후 컨테이너에 저장되는 오브젝트는 자동으로 수명 주기가 설정되지 않습니다.
