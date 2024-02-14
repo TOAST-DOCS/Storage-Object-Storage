@@ -1062,6 +1062,10 @@ X-Container-Meta-Web-Error: {정적 웹사이트 오류 문서 오브젝트 접�
 X-Container-Meta-Access-Control-Allow-Origin: {교차 출처 리소스 공유 허용 목록}
 X-Container-Rfc-Compliant-Etags: {RFC를 준수하는 ETag 형식 사용 여부}
 X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
+X-Container-Object-Deny-Extension-Policy: {오브젝트 업로드 정책의 확장자 블랙리스트 목록}
+X-Container-Object-Deny-Keyword-Policy: {오브젝트 업로드 정책의 파일명 블랙리스트 목록}
+X-Container-Object-Allow-Extension-Policy: {오브젝트 업로드 정책의 확장자 화이트리스트 목록}
+X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파일명 화이트리스트 목록}
 ```
 
 #### 요청
@@ -1082,8 +1086,7 @@ X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. | 
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFC를 준수하는 ETag 형식 사용 여부를 설정, true 또는 false |
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정<br/>객체 잠금 컨테이너에서만 변경 가능 |
-| X-Container-Object-Deny-Extension-Policy
- | Header | String | - | 오브젝트 업로드 정책의 확장자 블랙리스트 목록 |
+| X-Container-Object-Deny-Extension-Policy | Header | String | - | 오브젝트 업로드 정책의 확장자 블랙리스트 목록 |
 | X-Container-Object-Deny-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 블랙리스트 목록 |
 | X-Container-Object-Allow-Extension-Policy | Header | String | - | 오브젝트 업로드 정책의 확장자 화이트리스트 목록 |
 | X-Container-Object-Allow-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 화이트리스트 목록 |
@@ -1212,8 +1215,8 @@ Status: 0
 ##### 업로드 정책 설정 변경
 `X-Container-Object-Deny-Extension-Policy`, `X-Container-Object-Deny-Keyword-Policy`, `X-Container-Object-Allow-Extension-Policy`, `X-Container-Object-Allow-Keyword-Policy` 헤더를 사용해 컨테이너에 오브젝트 이름 기반 업로드 정책을 설정할 수 있습니다. 업로드 정책 설정을 활용하면 이름에 특정 확장자나 키워드가 포함된 오브젝트만 업로드하거나 업로드하지 못하도록 제한할 수 있습니다. 
 
-업로드 정책은 정책이 설정된 이후부터 업로드되는 오브젝트에 적용됩니다. 경로가 포함된 오브젝트는 경로를 제외한 오브젝트 이름이 정책에 적용됩니다. 모든 업로드 정책 헤더는 `,` 구분자를 이용하여 여러 규칙을 입력할 수 있으며, 각각의 규칙은 URL 인코딩(퍼센트 인코딩) 되어 있어야 합니다. 구분자 `,`를 제외한 각각의 규칙은 URL 인코딩(퍼센트 인코딩)해야 합니다.
-확장자 규칙은 파일의 확장자를, 파일명 규칙은 오브젝트 이름에 포함 여부를 검사합니다. 확장자 규칙은 `.`을 제외하고 입력해야합니다. 예를 들어, txt 확장자를 입력하려면 `.txt`가 아닌 `txt`만 입력합니다.
+업로드 정책은 정책이 설정된 이후부터 업로드되는 오브젝트에 적용됩니다. 경로가 포함된 오브젝트는 경로를 제외한 오브젝트 이름이 정책에 적용됩니다. 모든 업로드 정책 헤더는 `,` 구분자를 이용하여 여러 규칙을 입력할 수 있으며, 각각의 규칙은 URL 인코딩(퍼센트 인코딩)되어 있어야 합니다. 구분자 `,`를 제외한 각각의 규칙은 URL 인코딩(퍼센트 인코딩)해야 합니다.
+확장자 규칙은 파일의 확장자를, 파일명 규칙은 오브젝트 이름에 포함 여부를 검사합니다. 확장자 규칙은 `.`을 제외하고 입력해야 합니다. 예를 들어, txt 확장자를 입력하려면 `.txt`가 아닌 `txt`만 입력합니다.
 
 업로드 정책은 화이트리스트와 블랙리스트를 동시에 사용할 수 없습니다. 두 속성을 모두 설정하도록 요청하면 실패 응답을 받게 됩니다.
 
