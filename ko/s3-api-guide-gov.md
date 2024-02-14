@@ -31,7 +31,7 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 ## S3 API 자격 증명(S3 API Credential)
 
 ### S3 API 자격 증명 발급
-Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급 받아야 합니다. 자격 증명은 API를 이용하여 발급 받을 수 있습니다.
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급 받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 이용하여 발급 받을 수 있습니다. 웹 콘솔을 이용한 자격 증명 발급은 [S3 API 자격 증명](console-guide-gov/#s3-api) 항목을 참조하세요.
 
 API를 이용하여 자격 증명을 발급 받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide-gov/#tenant-id-api-endpoint)를 참조하세요.
 
@@ -54,7 +54,7 @@ X-Auth-Token: {token-id}
 > `{api-user-id}`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
 > 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide-gov/#_2) 항목을 참조하세요.
 >
-> S3 API 자격 증명은 유효 기간이 없습니다.
+> S3 API 자격 증명은 유효 기간이 없으며, 사용자별로 프로젝트당 최대 3개까지 발급 받을 수 있습니다.
 
 <!-- 개행을 위한 주석이므로 필수로 포함되어야 합니다. -->
 
@@ -658,7 +658,7 @@ def delete_bucket(self, bucket_name):
 
 <blockquote>
 <p>[참고]
-트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 8MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.</p>
+파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 8MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 1,000개입니다.</p>
 </blockquote>
 
 ```python
@@ -825,7 +825,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 <blockquote>
 <p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.</p>
+파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 1,000개입니다.</p>
 </blockquote>
 
 ```java
@@ -1052,7 +1052,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 
 <blockquote>
 <p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이며, 파트 오브젝트의 최대 개수는 1000개입니다.</p>
+파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 1,000개입니다.</p>
 </blockquote>
 
 ```csharp
