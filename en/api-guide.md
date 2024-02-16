@@ -1062,6 +1062,10 @@ X-Container-Meta-Web-Error: {Static website error document object suffix}
 X-Container-Meta-Access-Control-Allow-Origin: {List that allows Cross-Origin Resource Sharing}
 X-Container-Rfc-Compliant-Etags: {Whether to use the RFC compliant ETag format}
 X-Container-Worm-Retention-Day: {Container's object lock cycle}
+X-Container-Object-Deny-Extension-Policy: {Blacklist for object upload policy extensions}
+X-Container-Object-Deny-Keyword-Policy: {Blacklist for object upload policy filenames}
+X-Container-Object-Allow-Extension-Policy: {Whitelist for object upload policy extensions}
+X-Container-Object-Allow-Keyword-Policy: {Whitelist for object upload policy filenames}
 ```
 
 #### Request
@@ -1084,6 +1088,12 @@ This API does not require a request body.
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | The name of the container to edit |
 | X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days <br/> Change is only possible in object lock containers |
+| X-Container-Object-Deny-Extension-Policy | Header | String | - | Blacklist for object upload policy extensions |
+| X-Container-Object-Deny-Keyword-Policy | Header | String | - | Blacklist for object upload policy filenames |
+| X-Container-Object-Allow-Extension-Policy | Header | String | - | Whitelist for object upload policy extensions |
+| X-Container-Object-Allow-Keyword-Policy | Header | String | - | Whitelist for object upload policy filenames |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
+| Container | URL | String | O | The name of the container to edit |
 <br/>
 
 ##### Set the Access Policy
@@ -1203,6 +1213,111 @@ You can change the object lock cycle of the object lock container using the `X-C
 > You cannot specify an object lock container as an archive container or replication target containger. 
 
 <br/>
+
+##### Change Upload Policy Settings
+You can set object name-based upload policies for containers using the `X-Container-Object-Deny-Extension-Policy, X-Container-Object-Deny-Keyword-Policy, X-Container-Object-Allow-Extension-Policy`, and `X-Container-Object-Allow-Keyword-Policy` headers. Upload policy settings allow you to restrict or prevent objects from being uploaded that contain certain extensions or keywords in their names. 
+
+The upload policy applies to objects that are uploaded after the policy is set. For objects that include a path, the object name without the path is applied to the policy. All upload policy headers can contain multiple rules using the `,` separator, and each rule must be URL-encoded (percent-encoded). Each rule, except for the separator `,`must be URL-encoded (percent-encoded).
+Extension rules check for file extensions, and filename rules check for inclusion in object names. Extension rules must be entered without the `.`For example, to enter the txt extension, enter `only txt`, not `.txt`.
+
+Upload policies can't use whitelists and blacklists at the same time. If you request to set both properties, you'll receive a failure response.
+
+
+<details>
+<summary>Example of whitelist setup</summary>
+
+Add a whitelist upload policy setting to the container.
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Allow-Extension-Policy: exe, jpg' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/test.jpg -i
+
+HTTP/1.1 409 Conflict
+Content-Length: 72
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: txddeb34d60f7f4b43a8b2a-0065b8b134
+X-Openstack-Request-Id: txddeb34d60f7f4b43a8b2a-0065b8b134
+Date: Tue, 30 Jan 2024 08:20:04 GMT
+
+Only the objects with the following extensions can be uploaded: exe, jpg
+```
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Allow-Keyword-Policy: example' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/upload.txt -i
+
+HTTP/1.1 409 Conflict
+Content-Length: 60
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx24209f2af02b4de0a4921-0065b8b192
+X-Openstack-Request-Id: tx24209f2af02b4de0a4921-0065b8b192
+Date: Tue, 30 Jan 2024 08:21:38 GMT
+
+The object name must contain the following keywords: example
+```
+
+</details>
+
+
+<details>
+<summary>Example of blacklist setup</summary>
+
+Add a blacklist upload policy setting to the container.
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Deny-Extension-Policy: exe, jpg' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/test.jpg -i
+
+HTTP/1.1 409 Conflict
+Content-Length: 70
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx4a0f746118e9453ca8688-0065b8b038
+X-Openstack-Request-Id: tx4a0f746118e9453ca8688-0065b8b038
+Date: Tue, 30 Jan 2024 08:15:52 GMT
+
+The objects with the following extensions cannot be uploaded: exe, jpg
+```
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Deny-Keyword-Policy: example' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/upload_example.txt -i
+
+HTTP/1.1 409 Conflict
+Content-Length: 64
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx60aaa14186d84cca88a8e-0065b8b098
+X-Openstack-Request-Id: tx60aaa14186d84cca88a8e-0065b8b098
+Date: Tue, 30 Jan 2024 08:17:28 GMT
+
+The object name must not contain the following keywords: example
+```
+
+</details>
+
 
 ##### Unset a Container
 If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Lifecycle: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
