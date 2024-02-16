@@ -419,7 +419,7 @@ You can use the console or API to specify whitelists and blacklists to restrict 
 
 > [Caution]
 > IP-based access policies are used to control access from public IPs. Registering private IPs to whitelist can result in an inaccessible container.
-If the container becomes inaccessible due to incorrect settings, you can no longer change the policy. If you encounter this issue, please contact Customer Center.
+> If the container becomes inaccessible due to incorrect settings, you can no longer change the policy. If you encounter this issue, please contact Customer Center.
 
 
 ### Console
