@@ -1062,10 +1062,10 @@ X-Container-Meta-Web-Error: {Static website error document object suffix}
 X-Container-Meta-Access-Control-Allow-Origin: {List that allows Cross-Origin Resource Sharing}
 X-Container-Rfc-Compliant-Etags: {Whether to use the RFC compliant ETag format}
 X-Container-Worm-Retention-Day: {Container's object lock cycle}
-X-Container-Object-Deny-Extension-Policy: {Blacklist for object upload policy extensions}
-X-Container-Object-Deny-Keyword-Policy: {Blacklist for object upload policy filenames}
-X-Container-Object-Allow-Extension-Policy: {Whitelist for object upload policy extensions}
-X-Container-Object-Allow-Keyword-Policy: {Whitelist for object upload policy filenames}
+X-Container-Object-Deny-Extension-Policy: {Extension blacklists of object upload policy}
+X-Container-Object-Deny-Keyword-Policy: {Filename blacklists of object upload policy}
+X-Container-Object-Allow-Extension-Policy: {Extension whitelists of object upload policy}
+X-Container-Object-Allow-Keyword-Policy: {Filename whitelists of object upload policy}
 ```
 
 #### Request
@@ -1088,10 +1088,10 @@ This API does not require a request body.
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | The name of the container to edit |
 | X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days <br/> Change is only possible in object lock containers |
-| X-Container-Object-Deny-Extension-Policy | Header | String | - | Blacklist for object upload policy extensions |
-| X-Container-Object-Deny-Keyword-Policy | Header | String | - | Blacklist for object upload policy filenames |
-| X-Container-Object-Allow-Extension-Policy | Header | String | - | Whitelist for object upload policy extensions |
-| X-Container-Object-Allow-Keyword-Policy | Header | String | - | Whitelist for object upload policy filenames |
+| X-Container-Object-Deny-Extension-Policy | Header | String | - | Extension blacklists of object upload policy |
+| X-Container-Object-Deny-Keyword-Policy | Header | String | - | Filename blacklists of object upload policy |
+| X-Container-Object-Allow-Extension-Policy | Header | String | - | Extension whitelists of object upload policy |
+| X-Container-Object-Allow-Keyword-Policy | Header | String | - | Filename whitelists of object upload policy |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | The name of the container to edit |
 <br/>
@@ -1217,7 +1217,7 @@ You can change the object lock cycle of the object lock container using the `X-C
 ##### Change Upload Policy Settings
 You can set object name-based upload policies for containers using the `X-Container-Object-Deny-Extension-Policy, X-Container-Object-Deny-Keyword-Policy, X-Container-Object-Allow-Extension-Policy`, and `X-Container-Object-Allow-Keyword-Policy` headers. Upload policy settings allow you to restrict or prevent objects from being uploaded that contain certain extensions or keywords in their names. 
 
-The upload policy applies to objects that are uploaded after the policy is set. For objects that include a path, the object name without the path is applied to the policy. All upload policy headers can contain multiple rules using the `,` separator, and each rule must be URL-encoded (percent-encoded). Each rule, except for the separator `,`must be URL-encoded (percent-encoded).
+The upload policy applies to objects that are uploaded after the policy is set. For objects that include a path, the object name without the path is applied to the policy. All upload policy headers can contain multiple rules using the `,` separator. Each rule, except for the separator `,` must be URL-encoded (percent-encoded).
 Extension rules check for file extensions, and filename rules check for inclusion in object names. Extension rules must be entered without the `.`For example, to enter the txt extension, enter `only txt`, not `.txt`.
 
 Upload policies can't use whitelists and blacklists at the same time. If you request to set both properties, you'll receive a failure response.

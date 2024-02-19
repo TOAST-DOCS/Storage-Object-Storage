@@ -326,7 +326,7 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 <br/>
 
 ### Allow read/write to specific projects or specific users
-If you set an role-based access policy element in the form of `<tenant-id>:<api-user-uuid>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API User ID grants access to all projects or all users. A valid authentication token is required when making an access request.
+If you set an role-based access policy element in the form of `<tenant-id>:<api-user-id>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API User ID grants access to all projects or all users. A valid authentication token is required when making an access request.
 
 > [Note]
 > The read permission granted by the ACL policy that requires an authentication token includes the object list query permission.

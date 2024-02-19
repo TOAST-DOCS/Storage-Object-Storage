@@ -67,7 +67,6 @@ If you delete the symmetric key configured in an encryption container from Secur
 Deletes all objects inside the selected container. 
 
 > [Note]
-> If you empty a container with a version control policy set, all versioned objects are deleted.
 > Objects whose object lock expiration date has not passed are not deleted.
 > For multipart objects inside the selected container, only the manifest object is deleted. Segment objects located in other containers are not deleted.
 
@@ -195,10 +194,10 @@ Set an upload policy based on object names in the container. Upload policy setti
 
 Upload policies can set up `whitelist` or `blacklist`, but not both at the same time. You can set the extension of files to be uploaded, or keywords to be included in the filename. However, for objects that include a path, the policy reflects the object name without the path. The upload policy is applied to newly uploaded objects from the time it is set. 
 
-If you set `exe` and `jpg` as whitelist, only objects with the extensions can be uploaded. Adding the filename `example`will allow only objects with both the set filename and extension to be uploaded, such as `exe_example.exe`, `iamge_example.jpg`.
+If you set `exe` and `jpg` as whitelist, only objects with the extensions can be uploaded. Adding the filename `example` will allow only objects with both the set filename and extension to be uploaded, such as `exe_example.exe`, `iamge_example.jpg`.
 
 
-For blacklist, setting `exe`, `jpg`as blacklist will prevent all objects with `.exe`, `.jpg` extensions from being uploaded. Setting the additional filename `exmaple`will prevent both files with restricted extensions, such as `test.exe`, `image.jpg`, and files with restricted keywords, such as `text_example.txt`, from being uploaded.
+For blacklist, setting `exe`, `jpg`as blacklist will prevent all objects with `.exe`, `.jpg` extensions from being uploaded. Setting the additional filename `exmaple` will prevent both files with restricted extensions, such as `test.exe`, `image.jpg`, and files with restricted keywords, such as `text_example.txt`, from being uploaded.
 <br/>
 
 #### Life Cycle and Version Management
