@@ -1060,10 +1060,10 @@ X-Container-Meta-Web-Error: {정적 웹사이트 오류 문서 오브젝트 접�
 X-Container-Meta-Access-Control-Allow-Origin: {교차 출처 리소스 공유 허용 목록}
 X-Container-Rfc-Compliant-Etags: {RFC를 준수하는 ETag 형식 사용 여부}
 X-Container-Worm-Retention-Day: {컨테이너의 객체 잠금 주기}
-X-Container-Object-Deny-Extension-Policy: {오브젝트 업로드 정책의 확장자 블랙리스트 목록}
-X-Container-Object-Deny-Keyword-Policy: {오브젝트 업로드 정책의 파일명 블랙리스트 목록}
-X-Container-Object-Allow-Extension-Policy: {오브젝트 업로드 정책의 확장자 화이트리스트 목록}
-X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파일명 화이트리스트 목록}
+X-Container-Object-Deny-Extension-Policy: {오브젝트 업로드 정책의 확장자 블랙리스트}
+X-Container-Object-Deny-Keyword-Policy: {오브젝트 업로드 정책의 파일명 블랙리스트}
+X-Container-Object-Allow-Extension-Policy: {오브젝트 업로드 정책의 확장자 화이트리스트}
+X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파일명 화이트리스트}
 ```
 
 #### 요청
@@ -1082,10 +1082,10 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. |
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFC를 준수하는 ETag 형식 사용 여부를 설정, true 또는 false |
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정<br/>객체 잠금 컨테이너에서만 변경 가능 |
-| X-Container-Object-Deny-Extension-Policy | Header | String | - | 오브젝트 업로드 정책의 확장자 블랙리스트 목록 |
-| X-Container-Object-Deny-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 블랙리스트 목록 |
-| X-Container-Object-Allow-Extension-Policy | Header | String | - | 오브젝트 업로드 정책의 확장자 화이트리스트 목록 |
-| X-Container-Object-Allow-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 화이트리스트 목록 |
+| X-Container-Object-Deny-Extension-Policy | Header | String | - | 오브젝트 업로드 정책의 확장자 블랙리스트 |
+| X-Container-Object-Deny-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 블랙리스트 |
+| X-Container-Object-Allow-Extension-Policy | Header | String | - | 오브젝트 업로드 정책의 확장자 화이트리스트 |
+| X-Container-Object-Allow-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 화이트리스트 |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 <br/>
