@@ -1062,10 +1062,10 @@ X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクト
 X-Container-Meta-Access-Control-Allow-Origin: {オリジン間リソース共有許可リスト}
 X-Container-Rfc-Compliant-Etags: {RFCを遵守するETag形式を使用するかどうか}
 X-Container-Worm-Retention-Day: {コンテナのオブジェクトロック周期}
-X-Container-Object-Deny-Extension-Policy: {オブジェクトアップロードポリシーの拡張子ブラックリストリスト}
-X-Container-Object-Deny-Keyword-Policy: {オブジェクトアップロードポリシーのファイル名ブラックリストリスト}
-X-Container-Object-Allow-Extension-Policy: {オブジェクトアップロードポリシーの拡張子ホワイトリストリスト}
-X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロードポリシーのファイル名ホワイトリストリスト}
+X-Container-Object-Deny-Extension-Policy: {オブジェクトアップロードポリシーの拡張子ブラックリスト}
+X-Container-Object-Deny-Keyword-Policy: {オブジェクトアップロードポリシーのファイル名ブラックリスト}
+X-Container-Object-Allow-Extension-Policy: {オブジェクトアップロードポリシーの拡張子ホワイトリスト}
+X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロードポリシーのファイル名ホワイトリスト}
 ```
 
 #### リクエスト
@@ -1086,10 +1086,10 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS許可ホストリスト。 '*'ですべてのホストを許可するか、スペースで区切られたホストリストを入力できます。 | 
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFCを遵守するETag形式を使用するかどうかの設定。trueまたはfalse |
 | X-Container-Worm-Retention-Day | Header | Integer | - | コンテナの基本オブジェクトロック周期を日単位で設定<br/>オブジェクトロックコンテナでのみ変更可能 |
-| X-Container-Object-Deny-Extension-Policy | Header | String | - | オブジェクトアップロードポリシーの拡張子ブラックリストリスト |
-| X-Container-Object-Deny-Keyword-Policy | Header | String | - | オブジェクトアップロードポリシーのファイル名ブラックリストリスト |
-| X-Container-Object-Allow-Extension-Policy | Header | String | - | オブジェクトアップロードポリシーの拡張子ホワイトリストリスト |
-| X-Container-Object-Allow-Keyword-Policy | Header | String | - | オブジェクトアップロードポリシーのファイル名ホワイトリストリスト |
+| X-Container-Object-Deny-Extension-Policy | Header | String | - | オブジェクトアップロードポリシーの拡張子ブラックリスト |
+| X-Container-Object-Deny-Keyword-Policy | Header | String | - | オブジェクトアップロードポリシーのファイル名ブラックリスト |
+| X-Container-Object-Allow-Extension-Policy | Header | String | - | オブジェクトアップロードポリシーの拡張子ホワイトリスト |
+| X-Container-Object-Allow-Keyword-Policy | Header | String | - | オブジェクトアップロードポリシーのファイル名ホワイトリスト |
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 修正するコンテナ名 |
 <br/>
