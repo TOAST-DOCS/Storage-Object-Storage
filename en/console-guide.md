@@ -67,7 +67,7 @@ If you delete the symmetric key configured in an encryption container from Secur
 Deletes all objects inside the selected container. 
 
 > [Note]
-> Objects whose object lock expiration date has not passed are not deleted.
+> Objects whose lock expiration date has not passed are not deleted.
 > For multipart objects inside the selected container, only the manifest object is deleted. Segment objects located in other containers are not deleted.
 
 > [Caution]
