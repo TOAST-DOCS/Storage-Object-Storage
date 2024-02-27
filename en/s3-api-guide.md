@@ -832,7 +832,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 <blockquote>
 <p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and the maximum number of part objects is 1000.</p>
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can specify an object size as small as 5 MiB. The maximum number of part objects is 1000.</p>
 </blockquote>
 
 ```java
@@ -885,7 +885,7 @@ public String downloadObject(
 
 </details>
 
-</details>
+<details>
 <summary>Delete Object</summary>
 
 ```java
