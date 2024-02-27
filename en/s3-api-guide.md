@@ -1059,7 +1059,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 
 <blockquote>
 <p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can set the object size as small as 5Mib. The maximum number of part objects is 1000.</p>
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can set the object size as small as 5MiB. The maximum number of part objects is 1000.</p>
 </blockquote>
 
 ```csharp
