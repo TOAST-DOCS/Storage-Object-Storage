@@ -63,6 +63,17 @@ The policies for encryption container are as follows.
 > [Caution]
 If you delete the symmetric key configured in an encryption container from Secure Key Manager, the encrypted object cannot be decrypted. You must carefully manage the symmetric key not to delete it accidentally.
 
+### Empty a Container
+Deletes all objects inside the selected container. 
+
+> [Note]
+> Objects whose lock expiration date has not passed are not deleted.
+> For multipart objects inside the selected container, only the manifest object is deleted. Segment objects located in other containers are not deleted.
+
+> [Caution]
+> If you are using the replication setting, objects in the target container might also be deleted.
+> If you upload objects to a container that is undergoing a container emptying operation, they might be deleted.
+
 ### Delete Container
 Deletes selected containers. Check if the containers are empty before deleting them. If any objects are left inside a container, you cannot delete the relevant container.
 
@@ -93,7 +104,7 @@ Sets the basic access policy and manages role-based access policies for each ten
     <td>Anyone can access objects within a container through a public URL.</td>
   </tr>
   <tr>
-    <td rowspan="4">ACL settings</td>
+    <td rowspan="4">Role-Based Access Policy Settings</td>
     <td></td>
     <td>Selects whether to use an access policy.</td>
   </tr>
@@ -176,6 +187,17 @@ The name for an error document of a static website has the form of `{error code}
 
 To call the Object Storage API directly from the browser, you need to set Cross-Origin Resource Sharing (CORS). You can register the source URLs to allow by clicking the Change button of the cross-origin resource sharing item. The URL must include the protocols (`https://` or `http://`). You can allow all source URLs by entering `*`.
 
+<br/>
+
+##### Change Upload Policy Settings
+Set an upload policy based on object names in the container. Upload policy settings allow you to restrict or prevent uploads of objects with certain extensions or keywords in their names.
+
+Upload policies can set up `whitelist` or `blacklist`, but not both at the same time. You can set the extension of files to be uploaded, or keywords to be included in the filename. However, for objects that include a path, the policy reflects the object name without the path. The upload policy is applied to newly uploaded objects from the time it is set. 
+
+If you set `exe` and `jpg` as whitelist, only objects with the extensions can be uploaded. Adding the filename `example` will allow only objects with both the set filename and extension to be uploaded, such as `exe_example.exe`, `iamge_example.jpg`.
+
+
+For blacklist, setting `exe`, `jpg`as blacklist will prevent all objects with `.exe`, `.jpg` extensions from being uploaded. Setting the additional filename `exmaple` will prevent both files with restricted extensions, such as `test.exe`, `image.jpg`, and files with restricted keywords, such as `text_example.txt`, from being uploaded.
 <br/>
 
 #### Life Cycle and Version Management
@@ -298,7 +320,9 @@ Create folders. Folders are virtual units to bundle objects within a container i
 > Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
 
 ### Delete Folder
-Delete folders. Check if the folders are empty before deleting them. If any objects are left inside a folder, you cannot delete the relevant folder.
+Deletes a folder. Deletes all objects in the folder and the folder object.
+For multipart objects inside a folder, only the manifest object is deleted; segment objects that are not included in the selection are not deleted.
+
 
 ### Upload Object
 All objects must be uploaded to containers. One object cannot be larger than 5GB.
@@ -344,7 +368,10 @@ Copy objects to create new objects. Create an object with a new name in the cont
 > Multipart objects larger than 5 GB cannot be copied. 
 
 ### Delete Object
-Delete selected objects. When a multipart object is deleted, the segment object is also deleted.
+Deletes the selected objects. You can select and delete multiple objects at the same time. 
+
+> [Note]
+> When you delete a multipart object, only the selected manifest object is deleted. Unselected segment objects are not deleted.
 
 ### Create Signed URL
 Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies.

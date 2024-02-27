@@ -1,5 +1,14 @@
 ## Storage > Object Storage > 릴리스 노트
 
+### 2024. 03. 05.
+#### 기능 추가
+* [API] 오브젝트 업로드 정책 설정 기능 추가
+* [Console] 오브젝트 업로드 정책 설정 기능 추가
+* [Console] 컨테이너 비우기 기능 추가
+
+#### 기능 변경
+* [Console] 오브젝트 삭제 기능 개선
+
 ### 2023. 11. 30.
 #### 기능 추가
 * [API] Amazon S3 호환 API, AWS Signature V4 Chunked Upload 지원
