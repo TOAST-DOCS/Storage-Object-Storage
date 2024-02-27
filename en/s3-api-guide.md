@@ -665,7 +665,7 @@ def delete_bucket(self, bucket_name):
 
 <blockquote>
 <p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 8MiB, and you can specify an object size as small as 5 MiB. The maximum number of part objects is 1000.</p>
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 8MiB, and you can specify an object size as small as 5MiB. The maximum number of part objects is 1000.</p>
 </blockquote>
 
 ```python
@@ -832,7 +832,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 <blockquote>
 <p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can specify an object size as small as 5 MiB. The maximum number of part objects is 1000.</p>
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can specify an object size as small as 5MiB. The maximum number of part objects is 1000.</p>
 </blockquote>
 
 ```java
