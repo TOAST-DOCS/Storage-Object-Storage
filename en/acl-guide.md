@@ -15,12 +15,12 @@ In the console, you can select a container access policy from the [Create Contai
 <br/>
 
 ### API
-You can use the API to set access policies for different situations by entering ACL policy elements in the `X-Container-Read` and `X-Container-Write` properties of a container.
+You can use the API to set access policies for different situations by entering role-based access policy elements in the `X-Container-Read` and `X-Container-Write` properties of a container.
 <br/>
 
-#### ACL Policy Elements
+#### Role-based access policy elements
 
-The ACL policy elements that can be set are as follows. All policy elements can be combined by separating them with commas (`,`).
+The role-based access policy elements that can be set are as follows. All policy elements can be combined by separating them with commas (`,`).
 
 | Policy Element | Description |
 | --- | --- |
@@ -40,13 +40,13 @@ The ACL policy elements that can be set are as follows. All policy elements can 
 <br/>
 
 ### Allow read/write only to users in the project to which the container belongs
-This is the default access policy used when no ACL policy elements are set. A valid authentication token is required to access the container using the API.
+This is the default access policy used when no role-based access policy elements are set. A valid authentication token is required to access the container using the API.
 If you delete all the `X-Container-Read` and `X-Container-Write` property values of a container, it becomes a `PRIVATE` container that allows access only to users in the project to which the container belongs.
 
 <br/>
 
 <details>
-<summary>Example of removing all ACL policy elements</summary>
+<summary>Example of removing all role-based access policy elements</summary>
 
 ```
 $ curl -i -X POST \
@@ -137,10 +137,10 @@ $ curl -X GET \
 
 #### Allow/deny read for requests from a specific HTTP referer
 HTTP referer is the address information of a web page that is requested through a hyperlink. It is included in the request header.
-If you set an ACL policy element in the form of `.r:<referrer>` or `.r:-<referrer>` in the `X-Container-Read` property of the container, you can allow or block access requests from specific referers. When setting the HTTP referer with an ACL policy element, you must enter the domain name without the protocol and sub-path.
+If you set an role-based access policy element in the form of `.r:<referrer>` or `.r:-<referrer>` in the `X-Container-Read` property of the container, you can allow or block access requests from specific referers. When setting the HTTP referer with an role-based access policy element, you must enter the domain name without the protocol and sub-path.
 
 > [Caution]
-The HTTP referer can be changed at any time by the user through header tampering. Access policies using the HTTP referer are not recommended because they are vulnerable to security attacks.
+> The HTTP referer can be changed at any time by the user through header tampering. Access policies using the HTTP referer are not recommended because they are vulnerable to security attacks.
 
 <details>
 <summary>Example of allowing read requests from specific HTTP referer</summary>
@@ -326,7 +326,7 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 <br/>
 
 ### Allow read/write to specific projects or specific users
-If you set an ACL policy element in the form of `<tenant-id>:<api-user-id>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API user ID grants access to all projects or all users. A valid authentication token is required when making an access request.
+If you set an role-based access policy element in the form of `<tenant-id>:<api-user-id>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API User ID grants access to all projects or all users. A valid authentication token is required when making an access request.
 
 > [Note]
 > The read permission granted by the ACL policy that requires an authentication token includes the object list query permission.
@@ -406,7 +406,7 @@ A valid authentication token is required when making an access request to an obj
 <br/>
 
 #### Delete Access Policies
-By entering an empty header, you can delete all set ACL policy elements. A container with no ACL policy element becomes a **PRIVATE** container, accessible only by authorized users. See `Allow read/write only to users in the project to which the container belongs`.
+By entering an empty header, you can delete all set role-based access policy elements. A container with no role-based access policy element becomes a **PRIVATE** container, accessible only by authorized users. See `Allow read/write only to users in the project to which the container belongs`.
 
 
 ### References
@@ -418,7 +418,8 @@ You can use the console or API to specify whitelists and blacklists to restrict 
 
 
 > [Caution]
-> Incorrect settings can result in containers without write access. In this case, you cannot change the settings. If this causes any problem, please contact the Customer Center.
+> IP-based access policies are used to control access from public IPs. Registering private IPs to whitelist can result in an inaccessible container.
+> If the container becomes inaccessible due to incorrect settings, you can no longer change the policy. If you encounter this issue, please contact Customer Center.
 
 
 ### Console
@@ -437,10 +438,10 @@ Denies requests from the specified IP or network band. All other requests are pe
 
 ### API
 
-You can use the API to enable IP-based ACLs by entering ACL policy elements in the container's `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties.`X-Container-Ip-Acl-Allowed-List` indicates whitelist, `X-Container-Ip-Acl-Denied-List` indicates blacklist.
+You can use the API to enable IP-based ACLs by entering IP-based access policy elements in the container's `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties.`X-Container-Ip-Acl-Allowed-List` indicates whitelist, `X-Container-Ip-Acl-Denied-List` indicates blacklist.
 <br>
 
-A policy element consists of access permission and an IP or network band, and you can enter multiple values separated by commas (`, `). The access permissions are shown in the table below.
+An IP-based access policy element consists of access permission and an IP or network band, and you can enter multiple values separated by commas (`, `). The access permissions are shown in the table below.
 
 | Access Permission | Description |
 | --- | --- |

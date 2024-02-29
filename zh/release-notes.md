@@ -1,5 +1,14 @@
 ## Storage > Object Storage > Release Notes
 
+### February 27, 2024
+#### Added Features
+* [API] Added the feature to set object upload policies
+* [Console] Added the feature to set object upload policy
+* [Console] Added the feature to empty containers
+
+#### Feature Updates
+* [Console] Improved the feature to delete objects
+
 ### November 28, 2023
 #### Added Features
 * [API] Added support for AWS Signature V4 Chunked Upload to Amazon S3 compatible API

@@ -1062,6 +1062,10 @@ X-Container-Meta-Web-Error: {静的Webサイトエラー文書オブジェクト
 X-Container-Meta-Access-Control-Allow-Origin: {オリジン間リソース共有許可リスト}
 X-Container-Rfc-Compliant-Etags: {RFCを遵守するETag形式を使用するかどうか}
 X-Container-Worm-Retention-Day: {コンテナのオブジェクトロック周期}
+X-Container-Object-Deny-Extension-Policy: {オブジェクトアップロードポリシーの拡張子ブラックリスト}
+X-Container-Object-Deny-Keyword-Policy: {オブジェクトアップロードポリシーのファイル名ブラックリスト}
+X-Container-Object-Allow-Extension-Policy: {オブジェクトアップロードポリシーの拡張子ホワイトリスト}
+X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロードポリシーのファイル名ホワイトリスト}
 ```
 
 #### リクエスト
@@ -1082,6 +1086,10 @@ X-Container-Worm-Retention-Day: {コンテナのオブジェクトロック周�
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS許可ホストリスト。 '*'ですべてのホストを許可するか、スペースで区切られたホストリストを入力できます。 | 
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFCを遵守するETag形式を使用するかどうかの設定。trueまたはfalse |
 | X-Container-Worm-Retention-Day | Header | Integer | - | コンテナの基本オブジェクトロック周期を日単位で設定<br/>オブジェクトロックコンテナでのみ変更可能 |
+| X-Container-Object-Deny-Extension-Policy | Header | String | - | オブジェクトアップロードポリシーの拡張子ブラックリスト |
+| X-Container-Object-Deny-Keyword-Policy | Header | String | - | オブジェクトアップロードポリシーのファイル名ブラックリスト |
+| X-Container-Object-Allow-Extension-Policy | Header | String | - | オブジェクトアップロードポリシーの拡張子ホワイトリスト |
+| X-Container-Object-Allow-Keyword-Policy | Header | String | - | オブジェクトアップロードポリシーのファイル名ホワイトリスト |
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 修正するコンテナ名 |
 <br/>
@@ -1201,6 +1209,98 @@ Status: 0
 > 一般コンテナをオブジェクトロックコンテナに変更したり、オブジェクトロックコンテナを一般コンテナに変更できません。
 > オブジェクトロックコンテナはアーカイブコンテナまたは複製対象コンテナに指定できません。
 <br/>
+
+##### アップロードポリシー設定変更
+`X-Container-Object-Deny-Extension-Policy`, `X-Container-Object-Deny-Keyword-Policy`, `X-Container-Object-Allow-Extension-Policy`, `X-Container-Object-Allow-Keyword-Policy`ヘッダを使用して、コンテナにオブジェクト名ベースのアップロードポリシーを設定できます。アップロードポリシーを設定することで、名前に特定の拡張子やキーワードを含むオブジェクトのアップロードを許可したり、アップロードできないように制限できます。
+
+アップロードポリシーは、ポリシーが設定された後からアップロードされるオブジェクトに適用されます。パスを含むオブジェクトは、パスを除いたオブジェクト名がポリシーに適用されます。すべてのアップロードポリシーヘッダは `,` 区切り文字を利用して複数のルールを入力することができ、区切り文字 `,` を除いたそれぞれのルールはURLエンコーディング(パーセンテージエンコーディング)する必要があります。
+拡張子ルールはファイルの拡張子を、ファイル名ルールはオブジェクト名に含まれているかどうかをチェックします。拡張子ルールは `.` を除いて入力する必要があります。 例えば、txt拡張子を入力するには `.txt` ではなく `txt` を入力します。
+
+アップロードポリシーは、ホワイトリストとブラックリストを同時に使用することはできません。 両方の属性を設定するように要求すると、失敗レスポンスを受け取ります。
+
+
+<details>
+<summary>ホワイトリスト設定例の確認</summary>
+
+コンテナにホワイトリストアップロードポリシー設定を追加します。
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Allow-Extension-Policy: exe, jpg' \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container/test.jpg -i
+HTTP/1.1 409 Conflict
+Content-Length: 72
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: txddeb34d60f7f4b43a8b2a-0065b8b134
+X-Openstack-Request-Id: txddeb34d60f7f4b43a8b2a-0065b8b134
+Date: Tue, 30 Jan 2024 08:20:04 GMT
+Only the objects with the following extensions can be uploaded: exe, jpg
+```
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Allow-Keyword-Policy: example' \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container/upload.txt -i
+HTTP/1.1 409 Conflict
+Content-Length: 60
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx24209f2af02b4de0a4921-0065b8b192
+X-Openstack-Request-Id: tx24209f2af02b4de0a4921-0065b8b192
+Date: Tue, 30 Jan 2024 08:21:38 GMT
+The object name must contain the following keywords: example
+```
+
+</details>
+
+
+<details>
+<summary>ブラックリスト設定例の確認</summary>
+
+コンテナにブラックリストアップロードポリシー設定を追加します。
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Deny-Extension-Policy: exe, jpg' \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container/test.jpg -i
+HTTP/1.1 409 Conflict
+Content-Length: 70
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx4a0f746118e9453ca8688-0065b8b038
+X-Openstack-Request-Id: tx4a0f746118e9453ca8688-0065b8b038
+Date: Tue, 30 Jan 2024 08:15:52 GMT
+The objects with the following extensions cannot be uploaded: exe, jpg
+```
+
+```
+$ curl -X POST \
+-H 'X-Auth-Token: ****' \
+-H 'X-Container-Object-Deny-Keyword-Policy: example' \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
+$ curl -X PUT \
+-H 'X-Auth-Token: ****' \
+https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container/upload_example.txt -i
+HTTP/1.1 409 Conflict
+Content-Length: 64
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx60aaa14186d84cca88a8e-0065b8b098
+X-Openstack-Request-Id: tx60aaa14186d84cca88a8e-0065b8b098
+Date: Tue, 30 Jan 2024 08:17:28 GMT
+The object name must not contain the following keywords: example
+```
+
+</details>
 
 ##### コンテナ設定解除
 値がないヘッダを使用すると設定が解除されます。例えばオブジェクトライフサイクルが3日に設定されている時、`'X-Container-Object-Lifecycle: '`を使用してコンテナ修正リクエストを行うと、オブジェクトライフサイクル設定が解除され、その後にコンテナに保存されるオブジェクトは自動的にライフサイクルが設定されません。
