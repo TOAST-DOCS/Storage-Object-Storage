@@ -1071,6 +1071,7 @@ X-Container-Write: {컨테이너 쓰기에 대한 역할 기반 접근 규칙}
 X-Container-Ip-Acl-Allowed-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
 X-Container-Ip-Acl-Denied-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
 X-Container-Object-Lifecycle: {컨테이너의 오브젝트 수명 주기}
+X-Container-Object-Transfer-To: {오브젝트의 수명 주기가 만료되었을 때 이동할 컨테이너}
 X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
 X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
 X-Container-Meta-Web-Index: {정적 웹사이트 인덱스 문서 오브젝트}
@@ -1095,6 +1096,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Object-Lifecycle | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
+| X-Container-Object-Transfer-To | Header | String | - | 오브젝트의 수명 주기가 만료되었을 때 이동할 컨테이너 |
 | X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
 | X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
 | X-Container-Meta-Web-Index | Header | String | - | 정적 웹사이트 인덱스 문서 오브젝트 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
@@ -1117,6 +1119,11 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 ##### 오브젝트 수명 주기 설정
 `X-Container-Object-Lifecycle` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
+`X-Container-Object-Transfer-To` 헤더를 사용하면 수명 주기가 만료된 오브젝트를 지정된 컨테이너로 옮겨 보관 할 수 있습니다. 컨테이너가 지정되어 있지 않으면 만료된 오브젝트는 삭제됩니다.
+
+> [참고]
+> Standard 클래스 컨테이너에 저장된 오브젝트를 수명 주기에 따라 Economy 클래스 컨테이너로 옮겨 장기 보관에 따른 비용을 절감할 수 있습니다.
+
 <br/>
 
 ##### 버전 관리 정책 설정
