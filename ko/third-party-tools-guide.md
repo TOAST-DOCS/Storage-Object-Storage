@@ -261,3 +261,6 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 
 ## 참고 사이트
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
+Terraform - [https://www.terraform.io/](https://www.terraform.io/)
+Terraform Registry - [https://registry.terraform.io/][https://registry.terraform.io/]
+
