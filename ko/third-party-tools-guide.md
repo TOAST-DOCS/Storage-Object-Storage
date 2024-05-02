@@ -112,6 +112,28 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 
 Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하고, 효율적으로 인프라의 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > Compute > Instance > 테라폼 사용 가이드](https://docs.nhncloud.com/ko/Compute/Instance/ko/terraform-guide/)를 참고하십시오.
 
+### 리소스 의존성
+
+일반적으로 각 리소스는 독립적이지만 다른 특정 리소스에 의존성을 가질 수도 있습니다. 리소스의 레이블을 통해 다른 리소스의 정보를 참조하면 Terraform은 자동으로 의존성을 설정합니다.
+예를 들어, `conatiner1` 컨테이너에 포함되는 `object1` 오브젝트는 다음과 같이 표현될 수 있습니다.
+
+```hcl
+# 컨테이너 리소스
+resource "nhncloud_objectstorage_container_v1" "container_1" {
+  name = "container1"
+}
+
+# 오브젝트 리소스
+resource "nhncloud_objectstorage_object_v1" "object_1" {
+  container_name = nhncloud_objectstorage_container_v1.container_1.name
+  name           = "object1"
+  source       = "/tmp/dummy"
+}
+```
+
+> [참고]
+> 명시적인 리소스 의존성 지정 방법은 [Terraform의 Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) 문서를 참고하세요.
+
 ### Resources - Object Storage
 
 #### 컨테이너 생성
@@ -158,7 +180,7 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 # 오브젝트 생성
 resource "nhncloud_objectstorage_object_v1" "object_1" {
   region         = "KR1"
-  container_name = "container_1"
+  container_name = nhncloud_objectstorage_container_v1.container_1.name
   name           = "test/test1.json"
   content_type = "application/json"
   content      = <<JSON
@@ -171,7 +193,7 @@ JSON
 # 파일 업로드
 resource "nhncloud_objectstorage_object_v1" "object_2" {
   region         = "KR2"
-  container_name = "container_1"
+  container_name = nhncloud_objectstorage_container_v1.container_1.name
   name           = "test/test2.json"
   source       = "./test2.txt"
 }
