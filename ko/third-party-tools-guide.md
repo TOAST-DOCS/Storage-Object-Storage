@@ -106,7 +106,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 로컬과 오브젝트 스토리지를 비교하여 변경되거나 누락된 파일 또는 오브젝트를 업로드하거나 다운로드합니다.
 
 > [참고]
-> 동기화에 대한 보다 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하세요.
+> 동기화에 대한 보다 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하십시오.
 
 ## Terraform
 
@@ -132,7 +132,7 @@ resource "nhncloud_objectstorage_object_v1" "object_1" {
 ```
 
 > [참고]
-> 명시적인 리소스 의존성 지정 방법은 [Terraform의 Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) 문서를 참고하세요.
+> 명시적인 리소스 의존성 지정 방법은 [Terraform의 Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) 문서를 참고하십시오.
 
 ### Resources - Object Storage
 
@@ -225,7 +225,7 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 			<td>source</td>
 			<td>String</td>
 			<td rowspan=4>O</td>
-			<td> 업로드할 로컬 파일시스템 상의 파일 경로<br><code>content</code>, <code>copy_from</code> 또는 <code>object_manifest</code>와 함께 사용할 수 없습니다.<br><code>source</code>, <code>content</code>, <code>copy_from</code> 또는 <code>object_manifest</code> 중 하나를 반드시 지정해야 합니다.</td>
+			<td> 업로드할 로컬 파일시스템상의 파일 경로<br><code>content</code>, <code>copy_from</code> 또는 <code>object_manifest</code>와 함께 사용할 수 없습니다.<br><code>source</code>, <code>content</code>, <code>copy_from</code> 또는 <code>object_manifest</code> 중 하나를 반드시 지정해야 합니다.</td>
 		</tr>
 		<tr>
 			<td>content</td>
@@ -276,7 +276,7 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 			<td>detect_content_type</td>
 			<td>Boolean</td>
 			<td></td>
-			<td>컨텐츠 타입 추론 여부</br>설정 시 <code>content_type</code>이 무시됩니다.</td>
+			<td>콘텐츠 타입 추론 여부</br>설정 시 <code>content_type</code>이 무시됩니다.</td>
 		</tr>
 	</tbody>
 </table>

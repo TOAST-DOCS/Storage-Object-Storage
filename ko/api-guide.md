@@ -694,7 +694,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 생성할 컨테이너 이름 |
-| X-Storage-Policy | Header | String | - | 컨테이너의 스토리지 클래스<br/><b>Standard</b>: 자주 접근하는 데이터를 위한 기본 클래스<br/><b>Economy</b>: 접근 빈도가 낮은 데이터를 장기 보관하는데 적합한 클래스 |
+| X-Storage-Policy | Header | String | - | 컨테이너의 스토리지 클래스<br/><b>Standard</b>: 자주 접근하는 데이터를 위한 기본 클래스<br/><b>Economy</b>: 접근 빈도가 낮은 데이터를 장기 보관하는 데 적합한 클래스 |
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정 |
 
 
@@ -1119,7 +1119,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 ##### 오브젝트 수명 주기 설정
 `X-Container-Object-Lifecycle` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
-`X-Container-Object-Transfer-To` 헤더를 사용하면 수명 주기가 만료된 오브젝트를 지정된 컨테이너로 옮겨 보관 할 수 있습니다. 컨테이너가 지정되어 있지 않으면 만료된 오브젝트는 삭제됩니다.
+`X-Container-Object-Transfer-To` 헤더를 사용하면 수명 주기가 만료된 오브젝트를 지정된 컨테이너로 옮겨 보관할 수 있습니다. 컨테이너가 지정되어 있지 않으면 만료된 오브젝트는 삭제됩니다.
 
 > [참고]
 > Standard 클래스 컨테이너에 저장된 오브젝트를 수명 주기에 따라 Economy 클래스 컨테이너로 옮겨 장기 보관에 따른 비용을 절감할 수 있습니다.
