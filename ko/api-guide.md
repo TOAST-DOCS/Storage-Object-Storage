@@ -27,7 +27,12 @@ API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpo
 3. **저장** 버튼을 클릭합니다.
 
 > [참고]
-> API 비밀번호는 계정별로 설정됩니다. 한 프로젝트에서 설정된 비밀번호는 사용자가 속한 모든 프로젝트에서 사용할 수 있습니다.
+> API 비밀번호는 사용자 계정별로 설정되며, 사용자 계정이 속한 모든 프로젝트에서 사용할 수 있습니다.
+
+<!-- 개행을 위한 주석 -->
+
+> [주의]
+> API 비밀번호를 변경하면 이전에 발급 받은 인증 토큰은 즉시 만료되어 사용할 수 없습니다. 인증 토큰을 다시 발급 받아야 합니다.
 
 <br/>
 
@@ -69,10 +74,12 @@ Content-Type: application/json
 | access.token.id | Body | String |	발급된 토큰 ID |
 | access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 테넌트 ID |
 | access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>YYYY-MM-DDThh:mm:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | 32개의 16진수로 구성된 API 사용자 ID<br/>S3 호환 API를 사용하기 위한 EC2 자격 증명을 발급 받거나, 접근 정책을 설정하는 데 사용 |
+| access.user.id | Body | String | 32개의 16진수로 구성된 API 사용자 ID<br/>S3 API 자격 증명을 발급 받거나, 접근 정책을 설정하는 데 사용 |
 
 > [주의]
-> 토큰에는 유효 시간이 있습니다. 토큰 발급 요청의 응답에 포함된 'expires' 항목은 발급 받은 토큰이 만료되는 시간입니다. 토큰이 만료되면 새로운 토큰을 발급 받아야 합니다.
+> 인증 토큰의 유효 기간이 만료되면 새로운 토큰을 발급 받아야 합니다.
+>
+> 인증 토큰을 발급 받은 사용자 계정이 프로젝트에 대한 접근 권한을 잃거나 NHN Cloud를 탈퇴하여 삭제되면 인증 토큰은 즉시 만료되어 사용할 수 없습니다.
 
 <details>
 <summary>예시</summary>
@@ -657,15 +664,22 @@ foreach($container_list as $container) {
 
 ### 컨테이너 생성
 컨테이너를 생성합니다. 오브젝트 스토리지에 파일을 업로드하려면 반드시 컨테이너를 생성해야 합니다.
-컨테이너를 만들 때 `X-Container-Worm-Retention-Day` 헤더를 이용하여 객체 잠금 주기를 설정하면 객체 잠금 컨테이너를 만들 수 있습니다. 객체 잠금 컨테이너에 업로드한 오브젝트는 **WORM (Write-Once-Read-Many)** 모델을 사용하여 저장됩니다. 객체 잠금 컨테이너에 업로드한 오브젝트에는 잠금 만료 날짜가 설정됩니다. 각 오브젝트에 설정된 잠금 만료 날짜 이전에는 오브젝트를 덮어쓰거나 삭제할 수 없습니다.
-
-> [주의]
-> 컨테이너 이름에 특수 문자 ``' " ` < > ;``과 공백, 상대 경로 문자(`. ..`)는 사용할 수 없습니다.
-
-<!-- 개행을 위한 주석이므로 필수로 포함되어야 합니다. -->
 
 > [참고]
+> 컨테이너 이름에 특수 문자 ``' " ` < > ;``과 공백, 상대 경로 문자(`. ..`)는 사용할 수 없습니다.
+> IP 주소 형식의 이름은 사용할 수 없습니다.
 > 컨테이너 또는 오브젝트 이름에 특수 문자 `! * ' ( ) ; : @ & = + $ , / ? # [ ]`가 포함되어 있다면 API를 사용할 때 반드시 URL 인코딩(퍼센트 인코딩)을 해야 합니다. 이 문자들은 URL에서 중요하게 사용되는 예약 문자입니다. 이 문자들이 포함된 경로를 URL 인코딩하지 않고 API 요청을 보낸다면 원하는 응답을 받을 수 없습니다.
+
+컨테이너를 만들 때 `X-Storage-Policy` 헤더를 이용하여 컨테이너의 스토리지 클래스를 지정할 수 있습니다. 자주 접근하는 데이터를 위한 Standard 클래스와 접근 빈도가 낮은 데이터를 저렴한 요금으로 장기 보관할 수 있는 Economy 클래스를 선택할 수 있습니다. 스토리지 클래스를 지정하지 않으면 Standard 클래스가 적용됩니다.
+
+> [참고]
+> 이미 생성된 컨테이너의 스토리지 클래스는 변경할 수 없습니다.
+> Economy 클래스 컨테이너에 업로드된 오브젝트는 최소 보관 기간 30일이 적용됩니다. 30일 이전에 삭제된 오브젝트에 대해서도 잔여 보관 기간에 대한 요금이 부과됩니다. 
+> Economy 클래스 컨테이너는 API 요청 1000건당 요금이 적용됩니다. (HEAD/DELETE 요청 제외)
+
+컨테이너를 만들 때 `X-Container-Worm-Retention-Day` 헤더를 이용하여 객체 잠금 주기를 설정하면 객체 잠금 컨테이너를 만들 수 있습니다. 객체 잠금 컨테이너에 업로드한 오브젝트는 **WORM (Write-Once-Read-Many)** 모델을 사용하여 저장됩니다. 객체 잠금 컨테이너에 업로드한 오브젝트에는 잠금 만료 날짜가 설정됩니다. 각 오브젝트에 설정된 잠금 만료 날짜 이전에는 오브젝트를 덮어쓰거나 삭제할 수 없습니다.
+
+<br/>
 
 ```
 PUT  /v1/{Account}/{Container}
@@ -680,7 +694,9 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 생성할 컨테이너 이름 |
+| X-Storage-Policy | Header | String | - | 컨테이너의 스토리지 클래스<br/><b>Standard</b>: 자주 접근하는 데이터를 위한 기본 클래스<br/><b>Economy</b>: 접근 빈도가 낮은 데이터를 장기 보관하는 데 적합한 클래스 |
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정 |
+
 
 #### 응답
 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
@@ -1055,6 +1071,7 @@ X-Container-Write: {컨테이너 쓰기에 대한 역할 기반 접근 규칙}
 X-Container-Ip-Acl-Allowed-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
 X-Container-Ip-Acl-Denied-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
 X-Container-Object-Lifecycle: {컨테이너의 오브젝트 수명 주기}
+X-Container-Object-Transfer-To: {오브젝트의 수명 주기가 만료되었을 때 이동할 컨테이너}
 X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
 X-Versions-Retention: {오브젝트의 이전 버전 수명 주기}
 X-Container-Meta-Web-Index: {정적 웹사이트 인덱스 문서 오브젝트}
@@ -1079,6 +1096,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Object-Lifecycle | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
+| X-Container-Object-Transfer-To | Header | String | - | 오브젝트의 수명 주기가 만료되었을 때 이동할 컨테이너 |
 | X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
 | X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
 | X-Container-Meta-Web-Index | Header | String | - | 정적 웹사이트 인덱스 문서 오브젝트 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
@@ -1101,6 +1119,11 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 ##### 오브젝트 수명 주기 설정
 `X-Container-Object-Lifecycle` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
+`X-Container-Object-Transfer-To` 헤더를 사용하면 수명 주기가 만료된 오브젝트를 지정된 컨테이너로 옮겨 보관할 수 있습니다. 컨테이너가 지정되어 있지 않으면 만료된 오브젝트는 삭제됩니다.
+
+> [참고]
+> Standard 클래스 컨테이너에 저장된 오브젝트를 수명 주기에 따라 Economy 클래스 컨테이너로 옮겨 장기 보관에 따른 비용을 절감할 수 있습니다.
+
 <br/>
 
 ##### 버전 관리 정책 설정

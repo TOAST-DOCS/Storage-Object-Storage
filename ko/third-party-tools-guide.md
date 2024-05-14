@@ -106,7 +106,183 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 로컬과 오브젝트 스토리지를 비교하여 변경되거나 누락된 파일 또는 오브젝트를 업로드하거나 다운로드합니다.
 
 > [참고]
-> 동기화에 대한 보다 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하세요.
+> 동기화에 대한 보다 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하십시오.
+
+## Terraform
+
+Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하고, 효율적으로 인프라의 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > Compute > Instance > 테라폼 사용 가이드](https://docs.nhncloud.com/ko/Compute/Instance/ko/terraform-guide/)를 참고하십시오.
+
+### 리소스 의존성
+
+일반적으로 각 리소스는 독립적이지만 다른 특정 리소스에 의존성을 가질 수도 있습니다. 리소스의 레이블을 통해 다른 리소스의 정보를 참조하면 Terraform은 자동으로 의존성을 설정합니다.
+예를 들어, `conatiner1` 컨테이너에 포함되는 `object1` 오브젝트는 다음과 같이 표현될 수 있습니다.
+
+```hcl
+# 컨테이너 리소스
+resource "nhncloud_objectstorage_container_v1" "container_1" {
+  name = "container1"
+}
+
+# 오브젝트 리소스
+resource "nhncloud_objectstorage_object_v1" "object_1" {
+  container_name = nhncloud_objectstorage_container_v1.container_1.name
+  name           = "object1"
+  source       = "/tmp/dummy"
+}
+```
+
+> [참고]
+> 명시적인 리소스 의존성 지정 방법은 [Terraform의 Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) 문서를 참고하십시오.
+
+### Resources - Object Storage
+
+#### 컨테이너 생성
+
+```hcl
+# 기본 컨테이너 생성
+resource "nhncloud_objectstorage_container_v1" "container_1" {
+  region = "KR1"
+  name   = "tf-test-container-1"
+}
+
+# 오브젝트 버전 관리 컨테이너 생성
+resource "nhncloud_objectstorage_container_v1" "container_2" {
+  region = "KR1"
+  name   = "tf-test-container-2"
+  versioning_legacy {
+    type     = "history"
+    location = resource.nhncloud_objectstorage_container_v1.container_1.name
+  }
+}
+
+# 퍼블릭 컨테이너 생성
+resource "nhncloud_objectstorage_container_v1" "container_3" {
+  region = "KR1"
+  name   = "tf-test-container-3"
+  container_read = ".r:*,.rlistings"
+}
+```
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| region | String | | NHN Cloud 리소스를 관리할 리전 |
+| name | String | O | 컨테이너 이름 |
+| container_read | String | | 컨테이너 읽기에 대한 역할 기반 접근 규칙 설정 |
+| container_write | String | | 컨테이너 쓰기에 대한 역할 기반 접근 규칙 |
+| force_destroy | Boolean | | 컨테이너 강제 삭제 여부, `true` 또는 `false`<br>함께 삭제된 오브젝트는 복구할 수 없습니다. |
+| versioning_legacy | Object | | 오브젝트 버전 관리 설정 |
+| versioning_legacy.type | String | | `history`로 지정 |
+| versioning_legacy.location | String | | 오브젝트의 이전 버전을 보관할 컨테이너 이름 |
+
+#### 오브젝트 생성
+
+```hcl
+# 오브젝트 생성
+resource "nhncloud_objectstorage_object_v1" "object_1" {
+  region         = "KR1"
+  container_name = nhncloud_objectstorage_container_v1.container_1.name
+  name           = "test/test1.json"
+  content_type = "application/json"
+  content      = <<JSON
+               {
+                 "key" : "value"
+               }
+JSON
+}
+
+# 파일 업로드
+resource "nhncloud_objectstorage_object_v1" "object_2" {
+  region         = "KR2"
+  container_name = nhncloud_objectstorage_container_v1.container_1.name
+  name           = "test/test2.json"
+  source       = "./test2.txt"
+}
+```
+
+<table>
+	<thead>
+			<tr>
+				<th>이름</th>
+				<th>타입</th>
+				<th>필수</th>
+				<th>설명</th>
+			</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>name</td>
+			<td>String</td>
+			<td>O</td>
+			<td>오브젝트 이름</td>
+		</tr>
+		<tr>
+			<td>container_name</td>
+			<td>String</td>
+			<td>O</td>
+			<td>컨테이너 이름</td>
+		</tr>
+		<tr>
+			<td>source</td>
+			<td>String</td>
+			<td rowspan=4>O</td>
+			<td> 업로드할 로컬 파일시스템상의 파일 경로<br><code>content</code>, <code>copy_from</code> 또는 <code>object_manifest</code>와 함께 사용할 수 없습니다.<br><code>source</code>, <code>content</code>, <code>copy_from</code> 또는 <code>object_manifest</code> 중 하나를 반드시 지정해야 합니다.</td>
+		</tr>
+		<tr>
+			<td>content</td>
+			<td>String</td>
+			<td>생성할 오브젝트의 내용<br><code>source</code>, <code>copy_from</code> 또는 <code>object_manifest</code>와 함께 사용할 수 없습니다.</td>
+		</tr>
+		<tr>
+			<td>copy_from</td>
+			<td>String</td>
+			<td>복사할 원본 오브젝트, <code>{컨테이너}/{오브젝트}</code><br><code>source</code>, <code>content</code> 또는 <code>object_manifest</code>와 함께 사용할 수 없습니다.</td>
+		</tr>
+		<tr>
+			<td>object_manifest</td>
+			<td>String</td>
+			<td>분할한 세그먼트 오브젝트를 업로드한 경로, <code>{Segment-Container}/{Segment-Object}/</code><br><code>source</code>, <code>content</code> 또는 <code>copy_from</code>과 함께 사용할 수 없습니다.</td>
+		</tr>
+		<tr>
+			<td>content_disposition</td>
+			<td>String</td>
+			<td></td>
+			<td><code>Content-Disposition</code> 헤더를 지정</td>
+		</tr>
+		<tr>
+			<td>content_encoding</td>
+			<td>String</td>
+			<td></td>
+			<td><code>Content-Encoding</code> 헤더를 지정</td>
+		</tr>
+			<tr>
+			<td>content_type</td>
+			<td>String</td>
+			<td></td>
+			<td><code>Content-Type</code> 헤더를 지정</td>
+		</tr>
+		<tr>
+			<td>delete_after</td>
+			<td>Integer</td>
+			<td></td>
+			<td>오브젝트 유효 시간, 유닉스 시간(초)</td>
+		</tr>
+		<tr>
+			<td>delete_at</td>
+			<td>String</td>
+			<td></td>
+			<td>오브젝트 만료 날짜, 유닉스 시간(초), RFC3339 포매팅 문자열</td>
+		</tr>
+		<tr>
+			<td>detect_content_type</td>
+			<td>Boolean</td>
+			<td></td>
+			<td>콘텐츠 타입 추론 여부</br>설정 시 <code>content_type</code>이 무시됩니다.</td>
+		</tr>
+	</tbody>
+</table>
 
 ## 참고 사이트
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
+Terraform - [https://www.terraform.io/](https://www.terraform.io/)
+Terraform Registry - [https://registry.terraform.io/][https://registry.terraform.io/]
+
