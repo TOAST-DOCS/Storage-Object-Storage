@@ -2301,22 +2301,25 @@ public class ObjectService {
 
     // ObjectService Class ...
 
-    public InputStream downloadObject(String containerName, String objectName) {
+
+    public File downloadObject(String containerName, String objectName, String downloadPath) {
         String url = this.getUrl(containerName, objectName);
-
-        // 헤더 생성
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Auth-Token", tokenId);
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
-
-        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
-
-        // API 호출, 데이터를 바이트 배열로 받음
-        ResponseEntity<byte[]> response
-            = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, byte[].class);
-
-        // 바이트 배열 데이터를 InputStream으로 만들어 반환
-        return new ByteArrayInputStream(response.getBody());
+        
+        // 요청 헤더에 토큰을 추가하는 RequestCallback
+        RequestCallback callback = (request) -> {
+            HttpHeaders headers = request.getHeaders();
+            headers.add("X-Auth-Token", tokenId);
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+        };
+        
+        // 응답을 받아서 저장하는 Extractor
+        ResponseExtractor<File> extractor = (clientHttpResponse) -> {
+            File ret = new File(downloadPath + "/" + objectName);
+            StreamUtils.copy(clientHttpResponse.getBody(), Files.newOutputStream(ret.toPath()));
+            return ret;
+        };
+        
+        return this.restTemplate.execute(url, HttpMethod.GET, callback, extractor);
     }
 
     public static void main(String[] args) {
@@ -2330,18 +2333,7 @@ public class ObjectService {
 
         try {
             // 오브젝트 다운로드
-            InputStream inputStream = objectService.downloadObject(containerName, objectName);
-
-            // 다운로드한 데이터를 바이트 버퍼로 읽어 들임
-            byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
-
-            // 버퍼의 데이터를 파일에 기록
-            File target = new File(downloadPath + "/" + objectName);
-            OutputStream outputStream = new FileOutputStream(target);
-            outputStream.write(buffer);
-            outputStream.close();
-
+            objectService.downloadObject(containerName, objectName, downloadPath);
             System.out.println("\nDownload OK");
         } catch (Exception e) {
             e.printStackTrace();
