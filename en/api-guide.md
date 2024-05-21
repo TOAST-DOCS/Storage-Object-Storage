@@ -670,7 +670,7 @@ Creates a container. To upload files to object storage, a container must be crea
 <!-- This is a comment for line break, so it must be included. -->
 
 > [Note]
-> If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL-encoded (percent-encoding). These are reserved characters that are considered important for URL. If you send an API request without URL-encoding a path including these characters, you won't get the desired response.
+> If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`.
 > IP address format names are not allowed.
 > Container or object names cannot contain the special characters `!` `* ' ( ) ; : @ & = + $ , / ? # [ ]`, you must URL-encode (percent-encode) them when using the API. These are reserved characters that are important in URLs. If you send an API request without URL-encoding a path that contains these characters, you might not get the response you want.
 
@@ -683,7 +683,7 @@ When you create a container, you can use the `X-Storage-Policy` header to specif
 
 You can create an object lock container by setting the object lock interval using the `X-Container-Worm-Retention-Day` header when creating the container. Objects uploaded to the Object Lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
 
-<br>
+<br/>
 
 ```
 PUT  /v1/{Account}/{Container}

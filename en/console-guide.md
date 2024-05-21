@@ -259,7 +259,6 @@ You can set a life cycle of the uploaded object. Objects that have passed the li
 > It is applied only to objects uploaded after the object life cycle is set.
 > Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
 
-
 ##### Object Version Control Settings
 
 Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated or deleted. If you set the life cycle for previous versions, versions that exceed the set life cycle are automatically deleted.
@@ -346,7 +345,6 @@ Create folders. Folders are virtual units to bundle objects within a container i
 Deletes a folder. Deletes all objects in the folder and the folder object.
 For multipart objects inside a folder, only the manifest object is deleted; segment objects that are not included in the selection are not deleted.
 
-
 ### Upload Object
 All objects must be uploaded to containers. One object cannot be larger than 5GB.
 
@@ -380,7 +378,6 @@ Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 
 </details>
 
-
 ### Copy/Move Object
 Copy or move objects to the specified container. You can select multiple objects to copy or move to a different container or to a new path in the same container. 
 
@@ -405,7 +402,6 @@ Create a signed URL that allows free access to the specified object for the time
 
 > [Caution]
 > Signed URLs should be used with caution because if they are exposed, anyone can access the selected object. It is recommended that you set an appropriate validity period for your situation and use it to reduce the damage if your signed URL is exposed.
-
 
 ### Manage Object
 Check the selected object information and manage the properties.
