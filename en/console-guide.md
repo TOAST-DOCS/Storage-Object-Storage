@@ -11,9 +11,9 @@ Creates containers. Uploading objects in an object storage requires one or more 
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan="4">Create Container</td>
+    <td rowspan="5">Create Container</td>
     <td>Name</td>
-    <td>Name of a container is limited to 256 characters in English or 85 characters in Korean.</td>
+    <td>Container names can have a minimum of 3 characters and a maximum of 63 characters, and can only contain lowercase English letters, numbers, ' - ', and ' . '.<br/>The container name must begin and end with a letter or number.<br/>IP address format is not allowed.</td>
   </tr>
   <tr>
     <td rowspan="2">Container access policy</td>
@@ -23,8 +23,11 @@ Creates containers. Uploading objects in an object storage requires one or more 
     <td><b>PUBLIC</b>: Anyone with a public URL can access objects within a container.</td>
   </tr>
   <tr>
-    <td>Storage class</td>
+    <td rowspan="2">Storage class</td>
     <td><b>Standard</b>: This is the default class.</td>
+  </tr>
+  <tr>
+    <td><b>Economy</b>: Class Ideal for long-term storage of infrequently accessed data</td>
   </tr>
    <tr>
     <td rowspan="2">Object lock settings</td>
@@ -45,6 +48,14 @@ Creates containers. Uploading objects in an object storage requires one or more 
     <td>Enter the symmetric key ID managed by the Secure Key Manager service.</td>
   </tr>
 </table>
+
+### Storage class
+You can choose a storage class based on how often you access your data and your cost requirements. We offer Standard class for frequently accessed data and Economy class for long-term storage of less frequently accessed data at a lower cost.
+
+> [Note]
+> You cannot change the storage class of an already created container.
+> Objects uploaded to Economy class containers are subject to a minimum storage period of 30 days. Objects deleted before 30 days are also charged for the remaining storage period.
+> Economy class containers are charged per 1000 API requests (excluding HEAD/DELETE requests).
 
 #### Object Lock Settings
 Objects uploaded to the Object Lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
@@ -216,7 +227,17 @@ Views the life cycle of objects stored in containers and version control policie
     <td>Enter the object life cycle in days. Life cycle setting will be cleared if it is not filled in.</td>
   </tr>
   <tr>
-    <td rowspan="3">Object<br/>version control policy</td>
+    <td>Lifecycle Expiration Action</td>
+    <td></td>
+    <td>Select how to handle objects whose lifecycle has expired.</td>
+  </tr>
+  <tr>
+    <td>Target container</td>
+    <td></td>
+    <td>When you select <b>Move Container</b>as the lifecycle expiration action, you must select a container to move the object to.</td>
+  </tr>
+  <tr>
+    <td rowspan=3>Object<br/>Version control policy</td>
     <td>Version control policy</td>
     <td>Select whether to use a version control policy.</td>
   </tr>
@@ -232,10 +253,12 @@ Views the life cycle of objects stored in containers and version control policie
 
 ##### Object Life Cycle
 
-You can set a life cycle of the uploaded object. Objects that have passed the set life cycle are automatically deleted.
+You can set a life cycle of the uploaded object. Objects that have passed the life cycle are deleted according to the set lifecycle expiration action or moved to the specified container. 
 
 > [Note]
 > It is applied only to objects uploaded after the object life cycle is set.
+> Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
+
 
 ##### Object Version Control Settings
 
@@ -358,14 +381,14 @@ Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 </details>
 
 
-### Copy Object
-Copy objects to create new objects. Create an object with a new name in the container which has an object to copy, or copy objects to another container.
+### Copy/Move Object
+Copy or move objects to the specified container. You can select multiple objects to copy or move to a different container or to a new path in the same container. 
 
 > [Note]
 > The maximum length of the path that can be entered depends on the length of the object name. The length of the path to copy plus the object name must be 1024 bytes or less.
 > `{Maximum length of the path} = 1024 - {Length of the object name} - 1`
 >
-> Multipart objects larger than 5 GB cannot be copied. 
+> For multipart objects, only manifest objects can be copied or moved. 
 
 ### Delete Object
 Deletes the selected objects. You can select and delete multiple objects at the same time. 

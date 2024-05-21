@@ -110,3 +110,183 @@ Compare local and object storage to upload or download changed or missing files 
 
 ## References
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
+
+
+## Terraform
+
+Terraform is an open source tool that makes it easy to build infrastructure, make changes to it safely, and manage its geometry efficiently. For basic usage, see [User Guide > Compute > Instance > Terraform User Guide](https://docs.nhncloud.com/ko/Compute/Instance/ko/terraform-guide/).
+
+### Resource Dependency
+
+In general, each resource is independent, but it can also have dependencies on certain other resources. Terraform automatically establishes dependencies when a resource's label references information from another resource.
+For example, the `object1 object` contained in the `conatiner1` container might be represented as follows
+
+```hcl
+# Container resource
+resource "nhncloud_objectstorage_container_v1" "container_1" {
+  name = "container1"
+}
+
+# Object resource
+resource "nhncloud_objectstorage_object_v1" "object_1" {
+  container_name = nhncloud_objectstorage_container_v1.container_1.name
+  name = "object1"
+  source = "/tmp/dummy"
+}
+```
+
+> [Note]
+> For information on how to specify explicit resource dependencies, see [Terraform's Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) documentation.
+
+### Resources - Object Storage
+
+#### Create a Container
+
+```hcl
+# Create a default container
+resource "nhncloud_objectstorage_container_v1" "container_1" {
+  region = "KR1"
+  name = "tf-test-container-1"
+}
+
+# Create an object versioning container
+resource "nhncloud_objectstorage_container_v1" "container_2" {
+  region = "KR1"
+  name = "tf-test-container-2"
+  versioning_legacy {
+    type = "history"
+    location = resource.nhncloud_objectstorage_container_v1.container_1.name
+  }
+}
+
+# Create a public container
+resource "nhncloud_objectstorage_container_v1" "container_3" {
+  region = "KR1"
+  name = "tf-test-container-3"
+  container_read = ".r:*,.rlistings"
+}
+```
+
+| Name | Type | Required | Description |
+| ---- | ---- | ---- | ---- |
+| region | String | | Region to manage NHN Cloud resources |
+| name | String | O | Container name |
+| container_read | String | | Sets the role-based access rules for container read |
+| container_write | String | | Role-based access rules for container writes |
+| force_destroy | Boolean | | Whether to force container deletion, `true` or `false`<br>You can't recover objects that were deleted together. |
+| versioning_legacy | Object | | Object Version Control Settings |
+| versioning_legacy.type | String | | Specify as `history` |
+| versioning_legacy.location | String | | Container name to store the previous version of the object |
+
+#### Create an Object
+
+```hcl
+# Create the object
+resource "nhncloud_objectstorage_object_v1" "object_1" {
+  region = "KR1"
+  container_name = nhncloud_objectstorage_container_v1.container_1.name
+  name = "test/test1.json"
+  content_type = "application/json"
+  content = <<JSON
+               { "key" : "value
+                 "key" : "value"
+               }
+JSON
+}
+
+# Upload a file
+resource "nhncloud_objectstorage_object_v1" "object_2" {
+  region = "KR2"
+  container_name = nhncloud_objectstorage_container_v1.container_1.name
+  name = "test/test2.json"
+  source = "./test2.txt"
+}
+```
+
+<table>
+	<thead>
+			<tr>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Required</th>
+				<th>Description</th>
+			</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>name</td>
+			<td>String</td>
+			<td>O</td>
+			<td>Object name</td>
+		</tr>
+		<tr>
+			<td>container_name</td>
+			<td>String</td>
+			<td>O</td>
+			<td>Container name</td>
+		</tr>
+		<tr>
+			<td>source</td>
+			<td>String</td>
+			<td rowspan=4>O</td>
+			<td> The path to the file on the local file system to upload<br>Cannot be used with <code>content</code>, <code>copy_from</code>, or <code>object_manifest</code>.<br>You must specify one of the following: <code>source</code>, <code>content</code>, <code>copy_from</code>, or <code>object_manifest</code>.</td>
+		</tr>
+		<tr>
+			<td>content</td>
+			<td>String</td>
+			<td>Data content of the object to create<br>Cannot be used with <code>source</code>, <code>copy_from</code>, or <code>object_manifest</code>.</td>
+		</tr>
+		<tr>
+			<td>copy_from</td>
+			<td>String</td>
+			<td>The original object to copy, <code>{container}/{object}</code><br>Cannot be used with <code>source</code>, <code>content</code>, or <code>object_manifest</code>.</td>
+		</tr>
+		<tr>
+			<td>object_manifest</td>
+			<td>String</td>
+			<td>The path where segment objects are uploaded: <code>{Segment-Container}/{Segment-Object}/</code><br>Cannot be used with <code>source</code>, <code>content</code>, or <code>copy_from</code>.</td>
+		</tr>
+		<tr>
+			<td>content_disposition</td>
+			<td>String</td>
+			<td></td>
+			<td>Specify the <code>Content-Disposition</code> header</td>
+		</tr>
+		<tr>
+			<td>content_encoding</td>
+			<td>String</td>
+			<td></td>
+			<td>Specify the <code>Content-Encoding</code> header</td>
+		</tr>
+			<tr>
+			<td>content_type</td>
+			<td>String</td>
+			<td></td>
+			<td>Specify the <code>Content-Type</code> header</td>
+		</tr>
+		<tr>
+			<td>delete_after</td>
+			<td>Integer</td>
+			<td></td>
+			<td>Object's expiration time, unix time (seconds)</td>
+		</tr>
+		<tr>
+			<td>delete_at</td>
+			<td>String</td>
+			<td></td>
+			<td>Object expiration date, Unix time in seconds, RFC3339 formatted string</td>
+		</tr>
+		<tr>
+			<td>detect_content_type</td>
+			<td>Boolean</td>
+			<td></td>
+			<td>Whether to infer content type</br>The <code>content_type</code> is ignored when setting.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Reference
+Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
+Terraform - [https://www.terraform.io/](https://www.terraform.io/)
+Terraform Registry - [https://registry.terraform.io/][https://registry.terraform.io/]
+

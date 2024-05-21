@@ -27,7 +27,12 @@ To set the API password, go to the Object Storage service page and click **API E
 3. Click **Save**.
 
 > [Note]
-> An API password is set by account. You can use the same password set in one project for all of your other projects. 
+> API passwords are set per user account and are available to all projects to which the user belongs.
+
+
+
+> [Caution]
+> If you change your API password, the previously issued authentication token expires immediately and cannot be used. Authentication token must be reissued.
 
 <br/>
 
@@ -69,10 +74,13 @@ Content-Type: application/json
 | access.token.id | Body | String |	ID of issued token |
 | access.token.tenant.id | Body | String | Tenant ID corresponding to the project requesting the token |
 | access.token.expires | Body | String | Expiration time of issued token <br/> in the YYYY-MM-DDThh:mm:ssZ format. e.g.) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | API User ID composed of 32 digits of hexadecimal numbers <br/>Used to obtain EC2 credentials to use S3 compatible API or to set access policies |
+| access.user.id | Body | String | API user ID composed of 32 digits of hexadecimal numbers<br/>Used to get S3 API credentials or set access policies |
 
 > [Caution]
-> A token has expiration time. The 'expires' item included in the response to the request for token issuance refers to expiration time of the issued token. When a token expires, a new token must be issued.  
+> When an authentication token expires, you must obtain a new token.
+>
+> If the user account that was issued the authentication token loses access to the project or is deleted by leaving NHN Cloud, the authentication token expires immediately and cannot be used.
+  
 
 <details>
 <summary>Example</summary>
@@ -657,15 +665,25 @@ foreach($container_list as $container) {
 
 ### Create a Container
 Creates a container. To upload files to object storage, a container must be created.
-You can create an object lock container by setting the object lock cycle using the `X-Container-Worm-Retention-Day` header when creating a container. Objects uploaded to the object lock container are stored using the **WORM (Write-Once-Read-Many)** model. For the objects uploaded to the object lock container, lock expiration date is configured. You cannot overwrite or delete the object before the set lock expiration date.
-
-> [Caution]
 > A container name cannot include the special characters ``' " ` < > ;``, spaces, and relative path characters (`. ..`).
 
 <!-- This is a comment for line break, so it must be included. -->
 
 > [Note]
 > If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, it must be URL-encoded (percent-encoding). These are reserved characters that are considered important for URL. If you send an API request without URL-encoding a path including these characters, you won't get the desired response.
+> IP address format names are not allowed.
+> Container or object names cannot contain the special characters `!` `* ' ( ) ; : @ & = + $ , / ? # [ ]`, you must URL-encode (percent-encode) them when using the API. These are reserved characters that are important in URLs. If you send an API request without URL-encoding a path that contains these characters, you might not get the response you want.
+
+When you create a container, you can use the `X-Storage-Policy` header to specify the storage class of the container. You can choose the Standard class for frequently accessed data and the Economy class for long-term storage of less frequently accessed data at a lower cost. If you don't specify a storage class, the Standard class is applied.
+
+> [Note]
+> You cannot change the storage class of an already created container.
+> Objects uploaded to Economy class containers are subject to a minimum storage period of 30 days. Objects deleted before 30 days are also charged for the remaining storage period.
+> Economy class containers are charged per 1000 API requests (excluding HEAD/DELETE requests).
+
+You can create an object lock container by setting the object lock interval using the `X-Container-Worm-Retention-Day` header when creating the container. Objects uploaded to the Object Lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
+
+<br>
 
 ```
 PUT  /v1/{Account}/{Container}
@@ -681,6 +699,9 @@ This API does not require a request body.
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | Name of container to be created  |
 | X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days |
+| X-Storage-Policy | Header | String | - | Storage class for containers<br/><b>Standard</b>: Base class for frequently accessed data<br/><b>Economy</b>: Class Ideal for long-term storage of infrequently accessed data |
+| X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days |
+
 
 #### Response
 This API does not return a response body. When a container is created, return status code 201.
@@ -1079,6 +1100,7 @@ This API does not require a request body.
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | Sets the IP-based access rules for container write |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | Sets the IP-based access rules for container write |
 | X-Container-Object-Lifecycle | Header | Integer | - | Sets the life cycle of the container's base object in days |
+| X-Container-Object-Transfer-To | Header | String | - | Containers to move when an object's lifecycle expires |
 | X-History-Location | Header | String | - | Sets the container to store the previous version of the object |
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
 | X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
@@ -1103,6 +1125,11 @@ You can set the container access policy using the `X-Container-Read`, `X-Contain
 
 ##### Set the Object Life Cycle
 With the `X-Container-Object-Lifecycle` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
+The `X-Container-Object-Transfer-To` header allows you to transfer objects whose lifecycle has expired to a specified container for storage. If no container is specified, the expired object is deleted.
+
+> [Note]
+> Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
+
 <br/>
 
 ##### Set the Version Control Policy
