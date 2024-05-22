@@ -2319,18 +2319,7 @@ public class ObjectService {
 
         try {
             // 오브젝트 다운로드
-            InputStream inputStream = objectService.downloadObject(containerName, objectName);
-
-            // 다운로드한 데이터를 바이트 버퍼로 읽어 들임
-            byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
-
-            // 버퍼의 데이터를 파일에 기록
-            File target = new File(downloadPath + "/" + objectName);
-            OutputStream outputStream = new FileOutputStream(target);
-            outputStream.write(buffer);
-            outputStream.close();
-
+            objectService.downloadObject(containerName, objectName, downloadPath);
             System.out.println("\nDownload OK");
         } catch (Exception e) {
             e.printStackTrace();
