@@ -29,7 +29,7 @@ To set the API password, go to the Object Storage service page and click **API E
 > [Note]
 > API passwords are set per user account and are available to all projects to which the user belongs.
 
-
+<!-- linebreak -->
 
 > [Caution]
 > If you change your API password, the previously issued authentication token expires immediately and cannot be used. Authentication token must be reissued.
@@ -80,7 +80,6 @@ Content-Type: application/json
 > When an authentication token expires, you must obtain a new token.
 >
 > If the user account that was issued the authentication token loses access to the project or is deleted by leaving NHN Cloud, the authentication token expires immediately and cannot be used.
-  
 
 <details>
 <summary>Example</summary>
@@ -665,14 +664,11 @@ foreach($container_list as $container) {
 
 ### Create a Container
 Creates a container. To upload files to object storage, a container must be created.
-> A container name cannot include the special characters ``' " ` < > ;``, spaces, and relative path characters (`. ..`).
-
-<!-- This is a comment for line break, so it must be included. -->
 
 > [Note]
-> If a container or object name includes special characters such as `! * ' ( ) ; : @ & = + $ , / ? # [ ]`.
+> Container names cannot include special characters ``' " ` < > ;``, spaces, and relative path characters (`. ..`).
 > IP address format names are not allowed.
-> Container or object names cannot contain the special characters `!` `* ' ( ) ; : @ & = + $ , / ? # [ ]`, you must URL-encode (percent-encode) them when using the API. These are reserved characters that are important in URLs. If you send an API request without URL-encoding a path that contains these characters, you might not get the response you want.
+> Container or object names cannot contain the special characters  `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, you must URL-encode (percent-encode) them when using the API. These are reserved characters that are important in URLs. If you send an API request without URL-encoding a path that contains these characters, you might not get the response you want.
 
 When you create a container, you can use the `X-Storage-Policy` header to specify the storage class of the container. You can choose the Standard class for frequently accessed data and the Economy class for long-term storage of less frequently accessed data at a lower cost. If you don't specify a storage class, the Standard class is applied.
 
@@ -698,7 +694,6 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | Name of container to be created  |
-| X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days |
 | X-Storage-Policy | Header | String | - | Storage class for containers<br/><b>Standard</b>: Base class for frequently accessed data<br/><b>Economy</b>: Class Ideal for long-term storage of infrequently accessed data |
 | X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days |
 
@@ -2306,22 +2301,25 @@ public class ObjectService {
 
     // ObjectService Class ...
 
-    public InputStream downloadObject(String containerName, String objectName) {
+
+    public File downloadObject(String containerName, String objectName, String downloadPath) {
         String url = this.getUrl(containerName, objectName);
-
-        // Create header
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Auth-Token", tokenId);
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
-
-        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
-
-        // Call API, data is received as byte array
-        ResponseEntity<byte[]> response
-            = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, byte[].class);
-
-        // Create InputStream from byte array data and return it
-        return new ByteArrayInputStream(response.getBody());
+        
+        // RequestCallback that adds token to reqeust header
+        RequestCallback callback = (request) -> {
+            HttpHeaders headers = request.getHeaders();
+            headers.add("X-Auth-Token", tokenId);
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+        };
+        
+        // Extractor that gets and saves response
+        ResponseExtractor<File> extractor = (clientHttpResponse) -> {
+            File ret = new File(downloadPath + "/" + objectName);
+            StreamUtils.copy(clientHttpResponse.getBody(), Files.newOutputStream(ret.toPath()));
+            return ret;
+        };
+        
+        return this.restTemplate.execute(url, HttpMethod.GET, callback, extractor);
     }
 
     public static void main(String[] args) {
@@ -2335,18 +2333,7 @@ public class ObjectService {
 
         try {
             // Download object
-            InputStream inputStream = objectService.downloadObject(containerName, objectName);
-
-            // Read downloaded data as byte buffer
-            byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
-
-            // Record buffered data onto file
-            File target = new File(downloadPath + "/" + objectName);
-            OutputStream outputStream = new FileOutputStream(target);
-            outputStream.write(buffer);
-            outputStream.close();
-
+            objectService.downloadObject(containerName, objectName, downloadPath);
             System.out.println("\nDownload OK");
         } catch (Exception e) {
             e.printStackTrace();
