@@ -108,10 +108,6 @@ Compare local and object storage to upload or download changed or missing files 
 > [Note] 
 > For more information on synchronization, see [Cyberduck Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders).
 
-## References
-Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
-
-
 ## Terraform
 
 Terraform is an open source tool that makes it easy to build infrastructure, make changes to it safely, and manage its geometry efficiently. For basic usage, see [User Guide > Compute > Instance > Terraform User Guide](https://docs.nhncloud.com/ko/Compute/Instance/ko/terraform-guide/).
