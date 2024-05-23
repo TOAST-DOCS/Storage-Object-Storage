@@ -60,6 +60,8 @@ X-Auth-Token: {token-id}
 
 > [Caution]
 > If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, it is recommended to delete the leaked credentials and obtain a new one.
+>
+> If the user account issued with S3 API credentials loses access to the project or is deleted by leaving NHN Cloud, the credentials will immediately expire and cannot be used.
 
 <details>
 <summary>Example</summary>
