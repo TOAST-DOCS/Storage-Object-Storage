@@ -1,10 +1,23 @@
 ## Storage > Object Storage > Release Notes
 
+### May 28, 2024
+#### Added Features
+* [Console][API] Added Economy storage class - Korea (Pangyo) Region
+    * You can select storage classes based on frequency of data access, cost requirements, etc.
+* [Console][API] Added lifecycle expiration action
+    * You can move objects whose lifecycle has expired to another container
+
+#### Feature Updates
+* [Console] Improved the feature to copy objects
+    * You can select multiple objects to copy/move
+* [Console] Changed container naming conventions
+    * Minimum of 3 characters and maximum of 63 characters allowed
+    * Lowercase letters, numbers, -, and . allowed
+    * IP-formatted names not allowed
+
 ### February 27, 2024
 #### Added Features
-* [API] Added the feature to set object upload policies
-* [Console] Added the feature to set object upload policy
-* [Console] Added the feature to empty containers
+* [Console][API] Added the feature to empty containers
 
 #### Feature Updates
 * [Console] Improved the feature to delete objects
@@ -16,8 +29,7 @@
 
 ### May 30, 2023
 #### Added Features
-* [API] Added the IP ACL feature
-* [Console] Added the IP ACL feature
+* [Console][API] Added the IP ACL feature
 
 ### March 28, 2023
 #### Feature Updates
@@ -29,8 +41,7 @@
 
 ### November 29, 2022
 #### Added Features
-* [API] Added a feature to set an object lock container
-* [Console] Added a feature to set an object lock container
+* [Console][API] Added a feature to set an object lock container
 
 ### October 13, 2022
 #### Added Features
