@@ -27,7 +27,11 @@ APIパスワードはオブジェクトストレージサービスページの**
 3. **保存**ボタンをクリックします。
 
 > [参考]
-> APIパスワードはアカウントごとに設定されます。あるプロジェクトで設定されたパスワードはユーザーが属すすべてのプロジェクトで使用できます。
+> APIパスワードはユーザーアカウントごとに設定され、ユーザーアカウントが属する全てのプロジェクトで使用できます。
+<!-- 改行のためのコメント -->
+
+> [注意]
+> APIパスワードを変更すると、以前に発行された認証トークンは直ちに有効期限が切れ、使用することができません。認証トークンを再発行する必要があります。
 
 <br/>
 
@@ -69,10 +73,12 @@ Content-Type: application/json
 | access.token.id | Body | String |	発行されたトークンID |
 | access.token.tenant.id | Body | String | トークンをリクエストしたプロジェクトに対応するテナントID |
 | access.token.expires | Body | String | 発行したトークンの満了時間 <br/>YYYY-MM-DDThh:mm:ssZの形式。例) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | 32個の16進数で構成されたAPIユーザーID<br/>S3互換APIを使用するためのEC2資格証明を発行したり、アクセスポリシーを設定するのに使用 |
+| access.user.id | Body | String | 32個の16進数で構成されたAPIユーザーID<br/>S3 API資格証明を発行したり、アクセスポリシーを設定するのに使用 |
 
 > [注意]
-> トークンには有効期限があります。トークン発行リクエストのレスポンスに含まれた「expires」項目は、発行されたトークンの有効期限が終了する時間です。トークンが無効になった場合、新しいトークンを発行する必要があります。
+> 認証トークンの有効期限が切れたら、新しいトークンを発行する必要があります。
+>
+> 認証トークンを発行されたユーザーアカウントがプロジェクトへのアクセス権を失ったり、NHN Cloudを退会して削除されると、認証トークンは直ちに有効期限が切れ、使用できなくなります。
 
 <details>
 <summary>例</summary>
@@ -657,15 +663,21 @@ foreach($container_list as $container) {
 
 ### コンテナの作成
 コンテナを作成します。オブジェクトストレージにファイルをアップロードするには、コンテナを作成する必要があります。
-コンテナを作成する時、`X-Container-Worm-Retention-Day`ヘッダを利用してオブジェクトロック周期を設定すると、オブジェクトロックコンテナを作成できます。オブジェクトロックコンテナにアップロードしたオブジェクトは、**WORM (Write-Once-Read-Many)**モデルを使用して保存されます。オブジェクトロックコンテナにアップロードしたオブジェクトにはロック有効期限が設定されます。各オブジェクトに設定されたロック有効期限以前にはオブジェクトの上書きや削除ができません。
-
-> [注意]
-> コンテナ名に特殊文字``' " ` < > ;``と　、相対パス文字(`. ..`)は使用できません。
-
-<!-- 改行用。 削除しないでください。 -->
 
 > [参考]
-> コンテナまたはオブジェクト名に特殊文字`! * ' ( ) ; : @ & = + $ , / ? # [ ]`が含まれている場合、APIを使用する時にURLエンコード(パーセントエンコード)を行う必要があります。これらの文字はURLで使用される予約文字です。この文字が含まれたパスをURLエンコードしないでAPIリクエストを送る場合、期待するレスポンスを得られません。
+> コンテナ名に特殊文字``' " ` < > ;``と　、相対パス文字(`. ..`)は使用できません。
+> IPアドレス形式の名前は使用できません。
+> コンテナまたはオブジェクト名に特殊文字`! * ' ( ) ; : @ & = + $ , / ? # [ ]`が含まれている場合は、APIを使用する際に必ずURLエンコーディング(パーセントエンコーディング)をする必要があります。これらの文字は、URLで重要に使用される予約文字です。これらの文字が含まれているパスをURLエンコーディングせずにAPIリクエストを送信すると、希望のレスポンスを受け取ることができません。
+
+コンテナを作成する時、`X-Storage-Policy`ヘッダを使ってコンテナのストレージクラスを指定できます。頻繁にアクセスするデータのためのStandardクラスと、アクセス頻度が低いデータを低料金で長期間保管できるEconomyクラスを選択できます。ストレージクラスを指定しない場合、Standardクラスが適用されます。
+
+> [参考]
+> 作成済みのコンテナのストレージクラスは変更できません。
+> Economyクラスのコンテナにアップロードされたオブジェクトは、最低保管期間30日が適用されます。30日前に削除されたオブジェクトに対しても、残余保管期間の料金が課金されます。
+> EconomyクラスコンテナはAPIリクエスト1000件ごとに料金が適用されます。 (HEAD/DELETEリクエストは除く)
+コンテナを作成する際、`X-Container-Worm-Retention-Day`ヘッダを利用してオブジェクトロック周期を設定すると、オブジェクトロックコンテナを作成できます。オブジェクトロックコンテナにアップロードしたオブジェクトは**WORM(Write-Once-Read-Many)**モデルを使用して保存されます。オブジェクトロックコンテナにアップロードしたオブジェクトには、ロック有効期限が設定されます。各オブジェクトに設定されたロックの有効期限が切れる前に、オブジェクトを上書きしたり、削除することはできません。
+
+<br/>
 
 ```
 PUT  /v1/{Account}/{Container}
@@ -680,7 +692,9 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | Account | URL | String | O | ストレージアカウント名。API Endpoint設定ダイアログボックスで確認 |
 | Container | URL | String | O | 作成するコンテナ名 |
+| X-Storage-Policy | Header | String | - | コンテナのストレージクラス<br/><b>Standard</b>:頻繁にアクセスするデータのための基本クラス<br/><b>Economy</b>:アクセス頻度の低いデータを長期間保管するのに適したクラス |
 | X-Container-Worm-Retention-Day | Header | Integer | - | コンテナの基本オブジェクトロック周期を日単位で設定 |
+
 
 #### レスポンス
 レスポンス本文を返しません。リクエストが正しくない場合はステータスコード201を返します。
@@ -1055,6 +1069,7 @@ X-Container-Write: {コンテナ書き込みに対するロールベースのア
 X-Container-Ip-Acl-Allowed-List: {コンテナ書き込みに対するIPベースのアクセスルール}
 X-Container-Ip-Acl-Denied-List: {コンテナ書き込みに対するIPベースのアクセスルール}
 X-Container-Object-Lifecycle: {コンテナのオブジェクトのライフサイクル}
+X-Container-Object-Transfer-To: {オブジェクトのライフサイクルが終了したときに移動するコンテナ}
 X-History-Location: {オブジェクトの以前バージョンを保存するコンテナ}
 X-Versions-Retention: {オブジェクトの以前のバージョンのライフサイクル}
 X-Container-Meta-Web-Index: {静的Webサイトインデックス文書オブジェクト}
@@ -1079,6 +1094,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | コンテナ書き込みに対するIPベースのアクセスルール設定 |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | コンテナ書き込みに対するIPベースのアクセスルール設定 |
 | X-Container-Object-Lifecycle | Header | Integer | - | コンテナの基本オブジェクトライフサイクルを日単位で設定 |
+| X-Container-Object-Transfer-To | Header | String | - | オブジェクトのライフサイクルが終了したときに移動するコンテナ |
 | X-History-Location | Header | String | - | オブジェクトの以前バージョンを保管するコンテナを設定 |
 | X-Versions-Retention | Header | Integer | - | オブジェクトの以前のバージョンのライフサイクルを日単位で設定 |
 | X-Container-Meta-Web-Index | Header | String | - | 静的Webサイトインデックス文書オブジェクト設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
@@ -1101,6 +1117,11 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 
 ##### オブジェクトライフサイクル設定
 `X-Container-Object-Lifecycle`ヘッダを使用するとコンテナに保存されるオブジェクトのライフサイクルを日単位で設定できます。設定後にアップロードしたオブジェクトにのみ適用されます。
+`X-Container-Object-Transfer-To`ヘッダを使うと、ライフサイクルが切れたオブジェクトを指定されたコンテナに移して保管することができます。コンテナが指定されていない場合、有効期限が切れたオブジェクトは削除されます。
+
+> [参考]
+> Standardクラスコンテナに保存されたオブジェクトをライフサイクルに応じてEconomyクラスコンテナに移し、長期保管に伴うコストを削減できます。
+
 <br/>
 
 ##### バージョン管理ポリシー設定
@@ -2262,22 +2283,24 @@ public class ObjectService {
 
     // ObjectService Class ...
 
-    public InputStream downloadObject(String containerName, String objectName) {
+    public File downloadObject(String containerName, String objectName, String downloadPath) {
         String url = this.getUrl(containerName, objectName);
 
-        // ヘッダ作成
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Auth-Token", tokenId);
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
+        // リクエストヘッダにトークンを追加するRequestCallback
+        RequestCallback callback = (request) -> {
+            HttpHeaders headers = request.getHeaders();
+            headers.add("X-Auth-Token", tokenId);
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+        };
 
-        HttpEntity<String> requestHttpEntity = new HttpEntity<String>(null, headers);
+        // レスポンスを受け取って保存するExtractor
+        ResponseExtractor<File> extractor = (clientHttpResponse) -> {
+            File ret = new File(downloadPath + "/" + objectName);
+            StreamUtils.copy(clientHttpResponse.getBody(), Files.newOutputStream(ret.toPath()));
+            return ret;
+        };
 
-        // API呼び出し、データをバイト配列で受け取る
-        ResponseEntity<byte[]> response
-            = this.restTemplate.exchange(url, HttpMethod.GET, requestHttpEntity, byte[].class);
-
-        // バイト配列データをInputStreamで作って返す
-        return new ByteArrayInputStream(response.getBody());
+        return this.restTemplate.execute(url, HttpMethod.GET, callback, extractor);
     }
 
     public static void main(String[] args) {
