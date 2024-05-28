@@ -1071,6 +1071,7 @@ X-Container-Write: {role-based access rules for container write}
 X-Container-Ip-Acl-Allowed-List: {IP based access rules for container write}
 X-Container-Ip-Acl-Denied-List: {IP based access rules for container write}
 X-Container-Object-Lifecycle: {Life cycle of objects in container}
+X-Container-Object-Transfer-To: {Containers to move when an object's lifecycle expires}
 X-History-Location: {Container to store the previous object version}
 X-Versions-Retention: {Life cycle of the previous object version}
 X-Container-Meta-Web-Index: {Static website index document object}
