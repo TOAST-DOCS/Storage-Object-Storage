@@ -224,22 +224,25 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 		<tr>
 			<td>source</td>
 			<td>String</td>
-			<td rowspan=4>O</td>
+			<td>O</td>
 			<td> The path to the file on the local file system to upload<br>Cannot be used with <code>content</code>, <code>copy_from</code>, or <code>object_manifest</code>.<br>You must specify one of the following: <code>source</code>, <code>content</code>, <code>copy_from</code>, or <code>object_manifest</code>.</td>
 		</tr>
 		<tr>
 			<td>content</td>
 			<td>String</td>
+			<td>O</td>
 			<td>Data content of the object to create<br>Cannot be used with <code>source</code>, <code>copy_from</code>, or <code>object_manifest</code>.</td>
 		</tr>
 		<tr>
 			<td>copy_from</td>
 			<td>String</td>
+			<td>O</td>
 			<td>The original object to copy, <code>{container}/{object}</code><br>Cannot be used with <code>source</code>, <code>content</code>, or <code>object_manifest</code>.</td>
 		</tr>
 		<tr>
 			<td>object_manifest</td>
 			<td>String</td>
+			<td>O</td>
 			<td>The path where segment objects are uploaded: <code>{Segment-Container}/{Segment-Object}/</code><br>Cannot be used with <code>source</code>, <code>content</code>, or <code>copy_from</code>.</td>
 		</tr>
 		<tr>
