@@ -218,22 +218,25 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 		<tr>
 			<td>source</td>
 			<td>String</td>
-			<td rowspan=4>O</td>
+			<td>O</td>
 			<td> アップロードするローカルファイルシステム上のファイルパス<br><code>content</code>, <code>copy_from</code> または <code>object_manifest</code>と一緒に使用できません。<br><code>source</code>, <code>content</code>, <code>copy_from</code> または <code>object_manifest</code>のいずれかを必ず指定する必要があります。</td>
 		</tr>
 		<tr>
 			<td>content</td>
 			<td>String</td>
+			<td>O</td>
 			<td>作成するオブジェクトの内容<br><code>source</code>, <code>copy_from</code> または <code>object_manifest</code>と一緒に使用できません。</td>
 		</tr>
 		<tr>
 			<td>copy_from</td>
 			<td>String</td>
+			<td>O</td>
 			<td>コピーする原本オブジェクト、 <code>{コンテナ}/{オブジェクト}</code><br><code>source</code>, <code>content</code> または <code>object_manifest</code>と一緒に使用できません。</td>
 		</tr>
 		<tr>
 			<td>object_manifest</td>
 			<td>String</td>
+			<td>O</td>
 			<td>分割したセグメントオブジェクトをアップロードしたパス、 <code>{Segment-Container}/{Segment-Object}/</code><br><code>source</code>, <code>content</code> または <code>copy_from</code>と一緒に使用できません。</td>
 		</tr>
 		<tr>
@@ -278,4 +281,5 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 ## 参考サイト
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
-Terraform Registry - [https://registry.terraform.io/][https://registry.terraform.io/]
+Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
+

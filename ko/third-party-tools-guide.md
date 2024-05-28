@@ -224,22 +224,25 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 		<tr>
 			<td>source</td>
 			<td>String</td>
-			<td rowspan=4>O</td>
+			<td>O</td>
 			<td> 업로드할 로컬 파일시스템상의 파일 경로<br><code>content</code>, <code>copy_from</code> 또는 <code>object_manifest</code>와 함께 사용할 수 없습니다.<br><code>source</code>, <code>content</code>, <code>copy_from</code> 또는 <code>object_manifest</code> 중 하나를 반드시 지정해야 합니다.</td>
 		</tr>
 		<tr>
 			<td>content</td>
 			<td>String</td>
+			<td>O</td>
 			<td>생성할 오브젝트의 내용<br><code>source</code>, <code>copy_from</code> 또는 <code>object_manifest</code>와 함께 사용할 수 없습니다.</td>
 		</tr>
 		<tr>
 			<td>copy_from</td>
 			<td>String</td>
+			<td>O</td>
 			<td>복사할 원본 오브젝트, <code>{컨테이너}/{오브젝트}</code><br><code>source</code>, <code>content</code> 또는 <code>object_manifest</code>와 함께 사용할 수 없습니다.</td>
 		</tr>
 		<tr>
 			<td>object_manifest</td>
 			<td>String</td>
+			<td>O</td>
 			<td>분할한 세그먼트 오브젝트를 업로드한 경로, <code>{Segment-Container}/{Segment-Object}/</code><br><code>source</code>, <code>content</code> 또는 <code>copy_from</code>과 함께 사용할 수 없습니다.</td>
 		</tr>
 		<tr>
@@ -284,5 +287,5 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 ## 참고 사이트
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
-Terraform Registry - [https://registry.terraform.io/][https://registry.terraform.io/]
+Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
 
