@@ -437,7 +437,7 @@ Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/ove
 
 
 ### Service Gateway IP
-서비스 게이트웨이를 통한 요청에 대해 제어합니다. 만약 설정하지 않는다면, 설정된 화이트리스트, 블랙리스트에 따라 요청이 거부될 수 있습니다.
+서비스 게이트웨이를 통한 요청을 제어합니다. 설정하지 않으면, 설정된 화이트리스트와 블랙리스트에 따라 요청이 거부될 수 있습니다.
 
 
 ### API
@@ -453,7 +453,7 @@ IP 기반 접근 정책 요소는 접근 권한과, IP 또는 네트워크 대�
 | `w` | 쓰기 권한, PUT, POST, DELETE, COPY 요청이 해당됩니다.|
 | `a` | 읽기와 쓰기 권한을 모두 의미합니다. GET, HEAD, PUT, POST, DELETE, COPY 요청이 해당됩니다. |
 
-서비스 게이트웨이에서의 요청은 별도의 예외 처리가 가능합니다. `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 통해 요청이 가능하며 요청 가능한 권한은 아래와 같습니다.
+서비스 게이트웨이를 통한 요청을 제어하려면 컨테이너의 X-Container-Ip-Acl-Service-Gateway-Control 속성에 권한을 설정할 수 있습니다. 설정할 수 있는 권한은 다음과 같습니다.
 
 | 권한 | 설명 |
 | --- | --- |
@@ -506,7 +506,7 @@ $ curl -i -X POST \
   -H 'X-Container-Ip-Acl-Service-Gateway-Control: rw' \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
-지정된 IP ACL과 관계없이 서비스 게이트웨이를 통한 요청은 모두 허용합니다.<br><br>
+설정된 IP ACL과 관계없이 서비스 게이트웨이를 통한 요청은 모두 허용합니다.<br><br>
 컨테이너를 변경하려면 허가된 테넌트 ID와 해당 프로젝트에 속한 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요하며, 반드시 허용된 IP에서 요청해야 합니다.
 
 <br/><br/>
