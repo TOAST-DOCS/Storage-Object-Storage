@@ -102,6 +102,60 @@
 
 <br/>
 
+
+##### IP ACL
+
+IP 기반 접근 정책을 관리합니다. 접근 정책에 대한 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참조하세요.
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>분류</th>
+    <th>항목</th>
+    <th>설명</th>
+  </tr>
+  <tr>
+    <td rowspan="2">화이트리스트</td>
+    <td>IPv4</td>
+    <td>화이트리스트에 등록할 IP를 입력합니다. IP(192.168.0.1) 또는 CIDR(192.168.0.0/24) 형식으로 입력할 수 있습니다.</td>
+  </tr>
+  <tr>
+    <td>권한</td>
+    <td>허용할 접근 권한(Read, Write)을 선택합니다.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">블랙리스트</td>
+    <td>IPv4</td>
+    <td>블랙리스트에 등록할 IP를 입력합니다. IP(192.168.0.1) 또는 CIDR(192.168.0.0/24) 형식으로 입력할 수 있습니다.</td>
+  </tr>
+  </tr>
+  <tr>
+    <td>권한</td>
+    <td>허용하지 않을 접근 권한(Read, Write)을 선택합니다.</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Service Gateway IP</td>
+    <td>설정 안 함</td>
+    <td>서비스 게이트웨이를 통한 요청에 접근 제어 설정을 하지 않습니다.</td>
+  </tr>
+  <tr>
+    <td>Read 허용</td>
+    <td>서비스 게이트웨이를 통한 읽기 요청을 허용합니다.</td>
+  </tr>
+  <tr>
+    <td>Write 허용</td>
+    <td>서비스 게이트웨이를 통한 쓰기 요청을 허용합니다.</td>
+  </tr>
+  <tr>
+    <td>Read / Write 허용</td>
+    <td>서비스 게이트웨이를 통한 읽기, 쓰기 요청을 허용합니다.</td>
+  </tr>
+  <tr>
+    <td>차단</td>
+    <td>서비스 게이트웨이를 통한 요청을 허용하지 않습니다.</td>
+  </tr>
+</table>
+
+
 ##### 정적 웹사이트 설정
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">

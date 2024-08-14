@@ -1,23 +1,24 @@
 ## Storage > Object Storage > 접근 정책 설정 가이드
+## 역할 기반 접근 정책
 
 콘솔 또는 API를 사용해 다른 사용자에게 컨테이너의 읽기/쓰기 접근 권한을 부여할 수 있습니다.
 
-## 콘솔
+### 콘솔
 콘솔에서는 [컨테이너 생성](console-guide-ngsc/#_2) 대화 상자 또는 [컨테이너 관리](console-guide-ngsc/#_5) 창의 컨테이너 접근 정책 설정 대화 상자에서 컨테이너 접근 정책을 선택할 수 있습니다. 선택할 수 있는 정책은 `PRIVATE`과 `PUBLIC` 두 가지로 제한됩니다.
 
-### PRIVATE
+#### PRIVATE
 `PRIVATE`은 컨테이너가 속한 프로젝트의 사용자에게만 접근 권한을 부여하는 기본 접근 정책입니다. 콘솔을 이용하거나, 인증 토큰을 발급 받아 API로 컨테이너에 접근할 수 있습니다. API 섹션의 `컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용` 항목과 같은 정책입니다.
 <br/>
 
-### PUBLIC
+#### PUBLIC
 `PUBLIC`은 누구에게나 읽기와 오브젝트 목록 조회를 허용하는 정책입니다. 컨테이너를 PUBLIC으로 설정하면 콘솔에서 URL을 얻을 수 있습니다. 이 URL을 통해 누구나 컨테이너에 접근할 수 있습니다. API 섹션의 `모든 사용자에게 읽기 허용` 항목과 같은 정책입니다.
 <br/>
 
-## API
+### API
 API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write` 속성에 역할 기반 접근 정책 요소를 입력하면 여러 가지 상황에 맞게 접근 정책을 설정할 수 있습니다.
 <br/>
 
-### 역할 기반 접근 정책 요소
+#### 역할 기반 접근 정책 요소
 
 설정할 수 있는 역할 기반 접근 정책 요소는 다음과 같습니다. 모든 정책 요소는 콤마(`,`)로 구분해 조합할 수 있습니다.
 
@@ -38,7 +39,7 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write` 속성�
 
 <br/>
 
-### 컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용
+#### 컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용
 역할 기반 접근 정책 요소를 설정하지 않았을 때 사용되는 기본 접근 정책입니다. API를 사용해 컨테이너에 접근하려면 반드시 유효한 인증 토큰이 필요합니다.
 컨테이너의 `X-Container-Read`, `X-Container-Write` 속성값을 모두 삭제하면 컨테이너가 속한 프로젝트의 사용자에게만 접근을 허용하는 `PRIVATE` 컨테이너가 됩니다.
 
@@ -81,7 +82,7 @@ $ curl -X GET \
 </details>
 <br/>
 
-### 모든 사용자에게 읽기/목록 조회 허용
+#### 모든 사용자에게 읽기/목록 조회 허용
 컨테이너의 `X-Container-Read` 속성을 `.r:*, .rlistings`로 설정하면 모든 사용자에게 오브젝트 읽기와 목록 조회를 허용합니다. 인증 토큰은 필요하지 않습니다. 콘솔 섹션의 `PUBLIC` 항목과 같은 정책입니다.
 <br/>
 
@@ -134,7 +135,7 @@ $ curl -X GET \
 <br/>
 
 
-### 특정 HTTP 리퍼러 요청에 읽기 허용/거부
+#### 특정 HTTP 리퍼러 요청에 읽기 허용/거부
 HTTP 리퍼러(HTTP Referer)는 하이퍼링크를 통해 요청하는 웹 페이지의 주소 정보입니다. 요청 헤더에 포함되어 있습니다.
 컨테이너의 `X-Container-Read` 속성에 `.r:<referrer>` 또는 `.r:-<referrer>` 형태의 역할 기반 접근 정책 요소를 설정하면 특정 리퍼러의 접근 요청을 허용하거나 차단할 수 있습니다. 역할 기반 접근 정책 요소로 HTTP 리퍼러를 설정할 때는 프로토콜과 하위 경로를 제외한 도메인 이름을 입력해야 합니다.
 
@@ -324,7 +325,7 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 </details>
 <br/>
 
-### 특정 프로젝트 또는 특정 사용자에게 읽기/쓰기 허용
+#### 특정 프로젝트 또는 특정 사용자에게 읽기/쓰기 허용
 컨테이너의 `X-Container-Read`와 `X-Container-Write` 속성에 `<tenant-id>:<api-user-id>` 형태의 역할 기반 접근 정책 요소를 설정하면 특정 프로젝트 또는 특정 사용자에게 읽기/쓰기 권한을 각각 부여할 수 있습니다. 테넌트 ID 또는 API 사용자 ID 대신 와일드카드 문자 `*`를 입력하면 모든 프로젝트 또는 모든 사용자에게 접근 권한을 부여합니다. 접근 요청을 할 때는 반드시 유효한 인증 토큰이 필요합니다.
 
 > [참고]
@@ -361,6 +362,7 @@ $ curl -O -X GET \
 
 <details>
 <summary>특정 프로젝트의 모든 사용자에게 읽기/쓰기 권한 부여 예시</summary>
+
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
@@ -375,6 +377,7 @@ $ curl -i -X POST \
 
 <details>
 <summary>프로젝트와 관계없이 특정 사용자에게 읽기/쓰기 권한 부여 예시</summary>
+
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
@@ -389,6 +392,7 @@ $ curl -i -X POST \
 
 <details>
 <summary>모든 NHN Cloud 사용자에게 읽기/쓰기 권한 부여 예시</summary>
+
 ```
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
@@ -401,9 +405,131 @@ $ curl -i -X POST \
 </details>
 <br/>
 
-### 접근 정책 삭제
+#### 접근 정책 삭제
 빈 헤더를 입력하면 설정된 역할 기반 접근 정책 요소를 모두 삭제할 수 있습니다. 역할 기반 접근 정책 요소가 없는 컨테이너는 허가된 사용자만 접근할 수 있는 **PRIVATE** 컨테이너가 됩니다. `컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용` 항목을 참고하세요.
 
 
-## References
+### References
 Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/overview_acl.html](https://docs.openstack.org/swift/latest/overview_acl.html)
+
+## IP 기반 접근 정책
+
+콘솔 또는 API를 사용해 화이트리스트와 블랙리스트를 지정하여 특정 IP에서 컨테이너의 읽기/쓰기 접근 권한을 제한할 수 있습니다. 화이트리스트와 블랙리스트는 동시에 사용할 수 없습니다. 화이트리스트와 블랙리스트를 모두 입력한 경우 화이트리스트만 사용됩니다. IP 기반 접근 정책은 IPv4만 지원합니다. 서비스 게이트웨이를 통한 요청의 경우 별도의 예외를 지정할 수 있습니다.
+
+
+> [주의]
+> IP 기반 접근 정책은 퍼블릭 IP를 통한 접근을 제어하는 용도입니다. 화이트리스트에 프라이빗 IP만 등록하면 접근할 수 없는 컨테이너가 될 수 있습니다.
+> 잘못된 설정으로 접근 권한이 없는 컨테이너가 되었다면 더 이상 정책을 변경할 수 없습니다. 이러한 문제가 발생할 경우 고객 센터로 문의하세요.
+
+
+### 콘솔
+
+컨테이너 관리 창의 컨테이너 접근 정책 설정 대화 상자에서 IP 기반의 컨테이너 접근 정책을 선택합니다. 
+
+> [주의]
+> 읽기 권한이 없는 경우 콘솔에서 해당 컨테이너의 조작은 더 이상 불가능합니다.
+
+#### 화이트리스트
+허용된 IP 또는 네트워크 대역을 제외한 모든 요청을 거부합니다. 요청을 허용할 읽기, 쓰기 권한 지정이 가능합니다.
+
+#### 블랙리스트
+지정된 IP 또는 네트워크 대역의 요청을 거부합니다. 그 외의 모든 요청은 허용됩니다. 허용 정책과 함께 사용되는 경우 거부 정책은 무시됩니다. 요청을 거부할 읽기, 쓰기 권한 지정이 가능합니다.
+
+
+### Service Gateway IP
+서비스 게이트웨이를 통한 요청을 제어합니다. 설정하지 않으면 화이트리스트와 블랙리스트 설정에 따라 요청이 거부될 수 있습니다.
+
+
+### API
+
+API를 사용해 컨테이너의 `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List` 속성에 IP 기반 접근 정책 요소를 입력하면 IP 기반의 ACL을 활성화할 수 있습니다. `X-Container-Ip-Acl-Allowed-List`는 화이트리스트, `X-Container-Ip-Acl-Denied-List`는 블랙리스트를 의미합니다.
+<br>
+
+IP 기반 접근 정책 요소는 접근 권한과, IP 또는 네트워크 대역으로 이루어져 있으며 콤마(`,`)로 구분해 여러 개의 값을 입력할 수 있습니다. 접근 권한은 아래의 표와 같습니다.
+
+| 접근 권한 | 설명 |
+| --- | --- |
+| `r` | 읽기 권한, GET, HEAD 요청이 해당됩니다. |
+| `w` | 쓰기 권한, PUT, POST, DELETE, COPY 요청이 해당됩니다.|
+| `a` | 읽기와 쓰기 권한을 모두 의미합니다. GET, HEAD, PUT, POST, DELETE, COPY 요청이 해당됩니다. |
+
+서비스 게이트웨이를 통한 요청을 제어하려면 컨테이너의 X-Container-Ip-Acl-Service-Gateway-Control 속성에 권한을 설정할 수 있습니다. 설정할 수 있는 권한은 다음과 같습니다.
+
+| 권한 | 설명 |
+| --- | --- |
+| `read` | 읽기 요청을 허용합니다. GET, HEAD 요청이 해당됩니다. |
+| `write` | 쓰기 요청을 허용합니다. PUT, POST, DELETE, COPY 요청이 해당됩니다.|
+| `rw` | 읽기와 쓰기 모든 요청을 허용합니다. GET, HEAD, PUT, POST, DELETE, COPY 요청이 해당됩니다. |
+| `deny` | 읽기와 쓰기 모든 요청을 허용하지 않습니다.|
+
+
+<details>
+<summary>화이트리스트 설정</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Ip-Acl-Allowed-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
+  https://api-object-storage.gncloud.go.kr/v1/AUTH_*****/container
+```
+
+192.168.0.1 IP는 읽기 요청만, 192.168.0.2 IP에서는 쓰기 요청만 가능하며 172.16.0.0/24 대역의 모든 IP는 모든 요청이 가능합니다. 그 외의 모든 IP는 요청이 거부됩니다.<br><br>
+
+컨테이너를 변경하려면 허가된 테넌트 ID와 해당 프로젝트에 속한 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요하며, 반드시 허용된 IP에서 요청해야 합니다.
+
+<br/><br/>
+</details>
+
+<details>
+<summary>블랙리스트 설정</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Ip-Acl-Denied-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
+  https://api-object-storage.gncloud.go.kr/v1/AUTH_*****/container
+```
+
+192.168.0.1 IP는 읽기 요청이, 192.168.0.2 IP에서는 쓰기 요청이 거부되며 172.16.0.0/24 대역의 모든 IP는 모든 요청이 불가능합니다. 그 외의 모든 IP는 요청이 허용됩니다.<br><br>
+
+컨테이너를 변경하려면 허가된 테넌트 ID와 해당 프로젝트에 속한 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요하며, 반드시 허용된 IP에서 요청해야 합니다.
+
+<br/><br/>
+</details>
+
+<details>
+<summary>Service Gateway 요청 제어</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Ip-Acl-Service-Gateway-Control: rw' \
+  https://api-object-storage.gncloud.go.kr/v1/AUTH_*****/container
+```
+설정된 IP ACL과 관계없이 서비스 게이트웨이를 통한 요청은 모두 허용합니다.<br><br>
+컨테이너를 변경하려면 허가된 테넌트 ID와 해당 프로젝트에 속한 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요하며, 반드시 허용된 IP에서 요청해야 합니다.
+
+<br/><br/>
+</details>
+
+
+
+
+<details>
+<summary>ACL 설정 제거</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Ip-Acl-Allowed-List;' \
+  -H 'X-Container-Ip-Acl-Denied-List;' \
+  -H 'X-Container-Ip-Acl-Service-Gateway-Control;' \
+  https://api-object-storage.gncloud.go.kr/v1/AUTH_*****/container
+```
+
+컨테이너를 변경하려면 허가된 테넌트 ID와 해당 프로젝트에 속한 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요하며, 반드시 허용된 IP에서 요청해야 합니다.
+
+<br/><br/>
+</details>
+
+

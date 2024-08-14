@@ -1113,7 +1113,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 <br/>
 
 ##### 접근 정책 설정
-`X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참조하세요.
+`X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참조하세요.
 
 <br/>
 
