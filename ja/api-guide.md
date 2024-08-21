@@ -1111,7 +1111,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 <br/>
 
 ##### アクセスポリシー設定
-`X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
+`X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
 
 <br/>
 
