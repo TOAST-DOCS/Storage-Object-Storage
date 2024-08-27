@@ -414,12 +414,12 @@ Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/ove
 
 ## IP 기반 접근 정책
 
-콘솔 또는 API를 사용해 화이트리스트와 블랙리스트를 지정하여 특정 IP에서 컨테이너의 읽기/쓰기 접근 권한을 제한할 수 있습니다. 화이트리스트와 블랙리스트는 동시에 사용할 수 없습니다. 화이트리스트와 블랙리스트를 모두 입력한 경우 화이트리스트만 사용됩니다. IP 기반 접근 정책은 IPv4만 지원합니다.
+콘솔 또는 API를 사용해 화이트리스트와 블랙리스트를 지정하여 특정 IP에서 컨테이너의 읽기/쓰기 접근 권한을 제한할 수 있습니다. 화이트리스트와 블랙리스트는 동시에 사용할 수 없습니다. 화이트리스트와 블랙리스트를 모두 입력한 경우 화이트리스트만 사용됩니다. IP 기반 접근 정책은 IPv4만 지원합니다. 서비스 게이트웨이를 통한 요청의 경우 별도의 예외를 지정할 수 있습니다.
 
 
 > [주의]
-> IP 기반 접근 정책은 공인 IP를 통한 접근을 제어하는 용도입니다. 화이트리스트에 사설 IP만 등록하면 접근할 수 없는 컨테이너가 될 수 있습니다. 
-> 잘못된 설정으로 접근 권한이 없는 컨테이너가 되었다면 더 이상 정책을 변경할 수 없습니다. 이러한 문제가 발생하면 고객 센터로 문의 바랍니다.
+> IP 기반 접근 정책은 퍼블릭 IP를 통한 접근을 제어하는 용도입니다. 화이트리스트에 프라이빗 IP만 등록하면 접근할 수 없는 컨테이너가 될 수 있습니다.
+> 잘못된 설정으로 접근 권한이 없는 컨테이너가 되었다면 더 이상 정책을 변경할 수 없습니다. 이러한 문제가 발생할 경우 고객 센터로 문의하세요.
 
 
 ### 콘솔
@@ -436,6 +436,10 @@ Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/ove
 지정된 IP 또는 네트워크 대역의 요청을 거부합니다. 그 외의 모든 요청은 허용됩니다. 허용 정책과 함께 사용되는 경우 거부 정책은 무시됩니다. 요청을 거부할 읽기, 쓰기 권한 지정이 가능합니다.
 
 
+### Service Gateway IP
+서비스 게이트웨이를 통한 요청을 제어합니다. 설정하지 않으면 화이트리스트와 블랙리스트 설정에 따라 요청이 거부될 수 있습니다.
+
+
 ### API
 
 API를 사용해 컨테이너의 `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List` 속성에 IP 기반 접근 정책 요소를 입력하면 IP 기반의 ACL을 활성화할 수 있습니다. `X-Container-Ip-Acl-Allowed-List`는 화이트리스트, `X-Container-Ip-Acl-Denied-List`는 블랙리스트를 의미합니다.
@@ -448,6 +452,15 @@ IP 기반 접근 정책 요소는 접근 권한과, IP 또는 네트워크 대�
 | `r` | 읽기 권한, GET, HEAD 요청이 해당됩니다. |
 | `w` | 쓰기 권한, PUT, POST, DELETE, COPY 요청이 해당됩니다.|
 | `a` | 읽기와 쓰기 권한을 모두 의미합니다. GET, HEAD, PUT, POST, DELETE, COPY 요청이 해당됩니다. |
+
+서비스 게이트웨이를 통한 요청을 제어하려면 컨테이너의 X-Container-Ip-Acl-Service-Gateway-Control 속성에 권한을 설정할 수 있습니다. 설정할 수 있는 권한은 다음과 같습니다.
+
+| 권한 | 설명 |
+| --- | --- |
+| `read` | 읽기 요청을 허용합니다. GET, HEAD 요청이 해당됩니다. |
+| `write` | 쓰기 요청을 허용합니다. PUT, POST, DELETE, COPY 요청이 해당됩니다.|
+| `rw` | 읽기와 쓰기 모든 요청을 허용합니다. GET, HEAD, PUT, POST, DELETE, COPY 요청이 해당됩니다. |
+| `deny` | 읽기와 쓰기 모든 요청을 허용하지 않습니다.|
 
 
 <details>
@@ -485,6 +498,24 @@ $ curl -i -X POST \
 </details>
 
 <details>
+<summary>Service Gateway 요청 제어</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Ip-Acl-Service-Gateway-Control: rw' \
+  https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
+```
+설정된 IP ACL과 관계없이 서비스 게이트웨이를 통한 요청은 모두 허용합니다.<br><br>
+컨테이너를 변경하려면 허가된 테넌트 ID와 해당 프로젝트에 속한 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요하며, 반드시 허용된 IP에서 요청해야 합니다.
+
+<br/><br/>
+</details>
+
+
+
+
+<details>
 <summary>ACL 설정 제거</summary>
 
 ```
@@ -492,6 +523,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Allowed-List;' \
   -H 'X-Container-Ip-Acl-Denied-List;' \
+  -H 'X-Container-Ip-Acl-Service-Gateway-Control;' \
   https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
 ```
 
