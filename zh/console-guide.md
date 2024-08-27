@@ -165,6 +165,27 @@ Manages IP-based access policies. For more details, refer to [ACL Configuration 
     <td>Access right</td>
     <td>Select access rights not to allow (Read, Write).</td>
   </tr>
+  <tr>
+    <td rowspan="5">Service Gateway IP</td>
+    <td>Disable</td>
+    <td>Do not set access control on requests through the service gateway.</td>
+  </tr>
+  <tr>
+    <td>Allow Read</td>
+    <td>Allow read requets through the service gateway.</td>
+  </tr>
+  <tr>
+    <td>Allow Write</td>
+    <td>Allow write requests through the service gateway.</td>
+  </tr>
+  <tr>
+    <td>Allow Read / Write</td>
+    <td>Allow read and write requests through the service gateway.</td>
+  </tr>
+  <tr>
+    <td>Block</td>
+    <td>Do not allow requests through the service gateway.</td>
+  </tr>
 </table>
 
 
@@ -304,9 +325,20 @@ Replication settings allow you to replicate objects in a container to another co
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan="3">Replication settings</td>
+    <td rowspan="6">Replication settings</td>
     <td>Replication</td>
     <td>Select whether to use the replication feature.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Project type</td>
+    <td><b>Same project</b>: Select a container of the same project.</td>
+  </tr>
+  <tr>
+    <td><b>Different project</b>: Select a container of a different project.</td>
+  </tr>
+  <tr>
+    <td>Target project</td>
+    <td>Enter a project to replicate. Click View to check the permissions of the project.</td>
   </tr>
   <tr>
     <td>Target region</td>
@@ -314,11 +346,19 @@ Replication settings allow you to replicate objects in a container to another co
   </tr>
   <tr>
     <td>Target container</td>
-    <td>Enter the target container for replication.</td>
+    <td>Enter the target container for replication or select the target container by clicking Search.</td>
   </tr>
 </table>
 
 The replication policies are as follows:
+
+* The table below shows the range of regions available for selection by target project.
+
+
+| Project type | Selectable region |
+| -- | -- |
+| Same project | Different regions |
+| Different project | All regions |
 
 * Changes (upload, update, deletion) of objects in the source container are reflected identically in the target container.
 * Changes made to the object in the target container are not reflected in the source container.
