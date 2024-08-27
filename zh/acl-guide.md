@@ -414,7 +414,7 @@ Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/ove
 
 ## IP-based Access Policies
 
-You can use the console or API to specify whitelists and blacklists to restrict read/write access to containers from specific IPs. You can't use whitelists and blacklists at the same time. If you enter both a whitelist and a blacklist, only the whitelist is used. IP-based access policies support IPv4 only.
+You can use the console or API to specify whitelists and blacklists to restrict read/write access to containers from specific IPs. You can't use whitelists and blacklists at the same time. If you enter both a whitelist and a blacklist, only the whitelist is used. IP-based access policies support IPv4 only. For requests through the service gateway, you can specify a separate exception.
 
 
 > [Caution]
@@ -436,6 +436,10 @@ Denies all requests except from allowed IPs or network bands. You can specify re
 Denies requests from the specified IP or network band. All other requests are permitted. When used with an allow policy, the deny policy is ignored. You can specify read and write permissions to deny requests.
 
 
+### Service Gateway IP
+Controls requests through the service gateway. If not set, requests can be denied based on the whitelist and blacklist settings.
+
+
 ### API
 
 You can use the API to enable IP-based ACLs by entering IP-based access policy elements in the container's `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties.`X-Container-Ip-Acl-Allowed-List` indicates whitelist, `X-Container-Ip-Acl-Denied-List` indicates blacklist.
@@ -448,6 +452,15 @@ An IP-based access policy element consists of access permission and an IP or net
 | `r` | Includes read permission, GET, and HEAD requests. |
 | `w` | Includes Write permission, PUT, POST, DELETE, and COPY requests.|
 | `a` | Indicates both read and write permissions. This includes GET, HEAD, PUT, POST, DELETE, and COPY requests. |
+
+To control requests through the service gateway, you can set permissions in the X-Container-Ip-Acl-Service-Gateway-Control property of the container. The following permissions can be set
+
+| Permission | Description |
+| --- | --- |
+| `read` | Allows read permission. This includes GET and HEAD requests. |
+| `write` | Allows write requests. This includes PUT, POST, DELETE, and COPY requests.|
+| `rw` | Allows all read and write requests. This includes GET, HEAD, PUT, POST, DELETE, COPY requests. |
+| `deny` | Denies all read and write requests.|
 
 
 <details>
@@ -485,6 +498,24 @@ Changes to a container require a valid authentication token issued with an autho
 </details>
 
 <details>
+<summary>Control Service Gateway Requests</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Ip-Acl-Service-Gateway-Control: rw' \
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+```
+All requests through the service gateway are allowed regardless of the IP ACLs set.<br><br> 
+To make changes to a container, you need a valid authentication token issued with an authorized tenant ID and NHN Cloud user ID belonging to the project, and the request must be made from an allowed IP.
+
+<br/><br/>
+</details>
+
+
+
+
+<details>
 <summary>Remove ACL Setting</summary>
 
 ```
@@ -492,6 +523,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Allowed-List;' \
   -H 'X-Container-Ip-Acl-Denied-List;' \
+  -H 'X-Container-Ip-Acl-Service-Gateway-Control;' \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 

@@ -1,5 +1,17 @@
 ## Storage > Object Storage > Release Notes
 
+### September 5, 2024
+#### Feature Updates
+* [Console][API] Added service gateway IP access control settings
+    * You can handle IP ACL exceptions for requests through the service gateway
+* [Console] Added the feature for replication to a different project in the same organization
+* [API] Improved S3 compatibility
+    * Improved response compatibility for the following errors
+        * Request to create a bucket with an invalid name
+        * Container request with an invalid path
+        * Object request with an invalid path
+
+
 ### May 28, 2024
 #### Added Features
 * [Console][API] Added Economy storage class - Korea (Pangyo) Region

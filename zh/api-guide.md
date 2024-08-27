@@ -1115,7 +1115,7 @@ This API does not require a request body.
 <br/>
 
 ##### Set the Access Policy
-You can set the container access policy using the `X-Container-Read`, `X-Container-Write`,`X-Container-Ip-Acl-Allowed-List`, and `X-Container-Ip-Acl-Denied-List` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
+You can set the container access policy using the `X-Container-Read`, `X-Container-Write`,`X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <br/>
 
