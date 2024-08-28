@@ -1,6 +1,6 @@
 ## Storage > Object Storage > Release Notes
 
-### September 5, 2024
+### August 27, 2024
 #### Feature Updates
 * [Console][API] Added service gateway IP access control settings
     * You can handle IP ACL exceptions for requests through the service gateway
