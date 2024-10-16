@@ -414,11 +414,11 @@ Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/ove
 
 ## IPベースのアクセスポリシー
 
-コンソールまたはAPIを使用してホワイトリストとブラックリストを指定して特定IPからコンテナの読み取り/書き込みアクセス権限を制限できます。ホワイトリストとブラックリストは同時に使用できません。ホワイトリストとブラックリストの両方を入力した場合、ホワイトリストのみ使用されます。 IPベースのアクセスポリシーはIPv4のみサポートします。
+コンソールまたはAPIを使用してホワイトリストとブラックリストを指定して特定IPからコンテナの読み取り/書き込みアクセス権限を制限できます。ホワイトリストとブラックリストは同時に使用できません。ホワイトリストとブラックリストの両方を入力した場合、ホワイトリストのみ使用されます。 IPベースのアクセスポリシーはIPv4のみサポートします。サービスゲートウェイ経由のリクエストの場合、別途の例外を指定できます。
 
 
 > [注意]
-> IPベースのアクセスポリシーは、公認IPを通じたアクセスを制御する用途です。ホワイトリストにプライベートIPのみを登録すると、アクセスできないコンテナになる可能性があります。
+> IPベースのアクセスポリシーは、パブリックIP経由のアクセスを制御する用途です。ホワイトリストにプライベートIPのみを登録すると、アクセスできないコンテナになる可能性があります。
 > 誤った設定を行ってアクセス権限のないコンテナになった場合、ポリシーを変更することはできません。このような問題が発生した場合は、サポートにお問い合わせください。
 
 
@@ -435,6 +435,8 @@ Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/ove
 #### ブラックリスト
 指定されたIPまたはネットワーク帯域からのリクエストを拒否します。それ以外のすべてのリクエストは許可されます。許可ポリシーと一緒に使用する場合、拒否ポリシーは無視されます。リクエストを拒否する読み取り、書き込み権限を指定できます。
 
+### Service Gateway IP
+サービスゲートウェイ経由のリクエストを制御します。設定しないと、ホワイトリストとブラックリストの設定によってリクエストが拒否される場合があります。
 
 ### API
 
@@ -449,6 +451,14 @@ APIを使用してコンテナの`X-Container-Ip-Acl-Allowed-List`, `X-Container
 | `w` | 書き込み権限、PUT、POST、DELETE、COPYリクエストが該当します。|
 | `a` | 読み取りと書き込み権限の両方を意味します。 GET、HEAD、PUT、POST、DELETE、COPYリクエストが該当します。 |
 
+サービスゲートウェイ経由のリクエストを制御するにはコンテナのX-Container-Ip-Acl-Service-Gateway-Controlプロパティに権限を設定できます。設定できる権限は次のとおりです。
+
+| 権限 | 説明 |
+| --- | --- |
+| `read` | 読み取りリクエストを許可します。 GET, HEADリクエストが該当します。 |
+| `write` | 書き込みリクエストを許可します。 PUT, POST, DELETE, COPYリクエストが該当します。|
+| `rw` | 読み書き全てのリクエストを許可します。 GET, HEAD, PUT, POST, DELETE, COPYリクエストが該当します。 |
+| `deny` | 読み書きすべてのリクエストを許可しません。|
 
 <details>
 <summary>ホワイトリスト設定</summary>
@@ -485,6 +495,24 @@ $ curl -i -X POST \
 </details>
 
 <details>
+<summary>Service Gatewayリクエスト制御</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Ip-Acl-Service-Gateway-Control: rw' \
+  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+```
+設定されたIP ACLに関係なく、サービスゲートウェイ経由のリクエストはすべて許可します。<br><br>
+コンテナを変更するには、許可されたテナントIDと当該プロジェクトに属するNHN CloudユーザーIDで発行された有効な認証トークンが必要で、必ず許可されたIPからリクエストする必要があります。
+
+<br/><br/>
+</details>
+
+
+
+
+<details>
 <summary>ACL設定の削除</summary>
 
 ```
@@ -492,6 +520,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Allowed-List;' \
   -H 'X-Container-Ip-Acl-Denied-List;' \
+  -H 'X-Container-Ip-Acl-Service-Gateway-Control;' \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
