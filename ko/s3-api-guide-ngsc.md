@@ -80,6 +80,10 @@ X-Auth-Token: {token-id}
 |---|---|---|---|
 | access | Body | String | S3 API 자격 증명 접근 키 |
 | secret | Body | String | S3 API 자격 증명 비밀 키 |
+| user_id | Body | String | API 사용자 ID |
+| tenant_id | Body | String | 테넌트 ID |
+| created_at | Body | String | S3 API 자격 증명 생성 시간 |
+| accessed_at | Body | String | S3 API 자격 증명 마지막 접근 시간 |
 
 <details>
 <summary>예시</summary>
@@ -91,7 +95,8 @@ X-Auth-Token: {token-id}
     "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
     "secret": "be057f235abf45ee8e2ba14edc5fb253",
     "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-    "trust_id": null
+    "created_at": "2024-10-19T08:24:46.000000Z",
+    "accessed_at": "2024-10-19T08:24:46.000000Z"
   }
 }
 ```
@@ -121,6 +126,10 @@ X-Auth-Token: {token-id}
 |---|---|---|---|
 | access | Body | String | S3 API 자격 증명 접근 키 |
 | secret | Body | String | S3 API 자격 증명 비밀 키 |
+| user_id | Body | String | API 사용자 ID |
+| tenant_id | Body | String | 테넌트 ID |
+| created_at | Body | String | S3 API 자격 증명 생성 시간 |
+| accessed_at | Body | String | S3 API 자격 증명 마지막 접근 시간 |
 
 <details>
 <summary>예시</summary>
@@ -133,7 +142,8 @@ X-Auth-Token: {token-id}
       "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
       "secret": "be057f235abf45ee8e2ba14edc5fb253",
       "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-      "trust_id": null
+      "created_at": "2024-10-19T08:24:46.000000Z",
+      "accessed_at": "2024-10-19T08:30:42.000000Z"
     }
   ]
 }
