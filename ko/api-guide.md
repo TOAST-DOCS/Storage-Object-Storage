@@ -2235,7 +2235,6 @@ Content-Type: {content-type}
 ```
 
 #### 요청
-요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
@@ -2246,6 +2245,7 @@ Content-Type: {content-type}
 | Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
+| - |	Body | Binary | O | 수정할 오브젝트의 내용 |
 
 #### 응답
 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
