@@ -2252,6 +2252,64 @@ Content-Type: {content-type}
 
 <br/>
 
+### 오브젝트 정보 조회
+지정한 오브젝트의 정보를 조회합니다. 오브젝트의 정보는 응답 헤더에서 확인할 수 있습니다.
+
+```
+HEAD   /v1/{Account}/{Container}/{Object}
+X-Auth-Token: {token-id}
+```
+
+### 요청
+요청 본문은 필요하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| X-Auth-Token | Header | String | O | 토큰 ID |
+| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Container |	URL | String | O | 컨테이너 이름 |
+| Object | URL | String | O | 다운로드할 오브젝트 이름 |
+
+### 응답
+이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+
+| 이름 | 종류 | 형식 | 설명 |
+|---|---|---|---|
+| Content-Type | Header | String | 오브젝트의 콘텐츠 타입 |
+| Content-Length | Header | Integer | 오브젝트의 크기 |
+| Etag | Header | String | 오브젝트의 ETag 값<br/>오브젝트의 MD5 Hash 값입니다.<br/>오브젝트의 무결성 확인에 사용할 수 있습니다. |
+| Last-Modified | Header | String | 오브젝트의 마지막 수정 시간 |
+| X-Timestamp | Header | Timestamp | 오브젝트의 마지막 수정 시간, 유닉스 시간(초) |
+| X-Delete-At | Header | Timestamp | 오브젝트 만료 날짜, 유닉스 시간(초) |
+| X-Object-Worm-Retain-Until | Header | Timestamp | 오브젝트 잠금 만료 날짜, 유닉스 시간(초) |
+| X-Object-Manifest | Header | String | DLO 방식 멀티파트 오브젝트의 세그먼트 오브젝트 경로 |
+| X-Static-Large-Object | Header | Boolean | SLO 방식 멀티파트 오브젝트 여부 |
+| X-Manifest-Etag | Header | String | SLO 방식 멀티파트 오브젝트의 매니페스트 ETag 값 (MD5) |
+
+
+#### 코드 예시
+<details>
+<summary>cURL</summary>
+
+```
+$ curl -O -X HEAD -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
+
+HTTP/1.1 200 OK
+content-type: image/jpeg
+content-length: 148585
+x-delete-at: 1729263600
+etag: bad093d7f49dc495751cb3f7f8b2530c
+last-modified: Mon, 30 May 2022 15:16:43 GMT
+x-timestamp: 1653923802.28970
+x-trans-id: tx3c30a8f0272c40f5979b4-0067104fa7
+x-openstack-request-id: tx3c30a8f0272c40f5979b4-0067104fa7
+date: Wed, 16 Oct 2024 23:43:36 GMT
+```
+</details>
+
+<br/>
+
 ### 오브젝트 다운로드
 오브젝트를 다운로드합니다.
 
