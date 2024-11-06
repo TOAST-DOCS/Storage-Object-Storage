@@ -582,7 +582,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 ### Boto3 - Python SDK
 
 > [참고]
-> 보다 자세한 내용은 [AWS SDK for Python (Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+> 보다 자세한 내용은 [AWS SDK for Python(Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
 
 #### Context
 
