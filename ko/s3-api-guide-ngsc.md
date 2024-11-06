@@ -80,6 +80,10 @@ X-Auth-Token: {token-id}
 |---|---|---|---|
 | access | Body | String | S3 API 자격 증명 접근 키 |
 | secret | Body | String | S3 API 자격 증명 비밀 키 |
+| user_id | Body | String | API 사용자 ID |
+| tenant_id | Body | String | 테넌트 ID |
+| created_at | Body | String | S3 API 자격 증명 생성 시간 |
+| accessed_at | Body | String | S3 API 자격 증명 마지막 접근 시간 |
 
 <details>
 <summary>예시</summary>
@@ -91,7 +95,8 @@ X-Auth-Token: {token-id}
     "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
     "secret": "be057f235abf45ee8e2ba14edc5fb253",
     "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-    "trust_id": null
+    "created_at": "2024-10-19T08:24:46.000000Z",
+    "accessed_at": "2024-10-19T08:24:46.000000Z"
   }
 }
 ```
@@ -121,6 +126,10 @@ X-Auth-Token: {token-id}
 |---|---|---|---|
 | access | Body | String | S3 API 자격 증명 접근 키 |
 | secret | Body | String | S3 API 자격 증명 비밀 키 |
+| user_id | Body | String | API 사용자 ID |
+| tenant_id | Body | String | 테넌트 ID |
+| created_at | Body | String | S3 API 자격 증명 생성 시간 |
+| accessed_at | Body | String | S3 API 자격 증명 마지막 접근 시간 |
 
 <details>
 <summary>예시</summary>
@@ -133,7 +142,8 @@ X-Auth-Token: {token-id}
       "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
       "secret": "be057f235abf45ee8e2ba14edc5fb253",
       "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-      "trust_id": null
+      "created_at": "2024-10-19T08:24:46.000000Z",
+      "accessed_at": "2024-10-19T08:30:42.000000Z"
     }
   ]
 }
@@ -573,7 +583,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 ### Boto3 - Python SDK
 
 > [참고]
-> 보다 자세한 내용은 [AWS SDK for Python (Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+> 보다 자세한 내용은 [AWS SDK for Python(Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
 
 #### Context
 
@@ -660,7 +670,7 @@ def delete_bucket(self, bucket_name):
 
 <blockquote>
 <p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 8MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 1,000개입니다.</p>
+파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 8MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
 </blockquote>
 
 ```python
@@ -827,7 +837,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 <blockquote>
 <p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 1,000개입니다.</p>
+파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
 </blockquote>
 
 ```java
@@ -1054,7 +1064,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 
 <blockquote>
 <p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 1,000개입니다.</p>
+파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
 </blockquote>
 
 ```csharp
