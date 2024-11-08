@@ -675,9 +675,9 @@ foreach($container_list as $container) {
 > [참고]
 > 이미 생성된 컨테이너의 스토리지 클래스는 변경할 수 없습니다.
 > Economy 클래스 컨테이너에 업로드된 오브젝트는 최소 보관 기간 30일이 적용됩니다. 30일 이전에 삭제된 오브젝트에 대해서도 잔여 보관 기간에 대한 요금이 부과됩니다. 
-> Economy 클래스 컨테이너는 API 요청 1000건당 요금이 적용됩니다. (HEAD/DELETE 요청 제외)
+> Economy 클래스 컨테이너는 API 요청 1000건당 요금이 적용됩니다.(HEAD/DELETE 요청 제외)
 
-컨테이너를 만들 때 `X-Container-Worm-Retention-Day` 헤더를 이용하여 객체 잠금 주기를 설정하면 객체 잠금 컨테이너를 만들 수 있습니다. 객체 잠금 컨테이너에 업로드한 오브젝트는 **WORM (Write-Once-Read-Many)** 모델을 사용하여 저장됩니다. 객체 잠금 컨테이너에 업로드한 오브젝트에는 잠금 만료 날짜가 설정됩니다. 각 오브젝트에 설정된 잠금 만료 날짜 이전에는 오브젝트를 덮어쓰거나 삭제할 수 없습니다.
+컨테이너를 만들 때 `X-Container-Worm-Retention-Day` 헤더를 이용하여 객체 잠금 주기를 설정하면 객체 잠금 컨테이너를 만들 수 있습니다. 객체 잠금 컨테이너에 업로드한 오브젝트는 **WORM(Write-Once-Read-Many)** 모델을 사용하여 저장됩니다. 객체 잠금 컨테이너에 업로드한 오브젝트에는 잠금 만료 날짜가 설정됩니다. 각 오브젝트에 설정된 잠금 만료 날짜 이전에는 오브젝트를 덮어쓰거나 삭제할 수 없습니다.
 
 <br/>
 
@@ -692,7 +692,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 생성할 컨테이너 이름 |
 | X-Storage-Policy | Header | String | - | 컨테이너의 스토리지 클래스<br/><b>Standard</b>: 자주 접근하는 데이터를 위한 기본 클래스<br/><b>Economy</b>: 접근 빈도가 낮은 데이터를 장기 보관하는 데 적합한 클래스 |
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정 |
@@ -879,7 +879,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 조회할 컨테이너 이름 |
 | marker | Query | String | - | 기준 오브젝트 이름 |
 | prefix | Query | String | - | 검색할 접두어 |
@@ -1101,14 +1101,14 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 | X-Versions-Retention | Header | Integer | - | 오브젝트의 이전 버전의 수명 주기를 일 단위로 설정 |
 | X-Container-Meta-Web-Index | Header | String | - | 정적 웹사이트 인덱스 문서 오브젝트 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
 | X-Container-Meta-Web-Error | Header | String | - | 정적 웹사이트 오류 문서 오브젝트 접미사 설정<br/>영문자, 숫자, 일부 특수 문자(`-`, `_`, `.`, `/`)만 허용 |
-| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. | 
+| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS 허용 호스트 목록. `*`로 모든 호스트를 허용하거나, 띄어쓰기로 구분된 호스트 목록을 입력할 수 있습니다. |
 | X-Container-Rfc-Compliant-Etags | Header | String | - | RFC를 준수하는 ETag 형식 사용 여부를 설정, true 또는 false |
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정<br/>객체 잠금 컨테이너에서만 변경 가능 |
 | X-Container-Object-Deny-Extension-Policy | Header | String | - | 오브젝트 업로드 정책의 확장자 블랙리스트 |
 | X-Container-Object-Deny-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 블랙리스트 |
 | X-Container-Object-Allow-Extension-Policy | Header | String | - | 오브젝트 업로드 정책의 확장자 화이트리스트 |
 | X-Container-Object-Allow-Keyword-Policy | Header | String | - | 오브젝트 업로드 정책의 파일명 화이트리스트 |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 <br/>
 
@@ -1499,7 +1499,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL| String |	O | 삭제할 컨테이너 이름 |
 
 #### 응답
@@ -1641,7 +1641,7 @@ Content-Type: {content-type}
 | Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
 | X-Delete-At | Header | Timestamp | - | 오브젝트 만료 날짜, 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String |	O | 생성할 오브젝트 이름 |
 | - |	Body | Binary | O | 생성할 오브젝트의 내용 |
@@ -1873,7 +1873,7 @@ Content-Type: {content-type}
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 오브젝트 이름 |
 | Count | URL | Integer | O | 분할한 오브젝트의 순번, 예) 001, 002 |
@@ -1908,7 +1908,7 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}/
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | 토큰 ID |
 | X-Object-Manifest | Header| String | O | 분할한 세그먼트 오브젝트를 업로드한 경로, `{Segment-Container}/{Segment-Object}/` |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
 | - | Body| Binary | O | 빈 데이터 |
@@ -1945,13 +1945,13 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header| String |	O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
 | multipart-manifest | Query| String | O | put |
 | path | Body | String | O | 세그먼트 오브젝트의 경로 |
 | etag | Body | String | O | 세그먼트 오브젝트의 etag |
-| size_bytes | Body | Integer | O | 세그먼트 오브젝트의 크기 (바이트 단위) |
+| size_bytes | Body | Integer | O | 세그먼트 오브젝트의 크기(바이트 단위) |
 
 > [참고]
 > SLO 매니페스트 파일이 가지고 있는 세그먼트 정보를 조회하려면 `multipart-manifest=get` 질의를 이용해야 합니다.
@@ -2242,7 +2242,7 @@ Content-Type: {content-type}
 | Content-type | Header | String | O | 오브젝트의 콘텐츠 타입 |
 | X-Delete-At | Header | Timestamp | - | 오브젝트 만료 날짜, 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
 | - |	Body | Binary | O | 수정할 오브젝트의 내용 |
@@ -2253,7 +2253,7 @@ Content-Type: {content-type}
 <br/>
 
 ### 오브젝트 정보 조회
-지정한 오브젝트의 정보를 조회합니다. 오브젝트의 정보는 응답 헤더에서 확인할 수 있습니다.
+지정한 오브젝트의 정보를 조회합니다. 오브젝트 정보는 응답 헤더에서 확인할 수 있습니다.
 
 ```
 HEAD   /v1/{Account}/{Container}/{Object}
@@ -2266,7 +2266,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 다운로드할 오브젝트 이름 |
 
@@ -2284,7 +2284,7 @@ X-Auth-Token: {token-id}
 | X-Object-Worm-Retain-Until | Header | Timestamp | 오브젝트 잠금 만료 날짜, 유닉스 시간(초) |
 | X-Object-Manifest | Header | String | DLO 방식 멀티파트 오브젝트의 세그먼트 오브젝트 경로 |
 | X-Static-Large-Object | Header | Boolean | SLO 방식 멀티파트 오브젝트 여부 |
-| X-Manifest-Etag | Header | String | SLO 방식 멀티파트 오브젝트의 매니페스트 ETag 값 (MD5) |
+| X-Manifest-Etag | Header | String | SLO 방식 멀티파트 오브젝트의 매니페스트 ETag 값(MD5) |
 
 
 #### 코드 예시
@@ -2324,7 +2324,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 다운로드할 오브젝트 이름 |
 
@@ -2504,7 +2504,7 @@ X-Copy-From: {원본 오브젝트}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Destination | Header | String |	- | 오브젝트를 복사할 대상, `{컨테이너}/{오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
 | X-Copy-From | Header | String |	- | 원본 오브젝트, `{컨테이너}/{오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL | String | O |	컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 복사할 컨테이너 |
 | Object | URL | String |	복사할 오브젝트 이름 |
 
@@ -2663,7 +2663,7 @@ X-Object-Meta-{Key}: {Value}
 | X-Delete-At | Header | Timestamp | - | 오브젝트 만료 날짜, 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 오브젝트 유효 시간, 유닉스 시간(초) |
 | X-Object-Worm-Retain-Until | Header | Timestamp | - | 오브젝트 잠금 만료 날짜, 유닉스 시간(초)<br/>설정된 시간 이후로만 변경할 수 있으며, 객체 잠금 컨테이너에서만 변경 가능 |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 메타데이터를 수정할 오브젝트 이름 |
 
@@ -2832,7 +2832,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, API Endpoint 설정 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 삭제할 오브젝트 이름 |
 
