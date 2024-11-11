@@ -12,7 +12,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 
 ### オブジェクトストレージの接続設定
 
-オブジェクトストレージに接続するには、接続情報を保存するブックマークを作成する必要があります。ブラウザ上部の**新しい接続**をクリックした後、ドロップダウンメニューから**OpenStack Swift (Keystone 2.0)**を選択します。必要な情報を入力した後、接続をクリックすると新しいブックマークが作成されます。
+オブジェクトストレージに接続するには、接続情報を保存するブックマークを作成する必要があります。ブラウザ上部の**新しい接続**をクリックした後、ドロップダウンメニューから**OpenStack Swift(Keystone 2.0)**を選択します。必要な情報を入力した後、接続をクリックすると新しいブックマークが作成されます。
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -282,4 +282,3 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
-
