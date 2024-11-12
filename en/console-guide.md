@@ -13,7 +13,7 @@ Creates containers. Uploading objects in an object storage requires one or more 
   <tr>
     <td rowspan="5">Create Container</td>
     <td>Name</td>
-    <td>Container names can have a minimum of 3 characters and a maximum of 63 characters, and can only contain lowercase English letters, numbers, ' - ', and ' . '.<br/>The container name must begin and end with a letter or number.<br/>IP address format is not allowed.</td>
+    <td>Container names can have a minimum of 3 characters and a maximum of 63 characters, and can only contain lowercase English letters, numbers, ' - ', ' . ', and ' + '.<br/>The container name must begin and end with a letter or number.<br/>IP address format is not allowed.</td>
   </tr>
   <tr>
     <td rowspan="2">Container access policy</td>
