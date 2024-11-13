@@ -80,6 +80,10 @@ X-Auth-Token: {token-id}
 |---|---|---|---|
 | access | Body | String | S3 API認証情報アクセスキー |
 | secret | Body | String | S3 API認証情報シークレットキー |
+| user_id | Body | String | APIユーザーID |
+| tenant_id | Body | String | テナントID |
+| created_at | Body | String | S3 API認証情報作成時間 |
+| accessed_at | Body | String | S3 API認証情報の最終アクセス時間 |
 
 <details>
 <summary>例</summary>
@@ -91,7 +95,8 @@ X-Auth-Token: {token-id}
     "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
     "secret": "be057f235abf45ee8e2ba14edc5fb253",
     "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-    "trust_id": null
+    "created_at": "2024-10-19T08:24:46.000000Z",
+    "accessed_at": "2024-10-19T08:24:46.000000Z"
   }
 }
 ```
@@ -121,6 +126,10 @@ X-Auth-Token: {token-id}
 |---|---|---|---|
 | access | Body | String | 認証情報アクセスキー |
 | secret | Body | String | 認証情報シークレットキー |
+| user_id | Body | String | APIユーザーID |
+| tenant_id | Body | String | テナントID |
+| created_at | Body | String | S3 API認証情報作成時間 |
+| accessed_at | Body | String | S3 API認証情報の最終アクセス時間 |
 
 <details>
 <summary>例</summary>
@@ -133,7 +142,8 @@ X-Auth-Token: {token-id}
       "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
       "secret": "be057f235abf45ee8e2ba14edc5fb253",
       "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-      "trust_id": null
+      "created_at": "2024-10-19T08:24:46.000000Z",
+      "accessed_at": "2024-10-19T08:30:42.000000Z"
     }
   ]
 }
@@ -578,7 +588,7 @@ AWS SDKを使用するために必要な主要パラメータは次のとおり�
 ### Boto3 - Python SDK
 
 > [参考]
-> 詳細については[AWS SDK for Python (Boto3)説明書](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits)文書を参照してください。
+> 詳細については[AWS SDK for Python(Boto3)説明書](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits)文書を参照してください。
 #### Context
 
 <details>
@@ -661,7 +671,7 @@ def delete_bucket(self, bucket_name):
 
 <blockquote>
 <p>[参考]
-パーツオブジェクトの数は、アップロードするオブジェクトの容量と設定したパーツサイズによって決まります。デフォルトのパーツサイズは8MiBで、最小5MiBから指定できます。パーツオブジェクトの最大個数は1,000個までです。</p>
+パーツオブジェクトの数は、アップロードするオブジェクトの容量と設定したパーツサイズによって決まります。デフォルトのパーツサイズは8MiBで、最小5MiBから指定できます。パーツオブジェクトの最大個数は10,000個までです。</p>
 </blockquote>
 
 ```python
@@ -1051,7 +1061,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 
 <blockquote>
 <p>[参考]
-パーツオブジェクトの数は、アップロードするオブジェクトの容量と設定したパーツサイズによって決まります。デフォルトのパーツサイズは5MiBで、最小5MiBから指定できます。パーツオブジェクトの最大個数は1,000個までです。</p>
+パーツオブジェクトの数は、アップロードするオブジェクトの容量と設定したパーツサイズによって決まります。デフォルトのパーツサイズは5MiBで、最小5MiBから指定できます。パーツオブジェクトの最大個数は10,000個までです。</p>
 </blockquote>
 
 

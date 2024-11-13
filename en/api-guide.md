@@ -2253,6 +2253,64 @@ This API does not return a response body. For a valid request, return status cod
 
 <br/>
 
+### Query Object Information
+Retrieves the information about the specified object. The object information can be found in the response header.
+
+```
+HEAD /v1/{Account}/{Container}/{Object}
+X-Auth-Token: {token-id}
+```
+
+### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| X-Auth-Token | Header | String | O | Token ID |
+| Account | URL | String | O | Storage account, which can be found in the API Endpoint Settings popup |
+| Container |	URL | String | O | Container name |
+| Object | URL | String | O | Name of the object to download |
+
+### Response
+This request does not return a response body. For a valid request, return status code 200.
+
+| Name | Type | Format | Description |
+|---|---|---|---|
+| Content-Type | Header | String | Content type of object |
+| Content-Length | Header | Integer | Size of object |
+| Etag | Header | String | The ETag value of the object<br/>The MD5 Hash value of the object.<br/>Can be used to verify the integrity of an object. |
+| Last-Modified | Header | String | Last object modification time |
+| X-Timestamp | Header | Timestamp | Last object modification time, Unix time in seconds |
+| X-Delete-At | Header | Timestamp | Object expiration date, Unix time in seconds |
+| X-Object-Worm-Retain-Until | Header | Timestamp | Object lock expiration date, Unix time in seconds |
+| X-Object-Manifest | Header | String | Segment object path for DLO method multipart objects |
+| X-Static-Large-Object | Header | Boolean | SLO method multipart object or not |
+| X-Manifest-Etag | Header | String | Manifest ETag values (MD5) for SLO-style multipart objects |
+
+
+#### Code Example
+
+<details>
+<summary>cURL</summary>
+
+```
+$ curl -O -X HEAD -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
+HTTP/1.1 200 OK
+content-type: image/jpeg
+content-length: 148585
+x-delete-at: 1729263600
+etag: bad093d7f49dc495751cb3f7f8b2530c
+last-modified: Mon, 30 May 2022 15:16:43 GMT
+x-timestamp: 1653923802.28970
+x-trans-id: tx3c30a8f0272c40f5979b4-0067104fa7
+x-openstack-request-id: tx3c30a8f0272c40f5979b4-0067104fa7
+date: Wed, 16 Oct 2024 23:43:36 GMT
+```
+</details>
+
+<br/>
+
 ### Download an Object
 Downloads an object.
 
