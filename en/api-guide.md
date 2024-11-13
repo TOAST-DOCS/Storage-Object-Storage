@@ -2261,7 +2261,7 @@ HEAD /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
-### Request
+#### Request
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -2271,7 +2271,7 @@ This API does not require a request body.
 | Container |	URL | String | O | Container name |
 | Object | URL | String | O | Name of the object to download |
 
-### Response
+#### Response
 This request does not return a response body. For a valid request, return status code 200.
 
 | Name | Type | Format | Description |
