@@ -2246,7 +2246,7 @@ HEAD   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
-### 요청
+#### 요청
 요청 본문은 필요하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -2256,7 +2256,7 @@ X-Auth-Token: {token-id}
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 다운로드할 오브젝트 이름 |
 
-### 응답
+#### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
 | 이름 | 종류 | 형식 | 설명 |
