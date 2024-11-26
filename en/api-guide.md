@@ -2247,6 +2247,7 @@ This API does not require a request body.
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container |	URL | String | O | Container name |
 | Object | URL | String | O | Name of the object to be updated |
+| - |	Body | Binary | O | Data content of the object to update |
 
 #### Response
 This API does not return a response body. For a valid request, return status code 201.
