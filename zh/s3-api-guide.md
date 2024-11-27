@@ -80,6 +80,10 @@ X-Auth-Token: {token-id}
 | ------ | ---- | ------ | --------------------- |
 | access | Body | String | S3 API credentials access key |
 | secret | Body | String | S3 API credentials secret key |
+| user_id | Body | String | API user ID |
+| tenant_id | Body | String | Tenant ID |
+| created_at | Body | String | S3 API credential generation time |
+| accessed_at | Body | String | S3 API credentials last accessed time |
 
 <details>
 <summary>Example</summary>
@@ -91,7 +95,8 @@ X-Auth-Token: {token-id}
     "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
     "secret": "be057f235abf45ee8e2ba14edc5fb253",
     "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-    "trust_id": null
+    "created_at": "2024-10-19T08:24:46.000000Z",
+    "accessed_at": "2024-10-19T08:24:46.000000Z"
   }
 }
 ```
@@ -667,7 +672,7 @@ def delete_bucket(self, bucket_name):
 
 <blockquote>
 <p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 8MiB, and you can specify an object size as small as 5MiB. The maximum number of part objects is 1000.</p>
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 8MiB, and you can specify an object size as small as 5MiB. The maximum number of part objects is 10,000.</p>
 </blockquote>
 
 ```python
@@ -834,7 +839,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 <blockquote>
 <p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can specify an object size as small as 5MiB. The maximum number of part objects is 1000.</p>
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can specify an object size as small as 5MiB. The maximum number of part objects is 10,000.</p>
 </blockquote>
 
 ```java
@@ -1061,7 +1066,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 
 <blockquote>
 <p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can set the object size as small as 5MiB. The maximum number of part objects is 1000.</p>
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can set the object size as small as 5MiB. The maximum number of part objects is 10,000.</p>
 </blockquote>
 
 ```csharp
