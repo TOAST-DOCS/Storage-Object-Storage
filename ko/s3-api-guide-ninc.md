@@ -36,7 +36,7 @@ Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 �
 API를 이용하여 자격 증명을 발급 받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide-ngsc/#tenant-id-api-endpoint)를 참조하세요.
 
 ```
-POST    https://api-identity-infrastructure.ngsc.go.kr/v2.0/users/{api-user-id}/credentials/OS-EC2
+POST    https://api-identity-infrastructure.ninc.go.kr/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -108,7 +108,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-GET   https://api-identity-infrastructure.ngsc.go.kr/v2.0/users/{user-id}/credentials/OS-EC2
+GET   https://api-identity-infrastructure.ninc.go.kr/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -156,7 +156,7 @@ X-Auth-Token: {token-id}
 
 **[Method, URL]**
 ```
-DELETE   https://api-identity-infrastructure.ngsc.go.kr/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE   https://api-identity-infrastructure.ninc.go.kr/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
@@ -467,7 +467,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | 이름 | 설명 |
 |---|---|
-| endpoint | https://api-object-storage.ngsc.go.kr |
+| endpoint | https://api-object-storage.ninc.go.kr |
 | command | AWS 명령줄 인터페이스 명령 |
 | bucket | 버킷 이름 |
 
@@ -480,7 +480,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 <summary>버킷 생성</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.ngsc.go.kr s3 mb s3://example-bucket
+$ aws --endpoint-url=https://api-object-storage.ninc.go.kr s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
 
@@ -490,7 +490,7 @@ make_bucket: example-bucket
 <summary>버킷 목록 조회</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.ngsc.go.kr s3 ls
+$ aws --endpoint-url=https://api-object-storage.ninc.go.kr s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
 
@@ -501,7 +501,7 @@ $ aws --endpoint-url=https://api-object-storage.ngsc.go.kr s3 ls
 <summary>버킷 조회</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.ngsc.go.kr s3 ls s3://example-bucket
+$ aws --endpoint-url=https://api-object-storage.ninc.go.kr s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -512,7 +512,7 @@ $ aws --endpoint-url=https://api-object-storage.ngsc.go.kr s3 ls s3://example-bu
 <summary>버킷 삭제</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.ngsc.go.kr s3 rb s3://example-bucket
+$ aws --endpoint-url=https://api-object-storage.ninc.go.kr s3 rb s3://example-bucket
 remove_bucket: example-bucket
 ```
 
@@ -522,7 +522,7 @@ remove_bucket: example-bucket
 <summary>오브젝트 업로드</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.ngsc.go.kr s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=https://api-object-storage.ninc.go.kr s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -548,7 +548,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 <summary>오브젝트 다운로드</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.ngsc.go.kr s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=https://api-object-storage.ninc.go.kr s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
 
@@ -558,7 +558,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <summary>오브젝트 삭제</summary>
 
 ```shell
-$ aws --endpoint-url=https://api-object-storage.ngsc.go.kr s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=https://api-object-storage.ninc.go.kr s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -578,7 +578,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
 | region name | gov |
-| endpoint | https://api-object-storage.ngsc.go.kr |
+| endpoint | https://api-object-storage.ninc.go.kr |
 
 ### Boto3 - Python SDK
 
