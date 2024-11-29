@@ -105,7 +105,7 @@
 
 ##### IP ACL
 
-IP 기반 접근 정책을 관리합니다. 접근 정책에 대한 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참조하세요.
+IP 기반 접근 정책을 관리합니다. 접근 정책에 대한 자세한 내용은 [접근 정책 설정 가이드](acl-guide-ngsc/)를 참조하세요.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
