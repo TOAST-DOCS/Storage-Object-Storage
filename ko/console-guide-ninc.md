@@ -308,7 +308,7 @@ IP 기반 접근 정책을 관리합니다. 접근 정책에 대한 자세한 �
 # cat > index.html
 <html>
 <body> hello world!
-<a href="https://api-object-storage.ninc.go.kr/v1/{account}/{container}/{object}">Download</a>
+<a href="https://https://kr4-api-object-storage.ninc.go.kr/v1/{account}/{container}/{object}">Download</a>
 </body>
 </html>
 ```
