@@ -53,7 +53,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read;' \
   -H 'X-Container-Write;' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 <blockquote>
@@ -65,7 +65,7 @@ curl을 이용하여 값이 없는 헤더를 보낼 때는 헤더 이름에 세�
 
 ```
 $ curl -X GET \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -75,7 +75,7 @@ $ curl -X GET \
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 
 [컨테이너의 오브젝트 목록]
 ```
@@ -93,18 +93,18 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .rlistings' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -X GET \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 
 [컨테이너의 오브젝트 목록]
 ```
@@ -115,18 +115,18 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -X GET \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -149,7 +149,7 @@ HTTP 리퍼러(HTTP Referer)는 하이퍼링크를 통해 요청하는 웹 페�
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:bar.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 API 요청 헤더에 허용된 HTTP 리퍼러 주소를 명시해 요청하면 오브젝트에 접근할 수 있습니다.
@@ -157,14 +157,14 @@ API 요청 헤더에 허용된 HTTP 리퍼러 주소를 명시해 요청하면 �
 ```
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com/some/path' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -173,21 +173,21 @@ API 요청 헤더에 허가된 리퍼러 주소가 없거나, 리퍼러 주소�
 
 ```
 $ curl -X GET \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: https://example.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: bar.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -198,20 +198,20 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://qux.baz.foo.com/some/path' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -221,7 +221,7 @@ $ curl -O -X GET \
 ```
 $ curl -X GET \
   -H 'Referer: https://foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -232,20 +232,20 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:foo.com, .r:.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://baz.foo.com/some/path' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -258,14 +258,14 @@ $ curl -O -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:-bar.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 HTTP 리퍼러 도메인 이름 앞에 마이너스 기호를 붙여 설정하면, 설정된 HTTP 리퍼러 요청이 차단됩니다.
 
 ```
 $ curl -X GET -H 'Referer: https://bar.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -283,18 +283,18 @@ HTTP 리퍼러에 대한 접근 허용/차단 정책은 입력하는 순서에 �
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET -H 'Referer: https://bar.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -307,18 +307,18 @@ $ curl -O -X GET -H 'Referer: https://bar.foo.com' \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .r:-bar.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -X GET -H 'Referer: https://bar.foo.com' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -339,7 +339,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:{api-user-id}' \
   -H 'X-Container-Write: {tenant-id}:{api-user-id}' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근 요청을 할 때는 반드시 허가된 테넌트 ID와 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요합니다.
@@ -347,14 +347,14 @@ $ curl -i -X POST \
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 
 [컨테이너의 오브젝트 목록]
 
 
 $ curl -O -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -368,7 +368,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:*' \
   -H 'X-Container-Write: {tenant-id}:*' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근 요청을 할 때는 반드시 허가된 테넌트 ID와 해당하는 프로젝트에 속한 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요합니다.
@@ -383,7 +383,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:{api-user-id}' \
   -H 'X-Container-Write: *:{api-user-id}' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근 요청을 할 때는 반드시 허가된 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요합니다.
@@ -398,7 +398,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:*' \
   -H 'X-Container-Write: *:*' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근 요청을 할 때는 반드시 유효한 인증 토큰이 필요합니다.
@@ -470,7 +470,7 @@ IP 기반 접근 정책 요소는 접근 권한과, IP 또는 네트워크 대�
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Allowed-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 192.168.0.1 IP는 읽기 요청만, 192.168.0.2 IP에서는 쓰기 요청만 가능하며 172.16.0.0/24 대역의 모든 IP는 모든 요청이 가능합니다. 그 외의 모든 IP는 요청이 거부됩니다.<br><br>
@@ -487,7 +487,7 @@ $ curl -i -X POST \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Denied-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 192.168.0.1 IP는 읽기 요청이, 192.168.0.2 IP에서는 쓰기 요청이 거부되며 172.16.0.0/24 대역의 모든 IP는 모든 요청이 불가능합니다. 그 외의 모든 IP는 요청이 허용됩니다.<br><br>
@@ -504,7 +504,7 @@ $ curl -i -X POST \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Service-Gateway-Control: rw' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 설정된 IP ACL과 관계없이 서비스 게이트웨이를 통한 요청은 모두 허용합니다.<br><br>
 컨테이너를 변경하려면 허가된 테넌트 ID와 해당 프로젝트에 속한 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요하며, 반드시 허용된 IP에서 요청해야 합니다.
@@ -524,7 +524,7 @@ $ curl -i -X POST \
   -H 'X-Container-Ip-Acl-Allowed-List;' \
   -H 'X-Container-Ip-Acl-Denied-List;' \
   -H 'X-Container-Ip-Acl-Service-Gateway-Control;' \
-  https://https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
+  https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****/container
 ```
 
 컨테이너를 변경하려면 허가된 테넌트 ID와 해당 프로젝트에 속한 NHN Cloud 사용자 ID로 발급 받은 유효한 인증 토큰이 필요하며, 반드시 허용된 IP에서 요청해야 합니다.
