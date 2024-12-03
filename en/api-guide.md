@@ -675,7 +675,7 @@ When you create a container, you can use the `X-Storage-Policy` header to specif
 > [Note]
 > You cannot change the storage class of an already created container.
 > Objects uploaded to Economy class containers are subject to a minimum storage period of 30 days. Objects deleted before 30 days are also charged for the remaining storage period.
-> Economy class containers are charged per 1000 API requests (excluding HEAD/DELETE requests).
+> Economy class containers are charged per 1,000 API requests (excluding HEAD/DELETE requests).
 
 You can create an object lock container by setting the object lock interval using the `X-Container-Worm-Retention-Day` header when creating the container. Objects uploaded to the Object Lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
 
