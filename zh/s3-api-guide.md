@@ -127,6 +127,10 @@ This API does not require a request body.
 | ------ | ---- | ------ | --------------------- |
 | access | Body | String | S3 API credentials access key |
 | secret | Body | String | S3 API credentials secret key |
+| user_id | Body | String | API user ID |
+| tenant_id | Body | String | Tenant ID |
+| created_at | Body | String | S3 API credential generation time |
+| accessed_at | Body | String | S3 API credentials last accessed time |
 
 <details>
 <summary>Example</summary>
@@ -139,7 +143,8 @@ This API does not require a request body.
       "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
       "secret": "be057f235abf45ee8e2ba14edc5fb253",
       "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-      "trust_id": null
+      "created_at": "2024-10-19T08:24:46.000000Z",
+      "accessed_at": "2024-10-19T08:30:42.000000Z"
     }
   ]
 }
