@@ -182,7 +182,7 @@ S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 �
 | 알고리즘 | AWS4-HMAC-SHA256 |
 | 서명 시각 | YYYYMMDDThhmmssZ 형태 |
 | 서비스 이름 | s3 |
-| 리전 이름 | gov |
+| 리전 이름 | KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전 |
 | 비밀 키 | S3 API 자격 증명 비밀 키 |
 
 ## 버킷(Bucket)
@@ -456,7 +456,7 @@ Default output format [None]: json
 |---|---|
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
-| region name | gov-kr1 - 한국(판교) 리전<br/>gov-kr2 - 한국(평촌) 리전 |
+| region name | KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전 |
 
 ### S3 명령 사용 방법
 
@@ -576,7 +576,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 |---|---|
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
-| region name | gov-kr1 - 한국(판교) 리전<br/>gov-kr2 - 한국(평촌) 리전 |
+| region name | KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전 |
 | endpoint | https://kr1-api-object-storage.gov-nhncloudservice.com - 한국(판교) 리전<br/>https://kr2-api-object-storage.gov-nhncloudservice.com - 한국(평촌) 리전 |
 
 ### Boto3 - Python SDK
