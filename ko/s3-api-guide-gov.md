@@ -182,7 +182,7 @@ S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 �
 | 알고리즘 | AWS4-HMAC-SHA256 |
 | 서명 시각 | YYYYMMDDThhmmssZ 형태 |
 | 서비스 이름 | s3 |
-| 리전 이름 | gov |
+| 리전 이름 | KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전 |
 | 비밀 키 | S3 API 자격 증명 비밀 키 |
 
 ## 버킷(Bucket)
@@ -435,11 +435,10 @@ Authorization: AWS {access}:{signature}
 S3 호환 API를 이용하여 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
 ### 설치
-AWS 명령줄 인터페이스는 파이썬 패키지로 제공됩니다. 파이썬 패키지 관리자(pip)를 이용하여 설치합니다.
+[Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) 문서를 참조해 AWS 명령줄 인터페이스를 설치합니다.
 
-```shell
-$ sudo pip install awscli
-```
+> [참고]
+> NHN Cloud 오브젝트 스토리지는 AWS CLI 버전 2.22.35까지 지원합니다.
 
 ### 설정
 AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 S3 API 자격 증명과 환경을 설정해야 합니다.
@@ -456,7 +455,7 @@ Default output format [None]: json
 |---|---|
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
-| region name | gov-kr1 - 한국(판교) 리전<br/>gov-kr2 - 한국(평촌) 리전 |
+| region name | KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전 |
 
 ### S3 명령 사용 방법
 
@@ -576,7 +575,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 |---|---|
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
-| region name | gov-kr1 - 한국(판교) 리전<br/>gov-kr2 - 한국(평촌) 리전 |
+| region name | KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전 |
 | endpoint | https://kr1-api-object-storage.gov-nhncloudservice.com - 한국(판교) 리전<br/>https://kr2-api-object-storage.gov-nhncloudservice.com - 한국(평촌) 리전 |
 
 ### Boto3 - Python SDK
