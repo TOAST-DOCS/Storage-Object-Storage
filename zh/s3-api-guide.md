@@ -443,11 +443,10 @@ This API does not return a response body. It returns status code 204 if the requ
 You can use NHN Cloud Object Storage with [AWS Command Line Interface](https://aws.amazon.com/cli/) using the S3 compatible API.
 
 ### Installation
-The AWS Command Line Interface (CLI) is provided as a Python package, which can be installed by using the Python package manager (pip).  
+Install the AWS Command Line Interface (CLI) by referencing the [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) documentation.  
 
-```shell
-$ sudo pip install awscli
-```
+> [Note]
+> AWS CLI versions up to 2.22.35 are supported in NHN Cloud Object Storage.
 
 ### Configuration
 To use AWS CLI, you must set up S3 API credentials and environment first.
