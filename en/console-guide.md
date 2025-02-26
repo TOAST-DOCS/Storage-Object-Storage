@@ -331,10 +331,10 @@ Replication settings allow you to replicate objects in a container to another co
   </tr>
   <tr>
     <td rowspan="2">Project type</td>
-    <td><b>Same project</b>: Select a container of the same project.</td>
+    <td><b>Same project</b>: Select a container of the same project for the replication target container.</td>
   </tr>
   <tr>
-    <td><b>Different project</b>: Select a container of a different project.</td>
+    <td><b>Different project</b>: Select a container of a different project for the replication target container.</td>
   </tr>
   <tr>
     <td>Target project</td>
@@ -342,7 +342,7 @@ Replication settings allow you to replicate objects in a container to another co
   </tr>
   <tr>
     <td>Target region</td>
-    <td>Select a region to replicate to other than the currently used region.</td>
+    <td>Select a region to replicate to. If the project type is same project, the region you are currently using is excluded.</td>
   </tr>
   <tr>
     <td>Target container</td>
@@ -352,18 +352,11 @@ Replication settings allow you to replicate objects in a container to another co
 
 The replication policies are as follows:
 
-* The table below shows the range of regions available for selection by target project.
-
-
-| Project type | Selectable region |
-| -- | -- |
-| Same project | Different regions |
-| Different project | All regions |
-
 * Changes (upload, update, deletion) of objects in the source container are reflected identically in the target container.
 * Changes made to the object in the target container are not reflected in the source container.
 * If a change is made to a replicated object in the target container, that object may not be replicated even if there are subsequent changes to the source object.
 * It is recommended to use an empty container for the target container. If the target container already has an object with the same name as the object in the source container, replication may not be performed properly.
+* If you had deleted objects with the same name as the object to be replicated in the replication target container before enabling replication, the last update time of the replicated object might change to the replication time.
 * If the target container is deleted, replication will not resume even if you create a container with the same name again. To resume replication, you must set up replication again.
 * The target container cannot be replicated to another region, and it cannot be set as another container's target container in duplicate.
 * Changing the replication setting to **Disable** stops replication, but the objects that have already been replicated are maintained.
