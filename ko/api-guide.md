@@ -1503,7 +1503,7 @@ X-Auth-Token: {token-id}
 | Container | URL| String |	O | 삭제할 컨테이너 이름 |
 
 #### 응답
-이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다. 비어 있지 않은 컨테이너를 삭제 시도할 경우, 상태 코드 409를 반환합니다.
 
 <br/>
 
@@ -1959,7 +1959,7 @@ X-Auth-Token: {token-id}
 <br/>
 
 ##### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다. 요청 시 입력한 etag 값과 오브젝트의 크기가 일치하지 않을 경우, 상태 코드 422를 반환합니다.
 
 <br/>
 
@@ -2958,6 +2958,12 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 </details>
 
 <br/>
+
+## 코드 예시
+
+API 가이드 문서에 적힌 코드 예시들을 다운로드 받을 수 있는 경로를 제공합니다.
+
+[전체 코드 예시 다운로드](https://static.toastoven.net/prod_infrastructure/object_storage/obs_example.zip)
 
 ## References
 
