@@ -439,11 +439,10 @@ Authorization: AWS {access}:{signature}
 S3互換APIを利用して[AWSコマンドラインインターフェイス](https://aws.amazon.com/jp/cli/)でNHN Cloudオブジェクトストレージを使用できます。
 
 ### インストール
-AWSコマンドラインインターフェイスはPythonパッケージで提供されます。Pythonパッケージ管理者(pip)を利用してインストールします。
+[Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html)文書を参照してAWSコマンドラインインターフェイスをインストールします。
 
-```shell
-$ sudo pip install awscli
-```
+> [参考]
+> NHN CloudオブジェクトストレージはAWS CLIバージョン2.22.35までサポートします。
 
 ### 設定
 AWSコマンドラインインターフェイスを使用するには、先にS3 API認証情報と環境を設定する必要があります。
