@@ -1,11 +1,22 @@
 ## Storage > Object Storage > Release Notes
 
+### May 27, 2025
+#### Added Features
+* [Console] Added the feature to resume/suspend container replication
+
+### Feature Updates
+* [API] Improved Amazon S3 API compatibility
+    * Fixed issue where the LastModified value of each objects in the object list was displayed to the nearest millisecond
+
+### Bug Fixes
+* [API] Fixed issue where multipart uploads to buckets with object locks using Amazon S3 compatible APIs would cause requests to fail and existing part objects to be deleted.
+
 ### August 27, 2024
 #### Feature Updates
 * [Console][API] Added service gateway IP access control settings
     * You can handle IP ACL exceptions for requests through the service gateway
 * [Console] Added the feature for replication to a different project in the same organization
-* [API] Improved S3 compatibility
+* [API] Improved Amazon S3 API compatibility
     * Improved response compatibility for the following errors
         * Request to create a bucket with an invalid name
         * Container request with an invalid path
