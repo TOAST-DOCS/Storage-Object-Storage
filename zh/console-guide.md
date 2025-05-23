@@ -366,6 +366,20 @@ The replication policies are as follows:
 
 > [Caution]
 > If you specify an encryption container as the replication target container and then delete the symmetric key from Secure Key Manager, the encryption container fails to be replicated.
+<br/>
+
+##### Resume Replication
+
+Resumes the replication of a suspended container from the point it was suspended.
+<br/>
+
+##### Suspend Replication
+
+Suspends container replication. While replication is suspended, any deletions or modifications to objects in the source container are not replicated.
+
+> [Caution]
+> Objects in the source container that are deleted during the replication suspend period might not be reflected in the target container.
+<br/>
 
 ## Object
 ### Create Folder
