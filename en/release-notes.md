@@ -4,11 +4,11 @@
 #### Added Features
 * [Console] Added the feature to resume/suspend container replication
 
-### Feature Updates
+#### Feature Updates
 * [API] Improved Amazon S3 API compatibility
     * Fixed issue where the LastModified value of each objects in the object list was displayed to the nearest millisecond
 
-### Bug Fixes
+#### Bug Fixes
 * [API] Fixed issue where multipart uploads to buckets with object locks using Amazon S3 compatible APIs would cause requests to fail and existing part objects to be deleted
 
 ### August 27, 2024
