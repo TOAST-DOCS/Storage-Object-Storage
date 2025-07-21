@@ -2964,7 +2964,7 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 ## Limiting Policy
 ### Request Rate Limit
-Object Storage applies a write request rate limit at the storage account level to ensure system stability.
+Object Storage applies a write request rate limit per storage account to ensure system stability.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -2979,11 +2979,11 @@ Object Storage applies a write request rate limit at the storage account level t
   </tr>
   <tr>
     <td rowspan="5">Target</td>
-    <td>Application Unit</td>
+    <td>Target Unit</td>
     <td>Per storage account</td>
   </tr>
   <tr>
-    <td rowspan="4">Application Methods</td>
+    <td rowspan="4">Target Methods</td>
     <td>POST: Update container settings, modify object properties/metadata</td>
   </tr>
   <tr>
@@ -2998,7 +2998,7 @@ Object Storage applies a write request rate limit at the storage account level t
   <tr>
     <td>Execution Behavior</td>
     <td>Processing When Rate Limit Is Exceeded</td>
-    <td>지Requests are delayed; if delay exceeds 60 seconds, a 429 response is returned</td>
+    <td>Requests are delayed; if delay exceeds 60 seconds, a 429 response is returned</td>
   </tr>
 </table>
 
