@@ -2951,6 +2951,57 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 <br/>
 
+## 制限ポリシー
+### リクエスト速度制限
+Object Storageはシステム安定性を確保するため、ストレージアカウント単位で書き込みリクエスト速度制限(rate limit)を適用します。
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>区分</th>
+    <th>項目</th>
+    <th>説明</th>
+  </tr>
+  <tr>
+    <td>制限条件</td>
+    <td>リクエスト速度制限</td>
+    <td>500リクエスト/秒</td>
+  </tr>
+  <tr>
+    <td rowspan="5">適用対象</td>
+    <td>適用単位</td>
+    <td>ストレージアカウント(account)単位</td>
+  </tr>
+  <tr>
+    <td rowspan="4">適用メソッド</td>
+    <td>POST:コンテナ設定変更、オブジェクトの属性/メタデータの修正</td>
+  </tr>
+  <tr>
+    <td>PUT:コンテナの作成、オブジェクトのアップロード</td>
+  </tr>
+  <tr>
+    <td>DELETE:コンテナ/オブジェクトの削除</td>
+  </tr>
+  <tr>
+    <td>COPY:オブジェクトのコピー</td>
+  </tr>
+  <tr>
+    <td>動作方式</td>
+    <td>制限超過時の処理方式</td>
+    <td>遅延後処理、遅延時間が60秒を超えると429レスポンスを返す</td>
+  </tr>
+</table>
+
+リクエスト速度制限を超過した書き込みリクエストに適用されるポリシーは次のとおりです。
+
+* 超過した書き込みリクエストは即時拒否されず、遅延処理されます。
+* 遅延時間は超過したリクエスト量に応じて段階的に増加し、最大60秒まで延長される可能性があります。
+* 遅延時間が60秒を超えると、リクエストは失敗し、429 Too Many Requestsレスポンスを返します。
+
+レスポンスの遅延や失敗を防止するには、書き込みリクエストが速度制限を超えないように調整してください。
+
+
+<br/>
+
 ## References
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
