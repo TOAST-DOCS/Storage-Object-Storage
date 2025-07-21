@@ -1,5 +1,10 @@
 ## Storage > Object Storage > Release Notes
 
+### July 29, 2025
+#### Limiting Policy
+* [API] Added the write request rate limit
+    * A rate limiting policy is applied to write requests that exceed 500 requests per second, per storage account.
+
 ### May 27, 2025
 #### Added Features
 * [Console] Added the feature to resume/suspend container replication
