@@ -2962,6 +2962,57 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 <br/>
 
+## Limiting Policy
+### Request Rate Limit
+Object Storage applies a write request rate limit per storage account to ensure system stability.
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Category</th>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Limit Condition</td>
+    <td>Request Rate Limit</td>
+    <td>500 requests/second</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Target</td>
+    <td>Target Unit</td>
+    <td>Per storage account</td>
+  </tr>
+  <tr>
+    <td rowspan="4">Target Methods</td>
+    <td>POST: Update container settings, modify object properties/metadata</td>
+  </tr>
+  <tr>
+    <td>PUT: Create container, upload object</td>
+  </tr>
+  <tr>
+    <td>DELETE: Delete container/object</td>
+  </tr>
+  <tr>
+    <td>COPY: Copy object</td>
+  </tr>
+  <tr>
+    <td>Execution Behavior</td>
+    <td>Processing When Rate Limit Is Exceeded</td>
+    <td>Requests are delayed; if delay exceeds 60 seconds, a 429 response is returned</td>
+  </tr>
+</table>
+
+The following policy applies to write requests that exceed the rate limit:
+
+* Excess write requests are not immediately rejected but are subject to delayed processing.
+* The delay time increases gradually based on the excess request volume and may reach up to 60 seconds.
+* If the delay exceeds 60 seconds, the request fails and returns a 429 Too Many Requests response.
+
+To avoid response delays or failures, ensure that write requests stay within the defined rate limits.
+
+
+<br/>
+
 ## References
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
