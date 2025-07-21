@@ -2945,6 +2945,57 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 <br/>
 
+## 제한 정책
+### 요청 속도 제한
+Object Storage는 시스템 안정성을 위해 스토리지 계정(account) 단위로 쓰기 요청 속도 제한(rate limit)을 적용합니다.
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>구분</th>
+    <th>항목</th>
+    <th>설명</th>
+  </tr>
+  <tr>
+    <td>제한 조건</td>
+    <td>요청 속도 제한</td>
+    <td>500 요청/초</td>
+  </tr>
+  <tr>
+    <td rowspan="5">적용 대상</td>
+    <td>적용 단위</td>
+    <td>스토리지 계정(account) 단위</td>
+  </tr>
+  <tr>
+    <td rowspan="4">적용 메서드</td>
+    <td>POST: 컨테이너 설정 변경, 오브젝트 속성/메타데이터 수정</td>
+  </tr>
+  <tr>
+    <td>PUT: 컨테이너 생성, 오브젝트 업로드</td>
+  </tr>
+  <tr>
+    <td>DELETE: 컨테이너/오브젝트 삭제</td>
+  </tr>
+  <tr>
+    <td>COPY: 오브젝트 복사</td>
+  </tr>
+  <tr>
+    <td>동작 방식</td>
+    <td>제한 초과 시 처리 방식</td>
+    <td>지연 후 처리, 지연 시간이 60초를 초과하면 429 응답 반환</td>
+  </tr>
+</table>
+
+요청 속도 제한을 초과한 쓰기 요청에 적용되는 정책은 다음과 같습니다.
+
+* 초과된 쓰기 요청은 즉시 거부되지 않고 지연 처리됩니다.
+* 지연 시간은 초과 요청량에 따라 점진적으로 증가하며, 최대 60초까지 늘어날 수 있습니다.
+* 지연 시간이 60초를 초과하면, 요청은 실패하고 429 Too Many Requests 응답을 반환합니다.
+
+응답 지연이나 실패를 방지하려면, 쓰기 요청이 속도 제한을 초과하지 않도록 조정하세요.
+
+
+<br/>
+
 ## References
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
