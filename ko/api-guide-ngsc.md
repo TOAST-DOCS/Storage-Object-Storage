@@ -141,7 +141,7 @@ https://api-identity-infrastructure.ngsc.go.kr/v2.0/tokens \
       {
         "endpoints": [
           {
-            "region": "KR1",
+            "region": "KR4",
             "publicURL": "https://kr4-api-object-storage.ngsc.go.kr/v1/AUTH_*****"
           }
         ],

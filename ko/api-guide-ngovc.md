@@ -141,7 +141,7 @@ https://api-identity-infrastructure.ngovc.com/v2.0/tokens \
       {
         "endpoints": [
           {
-            "region": "KR1",
+            "region": "KR4",
             "publicURL": "https://kr4-api-object-storage.ngovc.com/v1/AUTH_*****"
           }
         ],
