@@ -436,7 +436,7 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 지정된 IP 또는 네트워크 대역의 요청을 거부합니다. 그 외의 모든 요청은 허용됩니다. 허용 정책과 함께 사용되는 경우 거부 정책은 무시됩니다. 요청을 거부할 읽기, 쓰기 권한 지정이 가능합니다.
 
 
-### Service Gateway IP
+#### Service Gateway IP
 서비스 게이트웨이를 통한 요청을 제어합니다. 설정하지 않으면 화이트리스트와 블랙리스트 설정에 따라 요청이 거부될 수 있습니다.
 
 

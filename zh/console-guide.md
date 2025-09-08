@@ -456,7 +456,7 @@ Check the selected object information and manage the properties.
 > [Note]
 > If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
 
-##### Change Object Expriation Date
+##### Change Object Expiration Date
 
 You can change the expiration date for selected objects.
 
