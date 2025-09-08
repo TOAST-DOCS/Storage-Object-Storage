@@ -28,12 +28,14 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 
 이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [Amazon S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
 
+<a id="s3-api-credential"></a>
 ## S3 API 자격 증명(S3 API Credential)
 
+<a id="obtain-s3-api-credentials"></a>
 ### S3 API 자격 증명 발급
-Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급 받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 이용하여 발급 받을 수 있습니다. 웹 콘솔을 이용한 자격 증명 발급은 [S3 API 자격 증명](console-guide/#s3-api) 항목을 참조하세요.
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급 받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 이용하여 발급 받을 수 있습니다. 웹 콘솔을 이용한 자격 증명 발급은 [S3 API 자격 증명](console-guide/#s3-api-credentials) 항목을 참조하세요.
 
-API를 이용하여 자격 증명을 발급 받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide/#tenant-id-api-endpoint)를 참조하세요.
+API를 이용하여 자격 증명을 발급 받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide/#prerequisites)를 참조하세요.
 
 ```
 POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -52,7 +54,7 @@ X-Auth-Token: {token-id}
 
 > [참고]
 > `{api-user-id}`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
-> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide/#_2) 항목을 참조하세요.
+> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide/#authentication-token-issuance) 항목을 참조하세요.
 >
 > S3 API 자격 증명은 유효 기간이 없으며, 사용자별로 프로젝트당 최대 3개까지 발급 받을 수 있습니다.
 
@@ -103,6 +105,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="get-s3-api-credentials"></a>
 ### S3 API 자격 증명 조회
 발급 받은 S3 API 자격 증명을 조회합니다.
 
@@ -152,6 +155,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="delete-s3-api-credentials"></a>
 ### S3 API 자격 증명 삭제
 발급 받은 S3 API 자격 증명을 삭제합니다.
 
@@ -174,6 +178,7 @@ X-Auth-Token: {token-id}
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
+<a id="create-signature"></a>
 ## 서명(signature) 생성
 S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
 
@@ -188,7 +193,10 @@ S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 �
 | 비밀 키 | S3 API 자격 증명 비밀 키 |
 
 
+<a id="bucket"></a>
 ## 버킷(Bucket)
+
+<a id="create-bucket"></a>
 ### 버킷 생성
 버킷을 생성합니다. 버킷 이름은 다음과 같은 Amazon S3의 명명 규칙을 따라야 합니다.
 
@@ -226,6 +234,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|
 | Location | Header | String | 생성한 버킷 경로 |
 
+<a id="list-buckets"></a>
 ### 버킷 목록 조회
 버킷 목록을 조회합니다.
 
@@ -273,6 +282,7 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
+<a id="get-bucket"></a>
 ### 버킷 조회
 지정한 버킷의 정보와 내부에 저장된 오브젝트 목록을 조회합니다.
 
@@ -337,6 +347,7 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
+<a id="delete-bucket"></a>
 ### 버킷 삭제
 지정한 버킷을 삭제합니다. 삭제할 버킷은 비어 있어야 합니다.
 
@@ -359,7 +370,10 @@ Authorization: AWS {access}:{signature}
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
+<a id="object"></a>
 ## 오브젝트
+
+<a id="upload-object"></a>
 ### 오브젝트 업로드
 지정한 버킷에 오브젝트를 업로드합니다.
 
@@ -388,6 +402,7 @@ Authorization: AWS {access}:{signature}
 | ETag | Header | String | 오브젝트의 MD5 해시값 |
 | Last-Modified | Header | String | 오브젝트의 마지막 수정 일시(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
+<a id="download-object"></a>
 ### 오브젝트 다운로드
 오브젝트를 다운로드합니다.
 
@@ -416,6 +431,7 @@ Authorization: AWS {access}:{signature}
 | Last-Modified | Header | String | 오브젝트의 마지막 수정 일시(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 | ETag | Header | String | 오브젝트의 MD5 해시값 |
 
+<a id="delete-object"></a>
 ### 오브젝트 삭제
 지정한 오브젝트를 삭제합니다.
 
@@ -439,15 +455,18 @@ Authorization: AWS {access}:{signature}
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
+<a id="aws-command-line-interface"></a>
 ## AWS 명령줄 인터페이스(CLI)
 S3 호환 API를 이용하여 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
+<a id="aws-command-line-interface-installation"></a>
 ### 설치
 [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) 문서를 참조해 AWS 명령줄 인터페이스를 설치합니다.
 
 > [참고]
 > NHN Cloud 오브젝트 스토리지는 AWS CLI 버전 2.22.35까지 지원합니다.
 
+<a id="aws-command-line-interface-configuration"></a>
 ### 설정
 AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 S3 API 자격 증명과 환경을 설정해야 합니다.
 
@@ -465,6 +484,7 @@ Default output format [None]: json
 | secret | S3 API 자격 증명 비밀 키 |
 | region name | KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전<br/>KR3 - 한국(광주) 리전<br/>JP1 - 일본(도쿄) 리전<br/>US1 - 미국(캘리포니아) 리전 |
 
+<a id="how-to-use-the-s3-commands"></a>
 ### S3 명령 사용 방법
 
 ```shell
@@ -570,7 +590,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
-
+<a id="aws-sdk"></a>
 ## AWS SDK
 AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용하여 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
@@ -586,6 +606,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 | region name | KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전<br/>KR3 - 한국(광주) 리전<br/>JP1 - 일본(도쿄) 리전<br/>US1 - 미국(캘리포니아) 리전 |
 | endpoint | https://kr1-api-object-storage.nhncloudservice.com - 한국(판교) 리전<br/>https://kr2-api-object-storage.nhncloudservice.com - 한국(평촌) 리전<br/>https://kr3-api-object-storage.nhncloudservice.com - 한국(광주) 리전<br/>https://jp1-api-object-storage.nhncloudservice.com - 일본(도쿄) 리전<br/>https://us1-api-object-storage.nhncloudservice.com - 미국(캘리포니아) 리전 | |
 
+<a id="aws-sdk-boto3-python"></a>
 ### Boto3 - Python SDK
 
 > [참고]
@@ -729,6 +750,7 @@ def delete(self, bucket_name, key):
 
 </details>
 
+<a id="aws-sdk-java"></a>
 ### Java SDK
 
 > [참고]
@@ -915,6 +937,7 @@ public void deleteObject(
 
 </details>
 
+<a id="aws-sdk-dotnet"></a>
 ### .NET SDK
 
 > [참고]
