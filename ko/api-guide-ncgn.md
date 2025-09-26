@@ -689,6 +689,7 @@ X-Auth-Token: {token-id}
 | Container | URL | String | O | 생성할 컨테이너 이름 |
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정 |
 
+
 #### 응답
 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
 
@@ -1183,7 +1184,6 @@ request.send(null);
 <br>
 CORS 설정에 문제가 없다면 콘솔에서 아래와 같은 성공 응답을 확인할 수 있습니다.
 
-
 ```
 Status: 200
 content-length: 1
@@ -1200,6 +1200,7 @@ CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 �
 
 ```
 Access to XMLHttpRequest at 'https://api-object-storage.gncloud.go.kr/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
 Status: 0
 ```
 
@@ -1326,6 +1327,7 @@ The object name must not contain the following keywords: example
 ```
 
 </details>
+
 
 ##### 컨테이너 설정 해제
 값이 없는 헤더를 사용하면 설정이 해제됩니다. 예를 들어 오브젝트 수명 주기가 3일로 설정되어 있을 때 `'X-Container-Object-Lifecycle: '`를 사용해 컨테이너 수정을 요청하면 오브젝트 수명 주기 설정이 해제되어 이후 컨테이너에 저장되는 오브젝트는 자동으로 수명 주기가 설정되지 않습니다.
