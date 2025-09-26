@@ -12,8 +12,8 @@
 
 | 항목 | API 엔드포인트 | 용도 |
 |---|---|---|
-| Identity | https://api-identity-infrastructure.ninc.go.kr/v2.0 | 인증 토큰 발급 |
-| Object-Store | https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_***** | 오브젝트 스토리지 제어, 리전에 따라 다름 |
+| Identity | https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0 | 인증 토큰 발급 |
+| Object-Store | http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_***** | 오브젝트 스토리지 제어, 리전에 따라 다름 |
 | Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
 
 <br/>
@@ -39,7 +39,7 @@ API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpo
 ## 인증 토큰 발급
 
 ```
-POST    https://api-identity-infrastructure.ninc.go.kr/v2.0/tokens
+POST    https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0/tokens
 Content-Type: application/json
 ```
 
@@ -118,7 +118,7 @@ Content-Type: application/json
 
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
-https://api-identity-infrastructure.ninc.go.kr/v2.0/tokens \
+https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0/tokens \
 -d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
@@ -142,7 +142,7 @@ https://api-identity-infrastructure.ninc.go.kr/v2.0/tokens \
         "endpoints": [
           {
             "region": "KR4",
-            "publicURL": "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****"
+            "publicURL": "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****"
           }
         ],
         "type": "object-store",
@@ -220,7 +220,7 @@ public class AuthService {
     }
 
     public static void main(String[] args) {
-        final String authUrl = "https://api-identity-infrastructure.ninc.go.kr/v2.0";
+        final String authUrl = "https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0";
         final String tenantId = "{Tenant ID}";
         final String username = "{NHN Cloud Account}";
         final String password = "{API Password}";
@@ -261,7 +261,7 @@ def get_token(auth_url, tenant_id, username, password):
 
 
 if __name__ == '__main__':
-    AUTH_URL = 'https://api-identity-infrastructure.ninc.go.kr/v2.0'
+    AUTH_URL = 'https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0'
     TENANT_ID = '{Tenant ID}'
     USERNAME = '{NHN Cloud Account}'
     PASSWORD = '{API Password}'
@@ -305,7 +305,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
   return $response;
 }
 
-$AUTH_URL = 'https://api-identity-infrastructure.ninc.go.kr/v2.0';
+$AUTH_URL = 'https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0';
 $TENANT_ID = '{Tenant ID}';
 $USERNAME = '{NHN Cloud Account}';
 $PASSWORD = '{API Password}';
@@ -353,7 +353,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****
 ```
 </details>
 
@@ -400,7 +400,7 @@ public class AccountService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
 
         AccountService accountService = new AccountService(storageUrl, tokenId);
@@ -442,7 +442,7 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
 
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
@@ -498,7 +498,7 @@ class Account {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
@@ -541,7 +541,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****
 ```
 </details>
 
@@ -578,7 +578,7 @@ public class AccountService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         AccountService accountService = new AccountService(storageUrl, tokenId);
         try {
@@ -610,7 +610,7 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
 
@@ -646,7 +646,7 @@ class Account {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
@@ -699,7 +699,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example
 ```
 </details>
 
@@ -744,7 +744,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -787,7 +787,7 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
 
     con_service = ContainerService(STORAGE_URL, TOKEN_ID)
@@ -843,7 +843,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -913,7 +913,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example
 ba6610.jpg
 20d33f.jpg
 31466f.jpg
@@ -957,7 +957,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -994,7 +994,7 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -1035,7 +1035,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1105,7 +1105,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 <br/>
 
 ##### 접근 정책 설정
-`X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide-ninc/)를 참조하세요.
+`X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide-ngcc/)를 참조하세요.
 
 <br/>
 
@@ -1116,7 +1116,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 <br/>
 
 ##### 버전 관리 정책 설정
-[오브젝트 내용 수정](api-guide-ninc/#_52) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
+[오브젝트 내용 수정](api-guide-ngcc/#_52) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
 
 이전 버전 오브젝트는 아카이브 컨테이너에 다음과 같은 형태로 보관됩니다.
 ```
@@ -1157,7 +1157,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Meta-Access-Control-Allow-Origin: https://example.com' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/container
 ```
 <br>
 브라우저에서 CORS를 허용한 사이트로 이동 후 아래의 스크립트를 실행합니다. 스크립트는 브라우저가 제공하는 개발자 도구의 콘솔에서 실행할 수 있습니다.
@@ -1167,7 +1167,7 @@ ex) https://example.com/
 
 ```
 var token = "****";
-var url = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_****/container/object";
+var url = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_****/container/object";
 var request = new XMLHttpRequest();
 request.onreadystatechange = function (oEvent) {
   if (request.readyState == 4) {
@@ -1199,7 +1199,7 @@ x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 호출했다면 아래와 같은 에러 응답을 받게 됩니다.
 
 ```
-Access to XMLHttpRequest at 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Access to XMLHttpRequest at 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 Status: 0
 ```
@@ -1242,11 +1242,11 @@ Status: 0
 $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Object-Allow-Extension-Policy: exe, jpg' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/container
 
 $ curl -X PUT \
 -H 'X-Auth-Token: ****' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container/test.jpg -i
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/container/test.jpg -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 72
@@ -1262,11 +1262,11 @@ Only the objects with the following extensions can be uploaded: exe, jpg
 $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Object-Allow-Keyword-Policy: example' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/container
 
 $ curl -X PUT \
 -H 'X-Auth-Token: ****' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container/upload.txt -i
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/container/upload.txt -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 60
@@ -1290,11 +1290,11 @@ The object name must contain the following keywords: example
 $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Object-Deny-Extension-Policy: exe, jpg' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/container
 
 $ curl -X PUT \
 -H 'X-Auth-Token: ****' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container/test.jpg -i
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/container/test.jpg -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 70
@@ -1310,11 +1310,11 @@ The objects with the following extensions cannot be uploaded: exe, jpg
 $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Object-Deny-Keyword-Policy: example' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/container
 
 $ curl -X PUT \
 -H 'X-Auth-Token: ****' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container/upload_example.txt -i
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/container/upload_example.txt -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 64
@@ -1348,7 +1348,7 @@ $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
 -H 'X-Container-Write: *:*' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example
 ```
 </details>
 
@@ -1386,7 +1386,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -1417,7 +1417,7 @@ class ContainerService:
         return requests.post(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -1458,7 +1458,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1501,7 +1501,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example
 ```
 </details>
 
@@ -1533,7 +1533,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
 
@@ -1563,7 +1563,7 @@ class ContainerService:
         return requests.delete(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
 
@@ -1597,7 +1597,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 
@@ -1652,7 +1652,7 @@ Content-Type: {content-type}
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg \
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/ba6610.jpg \
 -T ./ba6610.jpg
 ```
 </details>
@@ -1708,7 +1708,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectPath = "/home/example/";
@@ -1763,7 +1763,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'd03bda22ffb649a97958d4a5bf4b6eaf.jpg'
@@ -1822,7 +1822,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -1963,21 +1963,21 @@ $ split -d -b 209715200 large_obj.img large_obj.img.
 
 // 분할된 오브젝트 업로드
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/large_obj.img/001 \
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/large_obj.img/001 \
 -T large_obj.img.00
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/large_obj.img/002 \
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/large_obj.img/002 \
 -T large_obj.img.01
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/large_obj.img/003 \
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/large_obj.img/003 \
 -T large_obj.img.02
 
 // 매니페스트 오브젝트 업로드
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Object-Manifest: curl_example/large_obj.img/' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/large_obj.img \
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/large_obj.img \
 -d ''
 ```
 </details>
@@ -2013,7 +2013,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectPath = "/home/example/";
@@ -2108,7 +2108,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     LARGE_OBJECT = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2197,7 +2197,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $LARGE_OBJECT = '8cb0d624f8c14c69b52f2cd89e5e59b7.jpg';
@@ -2281,7 +2281,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -O -X HEAD -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/ba6610.jpg
 
 HTTP/1.1 200 OK
 content-type: image/jpeg
@@ -2325,7 +2325,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -O -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/ba6610.jpg
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -2368,7 +2368,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2408,7 +2408,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2449,7 +2449,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2507,12 +2507,12 @@ X-Copy-From: {원본 오브젝트}
 // COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/3a45e9.jpg' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/3a45e9.jpg
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/3a45e9.jpg
 
 // PUT method
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/3a45e9.jpg' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/copy_con/3a45e9.jpg
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/copy_con/3a45e9.jpg
 ```
 </details>
 
@@ -2545,7 +2545,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String srcContainerName = "test";
         final String destContainerName = "test2";
@@ -2579,7 +2579,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2617,7 +2617,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $DEST_CONTAINER = 'dest';
@@ -2671,11 +2671,11 @@ X-Object-Meta-{Key}: {Value}
 // 오브젝트에 메타데이터 추가
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo" \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/ba6610.jpg
 
 // 오브젝트 헤더에서 추가한 메타데이터 확인
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
 ...
 X-Object-Meta-Type: photo
@@ -2715,7 +2715,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2750,7 +2750,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2787,7 +2787,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2835,7 +2835,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****/curl_example/ba6610.jpg
 ```
 </details>
 
@@ -2866,7 +2866,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
+        final String storageUrl = "http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****";
         final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2898,7 +2898,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
+    STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****'
     TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2933,7 +2933,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
+$STORAGE_URL = 'http://ngcc-kr4-swift.kr.cloud.toastoven.net/v1/AUTH_*****';
 $TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
