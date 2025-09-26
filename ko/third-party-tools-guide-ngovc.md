@@ -108,7 +108,6 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 > [참고]
 > 동기화에 대한 보다 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하십시오.
 
-
 ## 참고 사이트
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
 
