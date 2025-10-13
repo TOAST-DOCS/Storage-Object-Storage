@@ -28,12 +28,14 @@ NHN CloudオブジェクトストレージはAWSのオブジェクトストレ�
 
 この文書はAPI使用方法の基礎的な部分のみを説明します。高度な機能を使用するには[Amazon S3 APIガイド](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)を参照するか、[AWS SDK](https://aws.amazon.com/jp/tools)を使用することを推奨します。
 
+<a id="s3-api-credential"></a>
 ## S3 API認証情報(S3 API Credential)
 
+<a id="obtain-s3-api-credentials"></a>
 ### S3 API認証情報の発行
-Amazon S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報を発行する必要があります。認証情報はWebコンソールまたはAPIを利用して発行できます。Webコンソールを利用した認証情報の発行は[S3 API認証情報](console-guide/#s3-api)項目を参照してください。
+Amazon S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報を発行する必要があります。認証情報はWebコンソールまたはAPIを利用して発行できます。Webコンソールを利用した認証情報の発行は[S3 API認証情報](console-guide/#s3-api-credentials)項目を参照してください。
 
-APIを利用して認証情報を発行するには認証トークンが必要です。認証トークンの発行は[オブジェクトストレージAPIガイド](api-guide/#tenant-id-api-endpoint)を参照してください。
+APIを利用して認証情報を発行するには認証トークンが必要です。認証トークンの発行は[オブジェクトストレージAPIガイド](api-guide/#prerequisites)を参照してください。
 
 ```
 POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -52,7 +54,7 @@ X-Auth-Token: {token-id}
 
 > [参考]
 > `{api-user-id}`は、コンソールのAPI Endpoint設定ダイアログボックスで**APIユーザーID**項目を参照するか、認証トークン発行APIレスポンス本文の**access.user.id**フィールドで確認できます。
-> 認証トークン発行APIを利用するにはAPIガイドの[認証トークン発行](api-guide/#_2)項目を参照してください。
+> 認証トークン発行APIを利用するにはAPIガイドの[認証トークン発行](api-guide/#authentication-token-issuance)項目を参照してください。
 >
 > S3 API認証情報は有効期限がなく、ユーザーごとにプロジェクトあたり最大3個まで発行できます。
 
@@ -103,10 +105,12 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="get-s3-api-credentials"></a>
 ### S3 API認証情報照会
 発行されたS3 API認証情報を照会します。
 
 **[Method, URL]**
+
 ```
 GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
 
@@ -151,10 +155,12 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="delete-s3-api-credentials"></a>
 ### EC2認証情報を削除
 登録したEC2認証情報を削除します。
 
 **[Method, URL]**
+
 ```
 DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
@@ -172,6 +178,7 @@ X-Auth-Token: {token-id}
 #### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 
+<a id="create-signature"></a>
 ## 署名(signature)作成
 S3 APIを使用するには、認証情報を利用して署名を作成する必要があります。署名の作成方法は[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html)文書を参照してください。
 
@@ -186,7 +193,10 @@ S3 APIを使用するには、認証情報を利用して署名を作成する�
 | シークレットキー | 認証情報シークレットキー |
 
 
+<a id="bucket"></a>
 ## バケット(Bucket)
+
+<a id="create-bucket"></a>
 ### バケット作成
 バケットを作成します。バケット名は次のようにAmazon S3の命名ルールに従う必要があります。
 
@@ -224,6 +234,7 @@ Authorization: AWS {access}:{signature}
 |---|---|---|---|
 | Location | Header | String | 作成したバケットパス |
 
+<a id="list-buckets"></a>
 ### バケットリスト照会
 バケットリストを照会します。
 
@@ -271,6 +282,7 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
+<a id="get-bucket"></a>
 ### バケット照会
 指定したバケットの情報と内部に保存されたオブジェクトリストを照会します。
 
@@ -335,6 +347,7 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
+<a id="delete-bucket"></a>
 ### バケットの削除
 指定したバケットを削除します。削除するバケットは空になっている必要があります。
 
@@ -357,7 +370,10 @@ Authorization: AWS {access}:{signature}
 #### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード204を返します。
 
+<a id="object"></a>
 ## オブジェクト
+
+<a id="upload-object"></a>
 ### オブジェクトのアップロード
 指定したバケットにオブジェクトをアップロードします。
 
@@ -379,16 +395,18 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
+このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード200を返します。
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
 | ETag | Header | String | オブジェクトのMD5ハッシュ値 |
 | Last-Modified | Header | String | オブジェクトの最後の修正日時(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
+<a id="download-object"></a>
 ### オブジェクトのダウンロード
 オブジェクトをダウンロードします。
-```
 
+```
 GET /{bucket}/{obj}
 
 Date: Sat, 22 Feb 2020 22:22:22 +0000
@@ -406,12 +424,14 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
 #### レスポンス
+リクエストが正しい場合、ステータスコード200を返します。
 
 | 名前 | 種類 | 形式 | 説明 |
 |---|---|---|---|
 | ETag | Header | String | オブジェクトのMD5ハッシュ値 |
 | Last-Modified | Header | String | オブジェクトの最後の修正日時(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
+<a id="delete-object"></a>
 ### オブジェクトの削除
 指定したオブジェクトを削除します。
 
@@ -435,15 +455,18 @@ Authorization: AWS {access}:{signature}
 #### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード204を返します。
 
+<a id="aws-command-line-interface"></a>
 ## AWSコマンドラインインターフェイス(CLI)
 S3互換APIを利用して[AWSコマンドラインインターフェイス](https://aws.amazon.com/jp/cli/)でNHN Cloudオブジェクトストレージを使用できます。
 
+<a id="aws-command-line-interface-installation"></a>
 ### インストール
 [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html)文書を参照してAWSコマンドラインインターフェイスをインストールします。
 
 > [参考]
 > NHN CloudオブジェクトストレージはAWS CLIバージョン2.22.35までサポートします。
 
+<a id="aws-command-line-interface-configuration"></a>
 ### 設定
 AWSコマンドラインインターフェイスを使用するには、先にS3 API認証情報と環境を設定する必要があります。
 
@@ -461,6 +484,7 @@ Default output format [None]: json
 | secret | S3 API認証情報シークレットキー |
 | region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(ピョンチョン)リージョン<br/>KR3 - 韓国(光州)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
 
+<a id="how-to-use-the-s3-commands"></a>
 ### S3コマンド使用方法
 
 ```shell
@@ -566,13 +590,12 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
-
+<a id="aws-sdk"></a>
 ## AWS SDK
 AWSは多くのプログラミング言語用のSDKを提供しています。S3互換APIを利用してAWS SDKでNHN Cloudオブジェクトストレージを使用できます。
 
 > [参考]
 > 詳細については[AWS SDK](https://aws.amazon.com/ko/tools)文書を参照してください。
-
 
 AWS SDKを使用するために必要な主要パラメータは次のとおりです。
 
@@ -583,11 +606,12 @@ AWS SDKを使用するために必要な主要パラメータは次のとおり�
 | region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(ピョンチョン)リージョン<br/>KR3 - 韓国(光州)リージョン<br/>JP1 - 日本(東京)リージョン<br/>US1 - 米国(カリフォルニア)リージョン |
 | endpoint | https://kr1-api-object-storage.nhncloudservice.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-object-storage.nhncloudservice.com - 韓国(ピョンチョン)リージョン<br/>https://kr3-api-object-storage.nhncloudservice.com - 韓国(光州)リージョン<br/>https://jp1-api-object-storage.nhncloudservice.com - 日本(東京)リージョン<br/>https://us1-api-object-storage.nhncloudservice.com - 米国(カリフォルニア)リージョン | |
 
-
+<a id="aws-sdk-boto3-python"></a>
 ### Boto3 - Python SDK
 
 > [参考]
 > 詳細については[AWS SDK for Python(Boto3)説明書](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits)文書を参照してください。
+
 #### Context
 
 <details>
@@ -620,16 +644,6 @@ class Boto3Example(object):
 <summary>バケット作成</summary>
 
 ```python
-    def create_bucket(self, bucket_name):
-        return self.s3.create_bucket(Bucket=bucket_name)
-```
-
-</details>
-
-<details>
-<summary>バケットリスト照会</summary>
-
-```python
 def create_bucket(self, bucket_name):
     try:
         return self.s3.create_bucket(Bucket=bucket_name)
@@ -640,12 +654,25 @@ def create_bucket(self, bucket_name):
 </details>
 
 <details>
-<summary>バケット照会(オブジェクトリスト照会)</summary>
+<summary>バケットリスト照会</summary>
 
 ```python
 def list_buckets(self):
     try:
         return self.s3.list_buckets().get('Buckets')
+    except ClientError as e:
+        raise RuntimeError(e)
+```
+
+</details>
+
+<details>
+<summary>バケット照会(オブジェクトリスト照会)</summary>
+
+```python
+def list_objs(self, bucket_name):
+    try:
+        return self.s3.list_objects_v2(Bucket=bucket_name).get('Contents')
     except ClientError as e:
         raise RuntimeError(e)
 ```
@@ -694,9 +721,11 @@ def upload(self, bucket_name, key, filename, part_size):
 def download(self, bucket_name, key, filename):
     try:
         response = self.s3.get_object(Bucket=bucket_name, Key=key)
+
         with io.FileIO(filename, 'w') as fd:
             for chunk in response['Body']:
                 fd.write(chunk)
+
         response.pop('Body')
     except ClientError as e:
         raise RuntimeError(e)
@@ -721,11 +750,12 @@ def delete(self, bucket_name, key):
 
 </details>
 
-
+<a id="aws-sdk-java"></a>
 ### Java SDK
 
 > [参考]
 > 詳細については[AWS SDK for Java説明書](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html)文書を参照してください。
+
 #### Context
 
 <details>
@@ -809,7 +839,6 @@ public ListObjectsV2Result listObjects(
         throw new RuntimeException(e);
     }
 }
-    }
 ```
 
 </details>
@@ -827,7 +856,6 @@ public void deleteBucket(String bucketName) throws RuntimeException {
         throw new RuntimeException(e);
     }
 }
-    }
 ```
 
 </details>
@@ -909,6 +937,7 @@ public void deleteObject(
 
 </details>
 
+<a id="aws-sdk-dotnet"></a>
 ### .NET SDK
 
 > [参考]

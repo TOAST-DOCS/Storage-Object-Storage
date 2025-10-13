@@ -2,14 +2,17 @@
 
 この文書ではサードパーティツールでNHN Cloudオブジェクトストレージサービスを使用する方法を説明します。
 
+<a id="cyberduck"></a>
 ## Cyberduck
 
 Cyberduckはオープンソースのクラウドストレージブラウザです。
 
+<a id="install-cyberduck"></a>
 ### Cyberduckのインストール
 
 [Cyberduckダウンロードページ](https://cyberduck.io/download/)から使用しているOSに合ったインストールファイルをダウンロードしてインストールします。
 
+<a id="cyberduck-object-storage-connection-settings"></a>
 ### オブジェクトストレージの接続設定
 
 オブジェクトストレージに接続するには、接続情報を保存するブックマークを作成する必要があります。ブラウザ上部の**新しい接続**をクリックした後、ドロップダウンメニューから**OpenStack Swift(Keystone 2.0)**を選択します。必要な情報を入力した後、接続をクリックすると新しいブックマークが作成されます。
@@ -43,10 +46,12 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > [参考]
 > APIパスワードの設定方法はAPIガイドの[APIパスワード設定](api-guide/#api)項目を参照してください。
 
+<a id="cyberduck-connect-object-storage"></a>
 ### オブジェクトストレージの接続
 
 接続するブックマークをダブルクリックしてオブジェクトストレージに接続します。
 
+<a id="cyberduck-retrieve-container-or-object"></a>
 ### コンテナ/オブジェクトの照会
 
 オブジェクトストレージに接続すると、**すべてのリージョン**のコンテナリストがブラウザに表示されます。コンテナをダブルクリックしてコンテナのオブジェクトリストを照会できます。
@@ -55,6 +60,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > 異なるリージョンに同じ名前のコンテナがある場合、同じ名前のコンテナが複数表示されます。
 > メニューから**表示 > 列 > 地域**を選択すると、列項目にリージョンを表示できます。
 
+<a id="cyberduck-create-container"></a>
 ### コンテナの作成
 
 コンテナリストの空きスペースで右クリックし、**新規フォルダ...**を選択して新しいコンテナを作成できます。コンテナの名前とリージョンを入力し、**作成**をクリックすると、コンテナが作成されます。
@@ -62,6 +68,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > [参考]
 > コンテナリストの空きスペースで右クリックし、**再表示**を選択すると、コンテナリストを更新できます。
 
+<a id="cyberduck-upload-object></a>
 ### オブジェクトのアップロード
 
 コンテナを選択した後、ブラウザ上部の**アクション** > **アップロード...**をクリックするか、オブジェクトリストで右クリックした後、**アップロード。..**をクリックしてファイルを選択してアップロードします。
@@ -69,6 +76,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > [参考]
 > Cyberduckでフォルダをアップロードまたは作成すると、フォルダ名と同じ0バイトのオブジェクトがもう一つ作成されます。これはコンソールまたはオブジェクトストレージAPIで確認でき、削除しても構いません。
 
+<a id="cyberduck-download-object></a>
 ### オブジェクトのダウンロード
 
 ダウンロードするオブジェクトを選択した後、右クリックして**ダウンロード**を選択します。ドラッグ＆ドロップでオブジェクトをダウンロードすることもできます。
@@ -77,6 +85,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > オブジェクトをダウンロードすると、基本的にローカルの**ダウンロード**フォルダに保存されます。右クリックして**指定した場所にダウンロード**を選択すると、指定したパスにダウンロードできます。
 > オブジェクトをアップロードまたはダウンロードすると、**転送**ウィンドウがポップアップして進行状況を把握できます。
 
+<a id="cyberduck-delete-container></a>
 ### コンテナの削除
 
 削除するコンテナを選択し、右クリックして**削除**を選択します。
@@ -84,33 +93,41 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > [注意]
 > コンテナを削除すると、、コンテナ内のオブジェクトも全て削除されるので注意が必要です。
 
+<a id="cyberduck-delete-object></a>
 ### オブジェクトの削除
 
 削除するオブジェクトを選択し、右クリックして**削除**を選択します。
 
+<a id="cyberduck-synchronize-folder></a>
 ### フォルダ同期
 
 ローカルフォルダをコンテナまたはフォルダと同期できます。コンテナまたはフォルダを選択した後、右クリックして**同期**を選択します。
 フォルダ同期は、ダウンロード、アップロード、ミラーリングの3つの方法を提供します。
 
+<a id="cyberduck-synchronize-download></a>
 #### ダウンロード
 
 オブジェクトストレージで変更または追加されたオブジェクトをローカルにダウンロードします。
 
+<a id="cyberduck-synchronize-upload></a>
 #### アップロード
 
 ローカルで変更または追加されたファイルをオブジェクトストレージにアップロードします。
 
+<a id="cyberduck-synchronize-mirror></a>
 #### ミラー
 
 ローカルとオブジェクトストレージを比較して変更または不足しているファイルまたはオブジェクトをアップロードまたはダウンロードします。
 
 > [参考]
 > 同期の詳細については[CyberduckのSynchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders)文書を参照してください。
+
+<a id="terraform></a>
 ## Terraform
 
 Terraformはインフラを簡単に構築して安全に変更し、効率的にインフラの形状を管理できるオープンソースツールです。基本的な使い方は[ユーザーガイド > Compute > Instance > Terraform使用ガイド](https://docs.nhncloud.com/ko/Compute/Instance/ja/terraform-guide/)を参照してください。
 
+<a id="terraform-resource-dependency></a>
 ### リソースの依存関係
 
 一般的に各リソースは独立していますが、他の特定のリソースに依存関係を持つこともできます。リソースのラベルを通じて他のリソースの情報を参照すると、Terraformは自動的に依存関係を設定します。
@@ -121,6 +138,7 @@ Terraformはインフラを簡単に構築して安全に変更し、効率的�
 resource "nhncloud_objectstorage_container_v1" "container_1" {
   name = "container1"
 }
+
 # オブジェクトリソース
 resource "nhncloud_objectstorage_object_v1" "object_1" {
   container_name = nhncloud_objectstorage_container_v1.container_1.name
@@ -131,8 +149,11 @@ resource "nhncloud_objectstorage_object_v1" "object_1" {
 
 > [参考]
 > 明示的なリソースの依存関係指定方法は[TerraformのResource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies)文書を参照してください。
+
+<a id="terraform-resources-object-storage></a>
 ### Resources - Object Storage
 
+<a id="terraform-resources-object-storage></a>
 #### コンテナの作成
 
 ```hcl
@@ -141,6 +162,7 @@ resource "nhncloud_objectstorage_container_v1" "container_1" {
   region = "KR1"
   name   = "tf-test-container-1"
 }
+
 # オブジェクトバージョン管理コンテナの作成
 resource "nhncloud_objectstorage_container_v1" "container_2" {
   region = "KR1"
@@ -150,6 +172,7 @@ resource "nhncloud_objectstorage_container_v1" "container_2" {
     location = resource.nhncloud_objectstorage_container_v1.container_1.name
   }
 }
+
 # パブリックコンテナの作成
 resource "nhncloud_objectstorage_container_v1" "container_3" {
   region = "KR1"
@@ -169,6 +192,7 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 | versioning_legacy.type | String | | `history`に指定 |
 | versioning_legacy.location | String | | オブジェクトの旧バージョンを保管するコンテナ名 |
 
+<a id="terraform-resources-create-object></a>
 #### オブジェクトの作成
 
 ```hcl
@@ -184,6 +208,7 @@ resource "nhncloud_objectstorage_object_v1" "object_1" {
                }
 JSON
 }
+
 # ファイルアップロード
 resource "nhncloud_objectstorage_object_v1" "object_2" {
   region         = "KR2"
@@ -278,7 +303,9 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 	</tbody>
 </table>
 
+<a id="reference></a>
 ## 参考サイト
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
+
