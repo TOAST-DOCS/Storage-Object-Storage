@@ -39,7 +39,7 @@ The role-based access policy elements that can be set are as follows. All policy
 
 <br/>
 
-### Allow read/write only to users in the project to which the container belongs
+#### Allow read/write only to users in the project to which the container belongs
 This is the default access policy used when no role-based access policy elements are set. A valid authentication token is required to access the container using the API.
 If you delete all the `X-Container-Read` and `X-Container-Write` property values of a container, it becomes a `PRIVATE` container that allows access only to users in the project to which the container belongs.
 
@@ -325,7 +325,7 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 </details>
 <br/>
 
-### Allow read/write to specific projects or specific users
+#### Allow read/write to specific projects or specific users
 If you set an role-based access policy element in the form of `<tenant-id>:<api-user-id>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API User ID grants access to all projects or all users. A valid authentication token is required when making an access request.
 
 > [Note]
@@ -436,7 +436,7 @@ Denies all requests except from allowed IPs or network bands. You can specify re
 Denies requests from the specified IP or network band. All other requests are permitted. When used with an allow policy, the deny policy is ignored. You can specify read and write permissions to deny requests.
 
 
-### Service Gateway IP
+#### Service Gateway IP
 Controls requests through the service gateway. If not set, requests can be denied based on the whitelist and blacklist settings.
 
 
