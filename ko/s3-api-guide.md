@@ -604,7 +604,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
 | region name | KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전<br/>KR3 - 한국(광주) 리전<br/>JP1 - 일본(도쿄) 리전<br/>US1 - 미국(캘리포니아) 리전 |
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - 한국(판교) 리전<br/>https://kr2-api-object-storage.nhncloudservice.com - 한국(평촌) 리전<br/>https://kr3-api-object-storage.nhncloudservice.com - 한국(광주) 리전<br/>https://jp1-api-object-storage.nhncloudservice.com - 일본(도쿄) 리전<br/>https://us1-api-object-storage.nhncloudservice.com - 미국(캘리포니아) 리전 | |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - 한국(판교) 리전<br/>https://kr2-api-object-storage.nhncloudservice.com - 한국(평촌) 리전<br/>https://kr3-api-object-storage.nhncloudservice.com - 한국(광주) 리전<br/>https://jp1-api-object-storage.nhncloudservice.com - 일본(도쿄) 리전<br/>https://us1-api-object-storage.nhncloudservice.com - 미국(캘리포니아) 리전 | 
 
 <a id="aws-sdk-boto3-python"></a>
 ### Boto3 - Python SDK
