@@ -44,7 +44,7 @@ To connect to object storage, you must create a bookmark that stores connection 
 </table>
 
 > [Note] 
-> See [Set the API Password](api-guide/#api) in the API guide for information on how to set API passwords.
+> See [Set the API Password](api-guide/#set-the-api-password) in the API guide for information on how to set API passwords.
 
 <a id="cyberduck-connect-object-storage"></a>
 ### Connect Object Storage

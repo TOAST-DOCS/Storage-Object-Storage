@@ -2255,7 +2255,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <br/>
 
-<a id="update-object"></a>
+<a id="update-an-object"></a>
 ### Update an Object
 Same as the Upload an Object API, but if the object is already located in the container, the content of the object is updated.
 

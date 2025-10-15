@@ -1145,7 +1145,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 <a id="set-container-object-version-policy"></a>
 ##### 버전 관리 정책 설정
-[오브젝트 내용 수정](api-guide/#update-object) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
+[오브젝트 내용 수정](api-guide/#update-an-object) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
 
 이전 버전 오브젝트는 아카이브 컨테이너에 다음과 같은 형태로 보관됩니다.
 ```
@@ -2255,7 +2255,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <br/>
 
-<a id="update-object"></a>
+<a id="update-an-object"></a>
 ### 오브젝트 내용 수정
 오브젝트 업로드 API와 같지만, 오브젝트가 이미 컨테이너에 있다면 해당 오브젝트의 내용이 수정됩니다.
 
