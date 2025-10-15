@@ -184,7 +184,7 @@ The following information is required to create a signature.
 | Algorithm     | AWS4-HMAC-SHA256               |
 | Signed Time   | In the ZssmmhhTDDMMYYYY format |
 | Service Name  | s3                             |
-| Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - KOREA (Pyeongchon) Region<br/>KR3 - KOREA (Gwangju) Region<br/>JP1 - JAPAN (Tokyo) Region<br/>US1 - USA (California) Region   |
+| Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - KOREA (Pyeongchon) Region<br/>JP1 - JAPAN (Tokyo) Region<br/>US1 - USA (California) Region   |
 | Secret Key    | S3 API credentials secret key          |
 
 
@@ -253,21 +253,21 @@ If the request is valid, returns a status code of 200 and a bucket list in XML f
 ```xml
 <?xml version='1.0' encoding='UTF-8'?>
 <ListAllMyBucketsResult
-	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-	<Owner>
-		<ID>user:panther</ID>
-		<DisplayName>user:panther</DisplayName>
-	</Owner>
-	<Buckets>
-		<Bucket>
-			<Name>log</Name>
-			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
-		</Bucket>
-		<Bucket>
-			<Name>snapshot</Name>
-			<CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
-		</Bucket>
-	</Buckets>
+    xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <Owner>
+        <ID>user:panther</ID>
+        <DisplayName>user:panther</DisplayName>
+    </Owner>
+    <Buckets>
+        <Bucket>
+            <Name>log</Name>
+            <CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
+        </Bucket>
+        <Bucket>
+            <Name>snapshot</Name>
+            <CreationDate>2009-02-03T16:45:09.000Z</CreationDate>
+        </Bucket>
+    </Buckets>
 </ListAllMyBucketsResult>
 ```
 
@@ -304,34 +304,34 @@ If the request is valid, returns a status code of 200 and a object list in XML f
 ```xml
 <?xml version='1.0' encoding='UTF-8'?>
 <ListBucketResult
-	xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-	<Name>snapshot</Name>
-	<Prefix/>
-	<Marker/>
-	<MaxKeys>1000</MaxKeys>
-	<IsTruncated>false</IsTruncated>
-	<Contents>
-		<Key>cheetah</Key>
-		<LastModified>2023-02-01T04:49:52.995Z</LastModified>
-		<ETag>"7d793037a0760186574b0282f2f435e7"</ETag>
-		<Size>5</Size>
-		<Owner>
-			<ID>user:panther</ID>
-			<DisplayName>user:panther</DisplayName>
-		</Owner>
-		<StorageClass>STANDARD</StorageClass>
-	</Contents>
-	<Contents>
-		<Key>leopard</Key>
-		<LastModified>2023-02-01T04:49:52.685Z</LastModified>
-		<ETag>"5d41402abc4b2a76b9719d911017c592"</ETag>
-		<Size>5</Size>
-		<Owner>
-			<ID>user:panther</ID>
-			<DisplayName>user:panther</DisplayName>
-		</Owner>
-		<StorageClass>STANDARD</StorageClass>
-	</Contents>
+    xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <Name>snapshot</Name>
+    <Prefix/>
+    <Marker/>
+    <MaxKeys>1000</MaxKeys>
+    <IsTruncated>false</IsTruncated>
+    <Contents>
+        <Key>cheetah</Key>
+        <LastModified>2023-02-01T04:49:52.995Z</LastModified>
+        <ETag>"7d793037a0760186574b0282f2f435e7"</ETag>
+        <Size>5</Size>
+        <Owner>
+            <ID>user:panther</ID>
+            <DisplayName>user:panther</DisplayName>
+        </Owner>
+        <StorageClass>STANDARD</StorageClass>
+    </Contents>
+    <Contents>
+        <Key>leopard</Key>
+        <LastModified>2023-02-01T04:49:52.685Z</LastModified>
+        <ETag>"5d41402abc4b2a76b9719d911017c592"</ETag>
+        <Size>5</Size>
+        <Owner>
+            <ID>user:panther</ID>
+            <DisplayName>user:panther</DisplayName>
+        </Owner>
+        <StorageClass>STANDARD</StorageClass>
+    </Contents>
 </ListBucketResult>
 ```
 
@@ -463,7 +463,7 @@ Default output format [None]: json
 |---|---|
 | access | S3 API credentials access key |
 | secret | S3 API credentials secret key |
-| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>KR3 - KOREA (Gwangju) Region<br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
+| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
 
 ### How to Use the S3 Commands
 
@@ -473,7 +473,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | Name | Description |
 |---|---|
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region <br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongcheon) region<br/>https://kr3-api-object-storage.nhncloudservice.com - Korea(Gwangju) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region <br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region <br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongcheon) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region <br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region |
 | command | Command for AWS Command Line Interface |
 | bucket | Bucket name |
 
@@ -583,8 +583,8 @@ The following are the major parameters required to use AWS SDK.
 |---|---|
 | access | S3 API credentials access key |
 | secret | S3 API credentials secret key |
-| region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region<br/>KR3 - Korea (Gwangju) region<br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region<br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region |
+| region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region<br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region<br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region |
 
 ### Boto3 - Python SDK
 
