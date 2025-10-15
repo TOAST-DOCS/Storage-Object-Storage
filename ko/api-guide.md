@@ -871,7 +871,6 @@ $container->create($CONTAINER_NAME);
 ```
 </details>
 
-
 <br/>
 
 <a id="get-a-container"></a>
@@ -1671,7 +1670,6 @@ Content-Type: {content-type}
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String |	O | 생성할 오브젝트 이름 |
 | - |	Body | Binary | O | 생성할 오브젝트의 내용 |
-
 
 <a id="set-object-lifecycle"></a>
 ##### 오브젝트 수명 주기 설정

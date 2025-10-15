@@ -143,7 +143,6 @@ $ curl -X GET \
 </details>
 <br/>
 
-
 <a id="role-based-access-allow-or-deny-by-referer"></a>
 #### 특정 HTTP 리퍼러 요청에 읽기 허용/거부
 HTTP 리퍼러(HTTP Referer)는 하이퍼링크를 통해 요청하는 웹 페이지의 주소 정보입니다. 요청 헤더에 포함되어 있습니다.
@@ -419,7 +418,6 @@ $ curl -i -X POST \
 <a id="role-based-access-delete-access-policies"></a>
 #### 접근 정책 삭제
 빈 헤더를 입력하면 설정된 역할 기반 접근 정책 요소를 모두 삭제할 수 있습니다. 역할 기반 접근 정책 요소가 없는 컨테이너는 허가된 사용자만 접근할 수 있는 **PRIVATE** 컨테이너가 됩니다. `컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용` 항목을 참고하세요.
-
 
 <a id="role-based-access-references"></a>
 ### References
