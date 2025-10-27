@@ -107,6 +107,7 @@ X-Auth-Token: {token-id}
 발급 받은 S3 API 자격 증명을 조회합니다.
 
 **[Method, URL]**
+
 ```
 GET   https://api-identity-infrastructure.ngovc.com/v2.0/users/{user-id}/credentials/OS-EC2
 
@@ -155,6 +156,7 @@ X-Auth-Token: {token-id}
 발급 받은 S3 API 자격 증명을 삭제합니다.
 
 **[Method, URL]**
+
 ```
 DELETE   https://api-identity-infrastructure.ngovc.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
@@ -184,6 +186,7 @@ S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 �
 | 서비스 이름 | s3 |
 | 리전 이름 | KR4 - 한국(대구) 리전 |
 | 비밀 키 | S3 API 자격 증명 비밀 키 |
+
 
 ## 버킷(Bucket)
 ### 버킷 생성
@@ -225,6 +228,7 @@ Authorization: AWS {access}:{signature}
 
 ### 버킷 목록 조회
 버킷 목록을 조회합니다.
+
 ```
 GET /
 
@@ -271,6 +275,7 @@ Authorization: AWS {access}:{signature}
 
 ### 버킷 조회
 지정한 버킷의 정보와 내부에 저장된 오브젝트 목록을 조회합니다.
+
 ```
 GET /{bucket}
 
@@ -334,6 +339,7 @@ Authorization: AWS {access}:{signature}
 
 ### 버킷 삭제
 지정한 버킷을 삭제합니다. 삭제할 버킷은 비어 있어야 합니다.
+
 ```
 DELETE /{bucket}
 
@@ -384,6 +390,7 @@ Authorization: AWS {access}:{signature}
 
 ### 오브젝트 다운로드
 오브젝트를 다운로드합니다.
+
 ```
 GET /{bucket}/{obj}
 
@@ -466,7 +473,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | 이름 | 설명 |
 |---|---|
-| endpoint | https://kr4-api-object-storage.ngovc.com |
+| endpoint | https://kr4-api-object-storage.ngovc.com - 한국(대구) 리전 |
 | command | AWS 명령줄 인터페이스 명령 |
 | bucket | 버킷 이름 |
 
@@ -577,7 +584,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
 | region name | KR4 - 한국(대구) 리전 |
-| endpoint | https://kr4-api-object-storage.ngovc.com |
+| endpoint | https://kr4-api-object-storage.ngovc.com - 한국(대구) 리전 | 
 
 ### Boto3 - Python SDK
 
