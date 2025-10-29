@@ -1,11 +1,13 @@
 ## Storage > Object Storage > APIガイド
 
+<a id="prerequisites"></a>
 ## 事前準備
 
 オブジェクトストレージAPIを使用するには、先に認証トークン(token)を発行する必要があります。認証トークンはオブジェクトストレージのREST APIを使用する時に必要な認証キーです。外部公開に設定していないコンテナやオブジェクトへアクセスするにはトークンが必要です。トークンはNHN Cloudアカウントごとに管理されます。
 
 <br/>
 
+<a id="check-the-tenant-id-and-api-endpoint"></a>
 ### テナントID(Tenant ID)およびAPIエンドポイント(Endpoint)確認
 
 トークンを発行するためのテナントIDとAPIのエンドポイントは、オブジェクトストレージサービスページの**API Endpoint設定**ボタンをクリックして確認できます。
@@ -18,6 +20,7 @@
 
 <br/>
 
+<a id="set-the-api-password"></a>
 ### APIパスワード設定
 
 APIパスワードはオブジェクトストレージサービスページの**API Endpoint設定**ボタンをクリックして設定できます。
@@ -28,6 +31,7 @@ APIパスワードはオブジェクトストレージサービスページの**
 
 > [参考]
 > APIパスワードはユーザーアカウントごとに設定され、ユーザーアカウントが属する全てのプロジェクトで使用できます。
+
 <!-- 改行のためのコメント -->
 
 > [注意]
@@ -35,6 +39,7 @@ APIパスワードはオブジェクトストレージサービスページの**
 
 <br/>
 
+<a id="authentication-token-issuance"></a>
 ## 認証トークン発行
 
 ```
@@ -317,9 +322,11 @@ printf("%s\n", $token);
 
 <br/>
 
+<a id="storage-account"></a>
 ## ストレージアカウント
 ストレージアカウント(account)は`AUTH_*****`形式の文字列です。Object-Store APIエンドポイントに含まれています。
 
+<a id="query-the-storage-account"></a>
 ### ストレージアカウント照会
 ストレージアカウントの使用状況を照会します。
 
@@ -512,6 +519,7 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 
 <br/>
 
+<a id="list-containers"></a>
 ### コンテナリスト照会
 ストレージアカウントのコンテナリストを照会します。
 
@@ -659,8 +667,10 @@ foreach($container_list as $container) {
 
 <br/>
 
+<a id="container"></a>
 ## コンテナ
 
+<a id="create-a-container"></a>
 ### コンテナの作成
 コンテナを作成します。オブジェクトストレージにファイルをアップロードするには、コンテナを作成する必要があります。
 
@@ -675,6 +685,7 @@ foreach($container_list as $container) {
 > 作成済みのコンテナのストレージクラスは変更できません。
 > Economyクラスのコンテナにアップロードされたオブジェクトは、最低保管期間30日が適用されます。30日前に削除されたオブジェクトに対しても、残余保管期間の料金が課金されます。
 > EconomyクラスコンテナはAPIリクエスト1,000件ごとに料金が適用されます。(HEAD/DELETEリクエストは除く)
+
 コンテナを作成する際、`X-Container-Worm-Retention-Day`ヘッダを利用してオブジェクトロック周期を設定すると、オブジェクトロックコンテナを作成できます。オブジェクトロックコンテナにアップロードしたオブジェクトは**WORM(Write-Once-Read-Many)**モデルを使用して保存されます。オブジェクトロックコンテナにアップロードしたオブジェクトには、ロック有効期限が設定されます。各オブジェクトに設定されたロックの有効期限が切れる前に、オブジェクトを上書きしたり、削除することはできません。
 
 <br/>
@@ -863,6 +874,7 @@ $container->create($CONTAINER_NAME);
 
 <br/>
 
+<a id="get-a-container"></a>
 ### コンテナ照会
 指定したコンテナの情報と、内部に保存されたオブジェクトのリストを照会します。コンテナの情報はレスポンスヘッダで確認できます。
 
@@ -887,21 +899,25 @@ X-Auth-Token: {token-id}
 > [参考]
 > コンテナ照会APIは複数のクエリ(query)を提供します。すべてのクエリは`&`で接続して使用できます。
 
+<a id="list-objects-over-10k"></a>
 #### 1万個以上のオブジェクトリスト照会
 コンテナ照会APIで照会できるリストのオブジェクト数は1万個に制限されています。1万個以上のオブジェクトリストを照会するには`marker`クエリを利用する必要があります。Markerクエリは指定したオブジェクトの次のオブジェクトから最大1万個のリストを返します。
 
 <br/>
 
+<a id="list-objects-with-a-prefix"></a>
 #### プレフィックスで始まるオブジェクトリスト照会
 `prefix`クエリを使用すると、指定したプレフィックスで始まるオブジェクトのリストを返します。Prefixクエリでサブフォルダのオブジェクトリストを照会できます。
 
 <br/>
 
+<a id="list-objects-with-limit"></a>
 #### リストの最大オブジェクト数指定
 `limit`クエリを使用する際に返すオブジェクトリストの最大オブジェクト数を指定できます。
 
 <br/>
 
+<a id="list-objects-with-format"></a>
 #### レスポンス形式指定
 `format`クエリを使用して`json`または`xml`のレスポンス形式を指定できます。レスポンス形式を指定するとレスポンス本文に各オブジェクトのメタデータ(サイズ、コンテンツタイプ、最終修正時刻、ETag)が含まれます。
 
@@ -1057,6 +1073,7 @@ foreach ($object_list as $obj) {
 
 <br/>
 
+<a id="change-container-settings"></a>
 ### コンテナ設定変更
 
 コンテナ設定を変更します。コンテナ設定はコンテナ照会時にレスポンスヘッダで確認できます。
@@ -1110,11 +1127,13 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 | Container | URL | String | O | 修正するコンテナ名 |
 <br/>
 
+<a id="set-container-rbac-policy"></a>
 ##### アクセスポリシー設定
 `X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
 
 <br/>
 
+<a id="set-container-object-lifecycle"></a>
 ##### オブジェクトライフサイクル設定
 `X-Container-Object-Lifecycle`ヘッダを使用するとコンテナに保存されるオブジェクトのライフサイクルを日単位で設定できます。設定後にアップロードしたオブジェクトにのみ適用されます。
 `X-Container-Object-Transfer-To`ヘッダを使うと、ライフサイクルが切れたオブジェクトを指定されたコンテナに移して保管することができます。コンテナが指定されていない場合、有効期限が切れたオブジェクトは削除されます。
@@ -1124,8 +1143,9 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 
 <br/>
 
+<a id="set-container-object-version-policy"></a>
 ##### バージョン管理ポリシー設定
-[オブジェクト内容の修正](api-guide/#_51)項目に記述したとおりにオブジェクトをアップロードする時、同じ名前のオブジェクトがすでにある場合、オブジェクトをアップデートします。既存オブジェクトの内容を保管したい場合は`X-History-Location`ヘッダを使用して以前のバージョンを保管する**アーカイブコンテナ**を指定できます。
+[オブジェクト内容の修正](api-guide/#update-an-object)項目に記述したとおりにオブジェクトをアップロードする時、同じ名前のオブジェクトがすでにある場合、オブジェクトをアップデートします。既存オブジェクトの内容を保管したい場合は`X-History-Location`ヘッダを使用して以前のバージョンを保管する**アーカイブコンテナ**を指定できます。
 
 以前のバージョンのオブジェクトは、アーカイブコンテナに次のような形式で保管されます。
 ```
@@ -1146,6 +1166,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 
 <br/>
 
+<a id="set-container-static-website"></a>
 ##### 静的Webサイト設定
 コンテナ読み取り権限をすべてのユーザーに許可した後、`X-Container-Meta-Web-Index`, `X-Container-Meta-Web-Error`ヘッダを利用して静的Webサイトインデックス文書とエラー文書を設定すると、コンテナURLを利用して静的Webサイトをホスティングできます。
 
@@ -1153,6 +1174,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 静的Webサイトのエラー文書名は`{エラーコード}{サフィックス}`形式で、ヘッダには`サフィックス`を入力する必要があります。例えば`X-Container-Meta-Web-Error: error.html`をリクエストした場合、404エラーが発生した時に表示されるエラー文書の名前は`404error.html`になります。各エラーの状況に合わせてエラー文書をアップロードして使用できます。エラー文書を定義していなかったり、エラーコードに合ったエラー文書オブジェクトがない場合はWebブラウザの基本エラー文書が表示されます。
 <br/>
 
+<a id="set-container-cors-policy"></a>
 ##### オリジン間リソース共有(CORS)
 
 ブラウザでObject Storage APIを直接呼び出すには、クロスソースリソース共有(CORS)設定が必要です。 `X-Container-Meta-Access-Control-Allow-Origin`ヘッダを利用して許可するソースリストを設定します。スペース(` `)で区切られた1つ以上のソースを入力するか、`*`を入力してすべてのソースを許可できます。
@@ -1210,6 +1232,7 @@ CORS設定を行っていない場合や、許可されていないサイトでA
 
 ```
 Access to XMLHttpRequest at 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
 Status: 0
 ```
 
@@ -1218,23 +1241,28 @@ Status: 0
 
 <br/>
 
+<a id="set-container-rfc-compliant-etag"></a>
 ##### RFCを遵守するETag形式の使用設定
 一部アプリケーションでは[RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3)仕様に基づいて二重引用符で囲まれたETag値を要求します。 `X-Container-Rfc-Compliant-Etags`ヘッダを使用するとコンテナに保存されたオブジェクトを照会するとき、二重引用符で囲まれたETag値を返すように設定できます。
 
 <br/>
 
+<a id="set-container-object-lock-cycle"></a>
 ##### オブジェクトロック期間の変更
 `X-Container-Worm-Retention-Day`ヘッダを使用してオブジェクトロックコンテナのオブジェクトロック周期を変更します。ロック周期は日単位で入力でき、解除できません。変更されたロック周期は変更後にアップロードするオブジェクトに適用されます。オブジェクトロック周期はオブジェクトロックコンテナでのみ変更できます。
 
 > [参考]
 > 一般コンテナをオブジェクトロックコンテナに変更したり、オブジェクトロックコンテナを一般コンテナに変更できません。
 > オブジェクトロックコンテナはアーカイブコンテナまたは複製対象コンテナに指定できません。
+
 <br/>
 
+<a id="set-container-upload-policy"></a>
 ##### アップロードポリシー設定変更
 `X-Container-Object-Deny-Extension-Policy`, `X-Container-Object-Deny-Keyword-Policy`, `X-Container-Object-Allow-Extension-Policy`, `X-Container-Object-Allow-Keyword-Policy`ヘッダを使用して、コンテナにオブジェクト名ベースのアップロードポリシーを設定できます。アップロードポリシーを設定することで、名前に特定の拡張子やキーワードを含むオブジェクトのアップロードを許可したり、アップロードできないように制限できます。
 
-アップロードポリシーは、ポリシーが設定された後からアップロードされるオブジェクトに適用されます。パスを含むオブジェクトは、パスを除いたオブジェクト名がポリシーに適用されます。すべてのアップロードポリシーヘッダは `,` 区切り文字を利用して複数のルールを入力することができ、区切り文字 `,` を除いたそれぞれのルールはURLエンコーディング(パーセンテージエンコーディング)する必要があります。
+アップロードポリシーは、ポリシーが設定された後からアップロードされるオブジェクトに適用されます。パスを含むオブジェクトは、パスを除いたオブジェクト名がポリシーに適用されます。
+すべてのアップロードポリシーヘッダは `,` 区切り文字を利用して複数のルールを入力することができ、区切り文字 `,` を除いたそれぞれのルールはURLエンコーディング(パーセンテージエンコーディング)する必要があります。
 拡張子ルールはファイルの拡張子を、ファイル名ルールはオブジェクト名に含まれているかどうかをチェックします。拡張子ルールは `.` を除いて入力する必要があります。 例えば、txt拡張子を入力するには `.txt` ではなく `txt` を入力します。
 
 アップロードポリシーは、ホワイトリストとブラックリストを同時に使用することはできません。 両方の属性を設定するように要求すると、失敗レスポンスを受け取ります。
@@ -1250,15 +1278,18 @@ $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Object-Allow-Extension-Policy: exe, jpg' \
 https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
+
 $ curl -X PUT \
 -H 'X-Auth-Token: ****' \
 https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container/test.jpg -i
+
 HTTP/1.1 409 Conflict
 Content-Length: 72
 Content-Type: text/html; charset=UTF-8
 X-Trans-Id: txddeb34d60f7f4b43a8b2a-0065b8b134
 X-Openstack-Request-Id: txddeb34d60f7f4b43a8b2a-0065b8b134
 Date: Tue, 30 Jan 2024 08:20:04 GMT
+
 Only the objects with the following extensions can be uploaded: exe, jpg
 ```
 
@@ -1267,15 +1298,18 @@ $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Object-Allow-Keyword-Policy: example' \
 https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
+
 $ curl -X PUT \
 -H 'X-Auth-Token: ****' \
 https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container/upload.txt -i
+
 HTTP/1.1 409 Conflict
 Content-Length: 60
 Content-Type: text/html; charset=UTF-8
 X-Trans-Id: tx24209f2af02b4de0a4921-0065b8b192
 X-Openstack-Request-Id: tx24209f2af02b4de0a4921-0065b8b192
 Date: Tue, 30 Jan 2024 08:21:38 GMT
+
 The object name must contain the following keywords: example
 ```
 
@@ -1292,15 +1326,18 @@ $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Object-Deny-Extension-Policy: exe, jpg' \
 https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
+
 $ curl -X PUT \
 -H 'X-Auth-Token: ****' \
 https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container/test.jpg -i
+
 HTTP/1.1 409 Conflict
 Content-Length: 70
 Content-Type: text/html; charset=UTF-8
 X-Trans-Id: tx4a0f746118e9453ca8688-0065b8b038
 X-Openstack-Request-Id: tx4a0f746118e9453ca8688-0065b8b038
 Date: Tue, 30 Jan 2024 08:15:52 GMT
+
 The objects with the following extensions cannot be uploaded: exe, jpg
 ```
 
@@ -1309,20 +1346,24 @@ $ curl -X POST \
 -H 'X-Auth-Token: ****' \
 -H 'X-Container-Object-Deny-Keyword-Policy: example' \
 https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
+
 $ curl -X PUT \
 -H 'X-Auth-Token: ****' \
 https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container/upload_example.txt -i
+
 HTTP/1.1 409 Conflict
 Content-Length: 64
 Content-Type: text/html; charset=UTF-8
 X-Trans-Id: tx60aaa14186d84cca88a8e-0065b8b098
 X-Openstack-Request-Id: tx60aaa14186d84cca88a8e-0065b8b098
 Date: Tue, 30 Jan 2024 08:17:28 GMT
+
 The object name must not contain the following keywords: example
 ```
 
 </details>
 
+<a id="unset-container-settings"></a>
 ##### コンテナ設定解除
 値がないヘッダを使用すると設定が解除されます。例えばオブジェクトライフサイクルが3日に設定されている時、`'X-Container-Object-Lifecycle: '`を使用してコンテナ修正リクエストを行うと、オブジェクトライフサイクル設定が解除され、その後にコンテナに保存されるオブジェクトは自動的にライフサイクルが設定されません。
 <br/>
@@ -1466,6 +1507,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 
 <br/>
 
+<a id="delete-a-container"></a>
 ### コンテナ削除
 
 指定したコンテナを削除します。削除するコンテナは空になっている必要があります。
@@ -1604,8 +1646,10 @@ $container->delete($CONTAINER_NAME);
 
 <br/>
 
+<a id="object"></a>
 ## オブジェクト
 
+<a id="upload-an-object"></a>
 ### オブジェクトアップロード
 指定したコンテナに新しいオブジェクトをアップロードします。
 
@@ -1629,6 +1673,7 @@ Content-Type: {content-type}
 | - |	Body | Binary | O | 作成するオブジェクトの内容 |
 
 
+<a id="set-object-lifecycle"></a>
 ##### オブジェクトライフサイクル設定
 `X-Delete-At`または`X-Delete-After`ヘッダを使用するとオブジェクトのライフサイクルを秒単位で設定できます。
 <br/>
@@ -1833,11 +1878,13 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
+<a id="multipart-upload"></a>
 ### マルチパートアップロード
 5GBを超える容量を持つオブジェクトは5GB以下のセグメントに分割してアップロードする必要があります。セグメントオブジェクトをアップロードした後、マニフェストオブジェクトを作成すると1つのオブジェクトのように使用できます。
 
 <br/>
 
+<a id="upload-segment-object"></a>
 #### セグメントオブジェクトのアップロード
 オブジェクトを分割したセグメントオブジェクトをそれぞれアップロードします。
 
@@ -1868,6 +1915,7 @@ Content-Type: {content-type}
 
 <br/>
 
+<a id="upload-manifest-object"></a>
 #### マニフェストオブジェクトの作成
 マニフェストオブジェクトは**DLO**(Dynamic Large Object)と **SLO**(Static Large Object)の2つの方式で作成できます。
 
@@ -2207,6 +2255,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <br/>
 
+<a id="update-an-object"></a>
 ### オブジェクト内容の修正
 オブジェクトアップロードAPIと同じですが、オブジェクトがすでにコンテナにある場合、該当オブジェクトの内容が修正されます。
 
@@ -2234,6 +2283,7 @@ Content-Type: {content-type}
 
 <br/>
 
+<a id="query-object-information"></a>
 ### オブジェクト情報の照会
 指定したオブジェクトの情報を照会します。オブジェクト情報は、レスポンスヘッダで確認できます。
 
@@ -2276,6 +2326,7 @@ X-Auth-Token: {token-id}
 ```
 $ curl -O -X HEAD -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/curl_example/ba6610.jpg
+
 HTTP/1.1 200 OK
 content-type: image/jpeg
 content-length: 148585
@@ -2291,6 +2342,7 @@ date: Wed, 16 Oct 2024 23:43:36 GMT
 
 <br/>
 
+<a id="download-an-object"></a>
 ### オブジェクトのダウンロード
 オブジェクトをダウンロードします。
 
@@ -2370,19 +2422,8 @@ public class ObjectService {
         ObjectService objectService = new ObjectService(storageUrl, tokenId);
 
         try {
-            // オブジェクトのダウンロード
-            InputStream inputStream = objectService.downloadObject(containerName, objectName);
-
-            // ダウンロードしたデータをバイトバッファに読み込む
-            byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
-
-            // バッファのデータをファイルに記録
-            File target = new File(downloadPath + "/" + objectName);
-            OutputStream outputStream = new FileOutputStream(target);
-            outputStream.write(buffer);
-            outputStream.close();
-
+            // オブジェクトのダウンロード            
+            objectService.downloadObject(containerName, objectName, downloadPath);
             System.out.println("\nDownload OK");
         } catch (Exception e) {
             e.printStackTrace();
@@ -2469,6 +2510,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
+<a id="copy-an-object"></a>
 ### オブジェクトのコピー
 オブジェクトを他のコンテナにコピーします。
 
@@ -2636,6 +2678,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 
 <br/>
 
+<a id="modify-object-metadata"></a>
 ### オブジェクトメタデータ修正
 指定したオブジェクトのメタデータを修正します。
 
@@ -2807,6 +2850,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 
 <br/>
 
+<a id="delete-an-object"></a>
 ### オブジェクト削除
 指定したオブジェクトを削除します。
 
@@ -2951,7 +2995,10 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 <br/>
 
+<a id="limiting-policy"></a>
 ## 制限ポリシー
+
+<a id="request-rate-limit"></a>
 ### リクエスト速度制限
 Object Storageはシステム安定性を確保するため、ストレージアカウント単位で書き込みリクエスト速度制限(rate limit)を適用します。
 
@@ -3002,6 +3049,7 @@ Object Storageはシステム安定性を確保するため、ストレージア
 
 <br/>
 
+<a id="references"></a>
 ## References
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
