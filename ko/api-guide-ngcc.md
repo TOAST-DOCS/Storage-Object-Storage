@@ -1,11 +1,13 @@
 ## Storage > Object Storage > API 가이드
 
+<a id="prerequisites"></a>
 ## 사전 준비
 
 오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급 받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 NHN Cloud 계정별로 관리됩니다.
 
 <br/>
 
+<a id="check-the-tenant-id-and-api-endpoint"></a>
 ### 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
 
 토큰 발급을 위한 테넌트 아이디와 API의 엔드포인트는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
@@ -18,6 +20,7 @@
 
 <br/>
 
+<a id="set-the-api-password"></a>
 ### API 비밀번호 설정
 
 API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 설정할 수 있습니다.
@@ -36,6 +39,7 @@ API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpo
 
 <br/>
 
+<a id="authentication-token-issuance"></a>
 ## 인증 토큰 발급
 
 ```
@@ -318,9 +322,11 @@ printf("%s\n", $token);
 
 <br/>
 
+<a id="storage-account"></a>
 ## 스토리지 계정
 스토리지 계정(account)은 `AUTH_*****` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
 
+<a id="query-the-storage-account"></a>
 ### 스토리지 계정 조회
 스토리지 계정의 사용 현황을 조회합니다.
 
@@ -513,6 +519,7 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 
 <br/>
 
+<a id="list-containers"></a>
 ### 컨테이너 목록 조회
 스토리지 계정의 컨테이너 목록을 조회합니다.
 
@@ -660,8 +667,10 @@ foreach($container_list as $container) {
 
 <br/>
 
+<a id="container"></a>
 ## 컨테이너
 
+<a id="create-a-container"></a>
 ### 컨테이너 생성
 컨테이너를 생성합니다. 오브젝트 스토리지에 파일을 업로드하려면 반드시 컨테이너를 생성해야 합니다.
 
@@ -854,9 +863,9 @@ $container->create($CONTAINER_NAME);
 ```
 </details>
 
-
 <br/>
 
+<a id="get-a-container"></a>
 ### 컨테이너 조회
 지정한 컨테이너의 정보와 내부에 저장된 오브젝트 목록을 조회합니다. 컨테이너의 정보는 응답 헤더에서 확인할 수 있습니다.
 
@@ -881,21 +890,25 @@ X-Auth-Token: {token-id}
 > [참고]
 > 컨테이너 조회 API는 몇 가지 질의(query)를 제공합니다. 모든 질의는 `&`로 연결해 혼용할 수 있습니다.
 
+<a id="list-objects-over-10k"></a>
 #### 1만 개 이상의 오브젝트 목록 조회
 컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 이용해야 합니다. marker 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다.
 
 <br/>
 
+<a id="list-objects-with-a-prefix"></a>
 #### 접두어로 시작하는 오브젝트 목록 조회
 `prefix` 질의를 사용하면 지정한 접두어로 시작하는 오브젝트 목록을 반환합니다. prefix 질의를 통해 하위 폴더의 오브젝트 목록을 조회할 수 있습니다.
 
 <br/>
 
+<a id="list-objects-with-limit"></a>
 #### 목록의 최대 오브젝트 수 지정
 `limit` 질의를 사용하면 반환할 오브젝트 목록의 최대 오브젝트 수를 지정할 수 있습니다.
 
 <br/>
 
+<a id="list-objects-with-format"></a>
 #### 응답 형식 지정
 `format` 질의를 사용하여 `json` 또는 `xml` 응답 형식을 지정할 수 있습니다. 응답 형식을 지정하면 응답 본문에 각 오브젝트의 메타데이터(크기, 콘텐츠 타입, 최종 수정 시간, ETag)가 포함됩니다.
 
@@ -1051,6 +1064,7 @@ foreach ($object_list as $obj) {
 
 <br/>
 
+<a id="change-container-settings"></a>
 ### 컨테이너 설정 변경
 
 컨테이너 설정을 변경합니다. 컨테이너 설정은 컨테이너 조회시 응답 헤더에서 확인할 수 있습니다.
@@ -1104,19 +1118,22 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 | Container | URL | String | O | 수정할 컨테이너 이름 |
 <br/>
 
+<a id="set-container-rbac-policy"></a>
 ##### 접근 정책 설정
 `X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide-ngcc/)를 참조하세요.
 
 <br/>
 
+<a id="set-container-object-lifecycle"></a>
 ##### 오브젝트 수명 주기 설정
 `X-Container-Object-Lifecycle` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
 `X-Container-Object-Transfer-To` 헤더를 사용하면 수명 주기가 만료된 오브젝트를 지정된 컨테이너로 옮겨 보관할 수 있습니다. 컨테이너가 지정되어 있지 않으면 만료된 오브젝트는 삭제됩니다.
 
 <br/>
 
+<a id="set-container-object-version-policy"></a>
 ##### 버전 관리 정책 설정
-[오브젝트 내용 수정](api-guide-ngcc/#_52) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
+[오브젝트 내용 수정](api-guide-ngcc/#update-an-object) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
 
 이전 버전 오브젝트는 아카이브 컨테이너에 다음과 같은 형태로 보관됩니다.
 ```
@@ -1136,6 +1153,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 <br/>
 
+<a id="set-container-static-website"></a>
 ##### 정적 웹사이트 설정
 컨테이너 읽기 접근 권한을 모든 사용자에게 허용한 다음 `X-Container-Meta-Web-Index`, `X-Container-Meta-Web-Error`헤더를 이용하여 정적 웹사이트 인덱스 문서와 오류 문서를 설정하면 컨테이너 URL을 이용하여 정적 웹사이트를 호스팅할 수 있습니다.
 
@@ -1143,6 +1161,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 정적 웹사이트의 오류 문서 이름은 `{응답 코드}{접미사}` 형태입니다. 예를 들어 오류 문서를 `error.html`로 설정했다면, 404 오류가 발생했을 때 보여줄 오류 문서의 이름은 `404error.html`이 됩니다. 각 오류 상황에 맞게 오류 문서를 업로드해 사용할 수 있습니다. 오류 문서를 정의하지 않거나, 응답 코드에 맞는 오류 문서 오브젝트가 없다면 웹 브라우저의 기본 오류 문서가 표시됩니다.
 <br/>
 
+<a id="set-container-cors-policy"></a>
 ##### 교차 출처 리소스 공유(CORS)
 
 브라우저에서 Object Storage API를 직접 호출하려면 교차 출처 리소스 공유(CORS) 설정이 필요합니다. `X-Container-Meta-Access-Control-Allow-Origin` 헤더를 이용하여 허용할 출처 목록을 설정합니다. 공백(` `)으로 구분된 하나 이상의 출처를 입력하거나 `*`을 입력하여 모든 출처를 허용할 수 있습니다.
@@ -1209,11 +1228,13 @@ Status: 0
 
 <br/>
 
+<a id="set-container-rfc-compliant-etag"></a>
 ##### RFC를 준수하는 ETag 형식 사용 설정
 일부 애플리케이션에서는 [RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3) 사양에 따라 큰따옴표로 묶인 ETag 값을 요구합니다. `X-Container-Rfc-Compliant-Etags` 헤더를 사용하면 컨테이너에 저장된 오브젝트를 조회할 때 큰따옴표로 묶인 ETag 값을 반환하도록 설정할 수 있습니다.
 
 <br/>
 
+<a id="set-container-object-lock-cycle"></a>
 ##### 객체 잠금 기간 변경
 `X-Container-Worm-Retention-Day` 헤더를 사용해 객체 잠금 컨테이너의 객체 잠금 주기를 변경합니다. 잠금 주기는 일 단위로 입력할 수 있으며, 해제할 수 없습니다. 변경된 잠금 주기는 변경 이후 업로드하는 오브젝트에 적용됩니다. 객체 잠금 주기는 객체 잠금 컨테이너에서만 변경할 수 있습니다.
 
@@ -1223,6 +1244,7 @@ Status: 0
 
 <br/>
 
+<a id="set-container-upload-policy"></a>
 ##### 업로드 정책 설정 변경
 `X-Container-Object-Deny-Extension-Policy`, `X-Container-Object-Deny-Keyword-Policy`, `X-Container-Object-Allow-Extension-Policy`, `X-Container-Object-Allow-Keyword-Policy` 헤더를 사용해 컨테이너에 오브젝트 이름 기반 업로드 정책을 설정할 수 있습니다. 업로드 정책 설정을 활용하면 이름에 특정 확장자나 키워드가 포함된 오브젝트만 업로드하거나 업로드하지 못하도록 제한할 수 있습니다. 
 
@@ -1328,7 +1350,7 @@ The object name must not contain the following keywords: example
 
 </details>
 
-
+<a id="unset-container-settings"></a>
 ##### 컨테이너 설정 해제
 값이 없는 헤더를 사용하면 설정이 해제됩니다. 예를 들어 오브젝트 수명 주기가 3일로 설정되어 있을 때 `'X-Container-Object-Lifecycle: '`를 사용해 컨테이너 수정을 요청하면 오브젝트 수명 주기 설정이 해제되어 이후 컨테이너에 저장되는 오브젝트는 자동으로 수명 주기가 설정되지 않습니다.
 <br/>
@@ -1472,6 +1494,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 
 <br/>
 
+<a id="delete-a-container"></a>
 ### 컨테이너 삭제
 
 지정한 컨테이너를 삭제합니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다.
@@ -1610,8 +1633,10 @@ $container->delete($CONTAINER_NAME);
 
 <br/>
 
+<a id="object"></a>
 ## 오브젝트
 
+<a id="upload-an-object"></a>
 ### 오브젝트 업로드
 지정한 컨테이너에 새로운 오브젝트를 업로드합니다.
 
@@ -1634,7 +1659,7 @@ Content-Type: {content-type}
 | Object | URL | String |	O | 생성할 오브젝트 이름 |
 | - |	Body | Binary | O | 생성할 오브젝트의 내용 |
 
-
+<a id="set-object-lifecycle"></a>
 ##### 오브젝트 수명 주기 설정
 `X-Delete-At` 또는 `X-Delete-After` 헤더를 사용하면 오브젝트의 수명 주기를 초 단위로 설정할 수 있습니다.
 <br/>
@@ -1839,11 +1864,13 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
+<a id="multipart-upload"></a>
 ### 멀티파트 업로드
 5GB를 초과하는 용량을 가진 오브젝트는 5GB 이하의 세그먼트로 분할해 업로드해야 합니다. 세그먼트 오브젝트를 업로드한 다음 매니페스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다.
 
 <br/>
 
+<a id="upload-segment-object"></a>
 #### 세그먼트 오브젝트 업로드
 오브젝트를 분할한 세그먼트 오브젝트를 각각 업로드합니다.
 
@@ -1874,6 +1901,7 @@ Content-Type: {content-type}
 
 <br/>
 
+<a id="upload-manifest-object"></a>
 #### 매니페스트 오브젝트 생성
 매니페스트 오브젝트는 **DLO**(Dynamic Large Object)와 **SLO**(Static Large Object), 두 가지 방식으로 만들 수 있습니다.
 
@@ -2213,6 +2241,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <br/>
 
+<a id="update-an-object"></a>
 ### 오브젝트 내용 수정
 오브젝트 업로드 API와 같지만, 오브젝트가 이미 컨테이너에 있다면 해당 오브젝트의 내용이 수정됩니다.
 
@@ -2240,6 +2269,7 @@ Content-Type: {content-type}
 
 <br/>
 
+<a id="query-object-information"></a>
 ### 오브젝트 정보 조회
 지정한 오브젝트의 정보를 조회합니다. 오브젝트 정보는 응답 헤더에서 확인할 수 있습니다.
 
@@ -2298,6 +2328,7 @@ date: Wed, 16 Oct 2024 23:43:36 GMT
 
 <br/>
 
+<a id="download-an-object"></a>
 ### 오브젝트 다운로드
 오브젝트를 다운로드합니다.
 
@@ -2465,6 +2496,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
+<a id="copy-an-object"></a>
 ### 오브젝트 복사
 오브젝트를 다른 컨테이너로 복사합니다.
 
@@ -2632,6 +2664,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 
 <br/>
 
+<a id="modify-object-metadata"></a>
 ### 오브젝트 메타데이터 수정
 지정한 오브젝트의 메타데이터를 수정합니다.
 
@@ -2803,6 +2836,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 
 <br/>
 
+<a id="delete-an-object"></a>
 ### 오브젝트 삭제
 지정한 오브젝트를 삭제합니다.
 
@@ -2947,6 +2981,7 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 <br/>
 
+<a id="references"></a>
 ## References
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)

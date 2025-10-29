@@ -1,58 +1,78 @@
 ## Storage > Object Storage > 개요
 오브젝트 스토리지는 다양한 유형의 데이터를 원하는 만큼 저장하고 필요할 때마다 가져올 수 있는 객체 스토리지 서비스입니다.
 
+<a id="service-characteristics"></a>
 ## 서비스 특징
+<a id="outstanding-scalability"></a>
 ### 뛰어난 확장성
 무제한으로 용량을 증설할 수 있으므로 사용자는 스토리지의 용량을 고려할 필요 없이 필요할 때 원하는 만큼 데이터를 저장할 수 있습니다.
 
+<a id="high-stability-and-restoration-capability"></a>
 ### 높은 안정성과 복원력
 데이터를 안전하게 저장하기 위해 오브젝트를 서로 다른 여러 하드웨어에 중복으로 저장합니다. 일부 복제본에 의도치 않은 문제가 발생하더라도 온전한 복제본으로부터 빠르게 복원됩니다.
 
+<a id="control-accessibility"></a>
 ### 접근성 제어
 컨테이너별로 접근 권한을 제어할 수 있습니다. 누구나 조회할 수 있도록 퍼블릭으로 설정할 수도 있고, 역할 기반 접근 제어(RBAC)를 이용하여 NHN Cloud의 프로젝트 또는 개별 사용자 단위로 읽기/쓰기 권한을 차등 부여할 수 있습니다.
 
+<a id="convenient-web-console"></a>
 ### 편리한 웹 콘솔
 사용자 편의를 위해 익숙한 계층적 디렉터리 구조로 데이터를 관리할 수 있는 웹 콘솔을 제공합니다. 컨테이너 내에 가상의 폴더를 만들어 오브젝트들을 그룹화하여 관리할 수 있습니다.
 
+<a id="rest-api"></a>
 ### REST API
 컨테이너와 오브젝트를 제어할 수 있는 HTTP 기반의 REST API를 제공합니다. REST API를 이용하여 사용자의 애플리케이션에서 오브젝트 스토리지를 사용할 수 있습니다.
 
+<a id="amazon-s3-compatible-api"></a>
 ### Amazon S3 호환 API
 Amazon S3와 호환되는 API를 제공합니다. S3 호환 API를 이용하여 Amazon Web Service 소프트웨어 개발 키트(SDK) 기반의 애플리케이션과 다양한 서드파티 도구를 사용할 수 있습니다.
 
+<a id="life-cycle-control"></a>
 ### 수명 주기 제어
 컨테이너 또는 개별 오브젝트 단위로 수명 주기 제어 기능을 제공합니다. 이를 통해 스토리지 사용량을 효율적으로 관리할 수 있습니다.
 
+<a id="object-lock"></a>
 ### 객체 잠금 
 사용자의 부주의한 덮어쓰기, 삭제 요청으로부터 데이터를 보호하기 위한 객체 잠금 기능(Write Once Read Many, WORM)을 제공합니다.
 
+<a id="version-management"></a>
 ### 버전 관리
 버전 관리 기능을 이용하여 오브젝트를 업데이트, 삭제한 이력을 관리하고, 이전 버전으로 복원할 수 있습니다.
 
+<a id="disaster-recovery"></a>
 ### 재해 복구(disaster recovery)
 컨테이너 복제 기능으로 컨테이너의 오브젝트를 다른 리전의 컨테이너에 복제할 수 있습니다. 복제된 데이터를 이용하여 예기치 않은 재해 상황에 대비할 수 있습니다.
 
+<a id="data-encryption-for-improved-security"></a>
 ### 보안성 향상을 위한 데이터 암호화
 서버 측 암호화 기능을 이용하여 중요한 데이터를 암호화하여 보안성을 높일 수 있습니다. 암호화에 사용되는 대칭 키는 NHN Cloud의 Secure Key Manager 서비스에서 안전하게 관리됩니다.
 
+<a id="convenient-cloud-accessibility"></a>
 ### 편리한 클라우드 접근성
 NHN Cloud의 Service Gateway 서비스를 통해 외부 네트워크와 격리된 사용자 VPC 내의 인스턴스에서 사설 네트워크를 통해 오브젝트 스토리지에 접근할 수 있습니다.
 
+<a id="access-history"></a>
 ### 접근 기록
 NHN Cloud의 CloudTrail 서비스를 통해 오브젝트 스토리지에 접근한 기록을 제공합니다.
 
+<a id="terminology"></a>
 ## 용어
+<a id="object"></a>
 #### 오브젝트(object)
 오브젝트 스토리지의 기본적인 데이터 단위입니다. 데이터와 사용자가 부여한 메타데이터, 고유한 주소로 구성됩니다.
 
+<a id="folder"></a>
 #### 폴더(folder)
 오브젝트를 묶는 가상의 단위입니다. Windows의 폴더나 Linux의 디렉터리와 유사하게 계층적으로 오브젝트를 관리할 수 있도록 도와줍니다.
 
+<a id="container"></a>
 #### 컨테이너(container)
 오브젝트를 관리하기 위한 네임스페이스(namespace)입니다. 다양한 관리 설정의 단위가 됩니다. 모든 오브젝트는 반드시 컨테이너 안에 존재하며, 컨테이너 내에서 유일한 이름을 가집니다.
 
+<a id="storage-account"></a>
 #### 스토리지 계정(account)
 오브젝트 스토리지의 사용자 계정입니다. NHN Cloud 오브젝트 스토리지는 계정 단위로 격리됩니다.
 
+<a id="api-endpoint"></a>
 #### API Endpoint
 오브젝트 스토리지에 REST API로 접근하기 위해 제공되는 HTTP URL입니다.

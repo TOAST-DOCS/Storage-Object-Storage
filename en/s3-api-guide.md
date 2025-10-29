@@ -28,12 +28,14 @@ The following Amazon S3 compatible API is provided.
 
 This document describes only the basic usage of API. To use advanced features, it is recommended that you see [Amazon S3 API Guide](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html) or use [AWS SDK](https://aws.amazon.com/tools).
 
+<a id="s3-api-credential"></a>
 ## S3 API Credentials
 
+<a id="obtain-s3-api-credentials"></a>
 ### Obtain S3 API Credentials
 To use Amazon S3 compatible API, you must first obtain S3 API credentials in the form of AWS EC2. Credentials can be issued using the web console or API. To obtain credentials using the web console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
 
-To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to [Object Storage API Guide](api-guide/#tenant-id-api-endpoint).
+To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to [Object Storage API Guide](api-guide/#prerequisites).
 
 ```
 POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -103,6 +105,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="get-s3-api-credentials"></a>
 ### Get S3 API Credentials
 Retrieves the issued S3 API credentials.
 
@@ -152,6 +155,7 @@ This API does not require a request body.
 
 </details>
 
+<a id="delete-s3-api-credentials"></a>
 ### Delete S3 API Credentials
 Deletes the issued S3 API credentials.
 
@@ -174,6 +178,7 @@ This API does not require a request body.
 #### Response
 This API does not return request body. When the request is appropriate, return status code 204.
 
+<a id="create-signature"></a>
 ## Create Signature
 To use S3 API, you must create a signature use credentials. Regarding how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
 
@@ -188,7 +193,9 @@ The following information is required to create a signature.
 | Secret Key    | S3 API credentials secret key          |
 
 
+<a id="bucket"></a>
 ## Bucket
+<a id="create-bucket"></a>
 ### Create Bucket
 Creates a bucket. Bucket names must follow Amazon S3's naming rules.
 
@@ -226,6 +233,7 @@ This API does not return a response body. It returns a status code of 200 if the
 | ------------------------------- | ---- | ------- | --------------------------- |
 | Location | Header | String | Path for created bucket |
 
+<a id="list-buckets"></a>
 ### List Buckets
 Retrieves bucket lists.
 
@@ -273,6 +281,7 @@ If the request is valid, returns a status code of 200 and a bucket list in XML f
 
 </details>
 
+<a id="get-bucket"></a>
 ### Get Bucket
 Retrieves the information of the specified bucket and the list of objects that are stored in the bucket.
 
@@ -337,6 +346,7 @@ If the request is valid, returns a status code of 200 and a object list in XML f
 
 </details>
 
+<a id="delete-bucket"></a>
 ### Delete Bucket
 Deletes the specified bucket. The bucket to be deleted must be empty.
 
@@ -359,7 +369,9 @@ This API does not require a request body.
 #### Response
 This API does not return a response body; it returns status code 204 if the request is valid.
 
+<a id="object"></a>
 ## Object
+<a id="upload-object"></a>
 ### Upload Object
 Uploads an object to the specified bucket.
 
@@ -388,6 +400,7 @@ This API does not return a response body. It returns a status code of 200 if the
 | ETag | Header | String | MD5 hash value of the object|
 | Last-Modified | Header | String | The object's last modified date (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
+<a id="download-object"></a>
 ### Download Object
 Downloads an object.
 
@@ -416,6 +429,7 @@ If the request is valid, returns the status code of 200.
 | Last-Modified | Header | String | The object's last modified date (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 | ETag | Header | String | MD5 hash value of the obejct |
 
+<a id="delete-object"></a>
 ### Delete Object
 Delete the specified object.
 
@@ -439,15 +453,18 @@ This API does not require a request body.
 #### Response
 This API does not return a response body. It returns status code 204 if the request is valid.
 
+<a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI)
 You can use NHN Cloud Object Storage with [AWS Command Line Interface](https://aws.amazon.com/cli/) using the S3 compatible API.
 
+<a id="aws-command-line-interface-installation"></a>
 ### Installation
 Install the AWS Command Line Interface (CLI) by referencing the [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) documentation.  
 
 > [Note]
 > AWS CLI versions up to 2.22.35 are supported in NHN Cloud Object Storage.
 
+<a id="aws-command-line-interface-configuration"></a>
 ### Configuration
 To use AWS CLI, you must set up S3 API credentials and environment first.
 
@@ -465,6 +482,7 @@ Default output format [None]: json
 | secret | S3 API credentials secret key |
 | region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>JP1 - Japan (Tokyo) Region <br/>US1 - US (California) Region |
 
+<a id="how-to-use-the-s3-commands"></a>
 ### How to Use the S3 Commands
 
 ```shell
@@ -571,6 +589,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 </details>
 
 
+<a id="aws-sdk"></a>
 ## AWS SDK
 AWS provides SDKs for many types of programming languages. By using the S3 compatible API, you can use NHN Cloud Object Storage with AWS SDK.
 
@@ -586,6 +605,7 @@ The following are the major parameters required to use AWS SDK.
 | region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region<br/>JP1 - Japan (Tokyo) region <br/>US1 - US (California) region |
 | endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region<br/>https://us1-api-object-storage.nhncloudservice.com - US (California) region |
 
+<a id="aws-sdk-boto3-python"></a>
 ### Boto3 - Python SDK
 
 > [Note]
@@ -729,6 +749,7 @@ def delete(self, bucket_name, key):
 
 </details>
 
+<a id="aws-sdk-java"></a>
 ### Java SDK
 
 > [Note]
@@ -915,6 +936,7 @@ public void deleteObject(
 
 </details>
 
+<a id="aws-sdk-dotnet"></a>
 ### .NET SDK
 
 > [Note]
