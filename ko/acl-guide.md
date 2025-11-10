@@ -49,6 +49,7 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 > 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide/#authentication-token-issuance) 항목을 참조하세요.
 
 
+<a id="common-access-elements"></a>
 #### 기타 접근 정책 요소
 
 `X-Container-Read` 속성은 역할 기반 접근 정책 요소 외에 아래의 추가적인 정책 요소를 입력할 수 있습니다.
