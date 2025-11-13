@@ -1108,6 +1108,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | X-Container-Read | Header | String | - | Sets the role-based access rules for container read |
 | X-Container-Write | Header | String | - | Sets the role-based access rules for container write |
+| X-Container-View | Header | String | - | Sets the role-based access rules for container view |
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | Sets the IP-based access rules for container write |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | Sets the IP-based access rules for container write |
 | X-Container-Object-Lifecycle | Header | Integer | - | Sets the life cycle of the container's base object in days |
@@ -1129,7 +1130,7 @@ This API does not require a request body.
 
 <a id="set-container-rbac-policy"></a>
 ##### Set the Access Policy
-You can set the container access policy using the `X-Container-Read`, `X-Container-Write`,`X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
+You can set the container access policy using the `X-Container-Read`, `X-Container-Write`,`X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <br/>
 
