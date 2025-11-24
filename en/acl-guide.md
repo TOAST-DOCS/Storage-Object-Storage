@@ -21,7 +21,15 @@ In the console, you can select a container access policy from the [Create Contai
 
 <a id="role-based-access-api"></a>
 ### API
-You can use the API to set access policies for different situations by entering role-based access policy elements in the `X-Container-Read` and `X-Container-Write` properties of a container.
+You can use the API to set access policies for different situations by entering role-based access policy elements in the `X-Container-Read`, `X-Container-Write`, `X-Container-View` properties of a container. Each property is as below:
+
+| Property | Description |
+| --- | --- |
+| X-Container-Read | Allow viewing container information and viewing and downloading information about objects within a container. Viewing information for some containers is restricted. It includes GET and HEAD requests for containers and objects. |
+| X-Container-Write | Allow modifying objects within a container. This includes PUT, POST, DELETE, and COPY requests for objects. |
+| X-Container-View | Allow viewing a list of objects within a container and viewing information about them. This includes GET and HEAD requests for containers and HEAD requests for objects. |
+
+
 <br/>
 
 <a id="role-based-access-elements"></a>
@@ -31,10 +39,6 @@ The role-based access policy elements that can be set are as follows. All policy
 
 | Policy Element | Description |
 | --- | --- |
-| `.r:*` | Anyone can access the object without an authentication token. |
-| `.rlistings` | Allows a container query (GET or HEAD request) to users with read permission.<br/>Without this policy element, the list of objects cannot be queried.<br/>This policy element cannot be set alone. |
-| `.r:<referrer>` | Allows access to the HTTP referer set by referring to the request header.<br/>No authentication token is required. |
-| `.r:-<referrer>` | Restricts the access of the HTTP referer set by referring to the request header.<br/>It is set by adding a minus sign (-) in front of the referer. |
 | `<tenant-id>:<api-user-id>` | The object can be accessed with an authentication token issued to a specific user belonging to a specific project.<br/>Both read and write permissions can be granted. |
 | `<tenant-id>:*` | The object can be accessed with an authentication token issued to all users belonging to a specific project.<br/>Both read and write permissions can be granted. |
 | `*:<api-user-id>` | The object can be accessed with an authentication token issued to a specific user, regardless of the project.<br/>Both read and write permissions can be granted. |
@@ -43,6 +47,20 @@ The role-based access policy elements that can be set are as follows. All policy
 > [Note]
 >  `<api-user-id>` can be found in the **API User ID** item in the API Endpoint Settings dialog box on the console or in the **access.user.id** field in the response body of the Authentication Token Issuance API.
 > To use the Authentication Token Issuance API, see [Authentication Token Issuance](api-guide/#authentication-token-issuance) in the API Guide.
+
+
+<a id="common-access-elements"></a>
+#### Other Access Policy Elements
+
+The `X-Container-Read` property accepts the following additional policy elements in addition to the role-based access policy element:
+
+| Policy Element | Description |
+| --- | --- |
+| `.r:*` | Allow anyone to access the object without an authentication token. |
+| `.r:<referrer>` | Allow access to the HTTP referrer specified by the request header.<br/>No authentication token is required. |
+| `.r:-<referrer>` | Restrict access to the HTTP referrer specified by the request header.<br/>Set the referrer by prefixing it with a minus sign (-). |
+| `.rlistings` | Allow users with read permission to retrieve containers (GET or HEAD requests).<br/>If this policy element is not present, object listings cannot be retrieved.<br/>This policy element cannot be set alone. |
+
 
 <br/>
 
