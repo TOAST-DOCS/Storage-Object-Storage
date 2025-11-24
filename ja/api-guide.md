@@ -1108,6 +1108,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 | X-Auth-Token | Header | String | O | トークンID |
 | X-Container-Read | Header | String | - | コンテナ読み取りに対するロールベースのアクセスルール設定 |
 | X-Container-Write | Header | String | - | コンテナ書き込みに対するロールベースのアクセスルール設定 |
+| X-Container-View | Header | String | - | コンテナ照会に対するロールベースのアクセスルール設定 |
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | コンテナ書き込みに対するIPベースのアクセスルール設定 |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | コンテナ書き込みに対するIPベースのアクセスルール設定 |
 | X-Container-Object-Lifecycle | Header | Integer | - | コンテナの基本オブジェクトライフサイクルを日単位で設定 |
@@ -1129,7 +1130,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 
 <a id="set-container-rbac-policy"></a>
 ##### アクセスポリシー設定
-`X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
+`X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control`ヘッダを使用してコンテナアクセスポリシーを設定できます。詳細な内容は[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
 
 <br/>
 
