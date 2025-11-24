@@ -1,11 +1,13 @@
 ## Storage > Object Storage > API Guide
 
+<a id="prerequisites"></a>
 ## Prerequisites
 
 To use the Object Storage API, you must obtain an authentication token first. An authentication token is the authentication key required when using the REST API of Object Storage. A token is required to access a container or object that is not publicly available. Tokens are managed per NHN Cloud account.
 
 <br/>
 
+<a id="check-the-tenant-id-and-api-endpoint"></a>
 ### Check the Tenant ID and API Endpoint
 
 Click **API Endpoint Setting** on the Object Storage service page to check the tenant ID and API endpoint to issue a token.
@@ -18,6 +20,7 @@ Click **API Endpoint Setting** on the Object Storage service page to check the t
 
 <br/>
 
+<a id="set-the-api-password"></a>
 ### Set the API Password
 
 To set the API password, go to the Object Storage service page and click **API Endpoint Setting**.
@@ -36,6 +39,7 @@ To set the API password, go to the Object Storage service page and click **API E
 
 <br/>
 
+<a id="authentication-token-issuance"></a>
 ## Authentication Token Issuance
 
 ```
@@ -318,9 +322,11 @@ printf("%s\n", $token);
 
 <br/>
 
+<a id="storage-account"></a>
 ## Storage Account
 A storage account is a character string in the `AUTH_*****` format, included in the Object-Store API endpoint.
 
+<a id="query-the-storage-account"></a>
 ### Query the Storage Account
 Retrieves usage status of a storage account.
 
@@ -513,6 +519,7 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 
 <br/>
 
+<a id="list-containers"></a>
 ### List Containers
 Lists containers of a storage account.
 
@@ -660,8 +667,10 @@ foreach($container_list as $container) {
 
 <br/>
 
+<a id="container"></a>
 ## Containers
 
+<a id="create-a-container"></a>
 ### Create a Container
 Creates a container. To upload files to object storage, a container must be created.
 
@@ -865,6 +874,7 @@ $container->create($CONTAINER_NAME);
 
 <br/>
 
+<a id="get-a-container"></a>
 ### Get a Container
 Retrieves the information of the specified container and the list of the objects stored in the container. The container's information can be viewed in the response header.
 
@@ -889,21 +899,25 @@ This API does not require a request body.
 > [Note]
 > Get Container API provides a number of queries. Each query can be concatenated using `&`.
 
+<a id="list-objects-over-10k"></a>
 #### Listing More Than 10,000 Objects
 The number of objects that can be retrieved using Get Container API is limited to 10,000. If you want to retrieve more than 10,000 objects, you need to use the `marker` query. The marker query returns up to 10,000 additional objects, starting from the next object of the specified object.
 
 <br/>
 
+<a id="list-objects-with-a-prefix"></a>
 #### Listing Objects Starting with a Prefix
 Using the `prefix` query returns the list of objects that start with the specified prefix. 
 
 <br/>
 
+<a id="list-objects-with-limit"></a>
 #### Specifying the Maximum Number of Objects in The List
 Using the `limit` query allows you to specify the maximum number of objects in the list of objects to be returned.
 
 <br/>
 
+<a id="list-objects-with-format"></a>
 #### Specifying the Response Format
 Using the `format` query allows you to specify a `json` or `xml` response format. If so, the response body includes the metadata for each object (size, content type, last modified time, Etag).
 
@@ -1059,6 +1073,7 @@ foreach ($object_list as $obj) {
 
 <br/>
 
+<a id="change-container-settings"></a>
 ### Change Container Settings
 
 Changes the container settings. The container settings can be found in the response header when retrieving the container.
@@ -1093,6 +1108,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | X-Container-Read | Header | String | - | Sets the role-based access rules for container read |
 | X-Container-Write | Header | String | - | Sets the role-based access rules for container write |
+| X-Container-View | Header | String | - | Sets the role-based access rules for container view |
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | Sets the IP-based access rules for container write |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | Sets the IP-based access rules for container write |
 | X-Container-Object-Lifecycle | Header | Integer | - | Sets the life cycle of the container's base object in days |
@@ -1103,8 +1119,6 @@ This API does not require a request body.
 | X-Container-Meta-Web-Error | Header | String | - | Sets the static website error document object suffix<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | List of hosts that allows CORS. You can either allow all hosts with '*' or enter a list of hosts separated by spaces. | 
 | X-Container-Rfc-Compliant-Etags | Header | String | - | Sets whether to use the RFC compliant ETag format, true or false |
-| Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
-| Container | URL | String | O | The name of the container to edit |
 | X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days <br/> Change is only possible in object lock containers |
 | X-Container-Object-Deny-Extension-Policy | Header | String | - | Extension blacklists of object upload policy |
 | X-Container-Object-Deny-Keyword-Policy | Header | String | - | Filename blacklists of object upload policy |
@@ -1114,11 +1128,13 @@ This API does not require a request body.
 | Container | URL | String | O | The name of the container to edit |
 <br/>
 
+<a id="set-container-rbac-policy"></a>
 ##### Set the Access Policy
-You can set the container access policy using the `X-Container-Read`, `X-Container-Write`,`X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
+You can set the container access policy using the `X-Container-Read`, `X-Container-Write`,`X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <br/>
 
+<a id="set-container-object-lifecycle"></a>
 ##### Set the Object Life Cycle
 With the `X-Container-Object-Lifecycle` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
 The `X-Container-Object-Transfer-To` header allows you to transfer objects whose lifecycle has expired to a specified container for storage. If no container is specified, the expired object is deleted.
@@ -1128,6 +1144,7 @@ The `X-Container-Object-Transfer-To` header allows you to transfer objects whose
 
 <br/>
 
+<a id="set-container-object-version-policy"></a>
 ##### Set the Version Control Policy
 As described in the [Update an Object](api-guide/#update-an-object), if there are duplicate object names while uploading objects, the objects are updated. If you want to store the content of existing objects, use the `X-History-Location` header to specify the **Archive Container** to store the previous version.
 
@@ -1150,6 +1167,7 @@ With the `X-Versions-Retention` header, you can set the life cycle of a previous
 
 <br/>
 
+<a id="set-container-static-website"></a>
 ##### Set a Static Website
 If you allow the container read access to all users and set the static website's index document and error document using the `X-Container-Meta-Web-Index` and `X-Container-Meta-Web-Error` headers, you can host a static website using the container URL.
 
@@ -1157,6 +1175,7 @@ The object to be used as an index document or error document for a static websit
 The format of a static website's error document name is `{response code}{suffix}`. For example, if an error document is set as `error.html`, the name of the error document to be displayed when the 404 error occurs becomes `404error.html`. You can upload and use error documents according to each error condition. If an error document is not defined or an error object that matches the response code does not exist, the default error document of a web browser will be displayed.
 <br/>
 
+<a id="set-container-cors-policy"></a>
 ##### Cross-Origin Resource Sharing (CORS)
 
 If you directly call the Object Storage API from the browser, you need to set Cross-Origin Resource Sharing (CORS). Set an allowed-origin list using the `X-Container-Meta-Access-Control-Allow-Origin` header. You can enter one or more origins separated by spaces(` `) or allow all origins by entering `*`.
@@ -1223,11 +1242,13 @@ Status: 0
 
 <br/>
 
+<a id="set-container-rfc-compliant-etag"></a>
 ##### Set the RFC compliant ETag format
 Some applications require the ETag value enclosed in double quotes according to the specification [RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3). If you use the `X-Container-Rfc-Compliant-Etags` header, the ETag value in double quotes can be returned when querying objects stored in a container.
 
 <br/>
 
+<a id="set-container-object-lock-cycle"></a>
 ##### Change Object Lock Cycle
 You can change the object lock cycle of the object lock container using the `X-Container-Worm-Retention-Day` header. The lock cycle can be entered in days and cannot be turned off. The changed lock cycle is applied to objects uploaded after the change. The object lock cycle can only be changed on object lock containers.
 
@@ -1237,6 +1258,7 @@ You can change the object lock cycle of the object lock container using the `X-C
 
 <br/>
 
+<a id="set-container-upload-policy"></a>
 ##### Change Upload Policy Settings
 You can set object name-based upload policies for containers using the `X-Container-Object-Deny-Extension-Policy, X-Container-Object-Deny-Keyword-Policy, X-Container-Object-Allow-Extension-Policy`, and `X-Container-Object-Allow-Keyword-Policy` headers. Upload policy settings allow you to restrict or prevent objects from being uploaded that contain certain extensions or keywords in their names. 
 
@@ -1342,6 +1364,7 @@ The object name must not contain the following keywords: example
 </details>
 
 
+<a id="unset-container-settings"></a>
 ##### Unset a Container
 If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Lifecycle: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
 <br/>
@@ -1485,6 +1508,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 
 <br/>
 
+<a id="delete-a-container"></a>
 ### Delete a Container
 
 Deletes the specified container. The container to be deleted must be empty.
@@ -1623,8 +1647,10 @@ $container->delete($CONTAINER_NAME);
 
 <br/>
 
+<a id="object"></a>
 ## Objects
 
+<a id="upload-an-object"></a>
 ### Upload an Object
 Uploads a new object to the specified container.
 
@@ -1648,6 +1674,7 @@ Content-Type: {content-type}
 | - |	Body | Binary | O | Data content of the object to create |
 
 
+<a id="set-object-lifecycle"></a>
 ##### Setting Object Life Cycle
 If you use either the `X-Delete-At` or `X-Delete-After` header, you can set the life cycle of an object in seconds.
 <br/>
@@ -1852,11 +1879,13 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
+<a id="multipart-upload"></a>
 ### Multipart Upload
 An object whose size exceeds 5GB needs to be divided into segments of 5GB or smaller before uploading. If you upload segment objects and create a manifest object, you can use them as if they are a single object.
 
 <br/>
 
+<a id="upload-segment-object"></a>
 #### Upload Segment Objects
 Uploads each of the segment objects generated from the object.
 
@@ -1887,6 +1916,7 @@ This API does not return a request body. For a valid request, return status code
 
 <br/>
 
+<a id="upload-manifest-object"></a>
 #### Create a Manifest Object
 A manifest object can be created in two ways: either using **DLO** (Dynamic Large Object) or **SLO** (Static Large Object).
 
@@ -2226,6 +2256,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <br/>
 
+<a id="update-an-object"></a>
 ### Update an Object
 Same as the Upload an Object API, but if the object is already located in the container, the content of the object is updated.
 
@@ -2236,7 +2267,6 @@ Content-Type: {content-type}
 ```
 
 #### Request
-This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
@@ -2254,6 +2284,7 @@ This API does not return a response body. For a valid request, return status cod
 
 <br/>
 
+<a id="query-object-information"></a>
 ### Query Object Information
 Retrieves the information about the specified object. The object information can be found in the response header.
 
@@ -2312,6 +2343,7 @@ date: Wed, 16 Oct 2024 23:43:36 GMT
 
 <br/>
 
+<a id="download-an-object"></a>
 ### Download an Object
 Downloads an object.
 
@@ -2360,7 +2392,6 @@ package com.nhn.cloud.obs;
 public class ObjectService {
 
     // ObjectService Class ...
-
 
     public File downloadObject(String containerName, String objectName, String downloadPath) {
         String url = this.getUrl(containerName, objectName);
@@ -2480,6 +2511,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <br/>
 
+<a id="copy-an-object"></a>
 ### Copy an Object
 Copies an object to another container.
 
@@ -2647,6 +2679,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 
 <br/>
 
+<a id="modify-object-metadata"></a>
 ### Modify Object Metadata
 Modifies metadata of the specified object.
 
@@ -2818,6 +2851,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 
 <br/>
 
+<a id="delete-an-object"></a>
 ### Delete an Object
 Deletes a specified object.
 
@@ -2962,7 +2996,10 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 <br/>
 
+<a id="limiting-policy"></a>
 ## Limiting Policy
+
+<a id="request-rate-limit"></a>
 ### Request Rate Limit
 Object Storage applies a write request rate limit per storage account to ensure system stability.
 
@@ -3013,6 +3050,7 @@ To avoid response delays or failures, ensure that write requests stay within the
 
 <br/>
 
+<a id="references"></a>
 ## References
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
