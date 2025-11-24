@@ -1083,7 +1083,6 @@ POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Container-Read: {コンテナ読み取りに対するロールベースのアクセスルール}
 X-Container-Write: {コンテナ書き込みに対するロールベースのアクセスルール}
-| X-Container-View | Header | String | - | コンテナ照会に対するロールベースのアクセスルール設定 |
 X-Container-Ip-Acl-Allowed-List: {コンテナ書き込みに対するIPベースのアクセスルール}
 X-Container-Ip-Acl-Denied-List: {コンテナ書き込みに対するIPベースのアクセスルール}
 X-Container-Object-Lifecycle: {コンテナのオブジェクトのライフサイクル}
@@ -1109,6 +1108,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 | X-Auth-Token | Header | String | O | トークンID |
 | X-Container-Read | Header | String | - | コンテナ読み取りに対するロールベースのアクセスルール設定 |
 | X-Container-Write | Header | String | - | コンテナ書き込みに対するロールベースのアクセスルール設定 |
+| X-Container-View | Header | String | - | コンテナ照会に対するロールベースのアクセスルール設定 |
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | コンテナ書き込みに対するIPベースのアクセスルール設定 |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | コンテナ書き込みに対するIPベースのアクセスルール設定 |
 | X-Container-Object-Lifecycle | Header | Integer | - | コンテナの基本オブジェクトライフサイクルを日単位で設定 |
