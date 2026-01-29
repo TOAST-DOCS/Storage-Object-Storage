@@ -68,7 +68,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 > [참고]
 > 컨테이너 목록의 빈 공간에서 마우스 오른쪽 버튼을 클릭한 뒤 **다시보기**를 선택해 컨테이너 목록을 새로 고침할 수 있습니다.
 
-<a id="cyberduck-upload-object></a>
+<a id="cyberduck-upload-object"></a>
 ### 오브젝트 업로드
 
 컨테이너를 선택한 뒤 브라우저 상단의 **동작** > **업로드...**를 클릭하거나, 오브젝트 목록에서 마우스 오른쪽 버튼을 클릭한 뒤 **업로드...**를 클릭해 파일을 선택하고 업로드합니다.
@@ -76,7 +76,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 > [참고]
 > Cyberduck으로 폴더를 업로드하거나 생성하면 폴더 이름과 동일한 0 바이트 오브젝트가 하나 더 생성됩니다. 이는 콘솔 또는 오브젝트 스토리지 API로 확인할 수 있으며 삭제해도 무방합니다.
 
-<a id="cyberduck-download-object></a>
+<a id="cyberduck-download-object"></a>
 ### 오브젝트 다운로드
 
 다운로드할 오브젝트를 선택한 뒤 마우스 오른쪽 버튼을 클릭하고 **내려받기**를 선택합니다. 끌어다 놓기로 오브젝트를 다운로드할 수도 있습니다.
@@ -85,7 +85,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 > 오브젝트를 다운로드하면 기본적으로 로컬의 **다운로드** 폴더에 저장됩니다. 마우스 오른쪽 버튼을 클릭해 **지정된 위치로 내려받기**를 선택하면 지정한 경로에 다운로드할 수 있습니다.
 > 오브젝트를 업로드 또는 다운로드하면 **전송** 창이 팝업되어 진행 상태를 파악할 수 있습니다.
 
-<a id="cyberduck-delete-container></a>
+<a id="cyberduck-delete-container"></a>
 ### 컨테이너 삭제
 
 삭제할 컨테이너를 선택한 뒤 마우스 오른쪽 버튼을 클릭하고 **삭제**를 선택합니다.
@@ -93,28 +93,28 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 > [주의]
 > 컨테이너를 삭제할 경우 컨테이너 내부의 오브젝트도 모두 삭제되므로 주의해야 합니다.
 
-<a id="cyberduck-delete-object></a>
+<a id="cyberduck-delete-object"></a>
 ### 오브젝트 삭제
 
 삭제할 오브젝트를 선택한 뒤 마우스 오른쪽 버튼을 클릭하고 **삭제**를 선택합니다.
 
-<a id="cyberduck-synchronize-folder></a>
+<a id="cyberduck-synchronize-folder"></a>
 ### 폴더 동기화
 
 로컬 폴더를 컨테이너 또는 폴더와 동기화할 수 있습니다. 컨테이너 또는 폴더를 선택한 뒤 마우스 오른쪽 버튼을 클릭하고 **동기화**를 선택합니다.
 폴더 동기화는 다운로드, 업로드, 미러와 같은 세 가지 방식을 제공합니다.
 
-<a id="cyberduck-synchronize-download></a>
+<a id="cyberduck-synchronize-download"></a>
 #### 다운로드
 
 오브젝트 스토리지에서 변경되거나 추가된 오브젝트를 로컬에 다운로드합니다.
 
-<a id="cyberduck-synchronize-upload></a>
+<a id="cyberduck-synchronize-upload"></a>
 #### 업로드
 
 로컬에서 변경되거나 추가된 파일을 오브젝트 스토리지에 업로드합니다.
 
-<a id="cyberduck-synchronize-mirror></a>
+<a id="cyberduck-synchronize-mirror"></a>
 #### 미러
 
 로컬과 오브젝트 스토리지를 비교하여 변경되거나 누락된 파일 또는 오브젝트를 업로드하거나 다운로드합니다.
@@ -122,7 +122,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 > [참고]
 > 동기화에 대한 보다 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하십시오.
 
-<a id="reference></a>
+<a id="reference"></a>
 ## 참고 사이트
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
 

@@ -15,7 +15,7 @@
 | 항목 | API 엔드포인트 | 용도 |
 |---|---|---|
 | Identity | https://api-identity-infrastructure.ninc.go.kr/v2.0 | 인증 토큰 발급 |
-| Object-Store | https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_***** | 오브젝트 스토리지 제어, 리전에 따라 다름 |
+| Object-Store | https://kr4-api-object-storage.ninc.go.kr/v1/{Account} | 오브젝트 스토리지 제어, 리전에 따라 다름 |
 | Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
 
 <br/>
@@ -123,7 +123,7 @@ Content-Type: application/json
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
 https://api-identity-infrastructure.ninc.go.kr/v2.0/tokens \
--d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
+-d '{"auth": {"tenantId": "6dbc368b94894416bec4cdfc65b5e067", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
   "access": {
@@ -146,7 +146,7 @@ https://api-identity-infrastructure.ninc.go.kr/v2.0/tokens \
         "endpoints": [
           {
             "region": "KR4",
-            "publicURL": "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****"
+            "publicURL": "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067"
           }
         ],
         "type": "object-store",
@@ -359,7 +359,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
 ```
 </details>
 
@@ -406,8 +406,8 @@ public class AccountService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
 
         AccountService accountService = new AccountService(storageUrl, tokenId);
         try {
@@ -448,8 +448,8 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
 
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
 
@@ -504,8 +504,8 @@ class Account {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
 $status = $account->get_status();
@@ -548,7 +548,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
 ```
 </details>
 
@@ -585,8 +585,8 @@ public class AccountService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         AccountService accountService = new AccountService(storageUrl, tokenId);
         try {
             List<String> containerList = accountService.getContainerList();
@@ -617,8 +617,8 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
 
     # Get the container list
@@ -653,8 +653,8 @@ class Account {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
 $container_list = $account->get_container_list();
@@ -708,7 +708,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
 ```
 </details>
 
@@ -753,8 +753,8 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
 
         ContainerService containerService = new ContainerService(storageUrl, tokenId);
@@ -796,8 +796,8 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
 
     con_service = ContainerService(STORAGE_URL, TOKEN_ID)
 
@@ -852,8 +852,8 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 
 $container = new Container($STORAGE_URL, $TOKEN_ID);
@@ -926,7 +926,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
 ba6610.jpg
 20d33f.jpg
 31466f.jpg
@@ -970,8 +970,8 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
 
         ContainerService containerService = new ContainerService(storageUrl, tokenId);
@@ -1007,8 +1007,8 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
 
     con_service = ContainerService(STORAGE_URL, TOKEN_ID)
@@ -1048,8 +1048,8 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 
 $container = new Container($STORAGE_URL, $TOKEN_ID);
@@ -1099,6 +1099,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 역할 기반 접근 규칙 설정 |
 | X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 역할 기반 접근 규칙 설정 |
+| X-Container-View | Header | String | - | 컨테이너 조회에 대한 역할 기반 접근 규칙 설정 |
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Object-Lifecycle | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
@@ -1120,7 +1121,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 <a id="set-container-rbac-policy"></a>
 ##### 접근 정책 설정
-`X-Container-Read`, `X-Container-Write`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide-ninc/)를 참조하세요.
+`X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참조하세요.
 
 <br/>
 
@@ -1174,9 +1175,9 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 ```
 $ curl -X POST \
--H 'X-Auth-Token: ****' \
+-H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Meta-Access-Control-Allow-Origin: https://example.com' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 ```
 <br>
 브라우저에서 CORS를 허용한 사이트로 이동 후 아래의 스크립트를 실행합니다. 스크립트는 브라우저가 제공하는 개발자 도구의 콘솔에서 실행할 수 있습니다.
@@ -1186,7 +1187,7 @@ ex) https://example.com/
 
 ```
 var token = "****";
-var url = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_****/container/object";
+var url = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/object";
 var request = new XMLHttpRequest();
 request.onreadystatechange = function (oEvent) {
   if (request.readyState == 4) {
@@ -1218,7 +1219,7 @@ x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 호출했다면 아래와 같은 에러 응답을 받게 됩니다.
 
 ```
-Access to XMLHttpRequest at 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_****/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Access to XMLHttpRequest at 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 Status: 0
 ```
@@ -1262,13 +1263,13 @@ Status: 0
 
 ```
 $ curl -X POST \
--H 'X-Auth-Token: ****' \
+-H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Object-Allow-Extension-Policy: exe, jpg' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 
 $ curl -X PUT \
--H 'X-Auth-Token: ****' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container/test.jpg -i
+-H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/test.jpg -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 72
@@ -1282,13 +1283,13 @@ Only the objects with the following extensions can be uploaded: exe, jpg
 
 ```
 $ curl -X POST \
--H 'X-Auth-Token: ****' \
+-H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Object-Allow-Keyword-Policy: example' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 
 $ curl -X PUT \
--H 'X-Auth-Token: ****' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container/upload.txt -i
+-H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/upload.txt -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 60
@@ -1310,13 +1311,13 @@ The object name must contain the following keywords: example
 
 ```
 $ curl -X POST \
--H 'X-Auth-Token: ****' \
+-H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Object-Deny-Extension-Policy: exe, jpg' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 
 $ curl -X PUT \
--H 'X-Auth-Token: ****' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container/test.jpg -i
+-H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/test.jpg -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 70
@@ -1330,13 +1331,13 @@ The objects with the following extensions cannot be uploaded: exe, jpg
 
 ```
 $ curl -X POST \
--H 'X-Auth-Token: ****' \
+-H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Object-Deny-Keyword-Policy: example' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 
 $ curl -X PUT \
--H 'X-Auth-Token: ****' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/container/upload_example.txt -i
+-H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/upload_example.txt -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 64
@@ -1370,7 +1371,7 @@ $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
 -H 'X-Container-Write: *:*' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
 ```
 </details>
 
@@ -1408,8 +1409,8 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
 
         ContainerService containerService = new ContainerService(storageUrl, tokenId);
@@ -1439,8 +1440,8 @@ class ContainerService:
         return requests.post(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
 
     con_service = ContainerService(STORAGE_URL, TOKEN_ID)
@@ -1480,8 +1481,8 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 
 $container = new Container($STORAGE_URL, $TOKEN_ID);
@@ -1524,7 +1525,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
 ```
 </details>
 
@@ -1556,8 +1557,8 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
 
         ContainerService containerService = new ContainerService(storageUrl, tokenId);
@@ -1586,8 +1587,8 @@ class ContainerService:
         return requests.delete(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
 
     con_service = ContainerService(STORAGE_URL, TOKEN_ID)
@@ -1620,8 +1621,8 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 
 $container = new Container($STORAGE_URL, $TOKEN_ID);
@@ -1677,7 +1678,7 @@ Content-Type: {content-type}
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg \
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg \
 -T ./ba6610.jpg
 ```
 </details>
@@ -1733,8 +1734,8 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
         final String objectPath = "/home/example/";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -1788,8 +1789,8 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'd03bda22ffb649a97958d4a5bf4b6eaf.jpg'
     OBJECT_PATH = '/home/example/'
@@ -1847,8 +1848,8 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 $OBJ_PATH = '/home/example';
@@ -1964,7 +1965,7 @@ X-Auth-Token: {token-id}
 | Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
-| multipart-manifest | Query| String | O | put |
+| multipart-manifest | Query| String | O | 매니페스트 생성 시 `put`으로 설정 |
 | path | Body | String | O | 세그먼트 오브젝트의 경로 |
 | etag | Body | String | O | 세그먼트 오브젝트의 etag |
 | size_bytes | Body | Integer | O | 세그먼트 오브젝트의 크기(바이트 단위) |
@@ -1991,21 +1992,21 @@ $ split -d -b 209715200 large_obj.img large_obj.img.
 
 // 분할된 오브젝트 업로드
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/large_obj.img/001 \
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img/001 \
 -T large_obj.img.00
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/large_obj.img/002 \
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img/002 \
 -T large_obj.img.01
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/large_obj.img/003 \
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img/003 \
 -T large_obj.img.02
 
 // 매니페스트 오브젝트 업로드
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Object-Manifest: curl_example/large_obj.img/' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/large_obj.img \
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img \
 -d ''
 ```
 </details>
@@ -2041,8 +2042,8 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
         final String objectPath = "/home/example/";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2136,8 +2137,8 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     LARGE_OBJECT = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
     OBJECT_PATH = '/home/example/'
@@ -2225,8 +2226,8 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $LARGE_OBJECT = '8cb0d624f8c14c69b52f2cd89e5e59b7.jpg';
 $OBJ_PATH = '/home/example';
@@ -2311,7 +2312,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -O -X HEAD -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 
 HTTP/1.1 200 OK
 content-type: image/jpeg
@@ -2356,7 +2357,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -O -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -2399,8 +2400,8 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
         final String downloadPath = "/home/example/download";
@@ -2439,8 +2440,8 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
     DOWNLOAD_PATH = '/home/example/download'
@@ -2480,8 +2481,8 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 $DOWNLOAD_PATH = '/home/example/download';
@@ -2498,22 +2499,18 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 
 <a id="copy-an-object"></a>
 ### 오브젝트 복사
-오브젝트를 다른 컨테이너로 복사합니다.
-
-> [참고]
-> 5GB를 초과하는 멀티파트 오브젝트는 복사할 수 없습니다. 
-> 멀티파트 오브젝트의 매니페스트 오브젝트를 복사할 컨테이너에 생성하면 세그먼트 오브젝트를 복사하지 않아도 오브젝트에 접근할 수 있습니다. 단, 원본 세그먼트 오브젝트를 삭제하면 데이터에 접근할 수 없습니다.
+오브젝트를 다른 컨테이너로 복사합니다. 원본 오브젝트의 모든 속성이 함께 복사됩니다.
 
 ```
-COPY   /v1/{Account}/{Container}/{Object}
+COPY   /v1/{Account}/{SourceContainer}/{SourceObject}
 X-Auth-Token: {token-id}
-Destination: {오브젝트를 복사할 대상}
+Destination: {TargetContainer}/{TargetObject}
 ```
 
 ```
-PUT   /v1/{Account}/{Container}/{Object}
+PUT   /v1/{Account}/{TargetContainer}/{TargetObject}
 X-Auth-Token: {token-id}
-X-Copy-From: {원본 오브젝트}
+X-Copy-From: {SourceContainer}/{SourceObject}
 ```
 
 #### 요청
@@ -2522,11 +2519,50 @@ X-Copy-From: {원본 오브젝트}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Destination | Header | String |	- | 오브젝트를 복사할 대상, `{컨테이너}/{오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
-| X-Copy-From | Header | String |	- | 원본 오브젝트, `{컨테이너}/{오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
+| Destination | Header | String | - | 대상 오브젝트 경로, `{대상 컨테이너}/{대상 오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
+| X-Copy-From | Header | String | - | 원본 오브젝트 경로, `{원본 컨테이너}/{원본 오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
+| X-Fresh-Metadata | Header | Boolean | - | 오브젝트의 속성 초기화 여부<br/>값이 true이면 원본 오브젝트의 속성을 복사하지 않습니다.<br/>기본 값은 false 입니다. |
+| X-Object-Meta-{Key} | Header | String | - | 대상 오브젝트의 메타데이터 |
+| X-Delete-At | Header | Timestamp | - | 대상 오브젝트의 만료 날짜, 유닉스 시간(초) |
+| X-Delete-After | Header | Timestamp | - | 대상 오브젝트의 유효 시간, 유닉스 시간(초) |
 | Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
-| Container | URL | String | O |	컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 복사할 컨테이너 |
-| Object | URL | String |	복사할 오브젝트 이름 |
+| Container | URL | String | O | 컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 대상 컨테이너 |
+| Object | URL | String | O | 오브젝트 이름<br/>COPY 메서드: 원본 오브젝트<br/>PUT 메서드: 대상 오브젝트 |
+| multipart-manifest | Query | String | - | 값이 `get`이면 매니페스트 오브젝트만 복사<br/>COPY 메서드만 지원<br/>생략하면 세그먼트를 병합하여 단일 오브젝트로 복사합니다. |
+
+<a id="preserve-object-properties"></a>
+##### 오브젝트 속성 보존
+오브젝트를 복사하면 원본 오브젝트의 속성이 함께 복사됩니다. 보존되는 속성은 다음과 같습니다.
+
+| 이름 | 설명 |
+|---|---|
+| X-Delete-At | 오브젝트 만료 날짜 |
+| X-Object-Worm-Retain-Until | 오브젝트 잠금 만료 날짜 |
+| X-Object-Meta-{key} | 사용자 정의 메타데이터 |
+
+> [참고]
+> 오브젝트를 복사할 때 `X-Delete-At` 또는 `X-Object-Meta-{key}` 헤더를 추가하면 복사된 오브젝트의 속성을 새로운 값으로 설정할 수 있습니다.
+> 단, 잠금 만료 주기는 변경할 수 없으며 원본 오브젝트의 값이 그대로 유지됩니다.
+
+<a id="copy-a-multipart-object"></a>
+##### 멀티파트 오브젝트 복사
+멀티파트 오브젝트를 복사하면 매니페스트가 참조하는 세그먼트들이 하나의 오브젝트로 병합되어 복사됩니다. 따라서 5GB를 초과하는 멀티파트 오브젝트는 일반적인 방법으로 복사할 수 없습니다.
+5GB를 초과하는 멀티파트 오브젝트를 복사하려면 매니페스트 오브젝트만 복사해야 합니다. 요청 시 `multipart-manifest=get` 파라미터를 추가해 매니페스트를 원본으로 지정할 수 있습니다.
+매니페스트를 복사할 때는 매니페스트의 속성이 함께 복사됩니다.
+
+| 유형 | 복사되는 속성 |
+|---|---|
+| SLO 매니페스트 | X-Static-Large-Object, X-Manifest-Etag |
+| DLO 매니페스트 | X-Object-Manifest |
+
+> [주의]
+> 매니페스트를 복사하고 원본 세그먼트 오브젝트를 삭제하면 데이터에 접근할 수 없습니다.
+> 원본 세그먼트 오브젝트를 다른 컨테이너로 복사했다면 매니페스트 오브젝트를 새로 만들어야 합니다. 
+
+<!-- 개행을 위한 주석 -->
+
+> [참고]
+> 매니페스트 오브젝트 복사는 COPY 메소드만 지원합니다.
 
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
@@ -2535,16 +2571,24 @@ X-Copy-From: {원본 오브젝트}
 <details>
 <summary>cURL</summary>
 
+**단일 오브젝트 복사**
 ```
 // COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/3a45e9.jpg' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/3a45e9.jpg
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/3a45e9.jpg
 
 // PUT method
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/3a45e9.jpg' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/copy_con/3a45e9.jpg
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/copy_con/3a45e9.jpg
+```
+
+**멀티파트 매니페스트 오브젝트 복사**
+```
+$ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+-H 'Destination: copy_con/419da6e.mp4' \
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/419da6e.mp4?multipart-manifest=get
 ```
 </details>
 
@@ -2577,8 +2621,8 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String srcContainerName = "test";
         final String destContainerName = "test2";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2611,8 +2655,8 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
     DEST_CONTAINER = 'dest'
@@ -2649,8 +2693,8 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $DEST_CONTAINER = 'dest';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2704,11 +2748,11 @@ X-Object-Meta-{Key}: {Value}
 // 오브젝트에 메타데이터 추가
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo" \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 
 // 오브젝트 헤더에서 추가한 메타데이터 확인
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
 ...
 X-Object-Meta-Type: photo
@@ -2748,8 +2792,8 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
         final String key = "Type";
@@ -2783,8 +2827,8 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
     META_KEY = 'Type'
@@ -2820,8 +2864,8 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
@@ -2869,7 +2913,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****/curl_example/ba6610.jpg
+https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 ```
 </details>
 
@@ -2900,8 +2944,8 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****";
-        final String tokenId = "d052a0a054b745dbac74250b7fecbc09";
+        final String storageUrl = "https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
 
@@ -2932,8 +2976,8 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****'
-    TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09'
+    STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
 
@@ -2967,8 +3011,8 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_*****';
-$TOKEN_ID = 'd052a0a054b745dbac74250b7fecbc09';
+$STORAGE_URL = 'https://kr4-api-object-storage.ninc.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
 
