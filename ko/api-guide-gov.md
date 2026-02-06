@@ -1,121 +1,36 @@
-## Storage > Object Storage > API 가이드
+# Object Storage API 가이드
 
-<a id="prerequisites"></a>
-## 사전 준비
+**Storage > Object Storage > API 가이드**
 
-오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급 받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 NHN Cloud 계정별로 관리됩니다.
+<a id="common"></a>
+## 오브젝트 스토리지 API 공통 정보
 
-<br/>
+<a id="endpoint"></a>
+### API 엔드포인트
 
-<a id="check-the-tenant-id-and-api-endpoint"></a>
-### 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
+API를 사용하려면 API 엔드포인트와 토큰이 필요합니다. [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-gov/)을 참고하여 API 사용에 필요한 정보를 준비합니다.
+오브젝트 스토리지 API는 `object-store` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
-토큰 발급을 위한 테넌트 아이디와 API의 엔드포인트는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
+| 리전 | 엔드포인트 |
+| --- | --- |
+| 한국(판교) 리전<br>한국(평촌) 리전 | https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr2-api-object-storage.gov-nhncloudservice.com/v1/AUTH_\*\*\*\*\* |
 
-| 항목 | API 엔드포인트 | 용도 |
-|---|---|---|
-| Identity | https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0 | 인증 토큰 발급 |
-| Object-Store | https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_***** | 오브젝트 스토리지 제어, 리전에 따라 다름 |
-| Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
+<a id="auth"></a>
+### 인증 및 권한
 
-<br/>
+오브젝트 스토리지는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
+IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-gov/)을 참고하세요.
 
-<a id="set-the-api-password"></a>
-### API 비밀번호 설정
-
-API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 설정할 수 있습니다.
-
-1. **API Endpoint 설정** 버튼을 클릭합니다.
-2. **API Endpoint 설정** 아래 **API 비밀번호 설정** 입력 상자에 토큰 발급 시 사용할 비밀번호를 입력합니다.
-3. **저장** 버튼을 클릭합니다.
-
-> [참고]
-> API 비밀번호는 사용자 계정별로 설정되며, 사용자 계정이 속한 모든 프로젝트에서 사용할 수 있습니다.
+> [주의]
+> 오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다.
+> 오브젝트 스토리지 테넌트 ID는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
 
 <!-- 개행을 위한 주석 -->
 
-> [주의]
-> API 비밀번호를 변경하면 이전에 발급 받은 인증 토큰은 즉시 만료되어 사용할 수 없습니다. 인증 토큰을 다시 발급 받아야 합니다.
+> [참고]
+> API 비밀번호는 오브젝트 스토리지 서비스 페이지에서도 **API Endpoint 설정** 버튼을 클릭해 설정할 수 있습니다.
 
-<br/>
-
-<a id="authentication-token-issuance"></a>
-## 인증 토큰 발급
-
-```
-POST    https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/tokens
-Content-Type: application/json
-```
-
-<p style='padding-top: 10px; font-size: 15px;'><b>요청</b></p>
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | Body | String | O | 테넌트 ID, API Endpoint 설정 대화 상자에서 확인 가능 |
-| username | Body | String | O | NHN Cloud 회원 ID(이메일 형식), IAM 멤버 ID |
-| password | Body | String | O | API Endpoint 설정 대화 상자에서 저장한 비밀번호 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-  "auth": {
-    "tenantId": "{Tenant ID}",
-    "passwordCredentials": {
-      "username": "{NHN Cloud ID}",
-      "password": "{API Password}"
-    }
-  }
-}
-```
-</details>
-
-<p style='padding-top: 10px; font-size: 15px;'><b>응답</b></p>
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| access.token.id | Body | String |	발급된 토큰 ID |
-| access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 테넌트 ID |
-| access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>YYYY-MM-DDThh:mm:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | 32개의 16진수로 구성된 API 사용자 ID<br/>S3 API 자격 증명을 발급 받거나, 접근 정책을 설정하는 데 사용 |
-
-> [주의]
-> 인증 토큰의 유효 기간이 만료되면 새로운 토큰을 발급 받아야 합니다.
->
-> 인증 토큰을 발급 받은 사용자 계정이 프로젝트에 대한 접근 권한을 잃거나 NHN Cloud를 탈퇴하여 삭제되면 인증 토큰은 즉시 만료되어 사용할 수 없습니다.
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-  "access": {
-    "token": {
-      "expires": "{Expires Time}",
-      "id": "{token-id}",
-      "tenant": {
-        "description": "",
-        "enabled": true,
-        "id": "{Tenant ID}",
-        "name": "{NHN Cloud ID}",
-        "groupId": "{NHN Cloud Project ID}",
-        "project_domain": "NORMAL",
-        "swift": true
-      },
-      "issued_at": "{Token Issued Time}"
-    },
-    "serviceCatalog": [],
-    "user": {
-      "id": "{API User ID}",
-      "name": "{User Name}"
-    }
-  }
-}
-```
-</details>
-
-<p style='padding-top: 10px; font-size: 15px;'><b>코드 예시</b></p>
+#### 토큰 발급 코드 예시
 
 <details>
 <summary>cURL</summary>
@@ -123,7 +38,7 @@ Content-Type: application/json
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
 https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/tokens \
--d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
+-d '{"auth": {"tenantId": "6dbc368b94894416bec4cdfc65b5e067", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
   "access": {
@@ -146,7 +61,7 @@ https://api-identity-infrastructure.gov-nhncloudservice.com/v2.0/tokens \
         "endpoints": [
           {
             "region": "KR1",
-            "publicURL": "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****"
+            "publicURL": "https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067"
           }
         ],
         "type": "object-store",
@@ -319,8 +234,6 @@ printf("%s\n", $token);
 ?>
 ```
 </details>
-
-<br/>
 
 <a id="storage-account"></a>
 ## 스토리지 계정
