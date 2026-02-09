@@ -19,7 +19,7 @@ Object Storage API uses the object-store type endpoint. Refer to the serviceCata
 ### Authentication and Authorization
 
 Object Storage uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
-For more information on issuing and using IaaS tokens, please refer to the [IaaS Token](docs.nhncloud.com/en/nhncloud/en/public-api/iaas-token).
+For more information on issuing and using IaaS tokens, please refer to the [IaaS Token]((/nhncloud/en/public-api/iaas-token/).
 
 > [Caution]
 > Click **API Endpoint Setting** on the Object Storage service page to check the tenant ID to issue a token..
