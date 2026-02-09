@@ -105,7 +105,7 @@
   </tr>
   <tr>
     <td>권한</td>
-    <td>허용할 접근 권한(<code>Read</code>, <code>Write</code>)을 선택합니다.</td>
+    <td>허용할 접근 권한(<code>Read</code>, <code>Write</code>, <code>View</code>)을 선택합니다.</td>
   </tr>
 </table>
 
@@ -129,7 +129,7 @@ IP 기반 접근 정책을 관리합니다. 접근 정책에 대한 자세한 �
   </tr>
   <tr>
     <td>권한</td>
-    <td>허용할 접근 권한(Read, Write)을 선택합니다.</td>
+    <td>허용할 접근 권한(Read, Write, View)을 선택합니다.</td>
   </tr>
   <tr>
     <td rowspan="2">블랙리스트</td>

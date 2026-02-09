@@ -1,121 +1,35 @@
-## Storage > Object Storage > APIガイド
+# Object Storage APIガイド
 
-<a id="prerequisites"></a>
-## 事前準備
+**Storage > Object Storage > APIガイド**
 
-オブジェクトストレージAPIを使用するには、先に認証トークン(token)を発行する必要があります。認証トークンはオブジェクトストレージのREST APIを使用する時に必要な認証キーです。外部公開に設定していないコンテナやオブジェクトへアクセスするにはトークンが必要です。トークンはNHN Cloudアカウントごとに管理されます。
+<a id="common"></a>
+## オブジェクトストレージAPI共通情報
 
-<br/>
+<a id="endpoint"></a>
+### APIエンドポイント
 
-<a id="check-the-tenant-id-and-api-endpoint"></a>
-### テナントID(Tenant ID)およびAPIエンドポイント(Endpoint)確認
+APIを使用するにはAPIエンドポイントとトークンなどが必要です。 [IaaSトークン](/nhncloud/ja/public-api/iaas-token/)を参照してAPIを使用するのに必要な情報を準備します。
+オブジェクトストレージAPIは`object-store`タイプエンドポイントを利用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
 
-トークンを発行するためのテナントIDとAPIのエンドポイントは、オブジェクトストレージサービスページの**API Endpoint設定**ボタンをクリックして確認できます。
+| リージョン | エンドポイント |
+| --- | --- |
+| 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>日本(東京)リージョン<br>米国(カリフォルニア)リージョン | https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr2-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://jp1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://us1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\* |
 
-| 項目 | APIエンドポイント | 用途 |
-|---|---|---|
-| Identity | https://api-identity-infrastructure.nhncloudservice.com/v2.0 | 認証トークン発行 |
-| Object-Store | https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_***** | オブジェクトストレージ制御、リージョンによって異なる |
-| Tenant ID | 数字 + 英字で構成された32文字の文字列 | 認証トークン発行 |
+<a id="auth"></a>
+### 認証及び権限
 
-<br/>
+オブジェクトストレージは、API呼び出し時の認証/認可のためにIaaSトークンを使用します。IaaSトークンは、NHN CloudのOpenStackベースのインフラサービス(IaaS)で使用する認証トークンです。
+IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](/nhncloud/ja/public-api/iaas-token/)を参照してください。
 
-<a id="set-the-api-password"></a>
-### APIパスワード設定
+> [注意]
+> トークンを発行するためのテナントIDは、オブジェクトストレージサービスページの**API Endpoint設定**ボタンをクリックして確認できます。
 
-APIパスワードはオブジェクトストレージサービスページの**API Endpoint設定**ボタンをクリックして設定できます。
-
-1. **API Endpoint設定**ボタンをクリックします。
-2. **API Endpoint設定**下の**APIパスワード設定**入力ボックスに、トークン発行時に使用するパスワードを入力します。
-3. **保存**ボタンをクリックします。
+<!-- 개행을 위한 주석 -->
 
 > [参考]
-> APIパスワードはユーザーアカウントごとに設定され、ユーザーアカウントが属する全てのプロジェクトで使用できます。
+> APIパスワードはオブジェクトストレージサービスページの**API Endpoint設定**ボタンをクリックして設定できます。
 
-<!-- 改行のためのコメント -->
-
-> [注意]
-> APIパスワードを変更すると、以前に発行された認証トークンは直ちに有効期限が切れ、使用することができません。認証トークンを再発行する必要があります。
-
-<br/>
-
-<a id="authentication-token-issuance"></a>
-## 認証トークン発行
-
-```
-POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens
-Content-Type: application/json
-```
-
-<p style='padding-top: 10px; font-size: 15px;'><b>リクエスト</b></p>
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| tenantId | Body | String | O | テナントID。API Endpoint設定ダイアログボックスで確認可能 |
-| username | Body | String | O | NHN Cloud会員ID(メール形式)、IAMメンバーID |
-| password | Body | String | O | API Endpoint設定ダイアログボックスで保存したパスワード |
-
-<details>
-<summary>例</summary>
-
-```json
-{
-  "auth": {
-    "tenantId": "{Tenant ID}",
-    "passwordCredentials": {
-      "username": "{NHN Cloud ID}",
-      "password": "{API Password}"
-    }
-  }
-}
-```
-</details>
-
-<p style='padding-top: 10px; font-size: 15px;'><b>レスポンス</b></p>
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| access.token.id | Body | String |	発行されたトークンID |
-| access.token.tenant.id | Body | String | トークンをリクエストしたプロジェクトに対応するテナントID |
-| access.token.expires | Body | String | 発行したトークンの満了時間 <br/>YYYY-MM-DDThh:mm:ssZの形式。例) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | 32個の16進数で構成されたAPIユーザーID<br/>S3 API資格証明を発行したり、アクセスポリシーを設定するのに使用 |
-
-> [注意]
-> 認証トークンの有効期限が切れたら、新しいトークンを発行する必要があります。
->
-> 認証トークンを発行されたユーザーアカウントがプロジェクトへのアクセス権を失ったり、NHN Cloudを退会して削除されると、認証トークンは直ちに有効期限が切れ、使用できなくなります。
-
-<details>
-<summary>例</summary>
-
-```json
-{
-  "access": {
-    "token": {
-      "expires": "{Expires Time}",
-      "id": "{token-id}",
-      "tenant": {
-        "description": "",
-        "enabled": true,
-        "id": "{Tenant ID}",
-        "name": "{NHN Cloud ID}",
-        "groupId": "{NHN Cloud Project ID}",
-        "project_domain": "NORMAL",
-        "swift": true
-      },
-      "issued_at": "{Token Issued Time}"
-    },
-    "serviceCatalog": [],
-    "user": {
-      "id": "{API User ID}",
-      "name": "{User Name}"
-    }
-  }
-}
-```
-</details>
-
-<p style='padding-top: 10px; font-size: 15px;'><b>サンプルコード</b></p>
+#### トークン発行サンプルコード
 
 <details>
 <summary>cURL</summary>
@@ -123,7 +37,7 @@ Content-Type: application/json
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
 https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens \
--d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
+-d '{"auth": {"tenantId": "6dbc368b94894416bec4cdfc65b5e067", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
   "access": {
@@ -146,7 +60,7 @@ https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens \
         "endpoints": [
           {
             "region": "KR1",
-            "publicURL": "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****"
+            "publicURL": "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067"
           }
         ],
         "type": "object-store",
@@ -319,8 +233,6 @@ printf("%s\n", $token);
 ?>
 ```
 </details>
-
-<br/>
 
 <a id="storage-account"></a>
 ## ストレージアカウント
