@@ -1,6 +1,4 @@
-# Object Storage APIガイド
-
-**Storage > Object Storage > APIガイド**
+## Storage > Object Storage > APIガイド ##
 
 <a id="common"></a>
 ## オブジェクトストレージAPI共通情報

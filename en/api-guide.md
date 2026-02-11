@@ -1,6 +1,4 @@
-# Object Storage API Guide
-
-**Storage > Object Storage > API Guide**
+## Storage > Object Storage > API Guide ##
 
 <a id="common"></a>
 ## Object Storage API Common Information

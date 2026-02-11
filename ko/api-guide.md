@@ -1,6 +1,4 @@
-# Object Storage API 가이드
-
-**Storage > Object Storage > API 가이드**
+## Storage > Object Storage > API 가이드 ##
 
 <a id="common"></a>
 ## 오브젝트 스토리지 API 공통 정보
