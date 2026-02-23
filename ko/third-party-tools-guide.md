@@ -125,7 +125,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 <a id="terraform"></a>
 ## Terraform
 
-Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > Compute > Instance > 테라폼 사용 가이드](https://docs.nhncloud.com/ko/Compute/Instance/ko/terraform-guide/)를 참고하십시오.
+Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > Compute > Instance > Terraform 사용 가이드](https://docs.nhncloud.com/ko/Compute/Instance/ko/terraform-guide/)를 참고하세요.
 
 <a id="terraform-resource-dependency"></a>
 ### 리소스 의존성

@@ -1977,7 +1977,7 @@ X-Auth-Token: {token-id}
 | Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object |	URL | String | O | 생성할 매니페스트 오브젝트 이름 |
-| multipart-manifest | Query| String | O | 매니페스트 생성 시 `put`으로 설정 |
+| multipart-manifest | Query| String | O | 매니페스트 생성 시 put으로 설정 |
 | path | Body | String | O | 세그먼트 오브젝트의 경로 |
 | etag | Body | String | O | 세그먼트 오브젝트의 etag |
 | size_bytes | Body | Integer | O | 세그먼트 오브젝트의 크기(바이트 단위) |
@@ -2533,14 +2533,14 @@ X-Copy-From: {SourceContainer}/{SourceObject}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Destination | Header | String | - | 대상 오브젝트 경로, `{대상 컨테이너}/{대상 오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
 | X-Copy-From | Header | String | - | 원본 오브젝트 경로, `{원본 컨테이너}/{원본 오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
-| X-Fresh-Metadata | Header | Boolean | - | 오브젝트의 속성 초기화 여부<br/>값이 true이면 원본 오브젝트의 속성을 복사하지 않습니다.<br/>기본 값은 false 입니다. |
+| X-Fresh-Metadata | Header | Boolean | - | 오브젝트의 속성 초기화 여부<br/>값이 true이면 원본 오브젝트의 속성을 복사하지 않습니다.<br/>기본 값은 false입니다. |
 | X-Object-Meta-{Key} | Header | String | - | 대상 오브젝트의 메타데이터 |
 | X-Delete-At | Header | Timestamp | - | 대상 오브젝트의 만료 날짜, 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 대상 오브젝트의 유효 시간, 유닉스 시간(초) |
 | Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 대상 컨테이너 |
 | Object | URL | String | O | 오브젝트 이름<br/>COPY 메서드: 원본 오브젝트<br/>PUT 메서드: 대상 오브젝트 |
-| multipart-manifest | Query | String | - | 값이 `get`이면 매니페스트 오브젝트만 복사<br/>COPY 메서드만 지원<br/>생략하면 세그먼트를 병합하여 단일 오브젝트로 복사합니다. |
+| multipart-manifest | Query | String | - | 값이 get이면 매니페스트 오브젝트만 복사<br/>COPY 메서드만 지원<br/>생략하면 세그먼트를 병합하여 단일 오브젝트로 복사합니다. |
 
 <a id="preserve-object-properties"></a>
 ##### 오브젝트 속성 보존
@@ -2574,7 +2574,7 @@ X-Copy-From: {SourceContainer}/{SourceObject}
 <!-- 개행을 위한 주석 -->
 
 > [참고]
-> 매니페스트 오브젝트 복사는 COPY 메소드만 지원합니다.
+> 매니페스트 오브젝트 복사는 COPY 메서드만 지원합니다.
 
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
