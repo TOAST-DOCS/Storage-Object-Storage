@@ -1,121 +1,33 @@
-## Storage > Object Storage > API Guide
+## Storage > Object Storage > API Guide ##
 
-<a id="prerequisites"></a>
-## Prerequisites
+<a id="common"></a>
+## Object Storage API Common Information
 
-To use the Object Storage API, you must obtain an authentication token first. An authentication token is the authentication key required when using the REST API of Object Storage. A token is required to access a container or object that is not publicly available. Tokens are managed per NHN Cloud account.
+<a id="endpoint"></a>
+### API Endpoint
 
-<br/>
+To use the API, API endpoint and token are required. Refer to [IaaS Token](/nhncloud/en/public-api/iaas-token/) to prepare the information required to use the API.
+Object Storage API uses the object-store type endpoint. Refer to the serviceCatalog in the token issuance response for the valid endpoint.
 
-<a id="check-the-tenant-id-and-api-endpoint"></a>
-### Check the Tenant ID and API Endpoint
+| Region | Endpoint |
+| --- | --- |
+| Korea (Pangyo) Region<br>Korea (Pyeongchon) Region<br>Japan (Tokyo) Region<br>US (California) Region | https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr2-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://jp1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://us1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\* |
 
-Click **API Endpoint Setting** on the Object Storage service page to check the tenant ID and API endpoint to issue a token.
+<a id="auth"></a>
+### Authentication and Authorization
 
-| Item | API Endpoint | Usage |
-|---|---|---|
-| Identity | https://api-identity-infrastructure.nhncloudservice.com/v2.0 | Issue authentication token |
-| Object-Store | https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_***** | Control object storage: depends on each region  |
-| Tenant ID | A string in 32 characters consisting of numbers and alphabets | Issue authentication token  |
+Object Storage uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
+For more information on issuing and using IaaS tokens, please refer to the [IaaS Token](/nhncloud/en/public-api/iaas-token/).
 
-<br/>
+> [Caution]
+> Click **API Endpoint Setting** on the Object Storage service page to check the tenant ID to issue a token..
 
-<a id="set-the-api-password"></a>
-### Set the API Password
-
-To set the API password, go to the Object Storage service page and click **API Endpoint Setting**.
-
-1. Click **API Endpoint Setting**.
-2. In the **Set API Password** input box under **API Endpoint Setting**, enter the password to use when issuing a token.
-3. Click **Save**.
+<!-- 개행을 위한 주석 -->
 
 > [Note]
-> API passwords are set per user account and are available to all projects to which the user belongs.
+> To set the API password, go to the Object Storage service page and click **API Endpoint Setting**.
 
-<!-- linebreak -->
-
-> [Caution]
-> If you change your API password, the previously issued authentication token expires immediately and cannot be used. Authentication token must be reissued.
-
-<br/>
-
-<a id="authentication-token-issuance"></a>
-## Authentication Token Issuance
-
-```
-POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens
-Content-Type: application/json
-```
-
-<p style='padding-top: 10px; font-size: 15px;'><b>Request</b></p>
-
-| Name  | Type | Format | Required | Description |
-|---|---|---|---|---|
-| tenantId | Body | String | O | Tenant ID, which can be found in the API Endpoint setting dialog box |
-| username | Body | String | O | NHN Cloud user ID (email format), IAM member ID |
-| password | Body | String | O | Password saved on the API Endpoint setting dialog box |
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-  "auth": {
-    "tenantId": "{Tenant ID}",
-    "passwordCredentials": {
-      "username": "{NHN Cloud ID}",
-      "password": "{API Password}"
-    }
-  }
-}
-```
-</details>
-
-<p style='padding-top: 10px; font-size: 15px;'><b>Response</b></p>
-
-| Name | Type | Format | Description |
-|---|---|---|---|
-| access.token.id | Body | String |	ID of issued token |
-| access.token.tenant.id | Body | String | Tenant ID corresponding to the project requesting the token |
-| access.token.expires | Body | String | Expiration time of issued token <br/> in the YYYY-MM-DDThh:mm:ssZ format. e.g.) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | API user ID composed of 32 digits of hexadecimal numbers<br/>Used to get S3 API credentials or set access policies |
-
-> [Caution]
-> When an authentication token expires, you must obtain a new token.
->
-> If the user account that was issued the authentication token loses access to the project or is deleted by leaving NHN Cloud, the authentication token expires immediately and cannot be used.
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-  "access": {
-    "token": {
-      "expires": "{Expires Time}",
-      "id": "{token-id}",
-      "tenant": {
-        "description": "",
-        "enabled": true,
-        "id": "{Tenant ID}",
-        "name": "{NHN Cloud ID}",
-        "groupId": "{NHN Cloud Project ID}",
-        "project_domain": "NORMAL",
-        "swift": true
-      },
-      "issued_at": "{Token Issued Time}"
-    },
-    "serviceCatalog": [],
-    "user": {
-      "id": "{API User ID}",
-      "name": "{User Name}"
-    }
-  }
-}
-```
-</details>
-
-<p style='padding-top: 10px; font-size: 15px;'><b>Code Example</b></p>
+#### Token Issuance Code Example
 
 <details>
 <summary>cURL</summary>
@@ -123,7 +35,7 @@ Content-Type: application/json
 ```
 $ curl -X POST -H 'Content-Type:application/json' \
 https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens \
--d '{"auth": {"tenantId": "*****", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
+-d '{"auth": {"tenantId": "6dbc368b94894416bec4cdfc65b5e067", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
   "access": {
@@ -146,7 +58,7 @@ https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens \
         "endpoints": [
           {
             "region": "KR1",
-            "publicURL": "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****"
+            "publicURL": "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067"
           }
         ],
         "type": "object-store",
@@ -319,8 +231,6 @@ printf("%s\n", $token);
 ?>
 ```
 </details>
-
-<br/>
 
 <a id="storage-account"></a>
 ## Storage Account
@@ -1108,6 +1018,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | X-Container-Read | Header | String | - | Sets the role-based access rules for container read |
 | X-Container-Write | Header | String | - | Sets the role-based access rules for container write |
+| X-Container-View | Header | String | - | Sets the role-based access rules for container view |
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | Sets the IP-based access rules for container write |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | Sets the IP-based access rules for container write |
 | X-Container-Object-Lifecycle | Header | Integer | - | Sets the life cycle of the container's base object in days |
@@ -1129,7 +1040,7 @@ This API does not require a request body.
 
 <a id="set-container-rbac-policy"></a>
 ##### Set the Access Policy
-You can set the container access policy using the `X-Container-Read`, `X-Container-Write`,`X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
+You can set the container access policy using the `X-Container-Read`, `X-Container-Write`,`X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` header. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <br/>
 

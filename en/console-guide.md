@@ -141,7 +141,7 @@ Sets the basic access policy and manages role-based access policies for each ten
   </tr>
   <tr>
     <td>Permission</td>
-    <td>Select access permissions (<code>Read</code>, <code>Write</code>) to allow.</td>
+    <td>Select access permissions (<code>Read</code>, <code>Write</code>, and <code>View</code>) to allow.</td>
   </tr>
 </table>
 
@@ -165,7 +165,7 @@ Manages IP-based access policies. For more details, refer to [ACL Configuration 
   </tr>
   <tr>
     <td>Access right</td>
-    <td>Select access rights (Read, Write) to allow.</td>
+    <td>Select access rights (Read, Write, View) to allow.</td>
   </tr>
   <tr>
     <td rowspan="2">Blacklist</td>

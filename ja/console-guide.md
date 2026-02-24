@@ -141,7 +141,7 @@ Secure Key Managerサービスで暗号化コンテナに設定した対称鍵�
   </tr>
   <tr>
     <td>権限</td>
-    <td>許可するアクセス権限(<code>Read</code>、<code>Write</code>)を選択します。</td>
+    <td>許可するアクセス権限(<code>Read</code>、<code>Write</code>, <code>View</code>)を選択します。</td>
   </tr>
 </table>
 
@@ -165,7 +165,7 @@ IPベースのアクセスポリシーを管理します。アクセスポリシ
   </tr>
   <tr>
     <td>権限</td>
-    <td>許可するアクセス権限(Read, Write)を選択します。</td>
+    <td>許可するアクセス権限(Read, Write, View)を選択します。</td>
   </tr>
   <tr>
     <td rowspan="2">ブラックリスト</td>
@@ -507,4 +507,3 @@ Amazon S3互換APIを使用するための認証情報を発行できます。S3
 
 > [注意]
 > S3 API認証情報キーが漏洩すると、誰でも漏洩したキーを利用してオブジェクトにアクセスできます。キーが漏洩した場合は漏洩した認証情報を削除して、新しく発行して使用することを推奨します。
-
