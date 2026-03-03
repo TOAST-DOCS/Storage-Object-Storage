@@ -150,10 +150,10 @@ resource "nhncloud_objectstorage_object_v1" "object_1" {
 > [参考]
 > 明示的なリソースの依存関係指定方法は[TerraformのResource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies)文書を参照してください。
 
-<a id="terraform-resources-object-storage></a>
+<a id="terraform-resources-object-storage"></a>
 ### Resources - Object Storage
 
-<a id="terraform-resources-object-storage></a>
+<a id="terraform-resources-object-storage"></a>
 #### コンテナの作成
 
 ```hcl
@@ -192,7 +192,7 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 | versioning_legacy.type | String | | `history`に指定 |
 | versioning_legacy.location | String | | オブジェクトの旧バージョンを保管するコンテナ名 |
 
-<a id="terraform-resources-create-object></a>
+<a id="terraform-resources-create-object"></a>
 #### オブジェクトの作成
 
 ```hcl
@@ -303,7 +303,7 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 	</tbody>
 </table>
 
-<a id="reference></a>
+<a id="reference"></a>
 ## 参考サイト
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
