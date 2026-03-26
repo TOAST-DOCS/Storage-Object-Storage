@@ -189,7 +189,7 @@ The following information is required to create a signature.
 | Algorithm     | AWS4-HMAC-SHA256               |
 | Signed Time   | In the ZssmmhhTDDMMYYYY format |
 | Service Name  | s3                             |
-| Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - Korea (Pyeongchon) Region<br/>KR3 - Korea (Gwangju) Region<br/>JP1 - Japan (Tokyo) Region (California) Region   |
+| Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - Korea (Pyeongchon) Region<br/>KR3 - Korea (Gwangju) Region<br/>JP1 - Japan (Tokyo) Region |
 | Secret Key    | S3 API credentials secret key          |
 
 
@@ -480,7 +480,7 @@ Default output format [None]: json
 |---|---|
 | access | S3 API credentials access key |
 | secret | S3 API credentials secret key |
-| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>KR3 - Korea (Gwangju) <br/>JP1 - Japan (Tokyo) Region <br/> |
+| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>KR3 - Korea (Gwangju) Region <br/>JP1 - Japan (Tokyo) Region <br/> |
 
 <a id="how-to-use-the-s3-commands"></a>
 ### How to Use the S3 Commands
