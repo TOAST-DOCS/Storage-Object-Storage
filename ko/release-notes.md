@@ -1,5 +1,15 @@
 ## Storage > Object Storage > 릴리스 노트
 
+### 2026. 05. 27.
+#### 기능 추가
+* [Console] 수명 주기 규칙 설정 및 일괄 적용 기능 추가
+* [API] 컨테이너 정책 문서를 통한 컨테이너 설정 기능 추가
+    * 수명 주기 규칙 설정 지원
+* [API] Amazon S3 API 호환성 개선
+    * 도메인 스타일(Virtual Hosted Domain) 엔드포인트 지원
+    * Trailing Checksum을 통한 업로드 무결성 검증 지원
+    * CORS Preflight 요청 지원
+
 ### 2025. 07. 29.
 #### 제한 정책
 * [API] 쓰기 요청 속도 제한(rate limit) 적용
