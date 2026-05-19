@@ -28,12 +28,12 @@ python-swiftclient x.x.x
 <a id="configuration"></a>
 ### 환경 설정
 
-Swift CLI를 사용하려면 인증에 필요한 환경 변수를 설정해야 합니다. 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 필요한 정보를 확인할 수 있습니다.
+Swift CLI를 사용하려면 인증에 필요한 환경 변수를 설정해야 합니다. 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 필요한 정보를 확인할 수 있습니다.
 
 ```
 export OS_AUTH_URL=https://api-identity-infrastructure.nhncloudservice.com/v2.0
 export OS_TENANT_ID=<테넌트 ID>
-export OS_USERNAME=<NHN Cloud 회원 ID>
+export OS_USERNAME=<NHN Cloud 계정 ID>
 export OS_PASSWORD=<API 비밀번호>
 export OS_REGION_NAME=<리전 이름>
 ```
@@ -43,20 +43,20 @@ export OS_REGION_NAME=<리전 이름>
 | 환경 변수 | 설명 |
 | --- | --- |
 | OS_AUTH_URL | Identity API URL<br/>https://api-identity-infrastructure.nhncloudservice.com/v2.0 |
-| OS_TENANT_ID | 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정**에서 확인할 수 있는 테넌트 ID |
-| OS_USERNAME | NHN Cloud 회원 ID(이메일 형식) 또는 IAM 멤버 ID |
-| OS_PASSWORD | **API Endpoint 설정**에서 설정한 API 비밀번호 |
+| OS_TENANT_ID | 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정**에서 확인할 수 있는 테넌트 ID |
+| OS_USERNAME | NHN Cloud 계정 ID(이메일 형식) 또는 IAM 계정 ID |
+| OS_PASSWORD | **API 엔드포인트 설정**에서 설정한 API 비밀번호 |
 | OS_REGION_NAME | 리전 이름<br/>KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전<br/>KR3 - 한국(광주) 리전<br/>JP1 - 일본(도쿄) 리전 |
 
 <br/>
 
 > [주의]
-> 오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다. 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인하세요.
+> 오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다. 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 확인하세요.
 
 <!-- 개행을 위한 주석 -->
 
 > [참고]
-> API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 설정할 수 있습니다.
+> API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 설정할 수 있습니다.
 
 <br/>
 
@@ -66,7 +66,7 @@ export OS_REGION_NAME=<리전 이름>
 $ cat ~/swiftrc
 export OS_AUTH_URL=https://api-identity-infrastructure.nhncloudservice.com/v2.0
 export OS_TENANT_ID=<테넌트 ID>
-export OS_USERNAME=<NHN Cloud 회원 ID>
+export OS_USERNAME=<NHN Cloud 계정 ID>
 export OS_PASSWORD=<API 비밀번호>
 export OS_REGION_NAME=<리전 이름>
 ```
@@ -336,7 +336,7 @@ $ swift list media
 
 <a id="multipart-upload"></a>
 ### 멀티파트 업로드
-`--segment-size` 옵션으로 세그먼트 사이즈를 지정하면 파일을 분할해 멀티파트 업로드합니다.
+`--segment-size` 옵션으로 세그먼트 크기를 지정하면 파일을 분할해 멀티파트 업로드합니다.
 
 ```
 swift upload --segment-size <size> [--segment-container <segment-container>] <container> <file>
