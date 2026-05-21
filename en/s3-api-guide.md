@@ -192,12 +192,38 @@ The following information is required to create a signature.
 | Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - Korea (Pyeongchon) Region<br/>KR3 - Korea (Gwangju) Region<br/>JP1 - Japan (Tokyo) Region |
 | Secret Key    | S3 API credentials secret key          |
 
+The `x-amz-content-sha256` header is required when generating an AWS Signature V4 signature. This header is included in the Canonical Request and used in signature calculation. The payload processing method is determined by the header value. The available values are as follows:
+
+| x-amz-content-sha256 value | Description |
+|---|---|
+| `<payload hash>` | Default method using the SHA-256 hash of the entire request payload |
+| `UNSIGNED-PAYLOAD` | Omits payload signing |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD` | AWS Chunked Upload method (includes a signature in each chunk) |
+| `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload method (uses trailer headers without chunk signatures) |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload method (includes a signature in each chunk + uses trailer headers) |
+
+> [Note]
+> For more information, see [Authenticating Requests: Using the Authorization Header (AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html).
+
+If the `x-amz-content-sha256` value is `STREAMING-UNSIGNED-PAYLOAD-TRAILER` or `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER`, you must declare the checksum algorithm to be sent in the trailer using the `x-amz-trailer` request header. The supported algorithms are as follows:
+
+| x-amz-trailer value | Algorithm |
+|---|---|
+| `x-amz-checksum-crc32` | CRC-32 |
+| `x-amz-checksum-crc32c` | CRC-32C |
+| `x-amz-checksum-crc64nvme` | CRC-64/NVME |
+| `x-amz-checksum-sha1` | SHA-1 |
+| `x-amz-checksum-sha256` | SHA-256 |
+
+> [Note]
+> For more information on signature calculation using trailer headers, see [Signature calculations for trailing headers (chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html).
+
 
 <a id="bucket"></a>
 ## Bucket
 <a id="create-bucket"></a>
 ### Create Bucket
-Creates a bucket. Bucket names must follow Amazon S3's naming rules.
+Creates a bucket. Bucket names must follow Amazon S3's naming rules:
 
 * Bucket names must be between 3 and 63 characters long.
 * Bucket names can consist only of lowercase letters, numbers, dots (.), and hyphens (-).
@@ -462,7 +488,7 @@ You can use NHN Cloud Object Storage with [AWS Command Line Interface](https://a
 Install the AWS Command Line Interface (CLI) by referencing the [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) documentation.  
 
 > [Note]
-> AWS CLI versions up to 2.22.35 are supported in NHN Cloud Object Storage.
+> AWS CLI versions up to 2.34.38 are supported in NHN Cloud Object Storage.
 
 <a id="aws-command-line-interface-configuration"></a>
 ### Configuration
@@ -552,17 +578,17 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 
 <blockquote>
 [Note]
-</br>
+<br/>
 If the object is larger than 8 MB, the AWS Command Line Interface splits the object into multiple parts and uploads them. The part object is stored in a bucket called <code style="display: inline;">{bucket}+segments</code> It is saved in the form of part-number<code style="display: inline;">{object-name}/{upload-id}/{part-number}</code>, and when all parts are uploaded, an object linked to the part object is created in the bucket requested for upload.
-</br></br>
+<br/><br/>
 The <code style="display: inline;">{bucket}+segments</code> bucket where the part object is stored cannot be accessed through the S3 compatible API, but can be accessed through the Object Storage API or the console.
-</br></br>
+<br/><br/>
 The ETag of a multipart object is an MD5 hashed value by converting the ETag values of each part object into binary data and concatenating them in order.
 </blockquote>
 
 <blockquote>
 [Caution]
-</br>
+<br/>
 If you delete some or all parts of an object uploaded as multipart, the object cannot be accessed.
 </blockquote>
 
@@ -588,6 +614,37 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
+<a id="aws-command-line-interface-virtual-hosted-style"></a>
+### Use domain-style endpoints
+The S3-compatible API supports both Path-style and domain-style (virtual Hosted-style) bucket access methods. The domain-style uses the bucket name as a subdomain of the endpoint.
+
+| Method | Format |
+|---|---|
+| Path-style | `https://{endpoint}/{bucket}/{object}` |
+| Domain-style | `https://{bucket}.{endpoint}/{object}` |
+
+<br/>
+
+To use domain-style endpoints in the AWS CLI, set the `addressing_style` option to `virtual`. When this setting is applied, the AWS CLI automatically combines the endpoint and bucket name to send requests in domain-style URL format.
+
+```shell
+$ aws configure set default.s3.addressing_style virtual
+```
+
+Alternatively, add the following settings to the profile section in use in the `~/.aws/config` file.
+
+```ini
+[default]
+s3 =
+  addressing_style = virtual
+```
+
+| Name | Description |
+|---|---|
+| addressing_style | `virtual` - Uses domain-style<br/>`path` - Uses Path-style<br/>`auto` - Automatic selection (default; when using a custom endpoint such as NHN Cloud Object Storage, defaults to Path-style) |
+
+> [Caution]
+> If the bucket name contains a period (`.`), using domain-style may cause certificate validation to fail because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style.
 
 <a id="aws-sdk"></a>
 ## AWS SDK
@@ -596,7 +653,7 @@ AWS provides SDKs for many types of programming languages. By using the S3 compa
 > [Note]
 > For more information, see [AWS SDK](https://aws.amazon.com/ko/tools).
 
-The following are the major parameters required to use AWS SDK.
+The following are the major parameters required to use AWS SDK:
 
 | Name | Description |
 |---|---|
@@ -766,7 +823,7 @@ public class AwsSdkExample {
     private static final String access = "{access}";
     private static final String secret = "{secret}";
     private static final String region = "{region name}";
-    private static final String ednpoint = "{endpoint}";
+    private static final String endpoint = "{endpoint}";
 
     private AmazonS3 s3Client;
 
@@ -775,7 +832,7 @@ public class AwsSdkExample {
             new BasicAWSCredentials(access, secret);
         s3Client = AmazonS3ClientBuilder.standard()
                     .withEndpointConfiguration(
-                new AwsClientBuilder.EndpointConfiguration(ednpoint, region)
+                new AwsClientBuilder.EndpointConfiguration(endpoint, region)
             )
             .withCredentials(
                 new AWSStaticCredentialsProvider(awsCredentials)
@@ -1193,3 +1250,82 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 
 </details>
 
+<a id="aws-sdk-virtual-hosted-style"></a>
+### Use domain-style endpoints
+To use domain-style endpoints in the AWS SDK, disable path-style access in the client settings. The endpoint URL and credentials remain the same, and the SDK combines the bucket name as a subdomain to send requests.
+
+<details>
+<summary>Boto3 - Python SDK</summary>
+
+Create a client by setting the <code>s3.addressing_style</code> value of <code>botocore.client.Config</code> to <code>virtual</code>.
+
+```python
+from boto3 import client
+from botocore.client import Config
+
+
+class Boto3Example(object):
+    _REGION = '{region name}'
+    _ENDPOINT = '{endpoint}'
+    _ACCESS = '{access}'
+    _SECRET = '{secret}'
+
+    def __init__(self):
+        config = Config(s3={'addressing_style': 'virtual'})
+        self.s3 = client(service_name='s3',
+                         region_name=self._REGION,
+                         endpoint_url=self._ENDPOINT,
+                         aws_access_key_id=self._ACCESS,
+                         aws_secret_access_key=self._SECRET,
+                         config=config)
+```
+
+</details>
+
+<details>
+<summary>Java SDK</summary>
+
+Delete the <code>enablePathStyleAccess()</code> call from the client builder.
+
+```java
+public AwsSdkExample() {
+    BasicAWSCredentials awsCredentials =
+        new BasicAWSCredentials(access, secret);
+    s3Client = AmazonS3ClientBuilder.standard()
+        .withEndpointConfiguration(
+            new AwsClientBuilder.EndpointConfiguration(endpoint, region)
+        )
+        .withCredentials(
+            new AWSStaticCredentialsProvider(awsCredentials)
+        )
+        .disableChunkedEncoding()
+        .build();
+}
+```
+
+</details>
+
+<details>
+<summary>.NET SDK</summary>
+
+Delete the <code>ForcePathStyle</code> property setting from the <code>AmazonS3Config</code.
+
+```csharp
+private static AmazonS3Client GetS3Client()
+{
+    var amazonS3Config =
+        new AmazonS3Config
+        {
+            ServiceURL = endpoint,
+            AuthenticationRegion = regionName,
+        };
+    var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+
+    return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
+}
+```
+
+</details>
+
+> [Caution]
+> If the bucket name contains a period (`.`), using domain-style may cause certificate validation to fail because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style.

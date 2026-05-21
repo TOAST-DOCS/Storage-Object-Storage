@@ -240,72 +240,98 @@ Set an upload policy based on object names in the container. Upload policy setti
 
 Upload policies can set up `whitelist` or `blacklist`, but not both at the same time. You can set the extension of files to be uploaded, or keywords to be included in the filename. However, for objects that include a path, the policy reflects the object name without the path. The upload policy is applied to newly uploaded objects from the time it is set. 
 
-If you set `exe` and `jpg` as whitelist, only objects with the extensions can be uploaded. Adding the filename `example` will allow only objects with both the set filename and extension to be uploaded, such as `exe_example.exe`, `iamge_example.jpg`.
+If you set `exe` and `jpg` as whitelist, only objects with the extensions can be uploaded. Adding the filename `example` will allow only objects with both the set filename and extension to be uploaded, such as `exe_example.exe`, `image_example.jpg`.
 
 
-For blacklist, setting `exe`, `jpg`as blacklist will prevent all objects with `.exe`, `.jpg` extensions from being uploaded. Setting the additional filename `exmaple` will prevent both files with restricted extensions, such as `test.exe`, `image.jpg`, and files with restricted keywords, such as `text_example.txt`, from being uploaded.
+For blacklist, setting `exe`, `jpg`as blacklist will prevent all objects with `.exe`, `.jpg` extensions from being uploaded. Setting the additional filename `example` will prevent both files with restricted extensions, such as `test.exe`, `image.jpg`, and files with restricted keywords, such as `text_example.txt`, from being uploaded.
 <br/>
 
-<a id="set-object-lifecycle-and-versioning"></a>
-#### Life Cycle and Version Management
+<a id="set-object-lifecycle"></a>
+#### Lifecycle
 
-Views the life cycle of objects stored in containers and version control policies.
-
+You can view and change the lifecycle rules for objects stored in a container.
+For more information on lifecycle settings, see [How to apply lifecycle rules](container-policy-guide/#lifecycle-apply).
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
-    <th>Category</th>
+    <th>Type</th>
     <th>Option</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td>Object life cycle</td>
-    <td></td>
-    <td>Enter the object life cycle in days. Life cycle setting will be cleared if it is not filled in.</td>
+    <td rowspan=3>Default rule</td>
+    <td>Object lifecycle</td>
+    <td>Enter the object lifecycle in days.</td>
   </tr>
   <tr>
-    <td>Lifecycle Expiration Action</td>
-    <td></td>
+    <td>Lifecycle expiration action</td>
     <td>Select how to handle objects whose lifecycle has expired.</td>
   </tr>
   <tr>
     <td>Target container</td>
-    <td></td>
-    <td>When you select <b>Move Container</b>as the lifecycle expiration action, you must select a container to move the object to.</td>
+    <td>When you select <b>Move container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
   </tr>
   <tr>
-    <td rowspan=3>Object<br/>Version control policy</td>
-    <td>Version control policy</td>
-    <td>Select whether to use a version control policy.</td>
+    <td rowspan=5>Conditional rule</td>
+    <td>Rule name</td>
+    <td>Enter the name of the lifecycle rule.</td>
   </tr>
   <tr>
-    <td>Archive container</td>
-    <td>Enter a container in which previous versions of an object are stored.</td>
+    <td>Condition</td>
+    <td>Specify the conditions under which the rule is applied.</td>
   </tr>
   <tr>
-    <td>Archiving object<br/>life cycle</td>
-    <td>Enter the life cycle of previous versions of an object in days. Life cycle setting will be cleared if it is not filled in.</td>
+    <td>Object lifecycle</td>
+    <td>Enter the object lifecycle in days.</td>
+  </tr>
+  <tr>
+    <td>Lifecycle expiration action</td>
+    <td>Select how to handle objects whose lifecycle has expired.</td>
+  </tr>
+  <tr>
+    <td>Target container</td>
+    <td>When you select <b>Move container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
   </tr>
 </table>
 
-<a id="set-object-lifecycle"></a>
-##### Object Life Cycle
-
-You can set a life cycle of the uploaded object. Objects that have passed the life cycle are deleted according to the set lifecycle expiration action or moved to the specified container. 
-
 > [Note]
-> It is applied only to objects uploaded after the object life cycle is set.
+> It is applied only to objects uploaded after the object lifecycle is set.
 > Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
 
-<a id="set-object-versioning"></a>
-##### Object Version Control Settings
+<a id="set-object-lifecycle-batch"></a>
+##### Bulk Apply Rules
 
-Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated or deleted. If you set the life cycle for previous versions, versions that exceed the set life cycle are automatically deleted.
+Clicking the **Bulk Apply Rules** button resets the lifecycle of all objects in the container according to the rules at once.
+Rules are applied in order of priority, and the lifecycle is recalculated based on the time of bulk application.
+
+<a id="set-object-versioning"></a>
+#### Object Version
+
+Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated or deleted. If you set the lifecycle for previous versions, versions that exceed the set lifecycle are automatically deleted.
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Versioning policy</td>
+    <td>Select whether to use the versioning policy.</td>
+  </tr>
+  <tr>
+    <td>Archive container</td>
+    <td>Enter the container in which to store previous versions of objects.</td>
+  </tr>
+  <tr>
+    <td>Archived object<br/>lifecycle</td>
+    <td>Enter the lifecycle of previous versions of objects in days. If left blank, the lifecycle setting is disabled.</td>
+  </tr>
+</table>
 
 > [Caution]
 > If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
 > If you specify an encryption container as the archive container and then delete the symetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
-<a id="set-object-lock-cycle"></a>
+
+<a id="change-object-lock-cycle"></a>
 #### Object Lock
 
 You can check and change the object lock cycle of object lock containers. The object lock cycle can be entered in days, and cannot be turned off.
@@ -371,17 +397,23 @@ Replication settings allow you to replicate objects in a container to another co
 
 The replication policies are as follows:
 
-* Changes (upload, update, deletion) of objects in the source container are reflected identically in the target container.
-* Changes made to the object in the target container are not reflected in the source container.
-* If a change is made to a replicated object in the target container, that object may not be replicated even if there are subsequent changes to the source object.
-* It is recommended to use an empty container for the target container. If the target container already has an object with the same name as the object in the source container, replication may not be performed properly.
-* If you had deleted objects with the same name as the object to be replicated in the replication target container before enabling replication, the last update time of the replicated object might change to the replication time.
-* If the target container is deleted, replication will not resume even if you create a container with the same name again. To resume replication, you must set up replication again.
-* The target container cannot be replicated to another region, and it cannot be set as another container's target container in duplicate.
-* Changing the replication setting to **Disable** stops replication, but the objects that have already been replicated are maintained.
-* It is recommended to set the name of the source container and the target container to be the same. If the container names are different, access to large replicated objects may fail.
-* If the segment objects of the multipart-uploaded large object are stored in another container, you must also set up the replication for that container to access the replicated large object.
-* Delete marker objects of the archive container are not replicated.
+* **Default behavior**
+    * When an object in the source container is changed (uploaded, metadata updated, or deleted), the change is reflected in the replication target container.
+    * Changes made to objects in the replication target container are not reflected in the source container.
+    * Replication operates based on the last modified time of the object. If an object in the replication target container was modified more recently than the source, it will not be replicated.
+* **Configuration considerations**
+    * It is recommended to use an empty container as the replication target container. If an object with the same name as an object in the source container already exists in the target container, replication may not proceed smoothly.
+    * If an object with the same name has previously been deleted in the replication target container, the last updated time of the replicated object may be changed to the replication configuration time.
+    * It is recommended to use the same name for the source container and the replication target container. If the container names differ, access to replicated large objects may fail.
+    * If the segment objects of a large object uploaded via multipart upload are stored in a different container, replication must also be configured for the container where the segments are stored in the same way, in order to access the replicated large object.
+* **Configuration change considerations**
+    * If the replication setting is changed to disabled, replication stops but already replicated objects are retained.
+    * If the replication direction is switched, objects in the replication target container are restored to the source container. Objects deleted from the source container are also included in the restoration, and the last updated time of restored objects is changed to the replication configuration time.
+    * If the replication target container is deleted, replication will not resume even if a container with the same name is created again. To resume replication, the replication settings must be reconfigured.
+* **Limitations and exceptions**
+    * The replication target container cannot be replicated to a different region, or configured as a replication target for another container simultaneously.
+    * When objects whose lifecycle has expired but have not yet been deleted are replicated to the target container, the lifecycle setting is removed. When subsequently deleted from the source container, the deletion is propagated to the target container and the object is deleted.
+    * Delete marker objects in the archive container are not replicated.
 
 > [Caution]
 > If you specify an encryption container as the replication target container and then delete the symmetric key from Secure Key Manager, the encryption container fails to be replicated.

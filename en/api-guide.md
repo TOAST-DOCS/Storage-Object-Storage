@@ -251,7 +251,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | Storage account, available on the **API Endpoint Setting** popup |
+| Account | URL | String | O | Storage account, available on the API Endpoint Setting popup |
 
 #### Response
 This API does not return a response body. Usage status is included in the header. For a valid request, return status code 200.
@@ -444,7 +444,7 @@ This API does not require a request body.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | Token ID |
-| Account | URL | String | O | Storage account, available on the **API Endpoint Setting** popup |
+| Account | URL | String | O | Storage account, available on the API Endpoint Setting popup |
 
 #### Response
 ```
@@ -865,8 +865,8 @@ public class ContainerService {
 
     // ContainerService Class ...
 
-    public List<String> getObjectList(String conatinerName) {
-        return this.getList(this.getUrl(conatinerName));
+    public List<String> getObjectList(String containerName) {
+        return this.getList(this.getUrl(containerName));
     }
 
     public List<String> getList(String url) {
@@ -993,8 +993,9 @@ POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Container-Read: {role-based access rules for container read}
 X-Container-Write: {role-based access rules for container write}
-X-Container-Ip-Acl-Allowed-List: {IP based access rules for container write}
-X-Container-Ip-Acl-Denied-List: {IP based access rules for container write}
+X-Container-View: {role-based access rules for container view}
+X-Container-Ip-Acl-Allowed-List: {IP-based access rules for container access}
+X-Container-Ip-Acl-Denied-List: {IP-based access rules for container access}
 X-Container-Object-Lifecycle: {Life cycle of objects in container}
 X-Container-Object-Transfer-To: {Containers to move when an object's lifecycle expires}
 X-History-Location: {Container to store the previous object version}
@@ -1019,8 +1020,8 @@ This API does not require a request body.
 | X-Container-Read | Header | String | - | Sets the role-based access rules for container read |
 | X-Container-Write | Header | String | - | Sets the role-based access rules for container write |
 | X-Container-View | Header | String | - | Sets the role-based access rules for container view |
-| X-Container-Ip-Acl-Allowed-List | Header | String | - | Sets the IP-based access rules for container write |
-| X-Container-Ip-Acl-Denied-List | Header | String | - | Sets the IP-based access rules for container write |
+| X-Container-Ip-Acl-Allowed-List | Header | String | - | Sets the IP-based access rules for container access |
+| X-Container-Ip-Acl-Denied-List | Header | String | - | Sets the IP-based access rules for container access |
 | X-Container-Object-Lifecycle | Header | Integer | - | Sets the life cycle of the container's base object in days |
 | X-Container-Object-Transfer-To | Header | String | - | Containers to move when an object's lifecycle expires |
 | X-History-Location | Header | String | - | Sets the container to store the previous version of the object |
@@ -1048,6 +1049,12 @@ You can set the container access policy using the `X-Container-Read`, `X-Contain
 ##### Set the Object Life Cycle
 With the `X-Container-Object-Lifecycle` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
 The `X-Container-Object-Transfer-To` header allows you to transfer objects whose lifecycle has expired to a specified container for storage. If no container is specified, the expired object is deleted.
+
+> [Note]
+> Fine-grained lifecycle rules can be configured through container policies.
+> For more information, see [Container Policy Configuration Guide](container-policy-guide/#lifecycle).
+
+<!-- 개행을 위한 주석 -->
 
 > [Note]
 > Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
@@ -1175,7 +1182,8 @@ You can set object name-based upload policies for containers using the `X-Contai
 The upload policy applies to objects that are uploaded after the policy is set. For objects that include a path, the object name without the path is applied to the policy. All upload policy headers can contain multiple rules using the `,` separator. Each rule, except for the separator `,` must be URL-encoded (percent-encoded).
 Extension rules check for file extensions, and filename rules check for inclusion in object names. Extension rules must be entered without the `.`For example, to enter the txt extension, enter `only txt`, not `.txt`.
 
-Upload policies can't use whitelists and blacklists at the same time. If you request to set both properties, you'll receive a failure response.
+Upload policies can't use whitelists and blacklists at the same time. If you request to set both properties, 	
+the failure response is returned.
 
 
 <details>
@@ -1415,7 +1423,6 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 ```
 </details>
 
-
 <br/>
 
 <a id="delete-a-container"></a>
@@ -1591,7 +1598,7 @@ If you use either the `X-Delete-At` or `X-Delete-After` header, you can set the 
 
 > [Caution]
 > If an object name starts with `./` or `../`, the browser regards it as path character and access is unavailable on web console.
-> If you have uploaded an object of such name via API, it must also be accessed via API.
+> If you have uploaded an object of such name via API, it must also be accessed with API.
 
 #### Response
 This API does not return a response body. For a valid request, return status code 201.
@@ -1765,7 +1772,7 @@ class ObjectService {
       CURLOPT_HTTPHEADER => $req_header
     ));
     $response = curl_exec($curl);
-    curl_close($curl);l
+    curl_close($curl);
 
     fclose($fd);
   }
@@ -2452,7 +2459,7 @@ This API does not require a request body.
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | Container name<br/>COPY method: Source container<br/>PUT method: Target container |
 | Object | URL | String | O | Object name<br/>COPY method: Source object<br/>PUT method: Target object |
-| multipart-manifest | Query | String | - | If the value is get, only the manifest object is copied<br/>Only the COPY method is supported<br/>If omitted, segments are merged and copied as a single object. |
+| multipart-manifest | Query | String | - | If the value is `get`, only the manifest object is copied.<br/>If omitted, segments are merged and copied as a single object.<br/>COPY method: Add as a query parameter.<br/>PUT method: Add to the `X-Copy-From` header value. |
 
 <a id="preserve-object-properties"></a>
 ##### Preserve Object Properties
@@ -2470,8 +2477,30 @@ When an object is copied, the properties of the original object are copied along
 
 <a id="copy-a-multipart-object"></a>
 ##### Copy Multipart Objects
-When a multipart object is copied, the segments referenced by the manifest are merged into a single object. As a result, multipart objects exceeding 5 GB cannot be copied using standard methods.
-To copy a multipart object larger than 5 GB, you must copy only the manifest object. You can specify the manifest as the source by adding the `multipart-manifest=get` parameter to the request.
+When a multipart object is copied, the segments referenced by the manifest are merged into a single object. As a result, multipart objects exceeding 5 GB cannot be copied using standard methods. To copy a multipart object larger than 5 GB, you must copy only the manifest object. You can specify the manifest as the source by adding the `multipart-manifest=get` parameter to the request.
+
+```
+COPY   /v1/{Account}/{SourceContainer}/{SourceObject}?multipart-manifest=get
+X-Auth-Token: {token-id}
+Destination: {TargetContainer}/{TargetObject}
+```
+
+```
+PUT   /v1/{Account}/{TargetContainer}/{TargetObject}
+X-Auth-Token: {token-id}
+X-Copy-From: {SourceContainer}/{SourceObject}; multipart-manifest=get
+```
+
+> [Note]
+> When copying a manifest using the PUT method, the `multipart-manifest=get` parameter must be added to the `X-Copy-From` header value, separated by a semicolon.
+
+<!-- 개행을 위한 주석 -->
+
+> [Caution]
+> Since the copied manifest references the original segment paths, deleting the original segment objects will make the data inaccessible.
+> If the original segment objects have been copied to a different container, a new manifest object must be created.
+
+
 When a manifest is copied, its properties are preserved and copied along with it
 
 | Type | Copied properties |

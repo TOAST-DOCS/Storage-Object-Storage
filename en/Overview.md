@@ -32,7 +32,7 @@ Provides an API compatible with Amazon S3. S3-compatible API allows you to use A
 Provides a life cycle control feature on a container or individual object basis. This allows for efficient management of storage usage.
 
 <a id="object-lock"></a>
-### Object Lock 
+### Object Lock
 Provides an WORM (Write Once Read Many) feature to protect data from inadvertent overwriting and deletion requests by users.
 
 <a id="version-management"></a>
@@ -58,21 +58,21 @@ Provides a history of access to object storage through NHN Cloud's CloudTrail se
 <a id="terminology"></a>
 ## Terminology
 <a id="object"></a>
-#### Object
+### Object
 A basic data unit of object storage. It consists of data, user-assigned metadata, and unique addresses.
 
 <a id="folder"></a>
-#### Folder
+### Folder
 A virtual unit that binds objects. It allows you to manage objects hierarchically, similar to folders in Windows or directories in Linux.
 
 <a id="container"></a>
-#### Container
+### Container
 A namespace for managing objects. It serves as a unit for various management settings. All objects must exist in a container and have a name that is unique within the container.
 
 <a id="storage-account"></a>
-#### Storage Account
+### Storage Account
 A user account for object storage. NHN Cloud object storage is isolated on an account basis.
 
 <a id="api-endpoint"></a>
-#### API Endpoint
+### API Endpoint
 An HTTP URL provided to access object storages through REST APIs.

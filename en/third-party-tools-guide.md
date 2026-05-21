@@ -35,7 +35,7 @@ To connect to object storage, you must create a bookmark that stores connection 
     <td><b>Tenant ID</b>: It is the project ID of the user. You can check it in <b>Project Management > Project Basic information</b> from the web console.</td>
   </tr>
   <tr>
-    <td><b>Access ID</b>: Enter either NHN Cloud member ID (email format) or IAM user ID.</td>
+    <td><b>Access ID</b>: Enter either NHN Cloud account ID (email format) or IAM account ID.</td>
   </tr>
   <tr>
     <td>Secret Key</td>
@@ -125,13 +125,13 @@ Compare local and object storage to upload or download changed or missing files 
 <a id="terraform"></a>
 ## Terraform
 
-Terraform is an open source tool that makes it easy to build, make changes to it safely, and manage its geometry efficiently. For basic usage, see [User Guide > Compute > Instance > Terraform User Guide](https://docs.nhncloud.com/en/Compute/Instance/en/terraform-guide/).
+Terraform is an open source tool that makes it easy to build, make changes to it safely, and manage its geometry efficiently. For basic usage, see [User Guide > Compute > Instance > Terraform User Guide](/Compute/Instance/en/terraform-guide/).
 
 <a id="terraform-resource-dependency"></a>
 ### Resource Dependency
 
 In general, each resource is independent, but it can also have dependencies on certain other resources. Terraform automatically establishes dependencies when a resource's label references information from another resource.
-For example, the `object1 object` contained in the `conatiner1` container might be represented as follows
+For example, the `object1 object` contained in the `container1` container might be represented as follows:
 
 ```hcl
 # Container resource
@@ -298,7 +298,7 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 			<td>detect_content_type</td>
 			<td>Boolean</td>
 			<td></td>
-			<td>Whether to infer content type</br>The <code>content_type</code> is ignored when setting.</td>
+			<td>Whether to infer content type<br/>The <code>content_type</code> is ignored when setting.</td>
 		</tr>
 	</tbody>
 </table>
