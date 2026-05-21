@@ -1769,7 +1769,7 @@ class ObjectService {
     curl_setopt_array($curl, array(
       CURLOPT_PUT => TRUE,
       CURLOPT_RETURNTRANSFER => TRUE,
-CURLOPT_INFILE => $fd,  // パートファイルストリームをパラメータとして入力
+      CURLOPT_INFILE => $fd,  // パートファイルストリームをパラメータとして入力
       CURLOPT_HTTPHEADER => $req_header
     ));
     $response = curl_exec($curl);

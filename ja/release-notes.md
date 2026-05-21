@@ -1,4 +1,4 @@
-## Storage > Object Storage > リリースノート
+## Storage > Object Storage > release notes
 
 ## 2026. 05. 27.
 ### 機能追加
