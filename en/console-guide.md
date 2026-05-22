@@ -30,12 +30,12 @@ Creates containers. Uploading objects in an object storage requires one or more 
     <td><b>Standard</b>: This is the default class.</td>
   </tr>
   <tr>
-    <td><b>Economy</b>: Class Ideal for long-term storage of infrequently accessed data</td>
+    <td><b>Economy</b>: Class ideal for long-term storage of infrequently accessed data.</td>
   </tr>
    <tr>
     <td rowspan="2">Object lock settings</td>
     <td>Object lock</td>
-    <td>Select whather to use the obejct lock.</td>
+    <td>Select whether to use the object lock.</td>
   </tr>
   <tr>
     <td>Lock cycle</td>
@@ -183,7 +183,7 @@ Manages IP-based access policies. For more details, refer to [ACL Configuration 
   </tr>
   <tr>
     <td>Allow Read</td>
-    <td>Allow read requets through the service gateway.</td>
+    <td>Allow read requests through the service gateway.</td>
   </tr>
   <tr>
     <td>Allow Write</td>
@@ -328,7 +328,7 @@ Object version control settings allow you to keep previous versions of objects. 
 
 > [Caution]
 > If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
-> If you specify an encryption container as the archive container and then delete the symetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
+> If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
 
 <a id="change-object-lock-cycle"></a>
@@ -344,7 +344,7 @@ You can check and change the object lock cycle of object lock containers. The ob
   </tr>
   <tr>
     <td rowspan="2">Object lock settings</td>
-    <td>Objecy lock</td>
+    <td>Object lock</td>
     <td>Select whether to use the object lock.</td>
   </tr>
   <tr>
@@ -354,9 +354,9 @@ You can check and change the object lock cycle of object lock containers. The ob
 </table>
 
 > [Note]
-> The changed object lock cycle is applied to obejcts uploaded after changing the settings. 
+> The changed object lock cycle is applied to objects uploaded after changing the settings. 
 > You cannot change a general container to an object lock container and vice versa.
-> You cannot specify an object lock container as an archive container or replication target containger.
+> You cannot specify an object lock container as an archive container or replication target container.
 
 <a id="set-container-replication"></a>
 #### Replication
@@ -520,7 +520,7 @@ Check the selected object information and manage the properties.
 > If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
 
 <a id="set-object-expiration"></a>
-##### Change Object Expiration Date
+#### Change Object Expiration Date
 
 You can change the expiration date for selected objects.
 

@@ -15,7 +15,7 @@ Download and install the installation file for user’s operating system from th
 <a id="cyberduck-object-storage-connection-settings"></a>
 ### Object Storage Connection Settings
 
-To connect to object storage, you must create a bookmark that stores connection information. By clicking **New Connection** button at the top of browser, you can create a new bookmark. Select **Openstack Swift (Keystone 2.0)** from the drop-down menu, enter the required information, and click the **Connect** button to create a bookmark.
+To connect to object storage, you must create a bookmark that stores connection information. By clicking **New Connection** button at the top of browser, you can create a new bookmark. Select **OpenStack Swift (Keystone 2.0)** from the drop-down menu, enter the required information, and click the **Connect** button to create a bookmark.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -54,7 +54,7 @@ Double-click the bookmark you want to connect in order to access object storage.
 <a id="cyberduck-retrieve-container-or-object"></a>
 ### Retrieve Container/Object
 
-When accessing object storage, a list of containers for **All Regions** appear in the browser. You can retrieve a list of objects in a container by double-clicking the desired container.
+When accessing object storage, a list of containers for **All Regions** appears in the browser. You can retrieve a list of objects in a container by double-clicking the desired container.
 
 > [Note] 
 > If there are containers with the same name in different regions, multiple containers with the same name are displayed. 
@@ -142,8 +142,8 @@ resource "nhncloud_objectstorage_container_v1" "container_1" {
 # Object resource
 resource "nhncloud_objectstorage_object_v1" "object_1" {
   container_name = nhncloud_objectstorage_container_v1.container_1.name
-  name = "object1"
-  source = "/tmp/dummy"
+  name           = "object1"
+  source       = "/tmp/dummy"
 }
 ```
 
@@ -198,12 +198,12 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 ```hcl
 # Create the object
 resource "nhncloud_objectstorage_object_v1" "object_1" {
-  region = "KR1"
+  region         = "KR1"
   container_name = nhncloud_objectstorage_container_v1.container_1.name
-  name = "test/test1.json"
+  name           = "test/test1.json"
   content_type = "application/json"
-  content = <<JSON
-               { "key" : "value
+  content      = <<JSON
+               {
                  "key" : "value"
                }
 JSON

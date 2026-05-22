@@ -1,7 +1,7 @@
 ## Storage > Object Storage > Container Policy Configuration Guide
 
 <a id="container-policy"></a>
-### Container policy
+### Container Policy
 
 Container policies allow you to manage container settings in an integrated manner using a JSON-format policy document.
 
@@ -25,7 +25,7 @@ A policy document is structured with top-level keys for each feature, as shown b
 > As of May 2026, only the **lifecycle** setting is supported. Support will be expanded to more features in the future.
 
 <a id="container-policy-api"></a>
-## Container policy API
+## Container Policy API
 
 <a id="get-container-policy"></a>
 ### Get policy

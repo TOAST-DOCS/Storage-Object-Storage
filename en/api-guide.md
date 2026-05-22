@@ -613,7 +613,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL | String | O | Name of container to be created  |
-| X-Storage-Policy | Header | String | - | Storage class for containers<br/><b>Standard</b>: Base class for frequently accessed data<br/><b>Economy</b>: Class Ideal for long-term storage of infrequently accessed data |
+| X-Storage-Policy | Header | String | - | Storage class for containers<br/><b>Standard</b>: Default class for frequently accessed data<br/><b>Economy</b>: Class Ideal for long-term storage of infrequently accessed data |
 | X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days |
 
 
@@ -996,10 +996,10 @@ X-Container-Write: {role-based access rules for container write}
 X-Container-View: {role-based access rules for container view}
 X-Container-Ip-Acl-Allowed-List: {IP-based access rules for container access}
 X-Container-Ip-Acl-Denied-List: {IP-based access rules for container access}
-X-Container-Object-Lifecycle: {Life cycle of objects in container}
+X-Container-Object-Lifecycle: {Lifecycle of objects in container}
 X-Container-Object-Transfer-To: {Containers to move when an object's lifecycle expires}
 X-History-Location: {Container to store the previous object version}
-X-Versions-Retention: {Life cycle of the previous object version}
+X-Versions-Retention: {Lifecycle of the previous object version}
 X-Container-Meta-Web-Index: {Static website index document object}
 X-Container-Meta-Web-Error: {Static website error document object suffix}
 X-Container-Meta-Access-Control-Allow-Origin: {List that allows Cross-Origin Resource Sharing}
@@ -1022,10 +1022,10 @@ This API does not require a request body.
 | X-Container-View | Header | String | - | Sets the role-based access rules for container view |
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | Sets the IP-based access rules for container access |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | Sets the IP-based access rules for container access |
-| X-Container-Object-Lifecycle | Header | Integer | - | Sets the life cycle of the container's base object in days |
+| X-Container-Object-Lifecycle | Header | Integer | - | Sets the lifecycle of the container's base object in days |
 | X-Container-Object-Transfer-To | Header | String | - | Containers to move when an object's lifecycle expires |
 | X-History-Location | Header | String | - | Sets the container to store the previous version of the object |
-| X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
+| X-Versions-Retention | Header | Integer | - | Sets the lifecycle of the object's previous version in days |
 | X-Container-Meta-Web-Index | Header | String | - | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | X-Container-Meta-Web-Error | Header | String | - | Sets the static website error document object suffix<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | List of hosts that allows CORS. You can either allow all hosts with '*' or enter a list of hosts separated by spaces. | 
@@ -1046,8 +1046,8 @@ You can set the container access policy using the `X-Container-Read`, `X-Contain
 <br/>
 
 <a id="set-container-object-lifecycle"></a>
-##### Set the Object Life Cycle
-With the `X-Container-Object-Lifecycle` header, you can set the life cycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
+##### Set the Object Lifecycle
+With the `X-Container-Object-Lifecycle` header, you can set the lifecycle of the objects to be stored in a container in the unit of days. This applies only to objects uploaded after the setting has been applied.
 The `X-Container-Object-Transfer-To` header allows you to transfer objects whose lifecycle has expired to a specified container for storage. If no container is specified, the expired object is deleted.
 
 > [Note]
@@ -1073,14 +1073,14 @@ For example, if an object named `picture.jpg` is updated, the `00bpicture.jpg/16
 
 If you delete an object from a container where version control policy is already set, the deleted object will be stored in the archive container and a delete marker object will be created. The previous object versions stored in the archive container can be accessed at any time.
 
-With the `X-Versions-Retention` header, you can set the life cycle of a previous object version in days. If set to 1, the stored object will be automatically deleted after a day. If not set, the previous object version will be stored until users delete it. This applies only to previous object versions uploaded after the setting has been applied.
+With the `X-Versions-Retention` header, you can set the lifecycle of a previous object version in days. If set to 1, the stored object will be automatically deleted after a day. If not set, the previous object version will be stored until users delete it. This applies only to previous object versions uploaded after the setting has been applied.
 
-> [Cautions]
+> [Caution]
 > If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
 >
 > It is recommended that you avoid using Unicode characters in container names for archive containers. If the name of the container to set as an archive container contains Unicode characters, it must be URL-encoded before being entered in the request header.
 >
-> If you specify an encryption container as the archive container and then delete the symetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
+> If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
 <br/>
 
@@ -1171,7 +1171,7 @@ You can change the object lock cycle of the object lock container using the `X-C
 
 > [Note]
 > You cannot change a general container to an object lock container and vice versa.
-> You cannot specify an object lock container as an archive container or replication target containger. 
+> You cannot specify an object lock container as an archive container or replication target container. 
 
 <br/>
 
@@ -1180,7 +1180,7 @@ You can change the object lock cycle of the object lock container using the `X-C
 You can set object name-based upload policies for containers using the `X-Container-Object-Deny-Extension-Policy, X-Container-Object-Deny-Keyword-Policy, X-Container-Object-Allow-Extension-Policy`, and `X-Container-Object-Allow-Keyword-Policy` headers. Upload policy settings allow you to restrict or prevent objects from being uploaded that contain certain extensions or keywords in their names. 
 
 The upload policy applies to objects that are uploaded after the policy is set. For objects that include a path, the object name without the path is applied to the policy. All upload policy headers can contain multiple rules using the `,` separator. Each rule, except for the separator `,` must be URL-encoded (percent-encoded).
-Extension rules check for file extensions, and filename rules check for inclusion in object names. Extension rules must be entered without the `.`For example, to enter the txt extension, enter `only txt`, not `.txt`.
+Extension rules check for file extensions, and filename rules check for inclusion in object names. Extension rules must be entered without the `.`. For example, to enter the txt extension, enter `only txt`, not `.txt`.
 
 Upload policies can't use whitelists and blacklists at the same time. If you request to set both properties, 	
 the failure response is returned.
@@ -1283,8 +1283,8 @@ The object name must not contain the following keywords: example
 
 
 <a id="unset-container-settings"></a>
-##### Unset a Container
-If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Lifecycle: '`, the object life cycle will be removed and the objects that is stored in the container afterwards will not have their life cycle automatically set.
+##### Unset Container Settings
+If you use a header without a value, the setting will be removed. For example, if the lifecycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Lifecycle: '`, the object lifecycle will be removed and the objects that is stored in the container afterwards will not have their lifecycle automatically set.
 <br/>
 
 #### Response
@@ -1592,8 +1592,8 @@ Content-Type: {content-type}
 
 
 <a id="set-object-lifecycle"></a>
-##### Setting Object Life Cycle
-If you use either the `X-Delete-At` or `X-Delete-After` header, you can set the life cycle of an object in seconds.
+##### Setting Object Lifecycle
+If you use either the `X-Delete-At` or `X-Delete-After` header, you can set the lifecycle of an object in seconds.
 <br/>
 
 > [Caution]
@@ -1829,7 +1829,7 @@ Content-Type: {content-type}
 <br/>
 
 ##### Response
-This API does not return a request body. For a valid request, return status code 201.
+This API does not return a response body. For a valid request, return status code 201.
 
 <br/>
 
@@ -1846,7 +1846,7 @@ The DLO manifest object uses the path to the segment objects entered in the `X-O
 ```
 PUT   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
-X-Object-Manifest: {Segment-Container}/{Segment-Object}
+X-Object-Manifest: {Segment-Container}/{Segment-Object}/
 ```
 
 <br/>
@@ -2313,7 +2313,7 @@ public class ObjectService {
     public File downloadObject(String containerName, String objectName, String downloadPath) {
         String url = this.getUrl(containerName, objectName);
         
-        // RequestCallback that adds token to reqeust header
+        // RequestCallback that adds token to request header
         RequestCallback callback = (request) -> {
             HttpHeaders headers = request.getHeaders();
             headers.add("X-Auth-Token", tokenId);
@@ -2473,7 +2473,7 @@ When an object is copied, the properties of the original object are copied along
 
 > [Note]
 > When copying an object, you can set new values for the copied object's properties by adding the `X-Delete-At` or `X-Object-Meta-{key}` headers.
-> However, the lock expiration period cannot be changed, and the original object's value will be preserveds.
+> However, the lock expiration period cannot be changed, and the original object's value will be preserved.
 
 <a id="copy-a-multipart-object"></a>
 ##### Copy Multipart Objects
@@ -2508,15 +2508,6 @@ When a manifest is copied, its properties are preserved and copied along with it
 | SLO manifest | X-Static-Large-Object, X-Manifest-Etag |
 | DLO manifest | X-Object-Manifest |
 
-> [Caution]
-> If you copy the manifest and delete the source segment objects, the data will become inaccessible.
-> If the source segment objects have been copied to a different container, a new manifest object must be created. 
-
-<!-- 개행을 위한 주석 -->
-
-> [Note]
-> Copying a manifest object is only supported in the COPY method.
-
 #### Response
 This request does not return a response body. For a valid request, return status code 201.
 
@@ -2539,9 +2530,15 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4c
 
 **Copy a Multipart Manifest Object**
 ```
+// COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/419da6e.mp4' \
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/419da6e.mp4?multipart-manifest=get
+
+// PUT method
+$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+-H 'X-Copy-From: curl_example/419da6e.mp4; multipart-manifest=get' \
+https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/copy_con/419da6e.mp4
 ```
 </details>
 
@@ -2641,7 +2638,7 @@ class ObjectService {
       CURLOPT_HTTPHEADER => $req_header
     ));
     $response = curl_exec($curl);
-    curl_close($curl);l
+    curl_close($curl);
   }
 }
 
