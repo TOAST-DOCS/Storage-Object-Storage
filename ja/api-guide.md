@@ -2436,7 +2436,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ```
 COPY   /v1/{Account}/{SourceContainer}/{SourceObject}
 X-Auth-Token: {token-id}
-Destination: {オブジェクトをコピーする対象}
+Destination: {TargetContainer}/{TargetObject}
 ```
 
 ```
@@ -2450,6 +2450,7 @@ X-Copy-From: {SourceContainer}/{SourceObject}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
+| X-Auth-Token | Header | String | O | トークンID |
 | Destination | Header | String | - | ターゲットオブジェクトのパス、`{ターゲットコンテナー}/{ターゲットオブジェクト}`<br/>COPYメソッドを使用する際に必要 |
 | X-Copy-From | Header | String | - | ソースオブジェクトのパス、`{ソースコンテナー}/{ソースオブジェクト}`<br/>PUTメソッドを使用する際に必要 |
 | X-Fresh-Metadata | Header | Boolean | - | オブジェクトのプロパティ初期化の有無<br/>値がtrueの場合、元オブジェクトのプロパティをコピーしません。<br/>デフォルト値はfalseです。 |
@@ -2500,8 +2501,6 @@ X-Copy-From: {SourceContainer}/{SourceObject}; multipart-manifest=get
 > コピーされたマニフェストは元のセグメントパスを参照するため、元のセグメントオブジェクトを削除するとデータにアクセスできなくなります。
 > 元のセグメントオブジェクトを別のコンテナにコピーした場合は、マニフェストオブジェクトを新しく作成する必要があります。
 
-
-マルチパートでアップロードしたオブジェクトの一部または全体のパートオブジェクトを削除すると、オブジェクトにアクセスできなくなります。
 
 マニフェストをコピーする際は、マニフェストのプロパティが一緒にコピーされます。
 
