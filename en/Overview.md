@@ -28,8 +28,8 @@ Provides HTTP-based REST APIs to control containers and objects. REST APIs allow
 Provides an API compatible with Amazon S3. S3-compatible API allows you to use Amazon Web Service Software Development Kit (SDK)-based applications and various third-party tools.
 
 <a id="life-cycle-control"></a>
-### Life Cycle Control
-Provides a life cycle control feature on a container or individual object basis. This allows for efficient management of storage usage.
+### Lifecycle Control
+Provides a lifecycle control feature on a container or individual object basis. This allows for efficient management of storage usage.
 
 <a id="object-lock"></a>
 ### Object Lock

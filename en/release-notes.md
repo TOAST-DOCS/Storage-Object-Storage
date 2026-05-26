@@ -10,8 +10,8 @@
     * Added support for integrity verification for upload with Trailing Checksum.
     * Added support for CORS Preflight requests.
 
-### July 29, 2025
-#### Limiting Policy
+## July 29, 2025
+### Limiting Policy
 * [API] Added the write request rate limit
     * A rate limiting policy is applied to write requests that exceed 500 requests per second, per storage account.
 
@@ -66,7 +66,7 @@
 * [Console] Added the feature to create signed URLs
 
 ## May 30, 2023
-#### Added Features
+### Added Features
 * [Console][API] Added the IP ACL feature
 
 ## March 28, 2023
@@ -78,15 +78,15 @@
 * [API] Fixed an issue where, when a multipart object with the same name is updated using the S3 compatible API, the previous part object could not be deleted 
 
 ## November 29, 2022
-#### Added Features
+### Added Features
 * [Console][API] Added a feature to set an object lock container
 
 ## October 13, 2022
-#### Added Features
+### Added Features
 * [Console] Added a feature to set a container ACL 
 
 ## September 27, 2022
-#### Added Features
+### Added Features
 * [Console] Added a feature to set container encryption
 * [Console] Added a feature to set Cross-Origin Resource Sharing (CORS)
 
@@ -94,15 +94,15 @@
 * [Console] Improved the UI of Get Container and Container Settings
 
 ## August 23, 2022
-#### Added Features
+### Added Features
 * [API] Added a feature to set the RFC compliant ETag format
 
 ## March 29, 2022
-#### Added Features
+### Added Features
 * [Console] Added the inter-region container replication feature
 
 ## January 25, 2022
-#### Added Features
+### Added Features
 * [Console] Added a feature to obtain S3 API credentials
 
 ### Feature Updates
@@ -121,7 +121,7 @@
 ## February 23, 2021
 ### Feature Updates
 * [Console] Container settings improved
-    * Feature improved to allow setting access policy, object life cycle, version control policy, state website, etc. in container unit.
+    * Feature improved to allow setting access policy, object lifecycle, version control policy, static website, etc. in container unit.
 
 ## November 24, 2020
 ### Feature Updates
