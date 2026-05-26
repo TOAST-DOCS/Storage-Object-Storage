@@ -20,6 +20,7 @@ Object Storage uses IaaS tokens for authentication and authorization when making
 For more information on issuing and using IaaS tokens, please refer to the [IaaS Token](/nhncloud/en/public-api/iaas-token/).
 
 > [Caution]
+> Object Storage has a different tenant ID from the basic infrastructure service.
 > Click **API Endpoint Setting** on the Object Storage service page to check the tenant ID to issue a token..
 
 <!-- 개행을 위한 주석 -->
@@ -587,7 +588,7 @@ Creates a container. To upload files to object storage, a container must be crea
 > [Note]
 > Container names cannot include special characters ``' " ` < > ;``, spaces, and relative path characters (`. ..`).
 > IP address format names are not allowed.
-> Container or object names cannot contain the special characters  `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, you must URL-encode (percent-encode) them when using the API. These are reserved characters that are important in URLs. If you send an API request without URL-encoding a path that contains these characters, you might not get the response you want.
+> If a container or object name contains special characters such as ! * ' ( ) ; : @ & = + $ , / ? # [ ], you must apply URL encoding (percent encoding) when using the API. These are reserved characters that are important in URLs. If you send an API request without URL-encoding a path that contains these characters, you might not get the response you want.
 
 When you create a container, you can use the `X-Storage-Policy` header to specify the storage class of the container. You can choose the Standard class for frequently accessed data and the Economy class for long-term storage of less frequently accessed data at a lower cost. If you don't specify a storage class, the Standard class is applied.
 
@@ -817,7 +818,7 @@ The number of objects that can be retrieved using Get Container API is limited t
 
 <a id="list-objects-with-a-prefix"></a>
 #### Listing Objects Starting with a Prefix
-Using the `prefix` query returns the list of objects that start with the specified prefix. 
+Using the `prefix` query returns the list of objects that start with the specified prefix. The prefix query can be used to retrieve the list of objects in subfolders.
 
 <br/>
 
@@ -1022,7 +1023,7 @@ This API does not require a request body.
 | X-Container-View | Header | String | - | Sets the role-based access rules for container view |
 | X-Container-Ip-Acl-Allowed-List | Header | String | - | Sets the IP-based access rules for container access |
 | X-Container-Ip-Acl-Denied-List | Header | String | - | Sets the IP-based access rules for container access |
-| X-Container-Object-Lifecycle | Header | Integer | - | Sets the life cycle of the container's base object in days |
+| X-Container-Object-Lifecycle | Header | Integer | - | Sets the default object lifecycle for a container in days |
 | X-Container-Object-Transfer-To | Header | String | - | Containers to move when an object's lifecycle expires |
 | X-History-Location | Header | String | - | Sets the container to store the previous version of the object |
 | X-Versions-Retention | Header | Integer | - | Sets the life cycle of the object's previous version in days |
@@ -1864,7 +1865,7 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}
 <br/>
 
 **SLO**
-To create an SLO manifest object, you must enter the list of segment objects in order in the request body.
+To create an SLO manifest object, you must enter the list of segment objects in order in the request body. Up to 10,000 segment objects can be entered.
 If you make a request to create an SLO manifest object, the system checks whether each segment object is in the entered path and the etag value matches the size of the object. If the information does not match, the manifest object is not created.
 
 ```

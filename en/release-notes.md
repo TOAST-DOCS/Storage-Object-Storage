@@ -54,6 +54,7 @@
 
 ## February 27, 2024
 ### Added Features
+* [Console][API] Added object upload policy configuration feature
 * [Console][API] Added the feature to empty containers
 
 ### Feature Updates

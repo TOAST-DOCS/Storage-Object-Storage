@@ -180,7 +180,7 @@ This API does not return request body. When the request is appropriate, return s
 
 <a id="create-signature"></a>
 ## Create Signature
-To use S3 API, you must create a signature use credentials. Regarding how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
+To use the S3 API, you must create a signature using credentials. For information on how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
 
 The following information is required to create a signature.
 

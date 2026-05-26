@@ -75,7 +75,7 @@ The policies for encryption container are as follows.
 * If you download the encrypted object, it is sent after being decrypted. 
 * If you copy an object of the encryption container or copy it to another container through the inter-region container replication, the object is stored re-encrypted or decrypted according to the encryption settings for the container.
 * You cannot change the symmetric key ID that is registered when creating an encryption container. To change the symmetric key, you must use the key rotation feature of Secure Key Manager.
-* If you rotate the symmetric key configured in an encryption container from Secure Key Manager and upload the key to a new object, the object encrypted with the previous version key is re-encrypted with the rotated key. This task can take a long time depending on usage. Be cautious not to delete the previous version key before re-encryption is complete.
+* If you rotate the symmetric key configured in an encryption container from Secure Key Manager and then upload a new object, the object encrypted with the previous version key is re-encrypted with the rotated key. This process may take a long time depending on the amount of data. Make sure not to delete the previous version key before re-encryption is complete.
 
 > [Caution]
 If you delete the symmetric key configured in an encryption container from Secure Key Manager, the encrypted object cannot be decrypted. You must carefully manage the symmetric key not to delete it accidentally.
