@@ -24,7 +24,7 @@ The following Amazon S3 compatible API is provided.
 | [Abort Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html) | Abort multipart upload                 |
 | [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | List multipart objects                 |
 | [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | List multipart objects under uploading |
-| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | Delete multipart objects               |
+| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | Delete multiple objects               |
 
 This document describes only the basic usage of API. To use advanced features, it is recommended that you see [Amazon S3 API Guide](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html) or use [AWS SDK](https://aws.amazon.com/tools).
 
@@ -53,7 +53,7 @@ X-Auth-Token: {token-id}
 | tenant_id    | Body   | String | O        | Tenant ID, which can be found on the API Endpoint setting dialog box |
 
 > [Note]
-> `<api-user-id>` can be found in the **API User ID** item in the API Endpoint settings dialog box on the console or in the **access.user.id** field in the response body of the Authentication Token Issuance API.
+> `{api-user-id}` can be found in the **API User ID** item in the API Endpoint settings dialog box on the console or in the **access.user.id** field in the response body of the Authentication Token Issuance API.
 > To use the Authentication Token Issuance API, refer to [Authentication Token Issuance](api-guide/#authentication-token-issuance) in the API guide.
 > 
 > S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
@@ -176,28 +176,54 @@ This API does not require a request body.
 | access       | URL    | String | O        | S3 API credentials access key                     |
 
 #### Response
-This API does not return request body. When the request is appropriate, return status code 204.
+This API does not return a response body. When the request is appropriate, return status code 204.
 
 <a id="create-signature"></a>
 ## Create Signature
-To use S3 API, you must create a signature use credentials. Regarding how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
+To use the S3 API, you must create a signature using credentials. For information on how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
 
 The following information is required to create a signature.
 
 | Name          | Value                          |
 | ------------- | ------------------------------ |
 | Algorithm     | AWS4-HMAC-SHA256               |
-| Signed Time   | In the ZssmmhhTDDMMYYYY format |
+| Signed Time   | In the YYYYMMDDThhmmssZ format |
 | Service Name  | s3                             |
 | Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - Korea (Pyeongchon) Region<br/>KR3 - Korea (Gwangju) Region<br/>JP1 - Japan (Tokyo) Region |
 | Secret Key    | S3 API credentials secret key          |
+
+The `x-amz-content-sha256` header is required when generating an AWS Signature V4 signature. This header is included in the Canonical Request and used in signature calculation. The payload processing method is determined by the header value. The available values are as follows:
+
+| x-amz-content-sha256 value | Description |
+|---|---|
+| `<payload hash>` | Default method using the SHA-256 hash of the entire request payload |
+| `UNSIGNED-PAYLOAD` | Omits payload signing |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD` | AWS Chunked Upload method (includes a signature in each chunk) |
+| `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload method (uses trailer headers without chunk signatures) |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload method (includes a signature in each chunk + uses trailer headers) |
+
+> [Note]
+> For more information, see [Authenticating Requests: Using the Authorization Header (AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html).
+
+If the `x-amz-content-sha256` value is `STREAMING-UNSIGNED-PAYLOAD-TRAILER` or `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER`, you must declare the checksum algorithm to be sent in the trailer using the `x-amz-trailer` request header. The supported algorithms are as follows:
+
+| x-amz-trailer value | Algorithm |
+|---|---|
+| `x-amz-checksum-crc32` | CRC-32 |
+| `x-amz-checksum-crc32c` | CRC-32C |
+| `x-amz-checksum-crc64nvme` | CRC-64/NVME |
+| `x-amz-checksum-sha1` | SHA-1 |
+| `x-amz-checksum-sha256` | SHA-256 |
+
+> [Note]
+> For more information on signature calculation using trailer headers, see [Signature calculations for trailing headers (chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html).
 
 
 <a id="bucket"></a>
 ## Bucket
 <a id="create-bucket"></a>
 ### Create Bucket
-Creates a bucket. Bucket names must follow Amazon S3's naming rules.
+Creates a bucket. Bucket names must follow Amazon S3's naming rules:
 
 * Bucket names must be between 3 and 63 characters long.
 * Bucket names can consist only of lowercase letters, numbers, dots (.), and hyphens (-).
@@ -210,7 +236,7 @@ For more details, see [Bucket restrictions and limitations](https://docs.aws.ama
 ```
 PUT /{bucket}
 
-Date: 22:22:22 +0000, Sat, 22 Feb 2020
+Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
@@ -240,7 +266,7 @@ Retrieves bucket lists.
 ```
 GET /
 
-Date: 22:22:22 +0000, Sat, 22 Feb 2020
+Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
@@ -353,7 +379,7 @@ Deletes the specified bucket. The bucket to be deleted must be empty.
 ```
 DELETE /{bucket}
 
-Date: 22:22:22 +0000, Sat, 22 Feb 2020
+Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
@@ -378,12 +404,12 @@ Uploads an object to the specified bucket.
 ```
 PUT /{bucket}/{obj}
 
-Date: 22:22:22 +0000, Sat, 22 Feb 2020
+Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
 #### Request
-This API does not return a response body. It returns status code 204 if the request is valid.
+This API does not return a response body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
@@ -407,7 +433,7 @@ Downloads an object.
 ```
 GET /{bucket}/{obj}
 
-Date: 22:22:22 +0000, Sat, 22 Feb 2020
+Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
@@ -462,7 +488,7 @@ You can use NHN Cloud Object Storage with [AWS Command Line Interface](https://a
 Install the AWS Command Line Interface (CLI) by referencing the [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) documentation.  
 
 > [Note]
-> AWS CLI versions up to 2.22.35 are supported in NHN Cloud Object Storage.
+> AWS CLI versions up to 2.34.38 are supported in NHN Cloud Object Storage.
 
 <a id="aws-command-line-interface-configuration"></a>
 ### Configuration
@@ -491,7 +517,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | Name | Description |
 |---|---|
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region <br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongcheon) region<br/>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) region <br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region <br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) region <br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region |
 | command | Command for AWS Command Line Interface |
 | bucket | Bucket name |
 
@@ -552,17 +578,17 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 
 <blockquote>
 [Note]
-</br>
-If the object is larger than 8 MB, the AWS Command Line Interface splits the object into multiple parts and uploads them. The part object is stored in a bucket called <code style="display: inline;">{bucket}+segments</code> It is saved in the form of part-number<code style="display: inline;">{object-name}/{upload-id}/{part-number}</code>, and when all parts are uploaded, an object linked to the part object is created in the bucket requested for upload.
-</br></br>
+<br/>
+If the object is larger than 8 MB, the AWS Command Line Interface splits the object into multiple parts and uploads them. The part object is stored in a bucket called <code style="display: inline;">{bucket}+segments</code> It is saved in the form of <code style="display: inline;">{object-name}/{upload-id}/{part-number}</code>, and when all parts are uploaded, an object linked to the part object is created in the bucket requested for upload.
+<br/><br/>
 The <code style="display: inline;">{bucket}+segments</code> bucket where the part object is stored cannot be accessed through the S3 compatible API, but can be accessed through the Object Storage API or the console.
-</br></br>
+<br/><br/>
 The ETag of a multipart object is an MD5 hashed value by converting the ETag values of each part object into binary data and concatenating them in order.
 </blockquote>
 
 <blockquote>
 [Caution]
-</br>
+<br/>
 If you delete some or all parts of an object uploaded as multipart, the object cannot be accessed.
 </blockquote>
 
@@ -588,15 +614,46 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
+<a id="aws-command-line-interface-virtual-hosted-style"></a>
+### Use domain-style endpoints
+The S3-compatible API supports both Path-style and domain-style (virtual Hosted-style) bucket access methods. The domain-style uses the bucket name as a subdomain of the endpoint.
+
+| Method | Format |
+|---|---|
+| Path-style | `https://{endpoint}/{bucket}/{object}` |
+| Domain-style | `https://{bucket}.{endpoint}/{object}` |
+
+<br/>
+
+To use domain-style endpoints in the AWS CLI, set the `addressing_style` option to `virtual`. When this setting is applied, the AWS CLI automatically combines the endpoint and bucket name to send requests in domain-style URL format.
+
+```shell
+$ aws configure set default.s3.addressing_style virtual
+```
+
+Alternatively, add the following settings to the profile section in use in the `~/.aws/config` file.
+
+```ini
+[default]
+s3 =
+  addressing_style = virtual
+```
+
+| Name | Description |
+|---|---|
+| addressing_style | `virtual` - Uses domain-style<br/>`path` - Uses Path-style<br/>`auto` - Automatic selection (default; when using a custom endpoint such as NHN Cloud Object Storage, defaults to Path-style) |
+
+> [Caution]
+> If the bucket name contains a period (`.`), using domain-style may cause certificate validation to fail because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style.
 
 <a id="aws-sdk"></a>
 ## AWS SDK
 AWS provides SDKs for many types of programming languages. By using the S3 compatible API, you can use NHN Cloud Object Storage with AWS SDK.
 
 > [Note]
-> For more information, see [AWS SDK](https://aws.amazon.com/ko/tools).
+> For more information, see [AWS SDK](https://aws.amazon.com/en/tools).
 
-The following are the major parameters required to use AWS SDK.
+The following are the major parameters required to use AWS SDK:
 
 | Name | Description |
 |---|---|
@@ -609,7 +666,7 @@ The following are the major parameters required to use AWS SDK.
 ### Boto3 - Python SDK
 
 > [Note]
-> For more information, see [AWS SDK for Python (Boto3)](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits).
+> For more information, see [AWS SDK for Python (Boto3)](https://docs.aws.amazon.com/en_us/pythonsdk/?icmpid=docs_homepage_sdktoolkits).
 
 #### Context
 
@@ -644,10 +701,10 @@ class Boto3Example(object):
 
 ```python
 def create_bucket(self, bucket_name):
-  try:
-      return self.s3.create_bucket(Bucket=bucket_name)
-  except ClientError as e:
-      raise RuntimeError(e)
+    try:
+        return self.s3.create_bucket(Bucket=bucket_name)
+    except ClientError as e:
+        raise RuntimeError(e)
 ```
 
 </details>
@@ -696,7 +753,7 @@ def delete_bucket(self, bucket_name):
 
 <blockquote>
 <p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 8MiB, and you can specify an object size as small as 5MiB. The maximum number of part objects is 10,000.</p>
+The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 8MiB, and you can specify a part size as small as 5MiB. The maximum number of part objects is 10,000.</p>
 </blockquote>
 
 ```python
@@ -753,7 +810,7 @@ def delete(self, bucket_name, key):
 ### Java SDK
 
 > [Note]
-> For more information, see [AWS SDK for Java](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html).
+> For more information, see [AWS SDK for Java](https://docs.aws.amazon.com/en_us/sdk-for-java/index.html).
 
 #### Context
 
@@ -766,7 +823,7 @@ public class AwsSdkExample {
     private static final String access = "{access}";
     private static final String secret = "{secret}";
     private static final String region = "{region name}";
-    private static final String ednpoint = "{endpoint}";
+    private static final String endpoint = "{endpoint}";
 
     private AmazonS3 s3Client;
 
@@ -775,7 +832,7 @@ public class AwsSdkExample {
             new BasicAWSCredentials(access, secret);
         s3Client = AmazonS3ClientBuilder.standard()
                     .withEndpointConfiguration(
-                new AwsClientBuilder.EndpointConfiguration(ednpoint, region)
+                new AwsClientBuilder.EndpointConfiguration(endpoint, region)
             )
             .withCredentials(
                 new AWSStaticCredentialsProvider(awsCredentials)
@@ -940,7 +997,7 @@ public void deleteObject(
 ### .NET SDK
 
 > [Note]
-> For more information, see [AWS SDK for .NET](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits).
+> For more information, see [AWS SDK for .NET](https://docs.aws.amazon.com/en_us/sdk-for-net/?icmpid=docs_homepage_sdktoolkits).
 
 #### Context
 
@@ -1193,3 +1250,82 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 
 </details>
 
+<a id="aws-sdk-virtual-hosted-style"></a>
+### Use domain-style endpoints
+To use domain-style endpoints in the AWS SDK, disable path-style access in the client settings. The endpoint URL and credentials remain the same, and the SDK combines the bucket name as a subdomain to send requests.
+
+<details>
+<summary>Boto3 - Python SDK</summary>
+
+Create a client by setting the <code>s3.addressing_style</code> value of <code>botocore.client.Config</code> to <code>virtual</code>.
+
+```python
+from boto3 import client
+from botocore.client import Config
+
+
+class Boto3Example(object):
+    _REGION = '{region name}'
+    _ENDPOINT = '{endpoint}'
+    _ACCESS = '{access}'
+    _SECRET = '{secret}'
+
+    def __init__(self):
+        config = Config(s3={'addressing_style': 'virtual'})
+        self.s3 = client(service_name='s3',
+                         region_name=self._REGION,
+                         endpoint_url=self._ENDPOINT,
+                         aws_access_key_id=self._ACCESS,
+                         aws_secret_access_key=self._SECRET,
+                         config=config)
+```
+
+</details>
+
+<details>
+<summary>Java SDK</summary>
+
+Delete the <code>enablePathStyleAccess()</code> call from the client builder.
+
+```java
+public AwsSdkExample() {
+    BasicAWSCredentials awsCredentials =
+        new BasicAWSCredentials(access, secret);
+    s3Client = AmazonS3ClientBuilder.standard()
+        .withEndpointConfiguration(
+            new AwsClientBuilder.EndpointConfiguration(endpoint, region)
+        )
+        .withCredentials(
+            new AWSStaticCredentialsProvider(awsCredentials)
+        )
+        .disableChunkedEncoding()
+        .build();
+}
+```
+
+</details>
+
+<details>
+<summary>.NET SDK</summary>
+
+Delete the <code>ForcePathStyle</code> property setting from the <code>AmazonS3Config</code>.
+
+```csharp
+private static AmazonS3Client GetS3Client()
+{
+    var amazonS3Config =
+        new AmazonS3Config
+        {
+            ServiceURL = endpoint,
+            AuthenticationRegion = regionName,
+        };
+    var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+
+    return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
+}
+```
+
+</details>
+
+> [Caution]
+> If the bucket name contains a period (`.`), using domain-style may cause certificate validation to fail because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style.

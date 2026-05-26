@@ -9,7 +9,7 @@ peer not authenticated; nested exception is javax.net.ssl.SSLPeerUnverifiedExcep
 
 A JDK bug that can occur when using TLS 1.3 with JDK 11.0.2. 
 
-You must update the JDK to version 11.0.3 or later, or add an option to use TLS 1.2 when running the application, as follows
+You must update the JDK to version 11.0.3 or later, or add an option to use TLS 1.2 when running the application, as follows.
 
 ```
 java -Djdk.tls.client.protocols=TLSv1.2 -jar
@@ -22,6 +22,6 @@ The default encoding for Korean characters on Windows OS is CP949 format, not Un
 
 The Windows OS provides encoding settings for languages for programs that do not support Unicode. You need to enable the **Use Unicode UTF-8** option through Settings or Control Panel, as follows
 
-* **Settings** > **Time & Language** > **Date, Time, and Regional Languages** > **Additional Date, Time, and Regional Settings** > **Country or Region** > **Administrator Options** > **Languages for Programs that don't support Unicode** > **Change System Locale**>** Check **Use Unicode UTF-8 for international language support** 
+* **Settings** > **Time & Language** > **Date, Time, and Regional Languages** > **Additional Date, Time, and Regional Settings** > **Country or Region** > **Administrator Options** > **Languages for Programs that don't support Unicode** > **Change System Locale** > Check **Use Unicode UTF-8 for international language support** 
 
 * **Control Panel** > **Clock and Country** > **Country or Region** > **Administrator Options** > **Languages for programs that do not support Unicode** > **Change System Locale** > Check **Use Unicode  UTF-8 for international language support** 
