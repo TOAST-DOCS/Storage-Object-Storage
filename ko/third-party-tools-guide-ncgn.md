@@ -15,7 +15,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 <a id="cyberduck-object-storage-connection-settings"></a>
 ### 오브젝트 스토리지 연결 설정
 
-오브젝트 스토리지에 연결하기 위해서는 연결 정보를 저장하는 책갈피를 만들어야 합니다. 브라우저 상단의 **새 연결**을 클릭한 뒤 드롭다운 메뉴에서 **OpenStack Swift(Keystone 2.0)**를 선택합니다. 필요한 정보를 입력한 뒤 연결을 클릭하면 새 책갈피가 생성됩니다.
+오브젝트 스토리지에 연결하려면 연결 정보를 저장하는 책갈피를 만들어야 합니다. 브라우저 상단의 **새 연결**을 클릭한 뒤 드롭다운 메뉴에서 **OpenStack Swift(Keystone 2.0)**를 선택합니다. 필요한 정보를 입력한 뒤 연결을 클릭하면 새 책갈피가 생성됩니다.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -28,23 +28,23 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
   </tr>
   <tr>
     <td>서버</td>
-    <td><b>신원 서비스(identity)</b>의 주소입니다. 오브젝트 스토리지 서비스 페이지의 <b>API Endpoint 설정</b> 대화 상자에서 확인할 수 있습니다.</td>
+    <td><b>신원 서비스(identity)</b>의 주소입니다. 오브젝트 스토리지 서비스 페이지의 <b>API 엔드포인트 설정</b> 대화 상자에서 확인할 수 있습니다.</td>
   </tr>
   <tr>
     <td rowspan="2">Tenant ID:Access Key</td>
     <td><b>Tenant ID</b>: 사용자의 프로젝트 ID입니다. 웹 콘솔의 <b>프로젝트 관리 > 프로젝트 기본 정보</b>에서 확인할 수 있습니다.</td>
   </tr>
   <tr>
-    <td><b>Access ID</b>: NHN Cloud 회원 ID(이메일 형식) 또는 IAM 멤버 ID를 입력합니다.</td>
+    <td><b>Access ID</b>: NHN Cloud 계정 ID(이메일 형식) 또는 IAM 계정 ID를 입력합니다.</td>
   </tr>
   <tr>
     <td>Secret Key</td>
-    <td>오브젝트 스토리지 서비스 페이지의 <b>API Endpoint 설정</b> 대화 상자에서 설정한 API 비밀번호를 입력합니다.</td>
+    <td>오브젝트 스토리지 서비스 페이지의 <b>API 엔드포인트 설정</b> 대화 상자에서 설정한 API 비밀번호를 입력합니다.</td>
   </tr>
 </table>
 
 > [참고]
-> API 비밀번호 설정 방법은 API 가이드의 [API 비밀번호 설정](api-guide-ncgn/#set-the-api-password) 항목을 참조하세요.
+> API 비밀번호 설정 방법은 API 가이드의 [API 비밀번호 설정](api-guide-ncgn/#set-the-api-password) 항목을 참고하세요.
 
 <a id="cyberduck-connect-object-storage"></a>
 ### 오브젝트 스토리지 연결
@@ -120,7 +120,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 로컬과 오브젝트 스토리지를 비교하여 변경되거나 누락된 파일 또는 오브젝트를 업로드하거나 다운로드합니다.
 
 > [참고]
-> 동기화에 대한 보다 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하십시오.
+> 동기화에 대한 더 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하세요.
 
 <a id="reference"></a>
 ## 참고 사이트

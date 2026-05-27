@@ -1,6 +1,6 @@
 ## Third-Party Tools Usage Guide
 
-This document describes how to use NHN Cloud Object Storage service as a third-party tool.
+This document describes how to use the NHN Cloud Object Storage service with third-party tools.
 
 <a id="cyberduck"></a>
 ## Cyberduck
@@ -15,7 +15,7 @@ Download and install the installation file for user’s operating system from th
 <a id="cyberduck-object-storage-connection-settings"></a>
 ### Object Storage Connection Settings
 
-To connect to object storage, you must create a bookmark that stores connection information. By clicking **New Connection** button at the top of browser, you can create a new bookmark. Select **Openstack Swift (Keystone 2.0)** from the drop-down menu, enter the required information, and click the **Connect** button to create a bookmark.
+To connect to object storage, you must create a bookmark that stores connection information. By clicking **New Connection** button at the top of browser, you can create a new bookmark. Select **OpenStack Swift (Keystone 2.0)** from the drop-down menu, enter the required information, and click the **Connect** button to create a bookmark.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -35,7 +35,7 @@ To connect to object storage, you must create a bookmark that stores connection 
     <td><b>Tenant ID</b>: It is the project ID of the user. You can check it in <b>Project Management > Project Basic information</b> from the web console.</td>
   </tr>
   <tr>
-    <td><b>Access ID</b>: Enter either NHN Cloud member ID (email format) or IAM user ID.</td>
+    <td><b>Access ID</b>: Enter either NHN Cloud account ID (email format) or IAM account ID.</td>
   </tr>
   <tr>
     <td>Secret Key</td>
@@ -54,7 +54,7 @@ Double-click the bookmark you want to connect in order to access object storage.
 <a id="cyberduck-retrieve-container-or-object"></a>
 ### Retrieve Container/Object
 
-When accessing object storage, a list of containers for **All Regions** appear in the browser. You can retrieve a list of objects in a container by double-clicking the desired container.
+When accessing object storage, a list of containers for **All Regions** appears in the browser. You can retrieve a list of objects in a container by double-clicking the desired container.
 
 > [Note] 
 > If there are containers with the same name in different regions, multiple containers with the same name are displayed. 
@@ -125,13 +125,13 @@ Compare local and object storage to upload or download changed or missing files 
 <a id="terraform"></a>
 ## Terraform
 
-Terraform is an open source tool that makes it easy to build, make changes to it safely, and manage its geometry efficiently. For basic usage, see [User Guide > Compute > Instance > Terraform User Guide](https://docs.nhncloud.com/en/Compute/Instance/en/terraform-guide/).
+Terraform is an open-source tool that enables you to build infrastructure easily, make changes safely, and manage configurations efficiently. For basic usage, see [User Guide > Compute > Instance > Terraform User Guide](/Compute/Instance/en/terraform-guide/).
 
 <a id="terraform-resource-dependency"></a>
 ### Resource Dependency
 
 In general, each resource is independent, but it can also have dependencies on certain other resources. Terraform automatically establishes dependencies when a resource's label references information from another resource.
-For example, the `object1 object` contained in the `conatiner1` container might be represented as follows
+For example, the `object1 object` contained in the `container1` container might be represented as follows:
 
 ```hcl
 # Container resource
@@ -142,8 +142,8 @@ resource "nhncloud_objectstorage_container_v1" "container_1" {
 # Object resource
 resource "nhncloud_objectstorage_object_v1" "object_1" {
   container_name = nhncloud_objectstorage_container_v1.container_1.name
-  name = "object1"
-  source = "/tmp/dummy"
+  name           = "object1"
+  source       = "/tmp/dummy"
 }
 ```
 
@@ -198,12 +198,12 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 ```hcl
 # Create the object
 resource "nhncloud_objectstorage_object_v1" "object_1" {
-  region = "KR1"
+  region         = "KR1"
   container_name = nhncloud_objectstorage_container_v1.container_1.name
-  name = "test/test1.json"
+  name           = "test/test1.json"
   content_type = "application/json"
-  content = <<JSON
-               { "key" : "value
+  content      = <<JSON
+               {
                  "key" : "value"
                }
 JSON
@@ -298,7 +298,7 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 			<td>detect_content_type</td>
 			<td>Boolean</td>
 			<td></td>
-			<td>Whether to infer content type</br>The <code>content_type</code> is ignored when setting.</td>
+			<td>Whether to infer content type<br/>The <code>content_type</code> is ignored when setting.</td>
 		</tr>
 	</tbody>
 </table>
