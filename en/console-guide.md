@@ -1,147 +1,153 @@
-## Storage > Object Storage > Console Guide
+## Storage > Object Storage > Console User Guide
 
 <a id="container"></a>
+
 ## Container
 
 <a id="create-container"></a>
+
 ### Create Container
-Creates containers. Uploading objects in an object storage requires one or more containers. If you set encryption, the uploaded object is automatically encrypted and saved.
+Creates a container. You must have at least one container to upload objects to object storage. When encryption is configured, uploaded objects are automatically encrypted and stored.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
     <th>Category</th>
-    <th>Option</th>
+    <th>Item</th>
     <th>Description</th>
   </tr>
   <tr>
     <td rowspan="5">Create Container</td>
     <td>Name</td>
-    <td>Container names can have a minimum of 3 characters and a maximum of 63 characters, and can only contain lowercase English letters, numbers, ' - ', ' . ', and ' + '.<br/>The container name must begin and end with a letter or number.<br/>IP address format is not allowed.</td>
+    <td>Container names must be between 3 and 63 characters long and can only contain lowercase letters, numbers, '-', '.', and '+'.<br/>Container names must start and end with letters or numbers.<br/>IP address format names cannot be used.</td>
   </tr>
   <tr>
-    <td rowspan="2">Container access policy</td>
-    <td><b>PRIVATE</b>: Only permitted users can access objects within a container.</td>
+    <td rowspan="2">Container Access Policy</td>
+    <td><b>PRIVATE</b>: Only authorized users can access objects within the container.</td>
   </tr>
   <tr>
-    <td><b>PUBLIC</b>: Anyone with a public URL can access objects within a container.</td>
+    <td><b>PUBLIC</b>: Anyone can access objects within the container through public URLs.</td>
   </tr>
   <tr>
-    <td rowspan="2">Storage class</td>
-    <td><b>Standard</b>: This is the default class.</td>
+    <td rowspan="2">Storage Class</td>
+    <td><b>Standard</b>: The default class.</td>
   </tr>
   <tr>
-    <td><b>Economy</b>: Class ideal for long-term storage of infrequently accessed data.</td>
-  </tr>
-   <tr>
-    <td rowspan="2">Object lock settings</td>
-    <td>Object lock</td>
-    <td>Select whether to use the object lock.</td>
+    <td><b>Economy</b>: A class suitable for long-term storage of infrequently accessed data.</td>
   </tr>
   <tr>
-    <td>Lock cycle</td>
-    <td>Enter the object lock cycle in days.</td>
+    <td rowspan="2">Object Lock Settings</td>
+    <td>Object Lock</td>
+    <td>Select whether to use object lock.</td>
   </tr>
   <tr>
-    <td rowspan="2">Encryption settings</td>
+    <td>Lock Period</td>
+    <td>Enter the object lock period in days.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Encryption Settings</td>
     <td>Encryption</td>
     <td>Select whether to use object encryption.</td>
   </tr>
   <tr>
-    <td>Symmetric key ID </td>
+    <td>Symmetric Key ID</td>
     <td>Enter the symmetric key ID managed by the Secure Key Manager service.</td>
   </tr>
 </table>
 
 <a id="storage-class"></a>
-### Storage class
-You can choose a storage class based on how often you access your data and your cost requirements. We offer Standard class for frequently accessed data and Economy class for long-term storage of less frequently accessed data at a lower cost.
+
+### Storage Class
+You can select a storage class based on data access frequency and cost requirements. We provide the Standard class for frequently accessed data and the Economy class for long-term storage of infrequently accessed data at a lower cost.
 
 > [Note]
-> You cannot change the storage class of an already created container.
-> Objects uploaded to Economy class containers are subject to a minimum storage period of 30 days. Objects deleted before 30 days are also charged for the remaining storage period.
+> The storage class of an already created container cannot be changed.
+> Objects uploaded to Economy class containers have a minimum retention period of 30 days. Even for objects deleted before 30 days, charges are applied for the remaining retention period.
 > Economy class containers are charged per 1,000 API requests (excluding HEAD/DELETE requests).
 
 <a id="set-object-lock-cycle"></a>
-#### Object Lock Settings
-Objects uploaded to the Object Lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
+#### Object Lock Configuration
+Objects uploaded to object lock containers are stored using the **WORM (Write-Once-Read-Many)** model. Objects uploaded to object lock containers have a lock expiration date set. Objects cannot be overwritten or deleted before the lock expiration date set for each object.
 
 <a id="set-object-encryption"></a>
-#### Encryption Settings
-Objects uploaded to encryption containers are encrypted using a symmetric key managed by the NHN Cloud's Secure Key Manager service. Therefore, in order to create an encryption container, you must create a symmetric key in the Secure Key Manager service in advance.
+#### Encryption Configuration
+Objects uploaded to encrypted containers are encrypted using symmetric keys managed by NHN Cloud's Secure Key Manager service. Therefore, to create an encrypted container, you must first create a symmetric key in the Secure Key Manager service.
 
-The policies for encryption container are as follows.
+The policies applied to encrypted containers are as follows:
 
-* Objects uploaded to encryption containers are encrypted and stored using the configured symmetric key.
-* If you download the encrypted object, it is sent after being decrypted. 
-* If you copy an object of the encryption container or copy it to another container through the inter-region container replication, the object is stored re-encrypted or decrypted according to the encryption settings for the container.
-* You cannot change the symmetric key ID that is registered when creating an encryption container. To change the symmetric key, you must use the key rotation feature of Secure Key Manager.
-* If you rotate the symmetric key configured in an encryption container from Secure Key Manager and then upload a new object, the object encrypted with the previous version key is re-encrypted with the rotated key. This process may take a long time depending on the amount of data. Make sure not to delete the previous version key before re-encryption is complete.
+* Objects uploaded to encrypted containers are encrypted and stored using the configured symmetric key.
+* When downloading encrypted objects, they are decrypted and transmitted.
+* When copying objects from encrypted containers to other containers through copying or cross-region container replication, they are re-encrypted or decrypted and stored according to the target container's encryption settings.
+* The symmetric key ID registered when creating an encrypted container cannot be changed. To change the symmetric key, you must use key rotation in the Secure Key Manager service.
+* After rotating the symmetric key configured for an encrypted container in the Secure Key Manager service and uploading new objects, objects encrypted with the previous version key are re-encrypted with the rotated key. This operation may take a long time depending on usage. Be careful not to delete the previous version key before re-encryption is completed.
 
 > [Caution]
-If you delete the symmetric key configured in an encryption container from Secure Key Manager, the encrypted object cannot be decrypted. You must carefully manage the symmetric key not to delete it accidentally.
+If you delete the symmetric key configured for an encrypted container in the Secure Key Manager service, encrypted objects cannot be decrypted. You must carefully manage the symmetric key to avoid accidental deletion.
 
 <a id="empty-a-container"></a>
-### Empty a Container
-Deletes all objects inside the selected container. 
+
+### Empty Container
+Deletes all objects inside the selected container.
 
 > [Note]
-> Objects whose lock expiration date has not passed are not deleted.
+> Objects whose lock expiration date has not passed will not be deleted.
 > For multipart objects inside the selected container, only the manifest object is deleted. Segment objects located in other containers are not deleted.
 
 > [Caution]
-> If you are using the replication setting, objects in the target container might also be deleted.
-> If you upload objects to a container that is undergoing a container emptying operation, they might be deleted.
+> If replication settings are in use, objects in the target container may also be deleted.
+> Objects uploaded to a container while a container emptying operation is in progress may be deleted.
 
 <a id="delete-container"></a>
+
 ### Delete Container
-Deletes selected containers. Check if the containers are empty before deleting them. If any objects are left inside a container, you cannot delete the relevant container.
+Deletes the selected container. Before deleting a container, you must verify that the container is empty. If objects remain in the container, it will not be deleted.
 
 <a id="manage-container"></a>
-### Manage Container
-Checks basic information of the selected containers and manage the settings.
+
+### Container Management
+View basic information about the selected container and manage its settings.
 
 <a id="container-basic-info"></a>
 #### Basic Information
-You can view the container's basic and encryption information, and change settings such as access policies, static websites, and cross-origin resource sharing.
+You can view the basic information and encryption details of the container, and modify settings such as access policies, static website configuration, and cross-origin resource sharing.
 <br/>
 
 <a id="set-container-access-policy"></a>
 ##### Container Access Policy
 
-Sets the basic access policy and manages role-based access policies for each tenant or user. For more details, refer to [ACL Configuration Guide](acl-guide/).
+Set default access policies and manage role-based access policies by tenant or individual user. For detailed information about access policies, refer to the [Access Policy Configuration Guide](acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
     <th>Category</th>
-    <th>Option</th>
+    <th>Item</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan="2">Basic Access Policy</td>
+    <td rowspan="2">Default Access Policy</td>
     <td>PRIVATE</td>
-    <td>Only permitted users can access objects within a container.</td>
+    <td>Only authorized users can access objects inside the container.</td>
   </tr>
   <tr>
     <td>PUBLIC</td>
-    <td>Anyone can access objects within a container through a public URL.</td>
+    <td>Anyone can access objects inside the container through public URLs.</td>
   </tr>
   <tr>
-    <td rowspan="4">Role-Based Access Policy Settings</td>
+    <td rowspan="4">Role-based Access Policy Settings</td>
     <td></td>
-    <td>Selects whether to use an access policy.</td>
+    <td>Select whether to use individual access policies.</td>
   </tr>
   </tr>
   <tr>
     <td>Tenant ID</td>
-    <td>Enter the tenant ID or <code>*</code> to allow access. You can check the tenant ID in the API Endpoint setting dialog box on the console.</td>
+    <td>Enter the Tenant ID or <code>*</code> to allow access. The Tenant ID can be found in the API endpoint settings dialog in the console.</td>
   </tr>
   <tr>
     <td>API User ID</td>
-    <td>Enter the tenant API user ID or <code>*</code> to allow access. You can check the API user ID in the API Endpoint setting dialog on the console.</td>
+    <td>Enter the API User ID or <code>*</code> to allow access. The API User ID can be found in the API endpoint settings dialog in the console.</td>
   </tr>
   <tr>
     <td>Permission</td>
-    <td>Select access permissions (<code>Read</code>, <code>Write</code>, and <code>View</code>) to allow.</td>
+    <td>Select the access permissions to allow (<code>Read</code>, <code>Write</code>, <code>View</code>).</td>
   </tr>
 </table>
 
@@ -150,36 +156,36 @@ Sets the basic access policy and manages role-based access policies for each ten
 <a id="set-container-ip-acl"></a>
 ##### IP ACL
 
-Manages IP-based access policies. For more details, refer to [ACL Configuration Guide](acl-guide/).
+Manage IP-based access policies. For detailed information about access policies, refer to the [Access Policy Configuration Guide](acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
     <th>Category</th>
-    <th>Option</th>
+    <th>Item</th>
     <th>Description</th>
   </tr>
   <tr>
     <td rowspan="2">Whitelist</td>
     <td>IPv4</td>
-    <td>Enter an IP to register in the whitelist. You can enter in IP (192.168.0.1) or CIDR (192.168.0.0/24) format.</td>
+    <td>Enter the IP to register in the whitelist. You can enter it in IP (192.168.0.1) or CIDR (192.168.0.0/24) format.</td>
   </tr>
   <tr>
-    <td>Access right</td>
-    <td>Select access rights (Read, Write, View) to allow.</td>
+    <td>Permission</td>
+    <td>Select the access permissions to allow (Read, Write, View).</td>
   </tr>
   <tr>
     <td rowspan="2">Blacklist</td>
     <td>IPv4</td>
-    <td>Enter an IP to register in the blacklist. You can enter in IP (192.168.0.1) or CIDR (192.168.0.0/24) format.</td>
+    <td>Enter the IP to register in the blacklist. You can enter it in IP (192.168.0.1) or CIDR (192.168.0.0/24) format.</td>
   </tr>
   <tr>
-    <td>Access right</td>
-    <td>Select access rights not to allow (Read, Write).</td>
+    <td>Permission</td>
+    <td>Select the access permissions to deny (Read, Write).</td>
   </tr>
   <tr>
     <td rowspan="5">Service Gateway IP</td>
-    <td>Disable</td>
-    <td>Do not set access control on requests through the service gateway.</td>
+    <td>Not Set</td>
+    <td>Do not apply access control settings for requests through the service gateway.</td>
   </tr>
   <tr>
     <td>Allow Read</td>
@@ -191,279 +197,279 @@ Manages IP-based access policies. For more details, refer to [ACL Configuration 
   </tr>
   <tr>
     <td>Allow Read / Write</td>
-    <td>Allow read and write requests through the service gateway.</td>
+    <td>Allow both read and write requests through the service gateway.</td>
   </tr>
   <tr>
     <td>Block</td>
-    <td>Do not allow requests through the service gateway.</td>
+    <td>Block all requests through the service gateway.</td>
   </tr>
 </table>
 
-
 <a id="set-container-static-website"></a>
-##### Static Website Settings
+##### Static Website Configuration
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
     <th>Category</th>
-    <th>Option</th>
+    <th>Item</th>
     <th>Description</th>
   </tr>
   <tr>
     <td rowspan="2">Static Website Settings</td>
-    <td>Index document</td>
-    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+    <td>Index Document</td>
+    <td>Enter the index document object for the static website. If the object is inside a folder, you must include the folder path.<br/>Maximum 256 bytes, only English letters, numbers, and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
   </tr>
   <tr>
-    <td>Error document</td>
-    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+    <td>Error Document</td>
+    <td>Enter the suffix for the error document object of the static website. The error document suffix cannot include folder paths.<br/>Maximum 256 bytes, only English letters, numbers, and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
   </tr>
 </table>
 
-If you set the access policy of a container to **PUBLIC** and enter the index document and error document, you can host a static website in the container. You can get the URL of the static website by clicking the **Copy URL** button on the container list.
+By setting the container's access policy to **PUBLIC** and entering index and error documents, you can host a static website from the container. The static website URL can be obtained by clicking the **Copy URL** button in the container list.
 
-The name for an object to be used as an index document or error document for a static website must consist of one or more alphanumeric characters, or some special characters(`-`, `_`, `.`, `/`), and the file extension must be `html` in hypertext format. If the conditions are not satisfied, you cannot configure the settings or the static website may not work.
+Objects used as index documents or error documents for static websites must have names consisting of one or more English letters, numbers, or some special characters (`-`, `_`, `.`, `/`), and must be in hypertext format with a `.html` file extension. If they don't meet these conditions, you may not be able to configure them or the static website may not function properly.
 
-The name for an error document of a static website has the form of `{error code}{suffix}`. For example, if you configure the error document as `error.html`, the name for an error document to display when a 404 error occurs is `404error.html`. You can upload and use error documents for each error situation. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
+The error document name for static websites is in the format `{response code}{suffix}`. For example, if you set the error document to `error.html`, the error document name shown for a 404 error would be `404error.html`. You can upload and use error documents for each error situation. If an error document is not defined or there is no error document object matching the response code, the web browser's default error document will be displayed.
 <br/>
 
 <a id="set-container-cors"></a>
-##### Change Cross-Origin Resource Sharing (CORS)
+##### Cross-Origin Resource Sharing (CORS) Configuration
 
-To call the Object Storage API directly from the browser, you need to set Cross-Origin Resource Sharing (CORS). You can register the source URLs to allow by clicking the Change button of the cross-origin resource sharing item. The URL must include the protocols (`https://` or `http://`). You can allow all source URLs by entering `*`.
+To directly call Object Storage APIs from a browser, cross-origin resource sharing configuration is required. Click the change button for the cross-origin resource sharing item to register allowed origin URLs. URLs must include the protocol (`https://` or `http://`). Registering `*` allows all origins.
 
 <br/>
 
 <a id="set-container-upload-policy"></a>
-##### Change Upload Policy Settings
-Set an upload policy based on object names in the container. Upload policy settings allow you to restrict or prevent uploads of objects with certain extensions or keywords in their names.
+##### Upload Policy Configuration
+Set object name-based upload policies for the container. Using upload policy settings, you can restrict uploads to only objects with specific extensions or keywords in their names, or prevent such uploads.
 
-Upload policies can set up `whitelist` or `blacklist`, but not both at the same time. You can set the extension of files to be uploaded, or keywords to be included in the filename. However, for objects that include a path, the policy reflects the object name without the path. The upload policy is applied to newly uploaded objects from the time it is set. 
+Upload policies can be set as either `whitelist` or `blacklist`, but both methods cannot be set simultaneously. You can set file extensions or keywords to be included in filenames for upload. However, for objects with paths, only the object name excluding the path is applied to the policy. Upload policies apply to newly uploaded objects after they are configured.
 
-If you set `exe` and `jpg` as whitelist, only objects with the extensions can be uploaded. Adding the filename `example` will allow only objects with both the set filename and extension to be uploaded, such as `exe_example.exe`, `image_example.jpg`.
+Setting a whitelist with extensions `exe` and `jpg` allows only objects with `.exe` and `.jpg` extensions to be uploaded. Adding filename `example` allows uploads only for objects that have both the configured filename and extensions, such as `exe_example.exe` and `image_example.jpg`.
 
-
-For blacklist, setting `exe`, `jpg`as blacklist will prevent all objects with `.exe`, `.jpg` extensions from being uploaded. Setting the additional filename `example` will prevent both files with restricted extensions, such as `test.exe`, `image.jpg`, and files with restricted keywords, such as `text_example.txt`, from being uploaded.
+For blacklists, setting extensions `exe` and `jpg` prevents all objects with `.exe` and `.jpg` extensions from being uploaded. Adding filename `example` prevents uploads of both files with restricted extensions like `test.exe` and `image.jpg`, as well as files with restricted keywords like `text_example.txt`.
 <br/>
 
 <a id="set-object-lifecycle"></a>
 #### Lifecycle
 
-You can view and change the lifecycle rules for objects stored in a container.
-For more information on lifecycle settings, see [How to apply lifecycle rules](container-policy-guide/#lifecycle-apply).
+You can view and modify lifecycle rules for objects stored in the container.
+For detailed information about lifecycle configuration, refer to [How to Apply Lifecycle Rules](container-policy-guide/#lifecycle-apply).
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
     <th>Type</th>
-    <th>Option</th>
+    <th>Item</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan=3>Default rule</td>
-    <td>Object lifecycle</td>
+    <td rowspan=3>Default Rule</td>
+    <td>Object Lifecycle</td>
     <td>Enter the object lifecycle in days.</td>
   </tr>
   <tr>
-    <td>Lifecycle expiration action</td>
-    <td>Select how to handle objects whose lifecycle has expired.</td>
+    <td>Lifecycle Expiration Action</td>
+    <td>Select how to handle objects when their lifecycle expires.</td>
   </tr>
   <tr>
-    <td>Target container</td>
-    <td>When you select <b>Move container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
+    <td>Target Container</td>
+    <td>If you select <b>Move Container</b> as the lifecycle expiration action, you must select the container to move objects to.</td>
   </tr>
   <tr>
-    <td rowspan=5>Conditional rule</td>
-    <td>Rule name</td>
+    <td rowspan=5>Conditional Rule</td>
+    <td>Rule Name</td>
     <td>Enter the name of the lifecycle rule.</td>
   </tr>
   <tr>
     <td>Condition</td>
-    <td>Specify the conditions under which the rule is applied.</td>
+    <td>Specify the condition for applying the rule.</td>
   </tr>
   <tr>
-    <td>Object lifecycle</td>
+    <td>Object Lifecycle</td>
     <td>Enter the object lifecycle in days.</td>
   </tr>
   <tr>
-    <td>Lifecycle expiration action</td>
-    <td>Select how to handle objects whose lifecycle has expired.</td>
+    <td>Lifecycle Expiration Action</td>
+    <td>Select how to handle objects when their lifecycle expires.</td>
   </tr>
   <tr>
-    <td>Target container</td>
-    <td>When you select <b>Move container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
+    <td>Target Container</td>
+    <td>If you select <b>Move Container</b> as the lifecycle expiration action, you must select the container to move objects to.</td>
   </tr>
 </table>
 
 > [Note]
-> It is applied only to objects uploaded after the object lifecycle is set.
-> Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
+> Object lifecycle settings only apply to objects uploaded after the configuration is set.
+> You can move objects from Standard class containers to Economy class containers according to their lifecycle to reduce long-term storage costs.
 
 <a id="set-object-lifecycle-batch"></a>
-##### Bulk Apply Rules
+##### Batch Rule Application
 
-Clicking the **Bulk Apply Rules** button resets the lifecycle of all objects in the container according to the rules at once.
-Rules are applied in order of priority, and the lifecycle is recalculated based on the time of bulk application.
+Clicking the `Batch Rule Application` button allows you to batch reset the lifecycle of all objects in the container according to the rules.
+Rules are applied in order of priority, and lifecycles are recalculated based on the batch application time.
 
 <a id="set-object-versioning"></a>
-#### Object Version
+#### Object Versioning
 
-Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated or deleted. If you set the lifecycle for previous versions, versions that exceed the set lifecycle are automatically deleted.
+Through object versioning settings, you can preserve previous versions of objects. When objects are updated or deleted, previous versions are stored in the designated archive container. By setting a lifecycle for previous versions, those that exceed the lifecycle are automatically deleted.
+
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
     <th>Item</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td>Versioning policy</td>
+    <td>Versioning Policy</td>
     <td>Select whether to use the versioning policy.</td>
   </tr>
   <tr>
-    <td>Archive container</td>
-    <td>Enter the container in which to store previous versions of objects.</td>
+    <td>Archive Container</td>
+    <td>Enter the container to store previous versions of objects.</td>
   </tr>
   <tr>
-    <td>Archived object<br/>lifecycle</td>
-    <td>Enter the lifecycle of previous versions of objects in days. If left blank, the lifecycle setting is disabled.</td>
+    <td>Archived Object<br/>Lifecycle</td>
+    <td>Enter the lifecycle for previous versions of objects in days. Leave blank to disable lifecycle settings.</td>
   </tr>
 </table>
 
-> [Caution]
-> If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
-> If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
+> [Warning]
+> If you delete the archive container before the original container, errors will occur when updating or deleting objects in the original container. If already deleted, you can resolve this by creating a new archive container or disabling the versioning policy for the original container.
+> If you designate an encrypted container as an archive container and then delete the symmetric key of the encrypted container from the Secure Key Manager service, object upload and deletion in the original container will fail.
 
 
 <a id="change-object-lock-cycle"></a>
 #### Object Lock
 
-You can check and change the object lock cycle of object lock containers. The object lock cycle can be entered in days, and cannot be turned off.
+You can view and modify the object lock period for object lock containers. The lock period can be entered in days and cannot be disabled.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
     <th>Category</th>
-    <th>Option</th>
+    <th>Item</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan="2">Object lock settings</td>
-    <td>Object lock</td>
-    <td>Select whether to use the object lock.</td>
+    <td rowspan="2">Object Lock Settings</td>
+    <td>Object Lock</td>
+    <td>Select whether to use object lock.</td>
   </tr>
   <tr>
-    <td>Lock cycle</td>
-    <td>Enter the object lock cycle in days.</td>
+    <td>Lock Period</td>
+    <td>Enter the object lock period in days.</td>
   </tr>
 </table>
 
 > [Note]
-> The changed object lock cycle is applied to objects uploaded after changing the settings. 
-> You cannot change a general container to an object lock container and vice versa.
-> You cannot specify an object lock container as an archive container or replication target container.
+> The modified object lock period applies to objects uploaded after the setting change.
+> You cannot convert a regular container to an object lock container, or an object lock container to a regular container.
+> Object lock containers cannot be designated as archive containers or replication target containers.
 
 <a id="set-container-replication"></a>
 #### Replication
 
-Replication settings allow you to replicate objects in a container to another container in a different region. Replication settings are for disaster recovery, and objects in the source region are replicated to the target region and managed. Replication proceed in the background at regular intervals.
+Through replication settings, you can replicate container objects to containers in other regions. Replication is a feature for disaster recovery that identically replicates and manages objects from the source region to the target region. Replication runs in the background at regular intervals.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
     <th>Category</th>
-    <th>Option</th>
+    <th>Item</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan="6">Replication settings</td>
+    <td rowspan="6">Replication Settings</td>
     <td>Replication</td>
     <td>Select whether to use the replication feature.</td>
   </tr>
   <tr>
-    <td rowspan="2">Project type</td>
-    <td><b>Same project</b>: Select a container of the same project for the replication target container.</td>
+    <td rowspan="2">Project Classification</td>
+    <td><b>Same Project</b>: Select a container from the same project as the replication target container.</td>
   </tr>
   <tr>
-    <td><b>Different project</b>: Select a container of a different project for the replication target container.</td>
+    <td><b>Different Project</b>: Select a container from a different project as the replication target container.</td>
   </tr>
   <tr>
-    <td>Target project</td>
-    <td>Enter a project to replicate. Click View to check the permissions of the project.</td>
+    <td>Target Project</td>
+    <td>Enter the replication target project. Click the search button to check the project's permissions.</td>
   </tr>
   <tr>
-    <td>Target region</td>
-    <td>Select a region to replicate to. If the project type is same project, the region you are currently using is excluded.</td>
+    <td>Target Region</td>
+    <td>Select the replication target region. If project classification is same project, the currently used region is excluded.</td>
   </tr>
   <tr>
-    <td>Target container</td>
-    <td>Enter the target container for replication or select the target container by clicking Search.</td>
+    <td>Target Container</td>
+    <td>Enter the replication target container or click the browse button to select it.</td>
   </tr>
 </table>
 
-The replication policies are as follows:
+Replication policies are as follows:
 
-* **Default behavior**
-    * When an object in the source container is changed (uploaded, metadata updated, or deleted), the change is reflected in the replication target container.
-    * Changes made to objects in the replication target container are not reflected in the source container.
-    * Replication operates based on the last modified time of the object. If an object in the replication target container was modified more recently than the source, it will not be replicated.
-* **Configuration considerations**
-    * It is recommended to use an empty container as the replication target container. If an object with the same name as an object in the source container already exists in the target container, replication may not proceed smoothly.
-    * If an object with the same name has previously been deleted in the replication target container, the last updated time of the replicated object may be changed to the replication configuration time.
-    * It is recommended to use the same name for the source container and the replication target container. If the container names differ, access to replicated large objects may fail.
-    * If the segment objects of a large object uploaded via multipart upload are stored in a different container, replication must also be configured for the container where the segments are stored in the same way, in order to access the replicated large object.
-* **Configuration change considerations**
-    * If the replication setting is changed to disabled, replication stops but already replicated objects are retained.
-    * If the replication direction is switched, objects in the replication target container are restored to the source container. Objects deleted from the source container are also included in the restoration, and the last updated time of restored objects is changed to the replication configuration time.
-    * If the replication target container is deleted, replication will not resume even if a container with the same name is created again. To resume replication, the replication settings must be reconfigured.
-* **Limitations and exceptions**
-    * The replication target container cannot be replicated to a different region, or configured as a replication target for another container simultaneously.
-    * When objects whose lifecycle has expired but have not yet been deleted are replicated to the target container, the lifecycle setting is removed. When subsequently deleted from the source container, the deletion is propagated to the target container and the object is deleted.
-    * Delete marker objects in the archive container are not replicated.
+* **Basic Behavior**
+    * When objects are modified (uploaded, metadata updated, deleted) in the source container, the same changes are reflected in the replication target container.
+    * Objects modified in the replication target container are not reflected in the source container.
+    * Replication operates based on the object's last modification time. If an object in the replication target container was modified later than the source, it will not be replicated.
+* **Configuration Considerations**
+    * It is recommended to use an empty container as the replication target container. If the target container already has objects with the same names as objects in the source container, replication may not work smoothly.
+    * If there is a history of objects with the same name being deleted in the replication target container, the recent update time of replicated objects may be changed to the replication configuration time.
+    * It is recommended to set the source container and replication target container names identically. If container names are different, access to replicated large objects may fail.
+    * If segment objects of large objects uploaded via multipart upload are stored in other containers, those containers containing segments must also be configured for replication in the same way to access replicated large objects.
+* **Configuration Change Considerations**
+    * Changing replication settings to disabled stops replication but maintains already replicated objects.
+    * Switching replication direction restores objects from the replication target container to the source container. Objects deleted from the source container are also included in the restoration, and the recent update time of restored objects is changed to the replication configuration time.
+    * If you delete the replication target container, replication will not resume even if you create a container with the same name again. To resume replication, you must reconfigure replication settings.
+* **Limitations and Exceptions**
+    * You cannot replicate the replication target container to another region or set it as a replication target container for other containers.
+    * Objects whose lifecycle has expired but have not yet been deleted have their lifecycle settings removed when replicated to the target container. When they are subsequently deleted from the source container, the deletion is propagated to and executed in the target container.
+    * Delete marker objects in archive containers are not replicated.
 
-> [Caution]
-> If you specify an encryption container as the replication target container and then delete the symmetric key from Secure Key Manager, the encryption container fails to be replicated.
+> [Warning]
+> If you designate an encrypted container as a replication target container and then delete the symmetric key of the encrypted container from the Secure Key Manager service, replication to the encrypted container will fail.
 <br/>
 
 <a id="resume-container-replication"></a>
-##### Resume Replication
+##### Start Replication
 
-Resumes the replication of a suspended container from the point it was suspended.
+Resume stopped container replication. Replication continues from the point where it was interrupted.
 <br/>
 
 <a id="suspend-container-replication"></a>
-##### Suspend Replication
+##### Stop Replication
 
-Suspends container replication. While replication is suspended, any deletions or modifications to objects in the source container are not replicated.
+Stop container replication. While replication is stopped, objects deleted or modified in the source container are not replicated.
 
-> [Caution]
-> Objects in the source container that are deleted during the replication suspend period might not be reflected in the target container.
+> [Warning]
+> Objects deleted from the source container during the replication stop period may not be reflected in the target container.
 <br/>
 
 <a id="object"></a>
+
 ## Object
 
 <a id="create-folder"></a>
 ### Create Folder
-Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 256 letters in English or 85 characters in Korean.
+Creates a folder. A folder is a virtual unit for grouping objects within a container. It helps manage objects hierarchically, similar to folders in Windows or directories in Linux. Folder names are limited to 256 English characters or 85 Korean characters.
 
 > [Note]
-> Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
+> Folders in Object Storage are different from directories provided by file systems. They are pseudo folders provided for convenience. When you create a folder, an empty object named `{folder-name}/` is actually created. Objects inside the folder have names in the format `{folder-name}/{object-name}`. When you copy objects to a new folder using the object copy feature, objects in the format `{folder-name}/{object-name}` are created directly without the empty `{folder-name}/` object. Therefore, if you delete this copied object, it appears as if the folder is also deleted. When copying to a pre-created folder, the folder remains even if you delete objects within the folder.
 
 <a id="delete-folder"></a>
 ### Delete Folder
-Deletes a folder. Deletes all objects in the folder and the folder object.
-For multipart objects inside a folder, only the manifest object is deleted; segment objects that are not included in the selection are not deleted.
+Deletes a folder. Deletes all objects within the folder and the folder object itself.
+For multipart objects within the folder, only the manifest object is deleted, and segment objects not included in the selection are not deleted.
 
 <a id="upload-object"></a>
 ### Upload Object
-All objects must be uploaded to containers. One object cannot be larger than 5GB.
+All objects must be uploaded to a container. The maximum capacity of a single object is limited to 5GB.
 
 > [Note]
-> Files exceeding 5GB cannot be uploaded in a web console. If the size of the object to be uploaded exceeds 5GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5GB before uploading. For more details, refer to [Multipart Upload](api-guide/#multipart-upload) of the API guide.
+> Files exceeding 5GB cannot be uploaded through the web console. If the object you want to upload exceeds 5GB, you must divide it using command-line tools like `split`, or program your user application to divide and upload files in sizes of 5GB or less. For detailed usage instructions, refer to [Multipart Upload](api-guide/#multipart-upload) in the API guide.
 
 <a id="download-object"></a>
 ### Download Object
-Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the `Copy URL` button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
+Downloads the selected object. If you set the container access policy to **PRIVATE** when creating the container, only authorized users can access the object. If you set it to **PUBLIC**, you can check the object's public URL by clicking the `Copy URL` button in the list. You can create hyperlinks to the object or download the object directly using this URL.
 
 <details style="padding-top: 15px; padding-bottom: 10px;">
 <summary>Hyperlink Example</summary>
 <ul style="padding-left: 10px; padding-top: 10px;">
-<li>Write Web Page</li>
+<li>Creating a web page</li>
 
 ```
 # cat > index.html
@@ -474,69 +480,70 @@ Download selected objects. If you have set up the container access policy as **P
 </html>
 ```
 
-<li>Run web server using http module of Python3</li>
+<li>Running a web server using Python3's http module</li>
 ```
 # python -m http.server
 Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 ```
 
-<li>After accessing <b>http://localhost:8000</b> through a web browser click <b>Download</b> to confirm file is being downloaded properly</li>
+<li>Access <b>http://localhost:8000</b> through a web browser and click <b>Download</b> to verify that the file downloads normally</li>
 
 </details>
 
 <a id="copy-or-move-object"></a>
 ### Copy/Move Object
-Copy or move objects to the specified container. You can select multiple objects to copy or move to a different container or to a new path in the same container. 
+Copies or moves objects to the specified container. You can select multiple objects and copy or move them to another container or to a new path within the same container.
 
 > [Note]
-> The maximum length of the path that can be entered depends on the length of the object name. The length of the path to copy plus the object name must be 1024 bytes or less.
-> `{Maximum length of the path} = 1024 - {Length of the object name} - 1`
+> The maximum length of the path you can enter varies depending on the object name. The combined length of the copy path and object name must be 1024 bytes or less.
+> `{Maximum path length} = 1024 - {Object name length} - 1`
 >
-> For multipart objects, only manifest objects can be copied or moved. 
+> For multipart objects, only the manifest object is copied or moved.
 
 <a id="delete-object"></a>
 ### Delete Object
-Deletes the selected objects. You can select and delete multiple objects at the same time. 
+Deletes the selected object. You can select and delete multiple objects simultaneously.
 
 > [Note]
-> When you delete a multipart object, only the selected manifest object is deleted. Unselected segment objects are not deleted.
+> When deleting a multipart object, only the selected manifest object is deleted. Segment objects that are not selected are not deleted.
 
 <a id="create-signed-url"></a>
 ### Create Signed URL
-Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies.
+Creates a signed URL that allows free access to the specified object for a set period of time, regardless of role-based access policies.
 
 > [Note]
-> Only single objects can be selected, not folder objects.
-> The validity period can be set in minutes, up to 720 minutes.
+> Only a single object can be selected, and folder objects cannot be selected.
+> The validity period can be set up to 720 minutes in minute units.
 
 > [Caution]
-> Signed URLs should be used with caution because if they are exposed, anyone can access the selected object. It is recommended that you set an appropriate validity period for your situation and use it to reduce the damage if your signed URL is exposed.
+> If a signed URL is leaked, anyone can access the selected object, so it must be used carefully. It is recommended to set an appropriate validity period based on the situation and purpose to minimize damage even if the signed URL is leaked.
 
 <a id="manage-object"></a>
 ### Manage Object
-Check the selected object information and manage the properties.
+Checks basic information of the selected object and manages its properties.
 
 > [Note]
-> If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
+> If you set both object expiration date and lock expiration date, the object expiration date must always be set after the lock expiration date.
 
 <a id="set-object-expiration"></a>
 #### Change Object Expiration Date
 
-You can change the expiration date for selected objects.
+You can change the expiration date of the selected object.
 
 <a id="set-object-lock-expiration"></a>
 #### Change Object Lock Date
 
-You can change the lock expiration date for selected objects. It cannot be changed prior to the previously set expiration date.
+You can change the lock expiration date of the selected object. It cannot be changed to a date earlier than the previously set expiration date.
 
 <a id="prefix-search"></a>
+
 ## Prefix Search
-If you enter a prefix in the search bar and click the **Search** button, you can search for containers, folders, and objects that begin with the prefix you entered. You can search for containers in the container list, and search for folders and objects in the object list.
+By entering a prefix in the search box and clicking the **Search** button, you can search for containers, folders, and objects that start with the entered prefix. In the container list, it searches for containers, and in the object list, it searches for folders and objects.
 
 <a id="s3-api-credentials"></a>
+
 ## S3 API Credentials
-You can obtain credentials required to use Amazon S3 compatible API. S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
+You can obtain credentials for using the Amazon S3-compatible API. S3 API credentials have no expiration date, and each user can obtain up to 3 credentials per project.
 
 > [Caution]
-> If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, it is recommended to delete the leaked credentials and obtain a new one.
-
+> If S3 API credential keys are leaked, anyone can use the leaked keys to access objects. If keys are leaked, it is recommended to delete the leaked credentials and issue new ones.
