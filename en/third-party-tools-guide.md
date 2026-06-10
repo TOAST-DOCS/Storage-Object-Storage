@@ -125,7 +125,7 @@ Compare local and object storage to upload or download changed or missing files 
 <a id="terraform"></a>
 ## Terraform
 
-Terraform is an open-source tool that enables you to build infrastructure easily, make changes safely, and manage configurations efficiently. For basic usage, see [User Guide > Compute > Instance > Terraform User Guide](/Compute/Instance/en/terraform-guide/).
+Terraform is an open-source tool that enables you to build infrastructure easily, make changes safely, and manage configurations efficiently. For basic usage, see [User Guide > NHN Cloud > Terraform User Guide](/nhncloud/en/terraform-guide/).
 
 <a id="terraform-resource-dependency"></a>
 ### Resource Dependency
