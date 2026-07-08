@@ -1,12 +1,13 @@
-## Storage > Object Storage > CLI Guide
+<a id="storage-object-storage-cli-guide"></a>
+## Storage > Object Storage > CLI Guide { #storage-object-storage-cli-guide }
 
 This guide explains how to use the NHN Cloud Object Storage service with the OpenStack Swift command-line interface (CLI).
 
 <a id="python-swiftclient"></a>
-## python-swiftclient
+## python-swiftclient { #python-swiftclient }
 
 <a id="install"></a>
-### Install
+### Install { #install }
 
 python-swiftclient is provided as a Python package. Install it using pip.
 
@@ -27,7 +28,7 @@ python-swiftclient x.x.x
 <br/>
 
 <a id="configuration"></a>
-### Configuration
+### Configuration { #configuration }
 
 To use the Swift CLI, you must configure the environment variables required for authentication. Click the **API Endpoint Settings** button on the Object Storage service page to find the required information.
 
@@ -93,7 +94,7 @@ $ swift stat
 <br/>
 
 <a id="basic-usage"></a>
-## Basic usage
+## Basic usage { #basic-usage }
 The basic usage is as follows.
 
 ```
@@ -103,7 +104,7 @@ swift <subcommand> [<options>] [<container> [<object>]]
 <br/>
 
 <a id="subcommands"></a>
-### Subcommands
+### Subcommands { #subcommands }
 The main subcommands are as follows.
 
 | Subcommand | Description |
@@ -121,7 +122,7 @@ The main subcommands are as follows.
 <br/>
 
 <a id="options"></a>
-### Common options
+### Common options { #options }
 
 These options can be used with all subcommands.
 
@@ -135,7 +136,7 @@ These options can be used with all subcommands.
 <br/>
 
 <a id="auth-info"></a>
-### How it works and using authentication information
+### How it works and using authentication information { #auth-info }
 
 By default, the Swift CLI calls the Identity API each time a command is executed to obtain a token and service catalog, then calls the Swift API corresponding to the subcommand.
 
@@ -163,7 +164,7 @@ $ eval $(swift auth)
 <br/>
 
 <a id="stat"></a>
-## View information
+## View information { #stat }
 Retrieves information about storage accounts, containers, and objects.
 
 ```
@@ -179,7 +180,7 @@ swift stat [<options>] [<container> [<object>]]
 <br/>
 
 <a id="stat-account"></a>
-### View storage account information
+### View storage account information { #stat-account }
 Retrieves information about the storage account.
 
 ```
@@ -196,7 +197,7 @@ $ swift stat
 <br/>
 
 <a id="stat-container"></a>
-### View container information
+### View container information { #stat-container }
 Retrieves information about a container.
 
 ```
@@ -217,7 +218,7 @@ $ swift stat media
 <br/>
 
 <a id="stat-object"></a>
-### View object information
+### View object information { #stat-object }
 Retrieves information about an object.
 
 ```
@@ -236,7 +237,7 @@ $ swift stat media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br/>
 
 <a id="list"></a>
-## List
+## List { #list }
 Retrieves a list of containers or objects.
 
 ```
@@ -257,7 +258,7 @@ swift list [container] [options]
 <br/>
 
 <a id="list-containers"></a>
-### List containers
+### List containers { #list-containers }
 Retrieves a list of containers.
 
 ```
@@ -268,7 +269,7 @@ media
 <br/>
 
 <a id="list-objects"></a>
-### List objects
+### List objects { #list-objects }
 Retrieves a list of objects.
 
 ```
@@ -281,7 +282,7 @@ $ swift list media
 <br/>
 
 <a id="create-container"></a>
-## Create container
+## Create container { #create-container }
 Creates a new container.
 
 ```
@@ -298,7 +299,7 @@ media
 <br/>
 
 <a id="upload"></a>
-## Upload objects
+## Upload objects { #upload }
 Uploads or updates (overwrites) objects. Multiple objects can be uploaded at once.
 
 ```
@@ -336,7 +337,7 @@ $ swift list media
 <br/>
 
 <a id="multipart-upload"></a>
-### Multipart upload
+### Multipart upload { #multipart-upload }
 Specifying the segment size with the `--segment-size` option splits the file and uploads it as a multipart upload.
 
 ```
@@ -369,7 +370,7 @@ test.mp4/slo/1635487628.192050/20971520/10485760/00000001
 <br/>
 
 <a id="download"></a>
-## Download objects
+## Download objects { #download }
 Downloads objects to the current path. Multiple objects can be downloaded.
 
 ```
@@ -399,7 +400,7 @@ $ swift download media 153206025029118e96e38b95b78281c8.jpg
 <br/>
 
 <a id="download-all"></a>
-### Download by container
+### Download by container { #download-all }
 If the object to download is omitted, all objects in the specified container are downloaded.
 
 ```
@@ -412,7 +413,7 @@ $ swift download media
 <br/>
 
 <a id="copy"></a>
-## Copy objects
+## Copy objects { #copy }
 Copies an object to the specified path. Metadata can be added or changed during the copy.
 
 ```
@@ -430,7 +431,7 @@ swift copy [--destination </container/object>] [--fresh-metadata] [--meta <name:
 <br/>
 
 <a id="copy-same-container"></a>
-### Copy within the same container
+### Copy within the same container { #copy-same-container }
 The destination object name must be different from the source.
 
 ```
@@ -442,7 +443,7 @@ created container media
 <br/>
 
 <a id="copy-other-container"></a>
-### Copy to a different container
+### Copy to a different container { #copy-other-container }
 If the destination object name is omitted, it is copied with the same name as the source.
 
 ```
@@ -454,7 +455,7 @@ created container pics
 <br/>
 
 <a id="copy-with-metadata"></a>
-### Copy with additional metadata
+### Copy with additional metadata { #copy-with-metadata }
 Metadata can be added during copying using the `--meta` option.
 
 ```
@@ -468,13 +469,13 @@ Using the `--fresh-metadata` option together removes existing metadata and sets 
 <br/>
 
 <a id="post"></a>
-## Change settings
+## Change settings { #post }
 Changes the settings of a container or object.
 
 <br/>
 
 <a id="post-container"></a>
-### Change container settings
+### Change container settings { #post-container }
 Changes the settings of a container. Container settings can be verified with the [view container information command](cli-guide/#stat-container).
 
 ```
@@ -508,7 +509,7 @@ $ swift post --read-acl ".r:*" media
 <br/>
 
 <a id="post-object"></a>
-### Change object metadata
+### Change object metadata { #post-object }
 Changes the metadata of an object. Object metadata can be verified with the [view object information command](cli-guide/#stat-object).
 
 ```
@@ -532,13 +533,13 @@ $ swift post --header "Content-Type:image/png" media 797619b171a455e9eec8a87f94e
 <br/>
 
 <a id="delete"></a>
-## Delete
+## Delete { #delete }
 Deletes containers or objects.
 
 <br/>
 
 <a id="delete-container"></a>
-### Delete container
+### Delete container { #delete-container }
 Deletes all objects inside the specified container, then deletes the container.
 
 ```
@@ -565,7 +566,7 @@ $ swift delete media
 <br/>
 
 <a id="delete-object"></a>
-### Delete object
+### Delete object { #delete-object }
 Deletes the specified object.
 
 ```
@@ -587,7 +588,7 @@ $ swift delete media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br/>
 
 <a id="tempurl"></a>
-## Create signed URL
+## Create signed URL { #tempurl }
 Generates a signed URL that allows access to a container or object without a token.
 
 ```
@@ -628,7 +629,7 @@ $ curl https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b948944
 <br/>
 
 <a id="tempurl-key"></a>
-### Register Temp-URL-Key
+### Register Temp-URL-Key { #tempurl-key }
 To generate a signed URL, a Temp-URL-Key must be registered in the container in advance. The configured key can be verified with the [view container information command](cli-guide/#stat-container).
 
 ```
@@ -647,5 +648,5 @@ $ swift stat media
 ```
 
 <a id="reference"></a>
-## References
+## References { #reference }
 Object Storage service (swift) command-line client - [https://docs.openstack.org/ocata/cli-reference/swift.html](https://docs.openstack.org/ocata/cli-reference/swift.html)

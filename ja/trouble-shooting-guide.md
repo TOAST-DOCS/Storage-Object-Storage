@@ -1,4 +1,5 @@
-## Storage > Object Storage > トラブルシューティング
+<a id="storage-object-storage-troubleshooting-guide"></a>
+## Storage > Object Storage > トラブルシューティング { #storage-object-storage-troubleshooting-guide }
 NHN Cloud Object Storageを使用する際に発生する様々な問題を解決する方法を説明します。
 
 <h3>JDK を使用するアプリケーションで Object Storageにアクセスすると、次のような SSLエラーが発生します。</h3>

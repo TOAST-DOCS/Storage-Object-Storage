@@ -1,10 +1,11 @@
-## Storage > Object Storage > API 가이드
+<a id="storage-object-storage-api-guide"></a>
+## Storage > Object Storage > API 가이드 { #storage-object-storage-api-guide }
 
 <a id="common"></a>
-## 오브젝트 스토리지 API 공통 정보
+## 오브젝트 스토리지 API 공통 정보 { #common }
 
 <a id="endpoint"></a>
-### API 엔드포인트
+### API 엔드포인트 { #endpoint }
 
 API를 사용하려면 API 엔드포인트와 토큰이 필요합니다. [IaaS 토큰](/nhncloud/ko/public-api/iaas-token/)을 참고하여 API 사용에 필요한 정보를 준비합니다.
 오브젝트 스토리지 API는 `object-store` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
@@ -14,7 +15,7 @@ API를 사용하려면 API 엔드포인트와 토큰이 필요합니다. [IaaS �
 | 한국(판교) 리전<br>한국(평촌) 리전<br>한국(광주) 리전<br>일본(도쿄) 리전 | https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr2-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr3-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://jp1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\* |
 
 <a id="auth"></a>
-### 인증 및 권한
+### 인증 및 권한 { #auth }
 
 오브젝트 스토리지는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
 IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token/)을 참고하세요.
@@ -28,6 +29,7 @@ IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncl
 > [참고]
 > API 비밀번호는 오브젝트 스토리지 서비스 페이지에서도 **API 엔드포인트 설정** 버튼을 클릭해 설정할 수 있습니다.
 
+<a id="token-issuance-code-example"></a>
 #### 토큰 발급 코드 예시
 
 <details>
@@ -234,11 +236,11 @@ printf("%s\n", $token);
 </details>
 
 <a id="storage-account"></a>
-## 스토리지 계정
+## 스토리지 계정 { #storage-account }
 스토리지 계정(account)은 `AUTH_*****` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
 
 <a id="query-the-storage-account"></a>
-### 스토리지 계정 조회
+### 스토리지 계정 조회 { #query-the-storage-account }
 스토리지 계정의 사용 현황을 조회합니다.
 
 ```
@@ -246,6 +248,7 @@ HEAD  /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
+<a id="request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -254,6 +257,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 
+<a id="response"></a>
 #### 응답
 응답 본문을 반환하지 않습니다. 사용 현황은 헤더에 포함되어 있습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
@@ -263,6 +267,7 @@ X-Auth-Token: {token-id}
 | X-Account-Object-Count | Header | String | 저장된 오브젝트 개수 |
 | X-Account-Bytes-Used | Header | String | 저장된 데이터 용량(바이트) |
 
+<a id="code-example"></a>
 #### 코드 예시
 
 <details>
@@ -431,7 +436,7 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 <br/>
 
 <a id="list-containers"></a>
-### 컨테이너 목록 조회
+### 컨테이너 목록 조회 { #list-containers }
 스토리지 계정의 컨테이너 목록을 조회합니다.
 
 ```
@@ -439,6 +444,7 @@ GET  /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
+<a id="list-containers-request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -447,11 +453,13 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 
+<a id="list-containers-response"></a>
 #### 응답
 ```
 [스토리지 계정에 속한 컨테이너 목록]
 ```
 
+<a id="list-containers-code-example"></a>
 #### 코드 예시
 
 <details>
@@ -579,10 +587,10 @@ foreach($container_list as $container) {
 <br/>
 
 <a id="container"></a>
-## 컨테이너
+## 컨테이너 { #container }
 
 <a id="create-a-container"></a>
-### 컨테이너 생성
+### 컨테이너 생성 { #create-a-container }
 컨테이너를 생성합니다. 오브젝트 스토리지에 파일을 업로드하려면 반드시 컨테이너를 생성해야 합니다.
 
 > [참고]
@@ -606,6 +614,7 @@ PUT  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
+<a id="create-a-container-request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -618,9 +627,11 @@ X-Auth-Token: {token-id}
 | X-Container-Worm-Retention-Day | Header | Integer | - | 컨테이너의 기본 객체 잠금 주기를 일 단위로 설정 |
 
 
+<a id="create-a-container-response"></a>
 #### 응답
 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
 
+<a id="create-a-container-code-example"></a>
 #### 코드 예시
 <details>
 <summary>cURL</summary>
@@ -785,7 +796,7 @@ $container->create($CONTAINER_NAME);
 <br/>
 
 <a id="get-a-container"></a>
-### 컨테이너 조회
+### 컨테이너 조회 { #get-a-container }
 지정한 컨테이너의 정보와 내부에 저장된 오브젝트 목록을 조회합니다. 컨테이너의 정보는 응답 헤더에서 확인할 수 있습니다.
 
 ```
@@ -793,6 +804,7 @@ GET   /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
+<a id="get-a-container-request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -833,12 +845,14 @@ X-Auth-Token: {token-id}
 
 <br/>
 
+<a id="get-a-container-response"></a>
 #### 응답
 
 ```
 [컨테이너의 오브젝트 목록]
 ```
 
+<a id="get-a-container-code-example"></a>
 #### 코드 예시
 <details>
 <summary>cURL</summary>
@@ -984,7 +998,7 @@ foreach ($object_list as $obj) {
 <br/>
 
 <a id="change-container-settings"></a>
-### 컨테이너 설정 변경
+### 컨테이너 설정 변경 { #change-container-settings }
 
 컨테이너 설정을 변경합니다. 컨테이너 설정은 컨테이너 조회 시 응답 헤더에서 확인할 수 있습니다.
 
@@ -1011,6 +1025,7 @@ X-Container-Object-Allow-Extension-Policy: {오브젝트 업로드 정책의 확
 X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파일명 화이트리스트}
 ```
 
+<a id="change-container-settings-request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -1286,10 +1301,12 @@ The object name must not contain the following keywords: example
 값이 없는 헤더를 사용하면 설정이 해제됩니다. 예를 들어 오브젝트 수명 주기가 3일로 설정되어 있을 때 `'X-Container-Object-Lifecycle: '`를 사용해 컨테이너 수정을 요청하면 오브젝트 수명 주기 설정이 해제되어 이후 컨테이너에 저장되는 오브젝트는 자동으로 수명 주기가 설정되지 않습니다.
 <br/>
 
+<a id="change-container-settings-response"></a>
 #### 응답
 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 <br/>
 
+<a id="change-container-settings-code-example"></a>
 #### 코드 예시
 모든 사용자에게 컨테이너 읽기, 쓰기 접근을 허용하는 설정 변경 요청을 하는 예시입니다. 같은 방법으로 다른 설정도 필요한 헤더를 선택해 요청할 수 있습니다.
 
@@ -1425,7 +1442,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 <br/>
 
 <a id="delete-a-container"></a>
-### 컨테이너 삭제
+### 컨테이너 삭제 { #delete-a-container }
 
 지정한 컨테이너를 삭제합니다. 삭제할 컨테이너는 반드시 비어 있어야 합니다.
 
@@ -1434,6 +1451,7 @@ DELETE   /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
+<a id="delete-a-container-request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -1443,11 +1461,13 @@ X-Auth-Token: {token-id}
 | Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL| String |	O | 삭제할 컨테이너 이름 |
 
+<a id="delete-a-container-response"></a>
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 <br/>
 
+<a id="delete-a-container-code-example"></a>
 #### 코드 예시
 <details>
 <summary>cURL</summary>
@@ -1564,10 +1584,10 @@ $container->delete($CONTAINER_NAME);
 <br/>
 
 <a id="object"></a>
-## 오브젝트
+## 오브젝트 { #object }
 
 <a id="upload-an-object"></a>
-### 오브젝트 업로드
+### 오브젝트 업로드 { #upload-an-object }
 지정한 컨테이너에 새로운 오브젝트를 업로드합니다.
 
 ```
@@ -1576,6 +1596,7 @@ X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
+<a id="upload-an-object-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -1598,9 +1619,11 @@ Content-Type: {content-type}
 > 오브젝트의 이름이 `./` 또는 `../`으로 시작한다면 브라우저가 이를 경로 문자로 인식해 웹 콘솔에서 접근할 수 없습니다.
 > API를 이용하여 이러한 이름의 오브젝트를 업로드했다면 API로 접근해야 합니다.
 
+<a id="upload-an-object-response"></a>
 #### 응답
 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
+<a id="upload-an-object-code-example"></a>
 #### 코드 예시
 <details>
 <summary>cURL</summary>
@@ -1795,7 +1818,7 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 <a id="multipart-upload"></a>
-### 멀티파트 업로드
+### 멀티파트 업로드 { #multipart-upload }
 5GB를 초과하는 용량을 가진 오브젝트는 5GB 이하의 세그먼트로 분할해 업로드해야 합니다. 세그먼트 오브젝트를 업로드한 다음 매니페스트 오브젝트를 생성하면 하나의 오브젝트처럼 사용할 수 있습니다.
 
 <br/>
@@ -1909,6 +1932,7 @@ X-Auth-Token: {token-id}
 
 <br/>
 
+<a id="multipart-upload-code-example"></a>
 #### 코드 예시
 DLO 방식을 이용한 멀티파트 업로드 예시
 
@@ -2172,7 +2196,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 <br/>
 
 <a id="update-an-object"></a>
-### 오브젝트 내용 수정
+### 오브젝트 내용 수정 { #update-an-object }
 오브젝트 업로드 API와 같지만, 오브젝트가 이미 컨테이너에 있다면 해당 오브젝트의 내용이 수정됩니다.
 
 ```
@@ -2181,6 +2205,7 @@ X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
+<a id="update-an-object-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -2194,13 +2219,14 @@ Content-Type: {content-type}
 | Object | URL | String | O | 내용을 수정할 오브젝트 이름 |
 | - |	Body | Binary | O | 수정할 오브젝트의 내용 |
 
+<a id="update-an-object-response"></a>
 #### 응답
 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 <br/>
 
 <a id="query-object-information"></a>
-### 오브젝트 정보 조회
+### 오브젝트 정보 조회 { #query-object-information }
 지정한 오브젝트의 정보를 조회합니다. 오브젝트 정보는 응답 헤더에서 확인할 수 있습니다.
 
 ```
@@ -2208,6 +2234,7 @@ HEAD   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
+<a id="query-object-information-request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -2218,6 +2245,7 @@ X-Auth-Token: {token-id}
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 다운로드할 오브젝트 이름 |
 
+<a id="query-object-information-response"></a>
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
@@ -2235,6 +2263,7 @@ X-Auth-Token: {token-id}
 | X-Manifest-Etag | Header | String | SLO 방식 멀티파트 오브젝트의 매니페스트 ETag 값(MD5) |
 
 
+<a id="query-object-information-code-example"></a>
 #### 코드 예시
 <details>
 <summary>cURL</summary>
@@ -2259,7 +2288,7 @@ date: Wed, 16 Oct 2024 23:43:36 GMT
 <br/>
 
 <a id="download-an-object"></a>
-### 오브젝트 다운로드
+### 오브젝트 다운로드 { #download-an-object }
 오브젝트를 다운로드합니다.
 
 ```
@@ -2267,6 +2296,7 @@ GET   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
+<a id="download-an-object-request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -2277,9 +2307,11 @@ X-Auth-Token: {token-id}
 | Container |	URL | String | O | 컨테이너 이름 |
 | Object | URL | String | O | 다운로드할 오브젝트 이름 |
 
+<a id="download-an-object-response"></a>
 #### 응답
 오브젝트의 내용이 스트림으로 반환됩니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
+<a id="download-an-object-code-example"></a>
 #### 코드 예시
 <details>
 <summary>cURL</summary>
@@ -2427,7 +2459,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 <a id="copy-an-object"></a>
-### 오브젝트 복사
+### 오브젝트 복사 { #copy-an-object }
 오브젝트를 다른 컨테이너로 복사합니다. 원본 오브젝트의 모든 속성이 함께 복사됩니다.
 
 ```
@@ -2442,6 +2474,7 @@ X-Auth-Token: {token-id}
 X-Copy-From: {SourceContainer}/{SourceObject}
 ```
 
+<a id="copy-an-object-request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -2506,9 +2539,11 @@ X-Copy-From: {SourceContainer}/{SourceObject}; multipart-manifest=get
 | SLO 매니페스트 | X-Static-Large-Object, X-Manifest-Etag |
 | DLO 매니페스트 | X-Object-Manifest |
 
+<a id="copy-an-object-response"></a>
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
+<a id="copy-an-object-code-example"></a>
 #### 코드 예시
 <details>
 <summary>cURL</summary>
@@ -2657,7 +2692,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 <br/>
 
 <a id="modify-object-metadata"></a>
-### 오브젝트 메타데이터 수정
+### 오브젝트 메타데이터 수정 { #modify-object-metadata }
 지정한 오브젝트의 메타데이터를 수정합니다.
 
 ```
@@ -2666,6 +2701,7 @@ X-Auth-Token: {token-id}
 X-Object-Meta-{Key}: {Value}
 ```
 
+<a id="modify-object-metadata-request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -2685,9 +2721,11 @@ X-Object-Meta-{Key}: {Value}
 > 잠금 만료 날짜가 지나지 않은 오브젝트는 덮어쓰거나 삭제할 수 없습니다. 
 > 오브젝트의 메타데이터는 잠금 만료 날짜 이전이라도 변경할 수 있습니다.
 
+<a id="modify-object-metadata-response"></a>
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
 
+<a id="modify-object-metadata-code-example"></a>
 #### 코드 예시
 <details>
 <summary>cURL</summary>
@@ -2829,7 +2867,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 <br/>
 
 <a id="delete-an-object"></a>
-### 오브젝트 삭제
+### 오브젝트 삭제 { #delete-an-object }
 지정한 오브젝트를 삭제합니다.
 
 > [참고]
@@ -2840,6 +2878,7 @@ DELETE   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
+<a id="delete-an-object-request"></a>
 #### 요청
 요청 본문은 필요하지 않습니다.
 
@@ -2850,11 +2889,13 @@ X-Auth-Token: {token-id}
 | Container | URL| String |	 O | 컨테이너 이름 |
 | Object | URL| String |  O | 삭제할 오브젝트 이름 |
 
+<a id="delete-an-object-response"></a>
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 <br/>
 
+<a id="delete-an-object-code-example"></a>
 #### 코드 예시
 <details>
 <summary>cURL</summary>
@@ -2974,10 +3015,10 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 <br/>
 
 <a id="limiting-policy"></a>
-## 제한 정책
+## 제한 정책 { #limiting-policy }
 
 <a id="request-rate-limit"></a>
-### 요청 속도 제한
+### 요청 속도 제한 { #request-rate-limit }
 Object Storage는 시스템 안정성을 위해 스토리지 계정(account) 단위로 쓰기 요청 속도 제한(rate limit)을 적용합니다.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
@@ -3028,6 +3069,6 @@ Object Storage는 시스템 안정성을 위해 스토리지 계정(account) 단
 <br/>
 
 <a id="references"></a>
-## References
+## References { #references }
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)

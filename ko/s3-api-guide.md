@@ -1,4 +1,5 @@
-## Storage > Object Storage > Amazon S3 호환 API 가이드
+<a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
+## Storage > Object Storage > Amazon S3 호환 API 가이드 { #storage-object-storage-amazon-s3-compatible-api-guide }
 NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 Amazon S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
 
 제공하는 Amazon S3 호환 API는 다음과 같습니다.
@@ -29,10 +30,10 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [Amazon S3 API 가이드](https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
 
 <a id="s3-api-credential"></a>
-## S3 API 자격 증명(S3 API Credential)
+## S3 API 자격 증명(S3 API Credential) { #s3-api-credential }
 
 <a id="obtain-s3-api-credentials"></a>
-### S3 API 자격 증명 발급
+### S3 API 자격 증명 발급 { #obtain-s3-api-credentials }
 Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 이용하여 발급받을 수 있습니다. 웹 콘솔을 이용한 자격 증명 발급은 [S3 API 자격 증명](console-guide/#s3-api-credentials) 항목을 참고하세요.
 
 API를 이용하여 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide/#prerequisites)를 참고하세요.
@@ -44,6 +45,7 @@ Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
+<a id="request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
@@ -76,6 +78,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -106,7 +109,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="get-s3-api-credentials"></a>
-### S3 API 자격 증명 조회
+### S3 API 자격 증명 조회 { #get-s3-api-credentials }
 발급받은 S3 API 자격 증명을 조회합니다.
 
 **[Method, URL]**
@@ -116,6 +119,7 @@ GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-i
 
 X-Auth-Token: {token-id}
 ```
+<a id="get-s3-api-credentials-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -124,6 +128,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
 | user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
 
+<a id="get-s3-api-credentials-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -156,7 +161,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="delete-s3-api-credentials"></a>
-### S3 API 자격 증명 삭제
+### S3 API 자격 증명 삭제 { #delete-s3-api-credentials }
 발급받은 S3 API 자격 증명을 삭제합니다.
 
 **[Method, URL]**
@@ -166,6 +171,7 @@ DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{use
 
 X-Auth-Token: {token-id}
 ```
+<a id="delete-s3-api-credentials-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -175,11 +181,12 @@ X-Auth-Token: {token-id}
 | user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
 | access | URL | String | O | S3 API 자격 증명 접근 키 |
 
+<a id="delete-s3-api-credentials-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 <a id="create-signature"></a>
-## 서명(signature) 생성
+## 서명(signature) 생성 { #create-signature }
 S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하세요.
 
 서명 생성에 필요한 정보는 다음과 같습니다.
@@ -220,10 +227,10 @@ x-amz-content-sha256 값이 `STREAMING-UNSIGNED-PAYLOAD-TRAILER` 또는 `STREAMI
 
 
 <a id="bucket"></a>
-## 버킷(Bucket)
+## 버킷(Bucket) { #bucket }
 
 <a id="create-bucket"></a>
-### 버킷 생성
+### 버킷 생성 { #create-bucket }
 버킷을 생성합니다. 버킷 이름은 다음과 같은 Amazon S3의 명명 규칙을 따라야 합니다.
 
 * 버킷 이름은 3자에서 63자 사이여야 합니다.
@@ -244,6 +251,7 @@ Authorization: AWS {access}:{signature}
 > [참고]
 > 웹 콘솔 또는 오브젝트 스토리지 API를 통해 만든 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
+<a id="create-bucket-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -253,6 +261,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="create-bucket-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
@@ -261,7 +270,7 @@ Authorization: AWS {access}:{signature}
 | Location | Header | String | 생성한 버킷 경로 |
 
 <a id="list-buckets"></a>
-### 버킷 목록 조회
+### 버킷 목록 조회 { #list-buckets }
 버킷 목록을 조회합니다.
 
 ```
@@ -271,6 +280,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="list-buckets-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -279,6 +289,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="list-buckets-response"></a>
 #### 응답
 요청이 올바르면 상태 코드 200과 XML 형식으로 구성된 버킷 목록을 반환합니다.
 
@@ -309,7 +320,7 @@ Authorization: AWS {access}:{signature}
 </details>
 
 <a id="get-bucket"></a>
-### 버킷 조회
+### 버킷 조회 { #get-bucket }
 지정한 버킷의 정보와 내부에 저장된 오브젝트 목록을 조회합니다.
 
 ```
@@ -322,6 +333,7 @@ Authorization: AWS {access}:{signature}
 > [참고]
 > 웹 콘솔 또는 오브젝트 스토리지 API를 통해 생성한 버킷의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
+<a id="get-bucket-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -331,6 +343,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="get-bucket-response"></a>
 #### 응답
 요청이 올바르면 상태 코드 200과 XML 형식으로 구성된 오브젝트 목록을 반환합니다.
 
@@ -374,7 +387,7 @@ Authorization: AWS {access}:{signature}
 </details>
 
 <a id="delete-bucket"></a>
-### 버킷 삭제
+### 버킷 삭제 { #delete-bucket }
 지정한 버킷을 삭제합니다. 삭제할 버킷은 비어 있어야 합니다.
 
 ```
@@ -384,6 +397,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="delete-bucket-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -393,14 +407,15 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="delete-bucket-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 <a id="object"></a>
-## 오브젝트
+## 오브젝트 { #object }
 
 <a id="upload-object"></a>
-### 오브젝트 업로드
+### 오브젝트 업로드 { #upload-object }
 지정한 버킷에 오브젝트를 업로드합니다.
 
 ```
@@ -410,6 +425,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="upload-object-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -420,6 +436,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="upload-object-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
@@ -429,7 +446,7 @@ Authorization: AWS {access}:{signature}
 | Last-Modified | Header | String | 오브젝트의 마지막 수정 일시(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 <a id="download-object"></a>
-### 오브젝트 다운로드
+### 오브젝트 다운로드 { #download-object }
 오브젝트를 다운로드합니다.
 
 ```
@@ -439,6 +456,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="download-object-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -449,6 +467,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="download-object-response"></a>
 #### 응답
 요청이 올바르면 상태 코드 200을 반환합니다.
 
@@ -458,7 +477,7 @@ Authorization: AWS {access}:{signature}
 | ETag | Header | String | 오브젝트의 MD5 해시 값 |
 
 <a id="delete-object"></a>
-### 오브젝트 삭제
+### 오브젝트 삭제 { #delete-object }
 지정한 오브젝트를 삭제합니다.
 
 ```
@@ -468,6 +487,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="delete-object-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
@@ -478,22 +498,23 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | 요청 시각 |
 | Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="delete-object-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 <a id="aws-command-line-interface"></a>
-## AWS 명령줄 인터페이스(CLI)
+## AWS 명령줄 인터페이스(CLI) { #aws-command-line-interface }
 S3 호환 API를 이용하여 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
 <a id="aws-command-line-interface-installation"></a>
-### 설치
+### 설치 { #aws-command-line-interface-installation }
 [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) 문서를 참조해 AWS 명령줄 인터페이스를 설치합니다.
 
 > [참고]
 > NHN Cloud 오브젝트 스토리지는 AWS CLI 버전 2.34.38까지 지원합니다.
 
 <a id="aws-command-line-interface-configuration"></a>
-### 설정
+### 설정 { #aws-command-line-interface-configuration }
 AWS 명령줄 인터페이스를 사용하려면 먼저 S3 API 자격 증명과 환경을 설정해야 합니다.
 
 ```shell
@@ -511,7 +532,7 @@ Default output format [None]: json
 | region name | KR1 - 한국(판교) 리전<br/>KR2 - 한국(평촌) 리전<br/>KR3 - 한국(광주) 리전<br/>JP1 - 일본(도쿄) 리전 |
 
 <a id="how-to-use-the-s3-commands"></a>
-### S3 명령 사용 방법
+### S3 명령 사용 방법 { #how-to-use-the-s3-commands }
 
 ```shell
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
@@ -617,7 +638,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 </details>
 
 <a id="aws-command-line-interface-virtual-hosted-style"></a>
-### 도메인 스타일 엔드포인트 사용
+### 도메인 스타일 엔드포인트 사용 { #aws-command-line-interface-virtual-hosted-style }
 S3 호환 API는 버킷 접근 방식으로 경로 스타일(Path-style)과 도메인 스타일(Virtual Hosted-style)을 모두 지원합니다. 도메인 스타일은 버킷 이름을 엔드포인트의 서브 도메인으로 사용합니다.
 
 | 방식 | 형식 |
@@ -649,7 +670,7 @@ s3 =
 > 버킷 이름에 점(`.`)이 포함되어 있으면 도메인 스타일 사용 시 와일드카드 SSL 인증서의 유효 범위를 벗어나 인증서 검증에 실패할 수 있습니다. 이때는 경로 스타일을 사용하세요.
 
 <a id="aws-sdk"></a>
-## AWS SDK
+## AWS SDK { #aws-sdk }
 AWS는 여러 가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용하여 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
 > [참고]
@@ -665,11 +686,12 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 | endpoint | https://kr1-api-object-storage.nhncloudservice.com - 한국(판교) 리전<br/>https://kr2-api-object-storage.nhncloudservice.com - 한국(평촌) 리전<br/>https://kr3-api-object-storage.nhncloudservice.com - 한국(광주) 리전<br/>https://jp1-api-object-storage.nhncloudservice.com - 일본(도쿄) 리전 | 
 
 <a id="aws-sdk-boto3-python"></a>
-### Boto3 - Python SDK
+### Boto3 - Python SDK { #aws-sdk-boto3-python }
 
 > [참고]
 > 자세한 내용은 [AWS SDK for Python(Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참고하세요.
 
+<a id="context"></a>
 #### Context
 
 <details>
@@ -809,11 +831,12 @@ def delete(self, bucket_name, key):
 </details>
 
 <a id="aws-sdk-java"></a>
-### Java SDK
+### Java SDK { #aws-sdk-java }
 
 > [참고]
 > 자세한 내용은 [AWS SDK for Java 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html) 문서를 참고하세요.
 
+<a id="aws-sdk-java-context"></a>
 #### Context
 
 <details>
@@ -996,11 +1019,12 @@ public void deleteObject(
 </details>
 
 <a id="aws-sdk-dotnet"></a>
-### .NET SDK
+### .NET SDK { #aws-sdk-dotnet }
 
 > [참고]
 > 자세한 내용은 [AWS SDK for .NET 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits) 문서를 참고하세요.
 
+<a id="aws-sdk-dotnet-context"></a>
 #### Context
 
 <details>
@@ -1252,7 +1276,7 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 </details>
 
 <a id="aws-sdk-virtual-hosted-style"></a>
-### 도메인 스타일 엔드포인트 사용
+### 도메인 스타일 엔드포인트 사용 { #aws-sdk-virtual-hosted-style }
 AWS SDK에서 도메인 스타일 엔드포인트를 사용하려면 클라이언트 설정에서 경로 스타일 접근을 비활성화합니다. 엔드포인트 URL과 자격 증명은 기존과 동일하게 사용하며, SDK가 버킷 이름을 서브 도메인으로 조합해 요청을 보냅니다.
 
 <details>
