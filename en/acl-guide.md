@@ -1,12 +1,13 @@
-## Storage > Object Storage > ACL Configuration Guide
+<a id="storage-object-storage-acl-configuration-guide"></a>
+## Storage > Object Storage > ACL Configuration Guide { #storage-object-storage-acl-configuration-guide }
 
 <a id="role-based-access-policies"></a>
-## Role-based Access Policies
+## Role-based Access Policies { #role-based-access-policies }
 
 You can use the console or API to grant read/write access to the container to other users.
 
 <a id="role-based-access-console"></a>
-### Console
+### Console { #role-based-access-console }
 In the console, you can select a container access policy from the [Create Container](console-guide/#create-container) dialog box or the container access policy settings dialog box within [Manage Container](console-guide/#manage-container) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
 
 <a id="role-based-access-private"></a>
@@ -20,7 +21,7 @@ In the console, you can select a container access policy from the [Create Contai
 <br/>
 
 <a id="role-based-access-api"></a>
-### API
+### API { #role-based-access-api }
 You can use the API to set access policies for different situations by entering role-based access policy elements in the `X-Container-Read`, `X-Container-Write`, `X-Container-View` properties of a container. Each property is as below:
 
 | Property | Description |
@@ -440,11 +441,11 @@ By entering an empty header, you can delete all set role-based access policy ele
 
 
 <a id="role-based-access-references"></a>
-### References
+### References { #role-based-access-references }
 Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/overview_acl.html](https://docs.openstack.org/swift/latest/overview_acl.html)
 
 <a id="ip-based-access-policies"></a>
-## IP-based Access Policies
+## IP-based Access Policies { #ip-based-access-policies }
 
 You can use the console or API to specify whitelists and blacklists to restrict read/write access to containers from specific IPs. You can't use whitelists and blacklists at the same time. If you enter both a whitelist and a blacklist, only the whitelist is used. IP-based access policies support IPv4 only. For requests through the service gateway, you can specify a separate exception.
 
@@ -454,7 +455,7 @@ You can use the console or API to specify whitelists and blacklists to restrict 
 > If the container becomes inaccessible due to incorrect settings, you can no longer change the policy. If you encounter this issue, please contact Customer Center.
 
 <a id="ip-based-access-console"></a>
-### Console
+### Console { #ip-based-access-console }
 
 Select IP-based container access policy from the container access policy setting dialog box in the container management windows.
 
@@ -474,7 +475,7 @@ Denies requests from the specified IP or network band. All other requests are pe
 Controls requests through the service gateway. If not set, requests can be denied based on the whitelist and blacklist settings.
 
 <a id="ip-based-access-api"></a>
-### API
+### API { #ip-based-access-api }
 
 You can use the API to enable IP-based ACLs by entering IP-based access policy elements in the container's `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties.`X-Container-Ip-Acl-Allowed-List` indicates whitelist, `X-Container-Ip-Acl-Denied-List` indicates blacklist.
 <br>

@@ -1,10 +1,11 @@
-## Storage > Object Storage > API Guide
+<a id="storage-object-storage-api-guide"></a>
+## Storage > Object Storage > API Guide { #storage-object-storage-api-guide }
 
 <a id="common"></a>
-## Object Storage API Common Information
+## Object Storage API Common Information { #common }
 
 <a id="endpoint"></a>
-### API Endpoint
+### API Endpoint { #endpoint }
 
 To use the API, API endpoint and token are required. Refer to [IaaS Token](/nhncloud/en/public-api/iaas-token/) to prepare the information required to use the API.
 Object Storage API uses the object-store type endpoint. Refer to the serviceCatalog in the token issuance response for the valid endpoint.
@@ -14,7 +15,7 @@ Object Storage API uses the object-store type endpoint. Refer to the serviceCata
 | Korea (Pangyo) Region<br>Korea (Pyeongchon) Region<br>Korea (Gwangju) Region<br>Japan (Tokyo) Region | https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr2-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr3-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://jp1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\* |
 
 <a id="auth"></a>
-### Authentication and Authorization
+### Authentication and Authorization { #auth }
 
 Object Storage uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
 For more information on issuing and using IaaS tokens, please refer to the [IaaS Token](/nhncloud/en/public-api/iaas-token/).
@@ -28,6 +29,7 @@ For more information on issuing and using IaaS tokens, please refer to the [IaaS
 > [Note]
 > To set the API password, go to the Object Storage service page and click **API Endpoint Setting**.
 
+<a id="token-issuance-code-example"></a>
 #### Token Issuance Code Example
 
 <details>
@@ -234,11 +236,11 @@ printf("%s\n", $token);
 </details>
 
 <a id="storage-account"></a>
-## Storage Account
+## Storage Account { #storage-account }
 A storage account is a character string in the `AUTH_*****` format, included in the Object-Store API endpoint.
 
 <a id="query-the-storage-account"></a>
-### Query the Storage Account
+### Query the Storage Account { #query-the-storage-account }
 Retrieves usage status of a storage account.
 
 ```
@@ -246,6 +248,7 @@ HEAD  /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
+<a id="request"></a>
 #### Request
 This API does not require a request body.
 
@@ -254,6 +257,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | Storage account, available on the API Endpoint Setting popup |
 
+<a id="response"></a>
 #### Response
 This API does not return a response body. Usage status is included in the header. For a valid request, return status code 200.
 
@@ -263,6 +267,7 @@ This API does not return a response body. Usage status is included in the header
 | X-Account-Object-Count | Header | String | Number of stored objects |
 | X-Account-Bytes-Used | Header | String | Stored data capacity (bytes) |
 
+<a id="code-example"></a>
 #### Code Example
 
 <details>
@@ -431,7 +436,7 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 <br/>
 
 <a id="list-containers"></a>
-### List Containers
+### List Containers { #list-containers }
 Lists containers of a storage account.
 
 ```
@@ -439,6 +444,7 @@ GET  /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
+<a id="list-containers-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -447,11 +453,13 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O | Token ID |
 | Account | URL | String | O | Storage account, available on the API Endpoint Setting popup |
 
+<a id="list-containers-response"></a>
 #### Response
 ```
 [List of containers in a storage account]
 ```
 
+<a id="list-containers-code-example"></a>
 #### Code Example
 
 <details>
@@ -579,10 +587,10 @@ foreach($container_list as $container) {
 <br/>
 
 <a id="container"></a>
-## Containers
+## Containers { #container }
 
 <a id="create-a-container"></a>
-### Create a Container
+### Create a Container { #create-a-container }
 Creates a container. To upload files to object storage, a container must be created.
 
 > [Note]
@@ -606,6 +614,7 @@ PUT  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
+<a id="create-a-container-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -618,9 +627,11 @@ This API does not require a request body.
 | X-Container-Worm-Retention-Day | Header | Integer | - | Set the default container object lock cycle in days |
 
 
+<a id="create-a-container-response"></a>
 #### Response
 This API does not return a response body. When a container is created, return status code 201.
 
+<a id="create-a-container-code-example"></a>
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -786,7 +797,7 @@ $container->create($CONTAINER_NAME);
 <br/>
 
 <a id="get-a-container"></a>
-### Get a Container
+### Get a Container { #get-a-container }
 Retrieves the information of the specified container and the list of the objects stored in the container. The container's information can be viewed in the response header.
 
 ```
@@ -794,6 +805,7 @@ GET   /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
+<a id="get-a-container-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -834,12 +846,14 @@ Using the `format` query allows you to specify a `json` or `xml` response format
 
 <br/>
 
+<a id="get-a-container-response"></a>
 #### Response
 
 ```
 [The list of object in the container]
 ```
 
+<a id="get-a-container-code-example"></a>
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -985,7 +999,7 @@ foreach ($object_list as $obj) {
 <br/>
 
 <a id="change-container-settings"></a>
-### Change Container Settings
+### Change Container Settings { #change-container-settings }
 
 Changes the container settings. The container settings can be found in the response header when retrieving the container.
 
@@ -1012,6 +1026,7 @@ X-Container-Object-Allow-Extension-Policy: {Extension whitelists of object uploa
 X-Container-Object-Allow-Keyword-Policy: {Filename whitelists of object upload policy}
 ```
 
+<a id="change-container-settings-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1288,10 +1303,12 @@ The object name must not contain the following keywords: example
 If you use a header without a value, the setting will be removed. For example, if the lifecycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Lifecycle: '`, the object lifecycle will be removed and the objects that is stored in the container afterwards will not have their lifecycle automatically set.
 <br/>
 
+<a id="change-container-settings-response"></a>
 #### Response
 This API does not return a response body. For a valid request, return status code 204.
 <br/>
 
+<a id="change-container-settings-code-example"></a>
 #### Code Example
 This is an example in which the user requests changing the setting so that all users may read from and write to containers. You can select the headers you need to change the settings and request in the same way.
 
@@ -1427,7 +1444,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 <br/>
 
 <a id="delete-a-container"></a>
-### Delete a Container
+### Delete a Container { #delete-a-container }
 
 Deletes the specified container. The container to be deleted must be empty.
 
@@ -1436,6 +1453,7 @@ DELETE   /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
+<a id="delete-a-container-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -1445,11 +1463,13 @@ This API does not require a request body.
 | Account | URL | String | O | Storage account, which can be found in the API Endpoint setting dialog box |
 | Container | URL| String |	O | Name of the container to delete |
 
+<a id="delete-a-container-response"></a>
 #### Response
 This request does not return a response body. For a valid request, status code 204 is returned.
 
 <br/>
 
+<a id="delete-a-container-code-example"></a>
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -1566,10 +1586,10 @@ $container->delete($CONTAINER_NAME);
 <br/>
 
 <a id="object"></a>
-## Objects
+## Objects { #object }
 
 <a id="upload-an-object"></a>
-### Upload an Object
+### Upload an Object { #upload-an-object }
 Uploads a new object to the specified container.
 
 ```
@@ -1578,6 +1598,7 @@ X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
+<a id="upload-an-object-request"></a>
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -1601,9 +1622,11 @@ If you use either the `X-Delete-At` or `X-Delete-After` header, you can set the 
 > If an object name starts with `./` or `../`, the browser regards it as path character and access is unavailable on web console.
 > If you have uploaded an object of such name via API, it must also be accessed with API.
 
+<a id="upload-an-object-response"></a>
 #### Response
 This API does not return a response body. For a valid request, return status code 201.
 
+<a id="upload-an-object-code-example"></a>
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -1798,7 +1821,7 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 <a id="multipart-upload"></a>
-### Multipart Upload
+### Multipart Upload { #multipart-upload }
 An object whose size exceeds 5GB needs to be divided into segments of 5GB or smaller before uploading. If you upload segment objects and create a manifest object, you can use them as if they are a single object.
 
 <br/>
@@ -1912,6 +1935,7 @@ This API does not return a response body. For a valid request, return status cod
 
 <br/>
 
+<a id="multipart-upload-code-example"></a>
 #### Code Example
 Example of multipart upload using the DLO method
 
@@ -2175,7 +2199,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 <br/>
 
 <a id="update-an-object"></a>
-### Update an Object
+### Update an Object { #update-an-object }
 Same as the Upload an Object API, but if the object is already located in the container, the content of the object is updated.
 
 ```
@@ -2184,6 +2208,7 @@ X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
+<a id="update-an-object-request"></a>
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -2197,13 +2222,14 @@ Content-Type: {content-type}
 | Object | URL | String | O | Name of the object to be updated |
 | - |	Body | Binary | O | Data content of the object to update |
 
+<a id="update-an-object-response"></a>
 #### Response
 This API does not return a response body. For a valid request, return status code 201.
 
 <br/>
 
 <a id="query-object-information"></a>
-### Query Object Information
+### Query Object Information { #query-object-information }
 Retrieves the information about the specified object. The object information can be found in the response header.
 
 ```
@@ -2211,6 +2237,7 @@ HEAD /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
+<a id="query-object-information-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2221,6 +2248,7 @@ This API does not require a request body.
 | Container |	URL | String | O | Container name |
 | Object | URL | String | O | Name of the object to download |
 
+<a id="query-object-information-response"></a>
 #### Response
 This request does not return a response body. For a valid request, return status code 200.
 
@@ -2238,6 +2266,7 @@ This request does not return a response body. For a valid request, return status
 | X-Manifest-Etag | Header | String | Manifest ETag values (MD5) for SLO-style multipart objects |
 
 
+<a id="query-object-information-code-example"></a>
 #### Code Example
 
 <details>
@@ -2262,7 +2291,7 @@ date: Wed, 16 Oct 2024 23:43:36 GMT
 <br/>
 
 <a id="download-an-object"></a>
-### Download an Object
+### Download an Object { #download-an-object }
 Downloads an object.
 
 ```
@@ -2270,6 +2299,7 @@ GET   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
+<a id="download-an-object-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2280,9 +2310,11 @@ This API does not require a request body.
 | Container |	URL | String | O | Container name |
 | Object | URL | String | O | Name of the object to download |
 
+<a id="download-an-object-response"></a>
 #### Response
 Data content of the object is returned to stream. For a valid request, return status code 200.
 
+<a id="download-an-object-code-example"></a>
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -2430,7 +2462,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 <a id="copy-an-object"></a>
-### Copy an Object
+### Copy an Object { #copy-an-object }
 Copies an object to another container. All properties of the original object will be copied.
 
 ```
@@ -2445,6 +2477,7 @@ X-Auth-Token: {token-id}
 X-Copy-From: {SourceContainer}/{SourceObject}
 ```
 
+<a id="copy-an-object-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2509,9 +2542,11 @@ When a manifest is copied, its properties are preserved and copied along with it
 | SLO manifest | X-Static-Large-Object, X-Manifest-Etag |
 | DLO manifest | X-Object-Manifest |
 
+<a id="copy-an-object-response"></a>
 #### Response
 This request does not return a response body. For a valid request, return status code 201.
 
+<a id="copy-an-object-code-example"></a>
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -2660,7 +2695,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 <br/>
 
 <a id="modify-object-metadata"></a>
-### Modify Object Metadata
+### Modify Object Metadata { #modify-object-metadata }
 Modifies metadata of the specified object.
 
 ```
@@ -2669,6 +2704,7 @@ X-Auth-Token: {token-id}
 X-Object-Meta-{Key}: {Value}
 ```
 
+<a id="modify-object-metadata-request"></a>
 #### Request
 This API does not require a request body.  
 
@@ -2688,9 +2724,11 @@ This API does not require a request body.
 > You cannot overwrite or delete objects that have not passed the lock expiration date. 
 > You can change the object's metadata even before the lock expiration date.
 
+<a id="modify-object-metadata-response"></a>
 #### Response
 This request does not return a response body. For a valid request, return status code 202.
 
+<a id="modify-object-metadata-code-example"></a>
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -2832,7 +2870,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 <br/>
 
 <a id="delete-an-object"></a>
-### Delete an Object
+### Delete an Object { #delete-an-object }
 Deletes a specified object.
 
 > [Note]
@@ -2843,6 +2881,7 @@ DELETE   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
+<a id="delete-an-object-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -2853,11 +2892,13 @@ This API does not require a request body.
 | Container | URL| String |	 O | Container name |
 | Object | URL| String |  O | Name of the object to delete |
 
+<a id="delete-an-object-response"></a>
 #### Response
 This request does not return a response body. For a valid request, return status code 204.
 
 <br/>
 
+<a id="delete-an-object-code-example"></a>
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -2977,10 +3018,10 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 <br/>
 
 <a id="limiting-policy"></a>
-## Limiting Policy
+## Limiting Policy { #limiting-policy }
 
 <a id="request-rate-limit"></a>
-### Request Rate Limit
+### Request Rate Limit { #request-rate-limit }
 Object Storage applies a write request rate limit per storage account to ensure system stability.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
@@ -3031,6 +3072,6 @@ To avoid response delays or failures, ensure that write requests stay within the
 <br/>
 
 <a id="references"></a>
-## References
+## References { #references }
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)

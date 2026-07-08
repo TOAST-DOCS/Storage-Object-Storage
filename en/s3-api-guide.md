@@ -1,4 +1,5 @@
-## Storage > Object Storage > Amazon S3 Compatible API Guide
+<a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
+## Storage > Object Storage > Amazon S3 Compatible API Guide { #storage-object-storage-amazon-s3-compatible-api-guide }
 NHN Cloud Object Storage provides API compatible with S3 API of AWS object storage. Therefore, you can use applications developed to use the Amazon S3 API as is, with only a few configuration changes.
 
 The following Amazon S3 compatible API is provided.
@@ -29,10 +30,10 @@ The following Amazon S3 compatible API is provided.
 This document describes only the basic usage of API. To use advanced features, it is recommended that you see [Amazon S3 API Guide](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html) or use [AWS SDK](https://aws.amazon.com/tools).
 
 <a id="s3-api-credential"></a>
-## S3 API Credentials
+## S3 API Credentials { #s3-api-credential }
 
 <a id="obtain-s3-api-credentials"></a>
-### Obtain S3 API Credentials
+### Obtain S3 API Credentials { #obtain-s3-api-credentials }
 To use Amazon S3 compatible API, you must first obtain S3 API credentials in the form of AWS EC2. Credentials can be issued using the web console or API. To obtain credentials using the web console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
 
 To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to [Object Storage API Guide](api-guide/#prerequisites).
@@ -44,6 +45,7 @@ Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
+<a id="request"></a>
 #### Request
 
 | Name         | Type   | Format | Required | Description                                                  |
@@ -76,6 +78,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="response"></a>
 #### Response
 
 | Name   | Type | Format | Description           |
@@ -106,7 +109,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="get-s3-api-credentials"></a>
-### Get S3 API Credentials
+### Get S3 API Credentials { #get-s3-api-credentials }
 Retrieves the issued S3 API credentials.
 
 **[Method, URL]**
@@ -116,6 +119,7 @@ GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-i
 
 X-Auth-Token: {token-id}
 ```
+<a id="get-s3-api-credentials-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -124,6 +128,7 @@ This API does not require a request body.
 | X-Auth-Token | Header | String | O        | Issued token ID                           |
 | user-id      | URL    | String | O        | User ID, included in the authentication token |
 
+<a id="get-s3-api-credentials-response"></a>
 #### Response
 
 | Name   | Type | Format | Description           |
@@ -156,7 +161,7 @@ This API does not require a request body.
 </details>
 
 <a id="delete-s3-api-credentials"></a>
-### Delete S3 API Credentials
+### Delete S3 API Credentials { #delete-s3-api-credentials }
 Deletes the issued S3 API credentials.
 
 **[Method, URL]**
@@ -166,6 +171,7 @@ DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{use
 
 X-Auth-Token: {token-id}
 ```
+<a id="delete-s3-api-credentials-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -175,11 +181,12 @@ This API does not require a request body.
 | user-id      | URL    | String | O        | User ID, included in the authentication token |
 | access       | URL    | String | O        | S3 API credentials access key                     |
 
+<a id="delete-s3-api-credentials-response"></a>
 #### Response
 This API does not return a response body. When the request is appropriate, return status code 204.
 
 <a id="create-signature"></a>
-## Create Signature
+## Create Signature { #create-signature }
 To use the S3 API, you must create a signature using credentials. For information on how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
 
 The following information is required to create a signature.
@@ -220,9 +227,9 @@ If the `x-amz-content-sha256` value is `STREAMING-UNSIGNED-PAYLOAD-TRAILER` or `
 
 
 <a id="bucket"></a>
-## Bucket
+## Bucket { #bucket }
 <a id="create-bucket"></a>
-### Create Bucket
+### Create Bucket { #create-bucket }
 Creates a bucket. Bucket names must follow Amazon S3's naming rules:
 
 * Bucket names must be between 3 and 63 characters long.
@@ -243,6 +250,7 @@ Authorization: AWS {access}:{signature}
 > [Note]
 > If a container name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
 
+<a id="create-bucket-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -252,6 +260,7 @@ This API does not require a request body.
 | Date          | Header | String | O        | Request time                                     |
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
+<a id="create-bucket-response"></a>
 #### Response
 This API does not return a response body. It returns a status code of 200 if the request is valid.
 
@@ -260,7 +269,7 @@ This API does not return a response body. It returns a status code of 200 if the
 | Location | Header | String | Path for created bucket |
 
 <a id="list-buckets"></a>
-### List Buckets
+### List Buckets { #list-buckets }
 Retrieves bucket lists.
 
 ```
@@ -270,6 +279,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="list-buckets-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -278,6 +288,7 @@ This API does not require a request body.
 | Date          | Header | String | O        | Request Time                                     |
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
+<a id="list-buckets-response"></a>
 #### Response
 If the request is valid, returns a status code of 200 and a bucket list in XML format.
 
@@ -308,7 +319,7 @@ If the request is valid, returns a status code of 200 and a bucket list in XML f
 </details>
 
 <a id="get-bucket"></a>
-### Get Bucket
+### Get Bucket { #get-bucket }
 Retrieves the information of the specified bucket and the list of objects that are stored in the bucket.
 
 ```
@@ -321,6 +332,7 @@ Authorization: AWS {access}:{signature}
 > [Note]
 > If a bucket name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
 
+<a id="get-bucket-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -330,6 +342,7 @@ This API does not require a request body.
 | Date          | Header | String | O        | Request time                                     |
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
+<a id="get-bucket-response"></a>
 #### Response
 If the request is valid, returns a status code of 200 and a object list in XML format.
 
@@ -373,7 +386,7 @@ If the request is valid, returns a status code of 200 and a object list in XML f
 </details>
 
 <a id="delete-bucket"></a>
-### Delete Bucket
+### Delete Bucket { #delete-bucket }
 Deletes the specified bucket. The bucket to be deleted must be empty.
 
 ```
@@ -383,6 +396,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="delete-bucket-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -392,13 +406,14 @@ This API does not require a request body.
 | Date          | Header | String | O        | Request time                                     |
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
+<a id="delete-bucket-response"></a>
 #### Response
 This API does not return a response body; it returns status code 204 if the request is valid.
 
 <a id="object"></a>
-## Object
+## Object { #object }
 <a id="upload-object"></a>
-### Upload Object
+### Upload Object { #upload-object }
 Uploads an object to the specified bucket.
 
 ```
@@ -408,6 +423,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="upload-object-request"></a>
 #### Request
 This API does not return a response body.
 
@@ -418,6 +434,7 @@ This API does not return a response body.
 | Date          | Header | String | O        | Request time                                     |
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
+<a id="upload-object-response"></a>
 #### Response
 This API does not return a response body. It returns a status code of 200 if the request is valid.
 
@@ -427,7 +444,7 @@ This API does not return a response body. It returns a status code of 200 if the
 | Last-Modified | Header | String | The object's last modified date (e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 <a id="download-object"></a>
-### Download Object
+### Download Object { #download-object }
 Downloads an object.
 
 ```
@@ -437,6 +454,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="download-object-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -447,6 +465,7 @@ This API does not require a request body.
 | Date          | Header | String | O        | Request time                                     |
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
+<a id="download-object-response"></a>
 #### Response
 If the request is valid, returns the status code of 200.
 
@@ -456,7 +475,7 @@ If the request is valid, returns the status code of 200.
 | ETag | Header | String | MD5 hash value of the obejct |
 
 <a id="delete-object"></a>
-### Delete Object
+### Delete Object { #delete-object }
 Delete the specified object.
 
 ```
@@ -466,6 +485,7 @@ Date: 22:22:22 +0000 Sat, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="delete-object-request"></a>
 #### Request
 This API does not require a request body.
 
@@ -476,22 +496,23 @@ This API does not require a request body.
 | Date          | Header | String | O        | Requested time                                   |
 | Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
 
+<a id="delete-object-response"></a>
 #### Response
 This API does not return a response body. It returns status code 204 if the request is valid.
 
 <a id="aws-command-line-interface"></a>
-## AWS Command Line Interface (CLI)
+## AWS Command Line Interface (CLI) { #aws-command-line-interface }
 You can use NHN Cloud Object Storage with [AWS Command Line Interface](https://aws.amazon.com/cli/) using the S3 compatible API.
 
 <a id="aws-command-line-interface-installation"></a>
-### Installation
+### Installation { #aws-command-line-interface-installation }
 Install the AWS Command Line Interface (CLI) by referencing the [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) documentation.  
 
 > [Note]
 > AWS CLI versions up to 2.34.38 are supported in NHN Cloud Object Storage.
 
 <a id="aws-command-line-interface-configuration"></a>
-### Configuration
+### Configuration { #aws-command-line-interface-configuration }
 To use AWS CLI, you must set up S3 API credentials and environment first.
 
 ```shell
@@ -509,7 +530,7 @@ Default output format [None]: json
 | region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>KR3 - Korea (Gwangju) Region <br/>JP1 - Japan (Tokyo) Region <br/> |
 
 <a id="how-to-use-the-s3-commands"></a>
-### How to Use the S3 Commands
+### How to Use the S3 Commands { #how-to-use-the-s3-commands }
 
 ```shell
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
@@ -615,7 +636,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 </details>
 
 <a id="aws-command-line-interface-virtual-hosted-style"></a>
-### Use domain-style endpoints
+### Use domain-style endpoints { #aws-command-line-interface-virtual-hosted-style }
 The S3-compatible API supports both Path-style and domain-style (virtual Hosted-style) bucket access methods. The domain-style uses the bucket name as a subdomain of the endpoint.
 
 | Method | Format |
@@ -647,7 +668,7 @@ s3 =
 > If the bucket name contains a period (`.`), using domain-style may cause certificate validation to fail because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style.
 
 <a id="aws-sdk"></a>
-## AWS SDK
+## AWS SDK { #aws-sdk }
 AWS provides SDKs for many types of programming languages. By using the S3 compatible API, you can use NHN Cloud Object Storage with AWS SDK.
 
 > [Note]
@@ -663,11 +684,12 @@ The following are the major parameters required to use AWS SDK:
 | endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region |
 
 <a id="aws-sdk-boto3-python"></a>
-### Boto3 - Python SDK
+### Boto3 - Python SDK { #aws-sdk-boto3-python }
 
 > [Note]
 > For more information, see [AWS SDK for Python (Boto3)](https://docs.aws.amazon.com/en_us/pythonsdk/?icmpid=docs_homepage_sdktoolkits).
 
+<a id="context"></a>
 #### Context
 
 <details>
@@ -807,11 +829,12 @@ def delete(self, bucket_name, key):
 </details>
 
 <a id="aws-sdk-java"></a>
-### Java SDK
+### Java SDK { #aws-sdk-java }
 
 > [Note]
 > For more information, see [AWS SDK for Java](https://docs.aws.amazon.com/en_us/sdk-for-java/index.html).
 
+<a id="aws-sdk-java-context"></a>
 #### Context
 
 <details>
@@ -994,11 +1017,12 @@ public void deleteObject(
 </details>
 
 <a id="aws-sdk-dotnet"></a>
-### .NET SDK
+### .NET SDK { #aws-sdk-dotnet }
 
 > [Note]
 > For more information, see [AWS SDK for .NET](https://docs.aws.amazon.com/en_us/sdk-for-net/?icmpid=docs_homepage_sdktoolkits).
 
+<a id="aws-sdk-dotnet-context"></a>
 #### Context
 
 <details>
@@ -1251,7 +1275,7 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 </details>
 
 <a id="aws-sdk-virtual-hosted-style"></a>
-### Use domain-style endpoints
+### Use domain-style endpoints { #aws-sdk-virtual-hosted-style }
 To use domain-style endpoints in the AWS SDK, disable path-style access in the client settings. The endpoint URL and credentials remain the same, and the SDK combines the bucket name as a subdomain to send requests.
 
 <details>

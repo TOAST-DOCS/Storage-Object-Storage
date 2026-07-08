@@ -1,7 +1,8 @@
-## Storage > Object Storage > Container Policy Configuration Guide
+<a id="storage-object-storage-container-policy-configuration-guide"></a>
+## Storage > Object Storage > Container Policy Configuration Guide { #storage-object-storage-container-policy-configuration-guide }
 
 <a id="container-policy"></a>
-### Container Policy
+### Container Policy { #container-policy }
 
 Container policies allow you to manage container settings in an integrated manner using a JSON-format policy document.
 
@@ -25,10 +26,10 @@ A policy document is structured with top-level keys for each feature, as shown b
 > As of May 2026, only the **lifecycle** setting is supported. Support will be expanded to more features in the future.
 
 <a id="container-policy-api"></a>
-## Container Policy API
+## Container Policy API { #container-policy-api }
 
 <a id="get-container-policy"></a>
-### Get policy
+### Get policy { #get-container-policy }
 
 Retrieves the policy document configured for a container.
 
@@ -37,6 +38,7 @@ GET /v1/{Account}/{Container}?policy
 X-Auth-Token: {token-id}
 ```
 
+<a id="request"></a>
 #### Request
 
 | Name | In | Type | Required | Description |
@@ -46,6 +48,7 @@ X-Auth-Token: {token-id}
 | Container | URL | String | O | Container name |
 | policy | Query | - | O | Query parameter for policy retrieval (used without a value) |
 
+<a id="response"></a>
 #### Response
 
 On success, returns HTTP status code `200` along with the policy document in JSON format. If no policy is configured, an empty JSON object is returned.
@@ -89,7 +92,7 @@ Content-Type: application/json; charset=utf-8
 <br/>
 
 <a id="set-container-policy"></a>
-### Set policy
+### Set policy { #set-container-policy }
 
 Configures a container policy by including a JSON policy document in the request body.
 
@@ -101,6 +104,7 @@ X-Auth-Token: {token-id}
 Content-Type: application/json
 ```
 
+<a id="set-container-policy-request"></a>
 #### Request
 
 | Name | In | Type | Required | Description |
@@ -111,6 +115,7 @@ Content-Type: application/json
 | Container | URL | String | O | Container name |
 | - | Body | JSON | O | Policy document to configure |
 
+<a id="set-container-policy-response"></a>
 #### Response
 
 On success, returns HTTP status code `204`. There is no response body.
@@ -121,7 +126,7 @@ On success, returns HTTP status code `204`. There is no response body.
 <br/>
 
 <a id="lifecycle"></a>
-## Lifecycle
+## Lifecycle { #lifecycle }
 
 Lifecycle rules are configured using the `lifecycle` key in the container policy document.
 There are two types of lifecycle rules.
@@ -134,7 +139,7 @@ There are two types of lifecycle rules.
 <br/>
 
 <a id="lifecycle-schema"></a>
-### JSON policy document schema
+### JSON policy document schema { #lifecycle-schema }
 
 The structure of the lifecycle policy document is as follows.
 
@@ -165,6 +170,7 @@ The structure of the lifecycle policy document is as follows.
 }
 ```
 
+<a id="field-descriptions"></a>
 #### Field descriptions
 
 | Field | Type | Required | Description | Notes |
@@ -183,8 +189,9 @@ The structure of the lifecycle policy document is as follows.
 <br/>
 
 <a id="lifecycle-apply"></a>
-### Applying lifecycle rules
+### Applying lifecycle rules { #lifecycle-apply }
 
+<a id="rule-priority"></a>
 #### Rule priority
 
 Only one lifecycle rule is applied to each object. Rules are applied according to the following priority order.
@@ -195,6 +202,7 @@ Only one lifecycle rule is applied to each object. Rules are applied according t
 | 2 | Default rule (`default_rule`) | If no matching conditional rule exists, the default rule is applied. |
 | 3 | Delete | If no applicable rule exists when the object expires, the object is deleted. |
 
+<a id="lifecycle-apply-lifecycle"></a>
 #### Lifecycle
 
 The lifecycle is determined by querying the container policy **at the time of object upload**.
@@ -202,6 +210,7 @@ The lifecycle is determined by querying the container policy **at the time of ob
 * The lifecycle rules are evaluated at the time of upload, and the object expiration time is set based on the `days` value of the matching rule.
 * If the lifecycle rules of the container are changed after upload, the expiration time of already uploaded objects is not automatically updated.
 
+<a id="expiration-action"></a>
 #### Expiration action
 
 The expiration action is determined by querying the container policy **at the time of object expiration**.
@@ -209,6 +218,7 @@ The expiration action is determined by querying the container policy **at the ti
 * The lifecycle rules are re-evaluated at the time of expiration, and the object is moved (`transfer`) or deleted (`delete`) according to the expiration action (`action`) of the matching rule.
 * If no rule matches and there is no default rule at the time of expiration, the object is deleted.
 
+<a id="application-example"></a>
 #### Application example
 
 Assume the following lifecycle rules are configured.

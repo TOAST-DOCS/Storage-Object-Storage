@@ -1,4 +1,5 @@
-## Storage > Object Storage > Amazon S3互換APIガイド
+<a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
+## Storage > Object Storage > Amazon S3互換APIガイド { #storage-object-storage-amazon-s3-compatible-api-guide }
 NHN CloudオブジェクトストレージはAWSのオブジェクトストレージS3 APIと互換性のあるAPIを提供します。したがって、AWS S3 APIを使用することを想定して開発されたアプリケーションは、設定を変更するだけで使用できます。
 
 提供するS3互換APIは次のとおりです。
@@ -29,10 +30,10 @@ NHN CloudオブジェクトストレージはAWSのオブジェクトストレ�
 この文書はAPI使用方法の基礎的な部分のみを説明します。高度な機能を使用するには[Amazon S3 APIガイド](https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html)を参照するか、[AWS SDK](https://aws.amazon.com/jp/tools)を使用することを推奨します。
 
 <a id="s3-api-credential"></a>
-## S3 API認証情報(S3 API Credential)
+## S3 API認証情報(S3 API Credential) { #s3-api-credential }
 
 <a id="obtain-s3-api-credentials"></a>
-### S3 API認証情報の発行
+### S3 API認証情報の発行 { #obtain-s3-api-credentials }
 Amazon S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報を発行する必要があります。認証情報は、WebコンソールまたはAPIを利用して発行できます。Webコンソールを利用した認証情報の発行は、[S3 API認証情報](console-guide/#s3-api-credentials)の項目を参照してください。
 
 APIを利用して認証情報を発行するには、認証トークンが必要です。認証トークンの発行は、[Object Storage APIガイド](api-guide/#prerequisites)を参照してください。
@@ -44,6 +45,7 @@ Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
+<a id="request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -76,6 +78,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -106,7 +109,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="get-s3-api-credentials"></a>
-### S3 API認証情報照会
+### S3 API認証情報照会 { #get-s3-api-credentials }
 発行されたS3 API認証情報を照会します。
 
 **[Method, URL]**
@@ -116,6 +119,7 @@ GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-i
 
 X-Auth-Token: {token-id}
 ```
+<a id="get-s3-api-credentials-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -124,6 +128,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | 発行されたトークンID |
 | user-id | URL | String | O | ユーザーID。認証トークンに含まれている |
 
+<a id="get-s3-api-credentials-response"></a>
 #### レスポンス
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -156,7 +161,7 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="delete-s3-api-credentials"></a>
-### S3 API認証情報の削除
+### S3 API認証情報の削除 { #delete-s3-api-credentials }
 発行されたS3 API認証情報を削除します。
 
 **[Method, URL]**
@@ -166,6 +171,7 @@ DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{use
 
 X-Auth-Token: {token-id}
 ```
+<a id="delete-s3-api-credentials-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -175,11 +181,12 @@ X-Auth-Token: {token-id}
 | user-id | URL | String | O | ユーザーID。認証トークンに含まれている |
 | access | URL | String | O | S3 API認証情報アクセスキー |
 
+<a id="delete-s3-api-credentials-response"></a>
 #### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 
 <a id="create-signature"></a>
-## 署名(signature)作成
+## 署名(signature)作成 { #create-signature }
 S3 APIを使用するには、認証情報を利用して署名を作成する必要があります。署名方法は、[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html)ドキュメントを参照してください。
 
 署名の作成に必要な情報は次のとおりです。
@@ -220,10 +227,10 @@ x-amz-content-sha256値が`STREAMING-UNSIGNED-PAYLOAD-TRAILER`または`STREAMIN
 
 
 <a id="bucket"></a>
-## バケット(Bucket)
+## バケット(Bucket) { #bucket }
 
 <a id="create-bucket"></a>
-### バケット作成
+### バケット作成 { #create-bucket }
 バケットを作成します。バケット名は次のようにAmazon S3の命名ルールに従う必要があります。
 
 * バケット名は3文字から63文字にする必要があります。
@@ -244,6 +251,7 @@ Authorization: AWS {access}:{signature}
 > [参考]
 > WebコンソールまたはオブジェクトストレージAPIを通して作ったコンテナの名前がバケット命名ルールに違反している場合、S3互換APIにアクセスできません。
 
+<a id="create-bucket-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -253,6 +261,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | リクエスト時刻 |
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
+<a id="create-bucket-response"></a>
 #### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード200を返します。
 
@@ -261,7 +270,7 @@ Authorization: AWS {access}:{signature}
 | Location | Header | String | 作成したバケットパス |
 
 <a id="list-buckets"></a>
-### バケットリスト照会
+### バケットリスト照会 { #list-buckets }
 バケットリストを照会します。
 
 ```
@@ -271,6 +280,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="list-buckets-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -279,6 +289,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | リクエスト時刻 |
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
+<a id="list-buckets-response"></a>
 #### レスポンス
 リクエストが正しい場合、ステータスコード200とXML形式で構成されたバケットリストを返します。
 
@@ -309,7 +320,7 @@ Authorization: AWS {access}:{signature}
 </details>
 
 <a id="get-bucket"></a>
-### バケット照会
+### バケット照会 { #get-bucket }
 指定したバケットの情報と内部に保存されたオブジェクトリストを照会します。
 
 ```
@@ -322,6 +333,7 @@ Authorization: AWS {access}:{signature}
 > [参考]
 > WebコンソールまたはオブジェクトストレージAPIで作成したバケットの名前がバケット命名規則に違反する場合、S3互換APIではアクセスできません。
 
+<a id="get-bucket-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -331,6 +343,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | リクエスト時刻 |
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
+<a id="get-bucket-response"></a>
 #### レスポンス
 リクエストが正しい場合、ステータスコード200とXML形式で構成されたオブジェクトリストを返します。
 
@@ -374,7 +387,7 @@ Authorization: AWS {access}:{signature}
 </details>
 
 <a id="delete-bucket"></a>
-### バケットの削除
+### バケットの削除 { #delete-bucket }
 指定したバケットを削除します。削除するバケットは空になっている必要があります。
 
 ```
@@ -384,6 +397,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="delete-bucket-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -393,14 +407,15 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | リクエスト時刻 |
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
+<a id="delete-bucket-response"></a>
 #### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード204を返します。
 
 <a id="object"></a>
-## オブジェクト
+## オブジェクト { #object }
 
 <a id="upload-object"></a>
-### オブジェクトのアップロード
+### オブジェクトのアップロード { #upload-object }
 指定したバケットにオブジェクトをアップロードします。
 
 ```
@@ -410,6 +425,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="upload-object-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -420,6 +436,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | リクエスト時刻 |
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
+<a id="upload-object-response"></a>
 #### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード200を返します。
 
@@ -429,7 +446,7 @@ Authorization: AWS {access}:{signature}
 | Last-Modified | Header | String | オブジェクトの最後の修正日時(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 <a id="download-object"></a>
-### オブジェクトのダウンロード
+### オブジェクトのダウンロード { #download-object }
 オブジェクトをダウンロードします。
 
 ```
@@ -439,6 +456,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="download-object-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -449,6 +467,7 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | リクエスト時刻 |
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
+<a id="download-object-response"></a>
 #### レスポンス
 リクエストが正しい場合、ステータスコード200を返します。
 
@@ -458,7 +477,7 @@ Authorization: AWS {access}:{signature}
 | Last-Modified | Header | String | オブジェクトの最後の修正日時(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 <a id="delete-object"></a>
-### オブジェクトの削除
+### オブジェクトの削除 { #delete-object }
 指定したオブジェクトを削除します。
 
 ```
@@ -468,6 +487,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="delete-object-request"></a>
 #### リクエスト
 このAPIはリクエスト本文を要求しません。
 
@@ -478,22 +498,23 @@ Authorization: AWS {access}:{signature}
 | Date | Header | String | O | リクエスト時刻 |
 | Authorization | Header | String | O | S3 API認証情報アクセスキーと署名で構成 |
 
+<a id="delete-object-response"></a>
 #### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード204を返します。
 
 <a id="aws-command-line-interface"></a>
-## AWSコマンドラインインターフェイス(CLI)
+## AWSコマンドラインインターフェイス(CLI) { #aws-command-line-interface }
 S3互換APIを利用して[AWSコマンドラインインターフェイス](https://aws.amazon.com/jp/cli/)でNHN Cloudオブジェクトストレージを使用できます。
 
 <a id="aws-command-line-interface-installation"></a>
-### インストール
+### インストール { #aws-command-line-interface-installation }
 [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html)文書を参照してAWSコマンドラインインターフェイスをインストールします。
 
 > [参考]
 > NHN CloudオブジェクトストレージはAWS CLIバージョン2.34.38までサポートします。
 
 <a id="aws-command-line-interface-configuration"></a>
-### 設定
+### 設定 { #aws-command-line-interface-configuration }
 AWSコマンドラインインターフェイスを使用するには、先にS3 API認証情報と環境を設定する必要があります。
 
 ```shell
@@ -511,7 +532,7 @@ Default output format [None]: json
 | region name | KR1 - 韓国(パンギョ)リージョン<br/>KR2 - 韓国(ピョンチョン)リージョン<br/>KR3 - 韓国(光州)リージョン<br/>JP1 - 日本(東京)リージョン |
 
 <a id="how-to-use-the-s3-commands"></a>
-### S3コマンド使用方法
+### S3コマンド使用方法 { #how-to-use-the-s3-commands }
 
 ```shell
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
@@ -617,7 +638,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 </details>
 
 <a id="aws-command-line-interface-virtual-hosted-style"></a>
-### ドメイン形式のエンドポイントの使用
+### ドメイン形式のエンドポイントの使用 { #aws-command-line-interface-virtual-hosted-style }
 S3互換APIは、バケットへのアクセス方式としてパススタイル(Path-style)とドメインスタイル(Virtual Hosted-style)の両方をサポートします。ドメインスタイルは、バケット名をエンドポイントのサブドメインとして使用します。
 
 | 方式 | 形式 |
@@ -649,7 +670,7 @@ s3 =
 > バケット名にドット(`.`)が含まれている場合、ドメインスタイルを使用するとワイルドカードSSL証明書の有効範囲外となり、証明書の検証に失敗する可能性があります。この場合はパススタイルを使用してください。
 
 <a id="aws-sdk"></a>
-## AWS SDK
+## AWS SDK { #aws-sdk }
 AWSは多くのプログラミング言語用のSDKを提供しています。S3互換APIを利用してAWS SDKでNHN Cloudオブジェクトストレージを使用できます。
 
 > [参考]
@@ -665,11 +686,12 @@ AWS SDKを使用するために必要な主要パラメータは次のとおり�
 | endpoint | https://kr1-api-object-storage.nhncloudservice.com - 韓国(パンギョ)リージョン<br/>https://kr2-api-object-storage.nhncloudservice.com - 韓国(ピョンチョン)リージョン<br/>https://kr3-api-object-storage.nhncloudservice.com - 韓国(光州)リージョン<br/>https://jp1-api-object-storage.nhncloudservice.com - 日本(東京)リージョン |
 
 <a id="aws-sdk-boto3-python"></a>
-### Boto3 - Python SDK
+### Boto3 - Python SDK { #aws-sdk-boto3-python }
 
 > [参考]
 > 詳細については[AWS SDK for Python(Boto3)説明書](https://docs.aws.amazon.com/ja_jp/pythonsdk/?icmpid=docs_homepage_sdktoolkits)文書を参照してください。
 
+<a id="context"></a>
 #### Context
 
 <details>
@@ -809,11 +831,12 @@ def delete(self, bucket_name, key):
 </details>
 
 <a id="aws-sdk-java"></a>
-### Java SDK
+### Java SDK { #aws-sdk-java }
 
 > [参考]
 > 詳細については[AWS SDK for Java説明書](https://docs.aws.amazon.com/ja_jp/sdk-for-java/index.html)文書を参照してください。
 
+<a id="aws-sdk-java-context"></a>
 #### Context
 
 <details>
@@ -996,10 +1019,11 @@ public void deleteObject(
 </details>
 
 <a id="aws-sdk-dotnet"></a>
-### .NET SDK
+### .NET SDK { #aws-sdk-dotnet }
 
 > [参考]
 > 詳細については[AWS SDK for .NET説明書](https://docs.aws.amazon.com/ja_jp/sdk-for-net/?icmpid=docs_homepage_sdktoolkits)文書を参照してください。
+<a id="aws-sdk-dotnet-context"></a>
 #### Context
 
 <details>
@@ -1249,7 +1273,7 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 </details>
 
 <a id="aws-sdk-virtual-hosted-style"></a>
-### ドメイン形式のエンドポイントの使用
+### ドメイン形式のエンドポイントの使用 { #aws-sdk-virtual-hosted-style }
 AWS SDKでドメインスタイルエンドポイントを使用するには、クライアント設定でパススタイルアクセスを無効にします。エンドポイントURLと認証情報は従来と同様に使用し、SDKがバケット名をサブドメインとして組み合わせてリクエストを送信します。
 
 <details>

@@ -1,7 +1,8 @@
-## Storage > Object Storage > コンテナポリシー設定ガイド
+<a id="storage-object-storage-container-policy-configuration-guide"></a>
+## Storage > Object Storage > コンテナポリシー設定ガイド { #storage-object-storage-container-policy-configuration-guide }
 
 <a id="container-policy"></a>
-### コンテナポリシー
+### コンテナポリシー { #container-policy }
 
 コンテナポリシーを使用すると、コンテナ設定をJSON形式のポリシードキュメントとして統合して管理できます。
 
@@ -25,10 +26,10 @@
 > 2026年5月時点では**ライフサイクル**設定のみをサポートしており、今後はより多くの機能に拡大適用される予定です。
 
 <a id="container-policy-api"></a>
-## コンテナポリシーAPI
+## コンテナポリシーAPI { #container-policy-api }
 
 <a id="get-container-policy"></a>
-### ポリシー照会
+### ポリシー照会 { #get-container-policy }
 
 コンテナに設定されたポリシードキュメントを照会します。
 
@@ -37,6 +38,7 @@ GET /v1/{Account}/{Container}?policy
 X-Auth-Token: {token-id}
 ```
 
+<a id="request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -46,6 +48,7 @@ X-Auth-Token: {token-id}
 | Container | URL | String | O | コンテナ名 |
 | policy | Query | - | O | ポリシー照会のためのクエリパラメータ (値なしで使用) |
 
+<a id="response"></a>
 #### レスポンス
 
 成功時、HTTPステータスコード`200`とともにJSON形式のポリシードキュメントを返却します。設定されたポリシーがない場合は空のJSONオブジェクトを返却します。
@@ -89,7 +92,7 @@ Content-Type: application/json; charset=utf-8
 <br/>
 
 <a id="set-container-policy"></a>
-### ポリシー設定
+### ポリシー設定 { #set-container-policy }
 
 リクエスト本文にJSONポリシードキュメントを含めてコンテナポリシーを設定します。
 
@@ -101,6 +104,7 @@ X-Auth-Token: {token-id}
 Content-Type: application/json
 ```
 
+<a id="set-container-policy-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -111,6 +115,7 @@ Content-Type: application/json
 | Container | URL | String | O | コンテナ名 |
 | - | Body | JSON | O | 設定するポリシードキュメント |
 
+<a id="set-container-policy-response"></a>
 #### レスポンス
 
 成功時、HTTPステータスコード`204`を返却します。レスポンス本文はありません。
@@ -121,7 +126,7 @@ Content-Type: application/json
 <br/>
 
 <a id="lifecycle"></a>
-## ライフサイクル
+## ライフサイクル { #lifecycle }
 
 コンテナポリシードキュメントの`lifecycle`キーを使用してライフサイクルルールを設定します。
 ライフサイクルには2つの種類のルールがあります。
@@ -134,7 +139,7 @@ Content-Type: application/json
 <br/>
 
 <a id="lifecycle-schema"></a>
-### JSONポリシードキュメントスキーマ
+### JSONポリシードキュメントスキーマ { #lifecycle-schema }
 
 ライフサイクルポリシードキュメントの構造は次のとおりです。
 
@@ -165,6 +170,7 @@ Content-Type: application/json
 }
 ```
 
+<a id="field-descriptions"></a>
 #### フィールドの説明
 
 | フィールド | 形式 | 必須 | 説明 | 備考 |
@@ -183,8 +189,9 @@ Content-Type: application/json
 <br/>
 
 <a id="lifecycle-apply"></a>
-### ライフサイクルルールの適用
+### ライフサイクルルールの適用 { #lifecycle-apply }
 
+<a id="rule-priority"></a>
 #### ルールの優先順位
 
 1つのオブジェクトには、1つのライフサイクルルールのみが適用されます。ルールは以下の優先順位に従って適用されます。
@@ -195,6 +202,7 @@ Content-Type: application/json
 | 2 | 基本ルール (`default_rule`) | 合致する条件ルールがない場合は、基本ルールを適用します。 |
 | 3 | 削除 | オブジェクトの有効期限切れ時に適用できるルールがない場合は、削除されます。 |
 
+<a id="lifecycle-apply-lifecycle"></a>
 #### ライフサイクル
 
 ライフサイクルは**オブジェクトのアップロード時点**でコンテナのポリシーを照会して適用します。
@@ -202,6 +210,7 @@ Content-Type: application/json
 * オブジェクトをアップロードする時点のライフサイクルルールを評価し、合致するルールのライフサイクル(`days`)値に基づいてオブジェクトの有効期限切れ日時を設定します。
 * その後、コンテナのライフサイクルルールが変更されても、すでにアップロードされたオブジェクトの有効期限切れ日時は自動的に更新されません。
 
+<a id="expiration-action"></a>
 #### 有効期限切れ時の動作
 
 有効期限切れ時の動作は、**オブジェクトの有効期限切れ時点**でコンテナのポリシーを照会して適用します。
@@ -209,6 +218,7 @@ Content-Type: application/json
 * オブジェクトの有効期限切れ時点にライフサイクルルールを再評価し、合致するルールの有効期限切れ時の動作(`action`)に従って移動(`transfer`)または削除(`delete`)を実行します。
 * 有効期限切れ時点にどのルールにも合致せず、基本ルールもない場合、オブジェクトは削除されます。
 
+<a id="application-example"></a>
 #### 適用例
 
 以下のようなライフサイクルルールが設定されていると仮定します。
