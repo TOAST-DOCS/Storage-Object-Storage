@@ -1,10 +1,13 @@
-## Storage > Object Storage > Console Guide
+<!-- pre-align:aligned sig=01ab1e535b75 -->
+
+<a id="storage-object-storage-console-guide"></a>
+## Storage > Object Storage > Console Guide { #storage-object-storage-console-guide }
 
 <a id="container"></a>
-## Container
+## Container { #container }
 
 <a id="create-container"></a>
-### Create Container
+### Create Container { #create-container }
 Creates containers. Uploading objects in an object storage requires one or more containers. If you set encryption, the uploaded object is automatically encrypted and saved.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
@@ -53,7 +56,7 @@ Creates containers. Uploading objects in an object storage requires one or more 
 </table>
 
 <a id="storage-class"></a>
-### Storage class
+### Storage class { #storage-class }
 You can choose a storage class based on how often you access your data and your cost requirements. We offer Standard class for frequently accessed data and Economy class for long-term storage of less frequently accessed data at a lower cost.
 
 > [Note]
@@ -81,7 +84,7 @@ The policies for encryption container are as follows.
 If you delete the symmetric key configured in an encryption container from Secure Key Manager, the encrypted object cannot be decrypted. You must carefully manage the symmetric key not to delete it accidentally.
 
 <a id="empty-a-container"></a>
-### Empty a Container
+### Empty a Container { #empty-a-container }
 Deletes all objects inside the selected container. 
 
 > [Note]
@@ -93,11 +96,11 @@ Deletes all objects inside the selected container.
 > If you upload objects to a container that is undergoing a container emptying operation, they might be deleted.
 
 <a id="delete-container"></a>
-### Delete Container
+### Delete Container { #delete-container }
 Deletes selected containers. Check if the containers are empty before deleting them. If any objects are left inside a container, you cannot delete the relevant container.
 
 <a id="manage-container"></a>
-### Manage Container
+### Manage Container { #manage-container }
 Checks basic information of the selected containers and manage the settings.
 
 <a id="container-basic-info"></a>
@@ -435,29 +438,29 @@ Suspends container replication. While replication is suspended, any deletions or
 <br/>
 
 <a id="object"></a>
-## Object
+## Object { #object }
 
 <a id="create-folder"></a>
-### Create Folder
+### Create Folder { #create-folder }
 Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 256 letters in English or 85 characters in Korean.
 
 > [Note]
 > Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
 
 <a id="delete-folder"></a>
-### Delete Folder
+### Delete Folder { #delete-folder }
 Deletes a folder. Deletes all objects in the folder and the folder object.
 For multipart objects inside a folder, only the manifest object is deleted; segment objects that are not included in the selection are not deleted.
 
 <a id="upload-object"></a>
-### Upload Object
+### Upload Object { #upload-object }
 All objects must be uploaded to containers. One object cannot be larger than 5GB.
 
 > [Note]
 > Files exceeding 5GB cannot be uploaded in a web console. If the size of the object to be uploaded exceeds 5GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5GB before uploading. For more details, refer to [Multipart Upload](api-guide/#multipart-upload) of the API guide.
 
 <a id="download-object"></a>
-### Download Object
+### Download Object { #download-object }
 Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the `Copy URL` button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
 
 <details style="padding-top: 15px; padding-bottom: 10px;">
@@ -485,7 +488,7 @@ Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 </details>
 
 <a id="copy-or-move-object"></a>
-### Copy/Move Object
+### Copy/Move Object { #copy-or-move-object }
 Copy or move objects to the specified container. You can select multiple objects to copy or move to a different container or to a new path in the same container. 
 
 > [Note]
@@ -495,14 +498,14 @@ Copy or move objects to the specified container. You can select multiple objects
 > For multipart objects, only manifest objects can be copied or moved. 
 
 <a id="delete-object"></a>
-### Delete Object
+### Delete Object { #delete-object }
 Deletes the selected objects. You can select and delete multiple objects at the same time. 
 
 > [Note]
 > When you delete a multipart object, only the selected manifest object is deleted. Unselected segment objects are not deleted.
 
 <a id="create-signed-url"></a>
-### Create Signed URL
+### Create Signed URL { #create-signed-url }
 Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies.
 
 > [Note]
@@ -513,7 +516,7 @@ Create a signed URL that allows free access to the specified object for the time
 > Signed URLs should be used with caution because if they are exposed, anyone can access the selected object. It is recommended that you set an appropriate validity period for your situation and use it to reduce the damage if your signed URL is exposed.
 
 <a id="manage-object"></a>
-### Manage Object
+### Manage Object { #manage-object }
 Check the selected object information and manage the properties.
 
 > [Note]
@@ -530,11 +533,11 @@ You can change the expiration date for selected objects.
 You can change the lock expiration date for selected objects. It cannot be changed prior to the previously set expiration date.
 
 <a id="prefix-search"></a>
-## Prefix Search
+## Prefix Search { #prefix-search }
 If you enter a prefix in the search bar and click the **Search** button, you can search for containers, folders, and objects that begin with the prefix you entered. You can search for containers in the container list, and search for folders and objects in the object list.
 
 <a id="s3-api-credentials"></a>
-## S3 API Credentials
+## S3 API Credentials { #s3-api-credentials }
 You can obtain credentials required to use Amazon S3 compatible API. S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
 
 > [Caution]

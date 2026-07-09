@@ -1,4 +1,7 @@
-## Storage > Object Storage > Troubleshooting Guide
+<!-- pre-align:aligned sig=a08a3e30075c -->
+
+<a id="storage-object-storage-troubleshooting-guide"></a>
+## Storage > Object Storage > Troubleshooting Guide { #storage-object-storage-troubleshooting-guide }
 This section describes how to resolve various issues you may encounter while using NHN Cloud Object Storage.
 
 <h3>When an application using the JDK accesses Object Storage, the following SSL errors will occur. </h3>

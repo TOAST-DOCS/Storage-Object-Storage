@@ -1,19 +1,22 @@
-## サードパーティツールの使用ガイド
+<!-- pre-align:aligned sig=3eabcf443966 -->
+
+<a id="third-party-tools-usage-guide"></a>
+## サードパーティツールの使用ガイド { #third-party-tools-usage-guide }
 
 この文書ではサードパーティツールでNHN Cloudオブジェクトストレージサービスを使用する方法を説明します。
 
 <a id="cyberduck"></a>
-## Cyberduck
+## Cyberduck { #cyberduck }
 
 Cyberduckはオープンソースのクラウドストレージブラウザです。
 
 <a id="install-cyberduck"></a>
-### Cyberduckのインストール
+### Cyberduckのインストール { #install-cyberduck }
 
 [Cyberduckダウンロードページ](https://cyberduck.io/download/)から使用しているOSに合ったインストールファイルをダウンロードしてインストールします。
 
 <a id="cyberduck-object-storage-connection-settings"></a>
-### オブジェクトストレージの接続設定
+### オブジェクトストレージの接続設定 { #cyberduck-object-storage-connection-settings }
 
 オブジェクトストレージに接続するには、接続情報を保存するブックマークを作成する必要があります。ブラウザー上部の**新規接続**をクリックした後、ドロップダウンリストから**OpenStack Swift(Keystone 2.0)**を選択します。必要な情報を入力して接続をクリックすると、新しいブックマークが作成されます。
 
@@ -47,12 +50,12 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > APIパスワードの設定方法は、APIガイドの[APIパスワード設定](api-guide/#set-the-api-password)項目を参照してください。
 
 <a id="cyberduck-connect-object-storage"></a>
-### オブジェクトストレージの接続
+### オブジェクトストレージの接続 { #cyberduck-connect-object-storage }
 
 接続するブックマークをダブルクリックしてオブジェクトストレージに接続します。
 
 <a id="cyberduck-retrieve-container-or-object"></a>
-### コンテナ/オブジェクトの照会
+### コンテナ/オブジェクトの照会 { #cyberduck-retrieve-container-or-object }
 
 オブジェクトストレージに接続すると、**すべてのリージョン**のコンテナリストがブラウザに表示されます。コンテナをダブルクリックしてコンテナのオブジェクトリストを照会できます。
 
@@ -61,7 +64,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > メニューから**表示 > 列 > 地域**を選択すると、列項目にリージョンを表示できます。
 
 <a id="cyberduck-create-container"></a>
-### コンテナの作成
+### コンテナの作成 { #cyberduck-create-container }
 
 コンテナリストの空きスペースで右クリックし、**新規フォルダ...**を選択して新しいコンテナを作成できます。コンテナの名前とリージョンを入力し、**作成**をクリックすると、コンテナが作成されます。
 
@@ -69,7 +72,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > コンテナリストの空きスペースで右クリックし、**再表示**を選択すると、コンテナリストを更新できます。
 
 <a id="cyberduck-upload-object"></a>
-### オブジェクトのアップロード
+### オブジェクトのアップロード { #cyberduck-upload-object }
 
 コンテナを選択した後、ブラウザ上部の**アクション** > **アップロード...**をクリックするか、オブジェクトリストで右クリックした後、**アップロード...**をクリックしてファイルを選択してアップロードします。
 
@@ -77,7 +80,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > Cyberduckでフォルダをアップロードまたは作成すると、フォルダ名と同じ0バイトのオブジェクトがもう一つ作成されます。これはコンソールまたはオブジェクトストレージAPIで確認でき、削除しても構いません。
 
 <a id="cyberduck-download-object"></a>
-### オブジェクトのダウンロード
+### オブジェクトのダウンロード { #cyberduck-download-object }
 
 ダウンロードするオブジェクトを選択した後、右クリックして**ダウンロード**を選択します。ドラッグ＆ドロップでオブジェクトをダウンロードすることもできます。
 
@@ -86,7 +89,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > オブジェクトをアップロードまたはダウンロードすると、**転送**ウィンドウがポップアップして進行状況を把握できます。
 
 <a id="cyberduck-delete-container"></a>
-### コンテナの削除
+### コンテナの削除 { #cyberduck-delete-container }
 
 削除するコンテナを選択し、右クリックして**削除**を選択します。
 
@@ -94,12 +97,12 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > コンテナを削除すると、コンテナ内のオブジェクトも全て削除されるので注意が必要です。
 
 <a id="cyberduck-delete-object"></a>
-### オブジェクトの削除
+### オブジェクトの削除 { #cyberduck-delete-object }
 
 削除するオブジェクトを選択し、右クリックして**削除**を選択します。
 
 <a id="cyberduck-synchronize-folder"></a>
-### フォルダ同期
+### フォルダ同期 { #cyberduck-synchronize-folder }
 
 ローカルフォルダをコンテナまたはフォルダと同期できます。コンテナまたはフォルダを選択した後、右クリックして**同期**を選択します。
 フォルダ同期は、ダウンロード、アップロード、ミラーリングの3つの方法を提供します。
@@ -123,12 +126,12 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 > 同期の詳細は、[CyberduckのSynchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders)ドキュメントを参照してください。
 
 <a id="terraform"></a>
-## Terraform
+## Terraform { #terraform }
 
 Terraformはインフラを簡単に構築し、安全に変更して効率的に構成を管理できるオープンソースツールです。基本的な使用方法は、[ユーザーガイド > NHN Cloud > Terraform使用ガイド](/nhncloud/ja/terraform-guide/)を参照してください。
 
 <a id="terraform-resource-dependency"></a>
-### リソースの依存関係
+### リソースの依存関係 { #terraform-resource-dependency }
 
 一般的に各リソースは独立していますが、他の特定のリソースに依存関係を持つ場合もあります。リソースのラベルで他のリソースの情報を参照すると、Terraformは自動的に依存関係を設定します。
 たとえば、`container1`コンテナに含まれる`object1`オブジェクトは次のように表現できます。
@@ -151,7 +154,7 @@ resource "nhncloud_objectstorage_object_v1" "object_1" {
 > 明示的なリソース依存関係の指定方法は、[TerraformのResource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies)ドキュメントを参照してください。
 
 <a id="terraform-resources-object-storage"></a>
-### Resources - Object Storage
+### Resources - Object Storage { #terraform-resources-object-storage }
 
 <a id="terraform-resources-create-container"></a>
 #### コンテナの作成
@@ -304,7 +307,7 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 </table>
 
 <a id="reference"></a>
-## 参考サイト
+## 参考サイト { #reference }
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
