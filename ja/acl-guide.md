@@ -1,12 +1,15 @@
-## Storage > Object Storage > アクセスポリシー設定ガイド
+<!-- pre-align:aligned sig=57f0cee284f8 -->
+
+<a id="storage-object-storage-acl-configuration-guide"></a>
+## Storage > Object Storage > アクセスポリシー設定ガイド { #storage-object-storage-acl-configuration-guide }
 
 <a id="role-based-access-policies"></a>
-## ロールベースのアクセスポリシー
+## ロールベースのアクセスポリシー { #role-based-access-policies }
 
 コンソールまたはAPIを使用して、他のユーザーにコンテナの読み取り/書き取りアクセス権限を付与できます。
 
 <a id="role-based-access-console"></a>
-### コンソール
+### コンソール { #role-based-access-console }
 コンソールでは[コンテナ作成](console-guide/#create-container)ダイアログボックスまたは[コンテナ管理](console-guide/#manage-container)ウィンドウのコンテナアクセスポリシー設定ダイアログボックスでコンテナアクセスポリシーを選択できます。選択できるポリシーは`PRIVATE`と`PUBLIC`の2つに制限されます。
 
 <a id="role-based-access-private"></a>
@@ -20,7 +23,7 @@
 <br/>
 
 <a id="role-based-access-api"></a>
-### API
+### API { #role-based-access-api }
 APIを使用してコンテナの`X-Container-Read`、`X-Container-Write`、`X-Container-View`属性にロールベースのアクセスポリシー要素を入力すると、様々な状況に合わせてアクセスポリシーを設定できます。各属性は次のとおりです。
 
 | 属性 | 説明 |
@@ -440,11 +443,11 @@ $ curl -i -X POST \
 
 
 <a id="role-based-access-references"></a>
-### References
+### References { #role-based-access-references }
 Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/overview_acl.html](https://docs.openstack.org/swift/latest/overview_acl.html)
 
 <a id="ip-based-access-policies"></a>
-## IPベースのアクセスポリシー
+## IPベースのアクセスポリシー { #ip-based-access-policies }
 
 コンソールまたはAPIを使用してホワイトリストとブラックリストを指定して特定IPからコンテナの読み取り/書き込みアクセス権限を制限できます。ホワイトリストとブラックリストは同時に使用できません。ホワイトリストとブラックリストの両方を入力した場合、ホワイトリストのみ使用されます。 IPベースのアクセスポリシーはIPv4のみサポートします。サービスゲートウェイ経由のリクエストの場合、別途の例外を指定できます。
 
@@ -454,7 +457,7 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 > 誤った設定を行ってアクセス権限のないコンテナになった場合、ポリシーを変更することはできません。このような問題が発生した場合は、サポートにお問い合わせください。
 
 <a id="ip-based-access-console"></a>
-### コンソール
+### コンソール { #ip-based-access-console }
 
 コンテナ管理ウィンドウのコンテナアクセスポリシー設定ダイアログボックスでIPベースのコンテナアクセスポリシーを選択します。 
 
@@ -474,7 +477,7 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 サービスゲートウェイ経由のリクエストを制御します。設定しないと、ホワイトリストとブラックリストの設定によってリクエストが拒否される場合があります。
 
 <a id="ip-based-access-api"></a>
-### API
+### API { #ip-based-access-api }
 
 APIを使用してコンテナの`X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`プロパティにACLポリシー要素を入力するとIPベースのACLを有効化できます。 `X-Container-Ip-Acl-Allowed-List`はホワイトリスト、`X-Container-Ip-Acl-Denied-List`はブラックリストを意味します。
 <br>

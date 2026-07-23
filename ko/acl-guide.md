@@ -1,12 +1,15 @@
-## Storage > Object Storage > 접근 정책 설정 가이드
+<!-- pre-align:aligned sig=57f0cee284f8 -->
+
+<a id="storage-object-storage-acl-configuration-guide"></a>
+## Storage > Object Storage > 접근 정책 설정 가이드 { #storage-object-storage-acl-configuration-guide }
 
 <a id="role-based-access-policies"></a>
-## 역할 기반 접근 정책
+## 역할 기반 접근 정책 { #role-based-access-policies }
 
 콘솔 또는 API를 사용해 다른 사용자에게 컨테이너의 읽기/쓰기 접근 권한을 부여할 수 있습니다.
 
 <a id="role-based-access-console"></a>
-### 콘솔
+### 콘솔 { #role-based-access-console }
 콘솔에서는 [컨테이너 생성](console-guide/#create-container) 대화 상자 또는 [컨테이너 관리](console-guide/#manage-container) 창의 컨테이너 접근 정책 설정 대화 상자에서 컨테이너 접근 정책을 선택할 수 있습니다. 선택할 수 있는 정책은 `PRIVATE`과 `PUBLIC` 두 가지로 제한됩니다.
 
 <a id="role-based-access-private"></a>
@@ -20,7 +23,7 @@
 <br/>
 
 <a id="role-based-access-api"></a>
-### API
+### API { #role-based-access-api }
 API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Container-View` 속성에 역할 기반 접근 정책 요소를 입력하면 여러 가지 상황에 맞게 접근 정책을 설정할 수 있습니다. 각 속성은 아래와 같습니다.
 
 | 속성 | 설명 |
@@ -438,11 +441,11 @@ $ curl -i -X POST \
 빈 헤더를 입력하면 설정된 역할 기반 접근 정책 요소를 모두 삭제할 수 있습니다. 역할 기반 접근 정책 요소가 없는 컨테이너는 허가된 사용자만 접근할 수 있는 **PRIVATE** 컨테이너가 됩니다. `컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용` 항목을 참고하세요.
 
 <a id="role-based-access-references"></a>
-### References
+### References { #role-based-access-references }
 Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/overview_acl.html](https://docs.openstack.org/swift/latest/overview_acl.html)
 
 <a id="ip-based-access-policies"></a>
-## IP 기반 접근 정책
+## IP 기반 접근 정책 { #ip-based-access-policies }
 
 콘솔 또는 API를 사용해 화이트리스트와 블랙리스트를 지정하여 특정 IP에서 컨테이너의 읽기/쓰기 접근 권한을 제한할 수 있습니다. 화이트리스트와 블랙리스트는 동시에 사용할 수 없습니다. 화이트리스트와 블랙리스트를 모두 입력한 경우 화이트리스트만 사용됩니다. IP 기반 접근 정책은 IPv4만 지원합니다. 서비스 게이트웨이를 통한 요청의 경우 별도의 예외를 지정할 수 있습니다.
 
@@ -452,7 +455,7 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 > 잘못된 설정으로 접근 권한이 없는 컨테이너가 되었다면 더 이상 정책을 변경할 수 없습니다. 이러한 문제가 발생할 경우 고객 센터로 문의하세요.
 
 <a id="ip-based-access-console"></a>
-### 콘솔
+### 콘솔 { #ip-based-access-console }
 
 컨테이너 관리 창의 컨테이너 접근 정책 설정 대화 상자에서 IP 기반의 컨테이너 접근 정책을 선택합니다. 
 
@@ -472,7 +475,7 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 서비스 게이트웨이를 통한 요청을 제어합니다. 설정하지 않으면 화이트리스트와 블랙리스트 설정에 따라 요청이 거부될 수 있습니다.
 
 <a id="ip-based-access-api"></a>
-### API
+### API { #ip-based-access-api }
 
 API를 사용해 컨테이너의 `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List` 속성에 IP 기반 접근 정책 요소를 입력하면 IP 기반의 ACL을 활성화할 수 있습니다. `X-Container-Ip-Acl-Allowed-List`는 화이트리스트, `X-Container-Ip-Acl-Denied-List`는 블랙리스트를 의미합니다.
 <br>

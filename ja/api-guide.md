@@ -1,10 +1,13 @@
-## Storage > Object Storage > APIガイド
+<!-- pre-align:aligned sig=288abf1f2a5c -->
+
+<a id="storage-object-storage-api-guide"></a>
+## Storage > Object Storage > APIガイド { #storage-object-storage-api-guide }
 
 <a id="common"></a>
-## オブジェクトストレージAPI共通情報
+## オブジェクトストレージAPI共通情報 { #common }
 
 <a id="endpoint"></a>
-### APIエンドポイント
+### APIエンドポイント { #endpoint }
 
 APIを使用するにはAPIエンドポイントとトークンなどが必要です。 [IaaSトークン](/nhncloud/ja/public-api/iaas-token/)を参照してAPIを使用するのに必要な情報を準備します。
 オブジェクトストレージAPIは`object-store`タイプエンドポイントを利用します。正確なエンドポイントはトークン発行レスポンスの`serviceCatalog`を参照します。
@@ -14,7 +17,7 @@ APIを使用するにはAPIエンドポイントとトークンなどが必要�
 | 韓国(パンギョ)リージョン<br>韓国(ピョンチョン)リージョン<br>韓国(光州)リージョン<br>日本(東京)リージョン | https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr2-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr3-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://jp1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\* |
 
 <a id="auth"></a>
-### 認証及び権限
+### 認証及び権限 { #auth }
 
 オブジェクトストレージは、API呼び出し時の認証/認可のためにIaaSトークンを使用します。IaaSトークンは、NHN CloudのOpenStackベースのインフラサービス(IaaS)で使用する認証トークンです。
 IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](/nhncloud/ja/public-api/iaas-token/)を参照してください。
@@ -28,6 +31,7 @@ IaaSトークンの発行及び使用に関する詳細は、[IaaSトークン](
 > [参考]
 > APIパスワードは、Object Storageサービスページでも**APIエンドポイント設定**ボタンをクリックして設定できます。
 
+<a id="auth-token-issuance-code-example"></a>
 #### トークン発行サンプルコード
 
 <details>
@@ -234,11 +238,11 @@ printf("%s\n", $token);
 </details>
 
 <a id="storage-account"></a>
-## ストレージアカウント
+## ストレージアカウント { #storage-account }
 ストレージアカウント(account)は`AUTH_*****`形式の文字列です。Object-Store APIエンドポイントに含まれています。
 
 <a id="query-the-storage-account"></a>
-### ストレージアカウント照会
+### ストレージアカウント照会 { #query-the-storage-account }
 ストレージアカウントの使用状況を照会します。
 
 ```
@@ -246,6 +250,7 @@ HEAD  /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
+<a id="query-the-storage-account-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -254,6 +259,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
 
+<a id="query-the-storage-account-response"></a>
 #### レスポンス
 レスポンス本文を返しません。使用状況はヘッダに含まれています。リクエストが正しければステータスコード200を返します。
 
@@ -263,6 +269,7 @@ X-Auth-Token: {token-id}
 | X-Account-Object-Count | Header | String | 保存されたオブジェクト数 |
 | X-Account-Bytes-Used | Header | String | 保存されたデータ容量(バイト) |
 
+<a id="query-the-storage-account-code-example"></a>
 #### コード例
 
 <details>
@@ -431,7 +438,7 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 <br/>
 
 <a id="list-containers"></a>
-### コンテナリスト照会
+### コンテナリスト照会 { #list-containers }
 ストレージアカウントのコンテナリストを照会します。
 
 ```
@@ -439,6 +446,7 @@ GET  /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
+<a id="list-containers-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -447,11 +455,13 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | O | トークンID |
 | Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
 
+<a id="list-containers-response"></a>
 #### レスポンス
 ```
 [ストレージアカウントに属すコンテナリスト]
 ```
 
+<a id="list-containers-code-example"></a>
 #### コード例
 
 <details>
@@ -579,10 +589,10 @@ foreach($container_list as $container) {
 <br/>
 
 <a id="container"></a>
-## コンテナ
+## コンテナ { #container }
 
 <a id="create-a-container"></a>
-### コンテナの作成
+### コンテナの作成 { #create-a-container }
 コンテナを作成します。オブジェクトストレージにファイルをアップロードするには、コンテナを作成する必要があります。
 
 > [参考]
@@ -606,6 +616,7 @@ PUT  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
+<a id="create-a-container-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -618,9 +629,11 @@ X-Auth-Token: {token-id}
 | X-Container-Worm-Retention-Day | Header | Integer | - | コンテナの基本オブジェクトロック周期を日単位で設定 |
 
 
+<a id="create-a-container-response"></a>
 #### レスポンス
 レスポンス本文を返しません。コンテナが作成された場合はステータスコード201を返します。
 
+<a id="create-a-container-code-example"></a>
 #### サンプルコード
 <details>
 <summary>cURL</summary>
@@ -786,7 +799,7 @@ $container->create($CONTAINER_NAME);
 <br/>
 
 <a id="get-a-container"></a>
-### コンテナ照会
+### コンテナ照会 { #get-a-container }
 指定したコンテナの情報と、内部に保存されたオブジェクトのリストを照会します。コンテナの情報はレスポンスヘッダで確認できます。
 
 ```
@@ -794,6 +807,7 @@ GET   /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
+<a id="get-a-container-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -834,12 +848,14 @@ X-Auth-Token: {token-id}
 
 <br/>
 
+<a id="get-a-container-response"></a>
 #### レスポンス
 
 ```
 [コンテナのオブジェクトリスト]
 ```
 
+<a id="get-a-container-code-example"></a>
 #### サンプルコード
 <details>
 <summary>cURL</summary>
@@ -985,7 +1001,7 @@ foreach ($object_list as $obj) {
 <br/>
 
 <a id="change-container-settings"></a>
-### コンテナ設定変更
+### コンテナ設定変更 { #change-container-settings }
 
 コンテナ設定を変更します。コンテナ設定はコンテナ照会時にレスポンスヘッダから確認できます。
 
@@ -1012,6 +1028,7 @@ X-Container-Object-Allow-Extension-Policy: {オブジェクトアップロード
 X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロードポリシーのファイル名ホワイトリスト}
 ```
 
+<a id="change-container-settings-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -1288,10 +1305,12 @@ The object name must not contain the following keywords: example
 
 <br/>
 
+<a id="change-container-settings-response"></a>
 #### レスポンス
 レスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 <br/>
 
+<a id="change-container-settings-code-example"></a>
 #### コード例
 すべてのユーザーにコンテナの読み取り、書き込みを許可する設定変更リクエストを行う例です。同じ方法で他の設定も必要なヘッダを選択してリクエストできます。
 
@@ -1427,7 +1446,7 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 <br/>
 
 <a id="delete-a-container"></a>
-### コンテナ削除
+### コンテナ削除 { #delete-a-container }
 
 指定したコンテナを削除します。削除するコンテナは空になっている必要があります。
 
@@ -1436,6 +1455,7 @@ DELETE   /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
+<a id="delete-a-container-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -1445,11 +1465,13 @@ X-Auth-Token: {token-id}
 | Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
 | Container | URL| String |	O | 削除するコンテナ名 |
 
+<a id="delete-a-container-response"></a>
 #### レスポンス
 このリクエストはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 
 <br/>
 
+<a id="delete-a-container-code-example"></a>
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -1566,10 +1588,10 @@ $container->delete($CONTAINER_NAME);
 <br/>
 
 <a id="object"></a>
-## オブジェクト
+## オブジェクト { #object }
 
 <a id="upload-an-object"></a>
-### オブジェクトアップロード
+### オブジェクトアップロード { #upload-an-object }
 指定したコンテナに新しいオブジェクトをアップロードします。
 
 ```
@@ -1578,6 +1600,7 @@ X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
+<a id="upload-an-object-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1601,9 +1624,11 @@ Content-Type: {content-type}
 > オブジェクトの名前が`./`または`../`で始まる場合、ブラウザーがこれをパス文字として認識し、Webコンソールからアクセスできなくなります。
 > APIを利用してこのような名前のオブジェクトをアップロードした場合は、API経由でアクセスする必要があります。
 
+<a id="upload-an-object-response"></a>
 #### レスポンス
 レスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
 
+<a id="upload-an-object-code-example"></a>
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -1798,7 +1823,7 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 <a id="multipart-upload"></a>
-### マルチパートアップロード
+### マルチパートアップロード { #multipart-upload }
 5GBを超える容量を持つオブジェクトは5GB以下のセグメントに分割してアップロードする必要があります。セグメントオブジェクトをアップロードした後、マニフェストオブジェクトを作成すると1つのオブジェクトのように使用できます。
 
 <br/>
@@ -1912,6 +1937,7 @@ X-Auth-Token: {token-id}
 
 <br/>
 
+<a id="multipart-upload-code-example"></a>
 #### コード例
 DLO方式を利用したマルチパートアップロード例
 
@@ -2175,7 +2201,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 <br/>
 
 <a id="update-an-object"></a>
-### オブジェクト内容の修正
+### オブジェクト内容の修正 { #update-an-object }
 オブジェクトアップロードAPIと同じですが、オブジェクトがすでにコンテナにある場合、該当オブジェクトの内容が修正されます。
 
 ```
@@ -2184,6 +2210,7 @@ X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
+<a id="update-an-object-request"></a>
 #### リクエスト
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -2197,13 +2224,14 @@ Content-Type: {content-type}
 | Object | URL | String | O | 内容を修正するオブジェクト名 |
 | - |	Body | Binary | O | 修正するオブジェクトの内容 |
 
+<a id="update-an-object-response"></a>
 #### レスポンス
 レスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
 
 <br/>
 
 <a id="query-object-information"></a>
-### オブジェクト情報の照会
+### オブジェクト情報の照会 { #query-object-information }
 指定したオブジェクトの情報を照会します。オブジェクト情報は、レスポンスヘッダで確認できます。
 
 ```
@@ -2211,6 +2239,7 @@ HEAD   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
+<a id="query-object-information-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -2221,6 +2250,7 @@ X-Auth-Token: {token-id}
 | Container |	URL | String | O | コンテナ名 |
 | Object | URL | String | O | ダウンロードするオブジェクト名 |
 
+<a id="query-object-information-response"></a>
 #### レスポンス
 このリクエストはレスポンス本文を返しません。リクエストが正しければ、ステータスコード200を返します。
 
@@ -2238,6 +2268,7 @@ X-Auth-Token: {token-id}
 | X-Manifest-Etag | Header | String | SLO方式マルチパートオブジェクトのマニフェストETag値(MD5) |
 
 
+<a id="query-object-information-code-example"></a>
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -2262,7 +2293,7 @@ date: Wed, 16 Oct 2024 23:43:36 GMT
 <br/>
 
 <a id="download-an-object"></a>
-### オブジェクトのダウンロード
+### オブジェクトのダウンロード { #download-an-object }
 オブジェクトをダウンロードします。
 
 ```
@@ -2270,6 +2301,7 @@ GET   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
+<a id="download-an-object-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -2280,9 +2312,11 @@ X-Auth-Token: {token-id}
 | Container |	URL | String | O | コンテナ名 |
 | Object | URL | String | O | ダウンロードするオブジェクト名 |
 
+<a id="download-an-object-response"></a>
 #### レスポンス
 オブジェクトの内容がストリームで返されます。リクエストが正しければステータスコード200を返します。
 
+<a id="download-an-object-code-example"></a>
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -2430,7 +2464,7 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 <a id="copy-an-object"></a>
-### オブジェクトのコピー
+### オブジェクトのコピー { #copy-an-object }
 オブジェクトを別のコンテナーにコピーします。ソースオブジェクトの全ての属性が一緒にコピーされます。
 
 ```
@@ -2445,6 +2479,7 @@ X-Auth-Token: {token-id}
 X-Copy-From: {SourceContainer}/{SourceObject}
 ```
 
+<a id="copy-an-object-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -2509,9 +2544,11 @@ X-Copy-From: {SourceContainer}/{SourceObject}; multipart-manifest=get
 | SLOマニフェスト | X-Static-Large-Object, X-Manifest-Etag |
 | DLOマニフェスト | X-Object-Manifest |
 
+<a id="copy-an-object-response"></a>
 #### レスポンス
 このリクエストはレスポンス本文を返しません。リクエストが正しければステータスコード201を返します。
 
+<a id="copy-an-object-code-example"></a>
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -2660,7 +2697,7 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 <br/>
 
 <a id="modify-object-metadata"></a>
-### オブジェクトメタデータ修正
+### オブジェクトメタデータ修正 { #modify-object-metadata }
 指定したオブジェクトのメタデータを修正します。
 
 ```
@@ -2669,6 +2706,7 @@ X-Auth-Token: {token-id}
 X-Object-Meta-{Key}: {Value}
 ```
 
+<a id="modify-object-metadata-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -2688,9 +2726,11 @@ X-Object-Meta-{Key}: {Value}
 > ロック有効期限が過ぎていないオブジェクトは、上書きや削除ができません。 
 > オブジェクトのメタデータはロック有効期限より前でも変更できます。
 
+<a id="modify-object-metadata-response"></a>
 #### レスポンス
 このリクエストはレスポンス本文を返しません。リクエストが正しければステータスコード202を返します。
 
+<a id="modify-object-metadata-code-example"></a>
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -2832,7 +2872,7 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 <br/>
 
 <a id="delete-an-object"></a>
-### オブジェクト削除
+### オブジェクト削除 { #delete-an-object }
 指定したオブジェクトを削除します。
 
 > [参考]
@@ -2843,6 +2883,7 @@ DELETE   /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
+<a id="delete-an-object-request"></a>
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -2853,11 +2894,13 @@ X-Auth-Token: {token-id}
 | Container | URL| String |	 O | コンテナ名 |
 | Object | URL| String |  O | 削除するオブジェクト名 |
 
+<a id="delete-an-object-response"></a>
 #### レスポンス
 このリクエストはレスポンス本文を返しません。リクエストが正しければステータスコード204を返します。
 
 <br/>
 
+<a id="delete-an-object-code-example"></a>
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -2977,10 +3020,10 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 <br/>
 
 <a id="limiting-policy"></a>
-## 制限ポリシー
+## 制限ポリシー { #limiting-policy }
 
 <a id="request-rate-limit"></a>
-### リクエスト速度制限
+### リクエスト速度制限 { #request-rate-limit }
 Object Storageはシステムの安定性を確保するため、ストレージアカウント単位で書き込みリクエストの速度制限(rate limit)を適用します。
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
@@ -3031,6 +3074,6 @@ Object Storageはシステムの安定性を確保するため、ストレージ
 <br/>
 
 <a id="references"></a>
-## References
+## References { #references }
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
