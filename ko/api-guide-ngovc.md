@@ -1,121 +1,34 @@
 ## Storage > Object Storage > API 가이드
 
-<a id="prerequisites"></a>
-## 사전 준비
+<a id="common"></a>
+## 오브젝트 스토리지 API 공통 정보
 
-오브젝트 스토리지 API를 사용하려면 먼저 인증 토큰(token)을 발급 받아야 합니다. 인증 토큰은 오브젝트 스토리지의 REST API를 사용할 때 필요한 인증 키입니다. 외부 공개로 설정하지 않은 컨테이너나 오브젝트에 접근하려면 반드시 토큰이 필요합니다. 토큰은 NHN Cloud 계정별로 관리됩니다.
+<a id="endpoint"></a>
+### API 엔드포인트
 
-<br/>
+API를 사용하려면 API 엔드포인트와 토큰이 필요합니다. [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-ngovc/)을 참고하여 API 사용에 필요한 정보를 준비합니다.
+오브젝트 스토리지 API는 `object-store` 타입 엔드포인트를 이용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
-<a id="check-the-tenant-id-and-api-endpoint"></a>
-### 테넌트 아이디(Tenant ID) 및 API 엔드포인트(Endpoint) 확인
+| 리전 | 엔드포인트 |
+| --- | --- |
+| 한국(대구) 리전 | https://kr4-api-object-storage.ngovc.com/v1/AUTH_\*\*\*\*\* |
 
-토큰 발급을 위한 테넌트 아이디와 API의 엔드포인트는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 확인할 수 있습니다.
+<a id="auth"></a>
+### 인증 및 권한
 
-| 항목 | API 엔드포인트 | 용도 |
-|---|---|---|
-| Identity | https://api-identity-infrastructure.ngovc.com/v2.0 | 인증 토큰 발급 |
-| Object-Store | https://kr4-api-object-storage.ngovc.com/v1/{Account} | 오브젝트 스토리지 제어, 리전에 따라 다름 |
-| Tenant ID | 숫자 + 영문자로 구성된 32자 길이의 문자열 | 인증 토큰 발급 |
+오브젝트 스토리지는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
+IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-ngovc/)을 참고하세요.
 
-<br/>
-
-<a id="set-the-api-password"></a>
-### API 비밀번호 설정
-
-API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API Endpoint 설정** 버튼을 클릭해 설정할 수 있습니다.
-
-1. **API Endpoint 설정** 버튼을 클릭합니다.
-2. **API Endpoint 설정** 아래 **API 비밀번호 설정** 입력 상자에 토큰 발급 시 사용할 비밀번호를 입력합니다.
-3. **저장** 버튼을 클릭합니다.
-
-> [참고]
-> API 비밀번호는 사용자 계정별로 설정되며, 사용자 계정이 속한 모든 프로젝트에서 사용할 수 있습니다.
+> [주의]
+> 오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다.
+> 오브젝트 스토리지 테넌트 ID는 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 확인할 수 있습니다.
 
 <!-- 개행을 위한 주석 -->
 
-> [주의]
-> API 비밀번호를 변경하면 이전에 발급 받은 인증 토큰은 즉시 만료되어 사용할 수 없습니다. 인증 토큰을 다시 발급 받아야 합니다.
+> [참고]
+> API 비밀번호는 오브젝트 스토리지 서비스 페이지에서도 **API 엔드포인트 설정** 버튼을 클릭해 설정할 수 있습니다.
 
-<br/>
-
-<a id="authentication-token-issuance"></a>
-## 인증 토큰 발급
-
-```
-POST    https://api-identity-infrastructure.ngovc.com/v2.0/tokens
-Content-Type: application/json
-```
-
-<p style='padding-top: 10px; font-size: 15px;'><b>요청</b></p>
-
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| tenantId | Body | String | O | 테넌트 ID, API Endpoint 설정 대화 상자에서 확인 가능 |
-| username | Body | String | O | NHN Cloud 회원 ID(이메일 형식), IAM 멤버 ID |
-| password | Body | String | O | API Endpoint 설정 대화 상자에서 저장한 비밀번호 |
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-  "auth": {
-    "tenantId": "{Tenant ID}",
-    "passwordCredentials": {
-      "username": "{NHN Cloud ID}",
-      "password": "{API Password}"
-    }
-  }
-}
-```
-</details>
-
-<p style='padding-top: 10px; font-size: 15px;'><b>응답</b></p>
-
-| 이름 | 종류 | 형식 | 설명 |
-|---|---|---|---|
-| access.token.id | Body | String |	발급된 토큰 ID |
-| access.token.tenant.id | Body | String | 토큰을 요청한 프로젝트에 대응하는 테넌트 ID |
-| access.token.expires | Body | String | 발급한 토큰의 만료 시간 <br/>YYYY-MM-DDThh:mm:ssZ의 형태. 예) 2017-05-16T03:17:50Z |
-| access.user.id | Body | String | 32개의 16진수로 구성된 API 사용자 ID<br/>S3 API 자격 증명을 발급 받거나, 접근 정책을 설정하는 데 사용 |
-
-> [주의]
-> 인증 토큰의 유효 기간이 만료되면 새로운 토큰을 발급 받아야 합니다.
->
-> 인증 토큰을 발급 받은 사용자 계정이 프로젝트에 대한 접근 권한을 잃거나 NHN Cloud를 탈퇴하여 삭제되면 인증 토큰은 즉시 만료되어 사용할 수 없습니다.
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-  "access": {
-    "token": {
-      "expires": "{Expires Time}",
-      "id": "{token-id}",
-      "tenant": {
-        "description": "",
-        "enabled": true,
-        "id": "{Tenant ID}",
-        "name": "{NHN Cloud ID}",
-        "groupId": "{NHN Cloud Project ID}",
-        "project_domain": "NORMAL",
-        "swift": true
-      },
-      "issued_at": "{Token Issued Time}"
-    },
-    "serviceCatalog": [],
-    "user": {
-      "id": "{API User ID}",
-      "name": "{User Name}"
-    }
-  }
-}
-```
-</details>
-
-<p style='padding-top: 10px; font-size: 15px;'><b>코드 예시</b></p>
+#### 토큰 발급 코드 예시
 
 <details>
 <summary>cURL</summary>
@@ -320,8 +233,6 @@ printf("%s\n", $token);
 ```
 </details>
 
-<br/>
-
 <a id="storage-account"></a>
 ## 스토리지 계정
 스토리지 계정(account)은 `AUTH_*****` 형태의 문자열입니다. Object-Store API 엔드포인트에 포함되어 있습니다.
@@ -341,7 +252,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, **API Endpoint 설정** 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 
 #### 응답
 응답 본문을 반환하지 않습니다. 사용 현황은 헤더에 포함되어 있습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
@@ -534,7 +445,7 @@ X-Auth-Token: {token-id}
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정, **API Endpoint 설정** 대화 상자에서 확인 |
+| Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 
 #### 응답
 ```
@@ -946,8 +857,8 @@ public class ContainerService {
 
     // ContainerService Class ...
 
-    public List<String> getObjectList(String conatinerName) {
-        return this.getList(this.getUrl(conatinerName));
+    public List<String> getObjectList(String containerName) {
+        return this.getList(this.getUrl(containerName));
     }
 
     public List<String> getList(String url) {
@@ -1067,15 +978,16 @@ foreach ($object_list as $obj) {
 <a id="change-container-settings"></a>
 ### 컨테이너 설정 변경
 
-컨테이너 설정을 변경합니다. 컨테이너 설정은 컨테이너 조회시 응답 헤더에서 확인할 수 있습니다.
+컨테이너 설정을 변경합니다. 컨테이너 설정은 컨테이너 조회 시 응답 헤더에서 확인할 수 있습니다.
 
 ```
 POST  /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Container-Read: {컨테이너 읽기에 대한 역할 기반 접근 규칙}
 X-Container-Write: {컨테이너 쓰기에 대한 역할 기반 접근 규칙}
-X-Container-Ip-Acl-Allowed-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
-X-Container-Ip-Acl-Denied-List: {컨테이너 쓰기에 대한 IP 기반 접근 규칙}
+X-Container-View: {컨테이너 조회에 대한 역할 기반 접근 규칙}
+X-Container-Ip-Acl-Allowed-List: {컨테이너 접근에 대한 IP 기반 접근 규칙}
+X-Container-Ip-Acl-Denied-List: {컨테이너 접근에 대한 IP 기반 접근 규칙}
 X-Container-Object-Lifecycle: {컨테이너의 오브젝트 수명 주기}
 X-Container-Object-Transfer-To: {오브젝트의 수명 주기가 만료되었을 때 이동할 컨테이너}
 X-History-Location: {오브젝트의 이전 버전을 저장할 컨테이너}
@@ -1100,8 +1012,8 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 | X-Container-Read | Header | String | - | 컨테이너 읽기에 대한 역할 기반 접근 규칙 설정 |
 | X-Container-Write | Header | String | - | 컨테이너 쓰기에 대한 역할 기반 접근 규칙 설정 |
 | X-Container-View | Header | String | - | 컨테이너 조회에 대한 역할 기반 접근 규칙 설정 |
-| X-Container-Ip-Acl-Allowed-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
-| X-Container-Ip-Acl-Denied-List | Header | String | - | 컨테이너 쓰기에 대한 IP 기반 접근 규칙 설정 |
+| X-Container-Ip-Acl-Allowed-List | Header | String | - | 컨테이너 접근에 대한 IP 기반 접근 규칙 설정 |
+| X-Container-Ip-Acl-Denied-List | Header | String | - | 컨테이너 접근에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Object-Lifecycle | Header | Integer | - | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
 | X-Container-Object-Transfer-To | Header | String | - | 오브젝트의 수명 주기가 만료되었을 때 이동할 컨테이너 |
 | X-History-Location | Header | String | - | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
@@ -1121,7 +1033,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 <a id="set-container-rbac-policy"></a>
 ##### 접근 정책 설정
-`X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참조하세요.
+`X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide-ngovc/)를 참고하세요.
 
 <br/>
 
@@ -1129,6 +1041,12 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 ##### 오브젝트 수명 주기 설정
 `X-Container-Object-Lifecycle` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
 `X-Container-Object-Transfer-To` 헤더를 사용하면 수명 주기가 만료된 오브젝트를 지정된 컨테이너로 옮겨 보관할 수 있습니다. 컨테이너가 지정되어 있지 않으면 만료된 오브젝트는 삭제됩니다.
+
+> [참고]
+> 컨테이너 정책을 통해 세밀한 수명 주기 규칙을 설정할 수 있습니다.
+> 자세한 설명은 [컨테이너 정책 설정 가이드](container-policy-guide-ngovc/#lifecycle)를 참고하세요.
+
+<!-- 개행을 위한 주석 -->
 
 <br/>
 
@@ -1151,6 +1069,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 >
 > 아카이브 컨테이너로 사용할 컨테이너 이름에는 가급적 유니코드 문자를 사용하지 않는 것을 권장합니다. 아카이브 컨테이너로 지정할 컨테이너 이름에 유니코드 문자가 포함되어 있다면 반드시 URL 인코딩 후 요청 헤더에 입력해야 합니다.
 >
+> 암호화 컨테이너를 아카이브 컨테이너로 지정한 뒤 암호화 컨테이너의 대칭 키를 Secure Key Manager 서비스에서 삭제하면 원본 컨테이너의 오브젝트 업로드와 삭제에 실패합니다.
 
 <br/>
 
@@ -1216,7 +1135,7 @@ x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 ```
 
 <br>
-CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 호출했다면 아래와 같은 에러 응답을 받게 됩니다.
+CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 호출하면 아래와 같은 오류 응답이 반환됩니다.
 
 ```
 Access to XMLHttpRequest at 'https://kr4-api-object-storage.ngovc.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
@@ -1253,7 +1172,7 @@ Status: 0
 모든 업로드 정책 헤더는 `,` 구분자를 이용하여 여러 규칙을 입력할 수 있으며, 구분자 `,`를 제외한 각각의 규칙은 URL 인코딩(퍼센트 인코딩)해야 합니다.
 확장자 규칙은 파일의 확장자를, 파일명 규칙은 오브젝트 이름에 포함 여부를 검사합니다. 확장자 규칙은 `.`을 제외하고 입력해야 합니다. 예를 들어, txt 확장자를 입력하려면 `.txt`가 아닌 `txt`만 입력합니다.
 
-업로드 정책은 화이트리스트와 블랙리스트를 동시에 사용할 수 없습니다. 두 속성을 모두 설정하도록 요청하면 실패 응답을 받게 됩니다.
+업로드 정책은 화이트리스트와 블랙리스트를 동시에 사용할 수 없습니다. 두 속성을 모두 설정하도록 요청하면 실패 응답이 반환됩니다.
 
 
 <details>
@@ -1492,7 +1411,6 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 ```
 </details>
 
-
 <br/>
 
 <a id="delete-a-container"></a>
@@ -1667,7 +1585,7 @@ Content-Type: {content-type}
 
 > [주의]
 > 오브젝트의 이름이 `./` 또는 `../`으로 시작한다면 브라우저가 이를 경로 문자로 인식해 웹 콘솔에서 접근할 수 없습니다.
-> API를 이용하여 이러한 이름의 오브젝트를 업로드했다면 API를 통해 접근해야 합니다.
+> API를 이용하여 이러한 이름의 오브젝트를 업로드했다면 API로 접근해야 합니다.
 
 #### 응답
 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
@@ -1841,7 +1759,7 @@ class ObjectService {
       CURLOPT_HTTPHEADER => $req_header
     ));
     $response = curl_exec($curl);
-    curl_close($curl);l
+    curl_close($curl);
 
     fclose($fd);
   }
@@ -2205,7 +2123,7 @@ class ObjectService {
         CURLOPT_PUT => TRUE,
         CURLOPT_HEADER => TRUE,
         CURLOPT_RETURNTRANSFER => TRUE,
-        CURLOPT_INFILE => $part_fd,  // 파트 파일 스트림을 매개 변수로 입력
+        CURLOPT_INFILE => $part_fd,  // 파트 파일 스트림을 매개변수로 입력
         CURLOPT_HTTPHEADER => $req_header
       ));
       $response = curl_exec($curl);
@@ -2521,14 +2439,14 @@ X-Copy-From: {SourceContainer}/{SourceObject}
 | X-Auth-Token | Header | String | O | 토큰 ID |
 | Destination | Header | String | - | 대상 오브젝트 경로, `{대상 컨테이너}/{대상 오브젝트}`<br/>COPY 메서드를 사용할 때 필요 |
 | X-Copy-From | Header | String | - | 원본 오브젝트 경로, `{원본 컨테이너}/{원본 오브젝트}`<br/>PUT 메서드를 사용할 때 필요 |
-| X-Fresh-Metadata | Header | Boolean | - | 오브젝트의 속성 초기화 여부<br/>값이 true이면 원본 오브젝트의 속성을 복사하지 않습니다.<br/>기본 값은 false입니다. |
+| X-Fresh-Metadata | Header | Boolean | - | 오브젝트의 속성 초기화 여부<br/>값이 true이면 원본 오브젝트의 속성을 복사하지 않습니다.<br/>기본값은 false입니다. |
 | X-Object-Meta-{Key} | Header | String | - | 대상 오브젝트의 메타데이터 |
 | X-Delete-At | Header | Timestamp | - | 대상 오브젝트의 만료 날짜, 유닉스 시간(초) |
 | X-Delete-After | Header | Timestamp | - | 대상 오브젝트의 유효 시간, 유닉스 시간(초) |
 | Account | URL | String | O | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL | String | O | 컨테이너 이름<br/>COPY 메서드: 원본 컨테이너<br/>PUT 메서드: 대상 컨테이너 |
 | Object | URL | String | O | 오브젝트 이름<br/>COPY 메서드: 원본 오브젝트<br/>PUT 메서드: 대상 오브젝트 |
-| multipart-manifest | Query | String | - | 값이 get이면 매니페스트 오브젝트만 복사<br/>COPY 메서드만 지원<br/>생략하면 세그먼트를 병합하여 단일 오브젝트로 복사합니다. |
+| multipart-manifest | Query | String | - | 값이 get이면 매니페스트 오브젝트만 복사<br/>생략하면 세그먼트를 병합하여 단일 오브젝트로 복사합니다.<br/>COPY 메서드: 쿼리 파라미터로 추가<br/>PUT 메서드: `X-Copy-From` 헤더 값에 추가 |
 
 <a id="preserve-object-properties"></a>
 ##### 오브젝트 속성 보존
@@ -2546,23 +2464,36 @@ X-Copy-From: {SourceContainer}/{SourceObject}
 
 <a id="copy-a-multipart-object"></a>
 ##### 멀티파트 오브젝트 복사
-멀티파트 오브젝트를 복사하면 매니페스트가 참조하는 세그먼트들이 하나의 오브젝트로 병합되어 복사됩니다. 따라서 5GB를 초과하는 멀티파트 오브젝트는 일반적인 방법으로 복사할 수 없습니다.
-5GB를 초과하는 멀티파트 오브젝트를 복사하려면 매니페스트 오브젝트만 복사해야 합니다. 요청 시 `multipart-manifest=get` 파라미터를 추가해 매니페스트를 원본으로 지정할 수 있습니다.
+멀티파트 오브젝트를 복사하면 매니페스트가 참조하는 세그먼트들이 하나의 오브젝트로 병합되어 복사됩니다. 따라서 5GB를 초과하는 멀티파트 오브젝트는 일반적인 방법으로 복사할 수 없습니다. 5GB를 초과하는 멀티파트 오브젝트를 복사하려면 매니페스트 오브젝트만 복사해야 합니다. 요청 시 `multipart-manifest=get` 파라미터를 추가해 매니페스트를 원본으로 지정할 수 있습니다.
+
+```
+COPY   /v1/{Account}/{SourceContainer}/{SourceObject}?multipart-manifest=get
+X-Auth-Token: {token-id}
+Destination: {TargetContainer}/{TargetObject}
+```
+
+```
+PUT   /v1/{Account}/{TargetContainer}/{TargetObject}
+X-Auth-Token: {token-id}
+X-Copy-From: {SourceContainer}/{SourceObject}; multipart-manifest=get
+```
+
+> [참고]
+> PUT 메서드로 매니페스트를 복사할 때는 `X-Copy-From` 헤더 값에 `multipart-manifest=get` 파라미터를 세미콜론으로 구분해 추가해야 합니다.
+
+<!-- 개행을 위한 주석 -->
+
+> [주의]
+> 복사된 매니페스트는 원본 세그먼트 경로를 참조하므로, 원본 세그먼트 오브젝트를 삭제하면 데이터에 접근할 수 없습니다.
+> 원본 세그먼트 오브젝트를 다른 컨테이너로 복사했다면 매니페스트 오브젝트를 새로 만들어야 합니다.
+
+
 매니페스트를 복사할 때는 매니페스트의 속성이 함께 복사됩니다.
 
 | 유형 | 복사되는 속성 |
 |---|---|
 | SLO 매니페스트 | X-Static-Large-Object, X-Manifest-Etag |
 | DLO 매니페스트 | X-Object-Manifest |
-
-> [주의]
-> 매니페스트를 복사하고 원본 세그먼트 오브젝트를 삭제하면 데이터에 접근할 수 없습니다.
-> 원본 세그먼트 오브젝트를 다른 컨테이너로 복사했다면 매니페스트 오브젝트를 새로 만들어야 합니다. 
-
-<!-- 개행을 위한 주석 -->
-
-> [참고]
-> 매니페스트 오브젝트 복사는 COPY 메서드만 지원합니다.
 
 #### 응답
 이 요청은 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
@@ -2586,9 +2517,15 @@ https://kr4-api-object-storage.ngovc.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e06
 
 **멀티파트 매니페스트 오브젝트 복사**
 ```
+// COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/419da6e.mp4' \
 https://kr4-api-object-storage.ngovc.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/419da6e.mp4?multipart-manifest=get
+
+// PUT method
+$ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+-H 'X-Copy-From: curl_example/419da6e.mp4; multipart-manifest=get' \
+https://kr4-api-object-storage.ngovc.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/copy_con/419da6e.mp4
 ```
 </details>
 
@@ -2688,7 +2625,7 @@ class ObjectService {
       CURLOPT_HTTPHEADER => $req_header
     ));
     $response = curl_exec($curl);
-    curl_close($curl);l
+    curl_close($curl);
   }
 }
 
@@ -2734,7 +2671,7 @@ X-Object-Meta-{Key}: {Value}
 
 > [참고]
 > 객체 잠금 컨테이너에 업로드된 오브젝트에는 자동으로 잠금 만료 날짜가 설정됩니다. 
-> 잠금 만료 날짜가 지나지 않은 오브젝트는 덮어씌우거나 삭제할 수 없습니다. 
+> 잠금 만료 날짜가 지나지 않은 오브젝트는 덮어쓰거나 삭제할 수 없습니다. 
 > 오브젝트의 메타데이터는 잠금 만료 날짜 이전이라도 변경할 수 있습니다.
 
 #### 응답
