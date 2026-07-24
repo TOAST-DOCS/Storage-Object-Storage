@@ -5,37 +5,37 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 
 | S3 API 메서드 | 용도 |
 | --- | --- |
-| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | 버킷 생성 |
-| [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | 버킷 정보 조회 |
-| [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | 버킷 삭제 |
-| [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | 버킷 ACL 설정 |
-| [GET Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html) | 버킷 ACL 조회 |
-| [GET Bucket Location](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html) | 버킷이 있는 리전 조회 |
-| [GET Bucket List Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html) | 버킷의 오브젝트 목록 조회 |
-| [GET Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html) | 오브젝트 다운로드 |
-| [HEAD Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html) | 오브젝트 정보 조회 |
-| [PUT Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html) | 오브젝트 업로드 |
-| [PUT Object Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html) | 오브젝트 복사 |
-| [DELETE Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html) | 오브젝트 삭제 |
-| [Initiate Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html) | 멀티파트 업로드 초기화 |
-| [Upload Part](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html) | 파트 업로드 |
-| [Upload Part Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html) | 파트 복사 |
-| [Complete Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html) | 멀티파트 업로드 완료 |
-| [Abort Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html) | 멀티파트 업로드 중단 |
-| [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 멀티파트 오브젝트의 파트 오브젝트 리스트 |
-| [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 업로드 진행 중인 멀티파트 오브젝트의 파트 오브젝트 리스트 |
-| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | 멀티파트 오브젝트 삭제 |
+| PUT Bucket | 버킷 생성 |
+| HEAD Bucket | 버킷 정보 조회 |
+| DELETE Bucket | 버킷 삭제 |
+| PUT Bucket ACL | 버킷 ACL 설정 |
+| GET Bucket ACL | 버킷 ACL 조회 |
+| GET Bucket Location | 버킷이 있는 리전 조회 |
+| GET Bucket List Objects | 버킷의 오브젝트 목록 조회 |
+| GET Object | 오브젝트 다운로드 |
+| HEAD Object | 오브젝트 정보 조회 |
+| PUT Object | 오브젝트 업로드 |
+| PUT Object Copy | 오브젝트 복사 |
+| DELETE Object | 오브젝트 삭제 |
+| Initiate Multipart Upload | 멀티파트 업로드 초기화 |
+| Upload Part | 파트 업로드 |
+| Upload Part Copy | 파트 복사 |
+| Complete Multipart Upload | 멀티파트 업로드 완료 |
+| Abort Multipart Upload | 멀티파트 업로드 중단 |
+| List Parts | 멀티파트 오브젝트의 파트 오브젝트 리스트 |
+| List Multipart Uploads | 업로드 진행 중인 멀티파트 오브젝트의 파트 오브젝트 리스트 |
+| DELETE Multiple Objects | 2개 이상의 오브젝트 삭제 |
 
-이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [Amazon S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
+이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [Amazon S3 API 가이드](https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
 
 <a id="s3-api-credential"></a>
 ## S3 API 자격 증명(S3 API Credential)
 
 <a id="obtain-s3-api-credentials"></a>
 ### S3 API 자격 증명 발급
-Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급 받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 이용하여 발급 받을 수 있습니다. 웹 콘솔을 이용한 자격 증명 발급은 [S3 API 자격 증명](console-guide-ngoic/#s3-api-credentials) 항목을 참조하세요.
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 이용하여 발급받을 수 있습니다. 웹 콘솔을 이용한 자격 증명 발급은 [S3 API 자격 증명](console-guide-ngoic/#s3-api-credentials) 항목을 참고하세요.
 
-API를 이용하여 자격 증명을 발급 받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide-ngoic/#prerequisites)를 참조하세요.
+API를 이용하여 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide-ngoic/#prerequisites)를 참고하세요.
 
 ```
 POST    https://api-identity-infrastructure.ngoic.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -48,22 +48,22 @@ X-Auth-Token: {token-id}
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급 받은 토큰 ID |
-| api-user-id | URL | String | O | API 사용자 ID, API Endpoint 설정 대화 상자에서 확인 가능 |
-| tenant_id | Body | String | O | 테넌트 ID. API Endpoint 설정 대화 상자에서 확인 가능 |
+| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
+| api-user-id | URL | String | O | API 사용자 ID, API 엔드포인트 설정 대화 상자에서 확인 가능 |
+| tenant_id | Body | String | O | 테넌트 ID. API 엔드포인트 설정 대화 상자에서 확인 가능 |
 
 > [참고]
-> `{api-user-id}`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
-> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide-ngoic/#authentication-token-issuance) 항목을 참조하세요.
+> `{api-user-id}`는 콘솔의 API 엔드포인트 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
+> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide-ngoic/#authentication-token-issuance) 항목을 참고하세요.
 >
-> S3 API 자격 증명은 유효 기간이 없으며, 사용자별로 프로젝트당 최대 3개까지 발급 받을 수 있습니다.
+> S3 API 자격 증명은 유효 기간이 없으며, 사용자별로 프로젝트당 최대 3개까지 발급받을 수 있습니다.
 
 <!-- 개행을 위한 주석이므로 필수로 포함되어야 합니다. -->
 
 > [주의]
-> S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 이용하여 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급 받아 사용하는 것을 권장합니다.
+> S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 이용하여 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급받아 사용하는 것을 권장합니다.
 >
-> S3 API 자격 증명을 발급 받은 사용자 계정이 프로젝트에 대한 접근 권한을 잃거나 NHN Cloud를 탈퇴하여 삭제되면 자격 증명은 즉시 만료되어 사용할 수 없습니다.
+> S3 API 자격 증명을 발급받은 사용자 계정이 프로젝트에 대한 접근 권한을 잃거나 NHN Cloud를 탈퇴하여 삭제되면 자격 증명은 즉시 만료되어 사용할 수 없습니다.
 
 <details>
 <summary>예시</summary>
@@ -107,7 +107,7 @@ X-Auth-Token: {token-id}
 
 <a id="get-s3-api-credentials"></a>
 ### S3 API 자격 증명 조회
-발급 받은 S3 API 자격 증명을 조회합니다.
+발급받은 S3 API 자격 증명을 조회합니다.
 
 **[Method, URL]**
 
@@ -121,7 +121,7 @@ X-Auth-Token: {token-id}
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급 받은 토큰 ID |
+| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
 | user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
 
 #### 응답
@@ -157,7 +157,7 @@ X-Auth-Token: {token-id}
 
 <a id="delete-s3-api-credentials"></a>
 ### S3 API 자격 증명 삭제
-발급 받은 S3 API 자격 증명을 삭제합니다.
+발급받은 S3 API 자격 증명을 삭제합니다.
 
 **[Method, URL]**
 
@@ -171,7 +171,7 @@ X-Auth-Token: {token-id}
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급 받은 토큰 ID |
+| X-Auth-Token | Header | String | O | 발급받은 토큰 ID |
 | user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
 | access | URL | String | O | S3 API 자격 증명 접근 키 |
 
@@ -180,7 +180,7 @@ X-Auth-Token: {token-id}
 
 <a id="create-signature"></a>
 ## 서명(signature) 생성
-S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
+S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하세요.
 
 서명 생성에 필요한 정보는 다음과 같습니다.
 
@@ -191,6 +191,32 @@ S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 �
 | 서비스 이름 | s3 |
 | 리전 이름 | KR4 - 한국(대구) 리전 |
 | 비밀 키 | S3 API 자격 증명 비밀 키 |
+
+AWS signature V4 서명 생성 시 `x-amz-content-sha256` 헤더가 필요합니다. 이 헤더는 정규 요청(Canonical Request)에 포함되어 서명 계산에 사용되며, 헤더 값에 따라 페이로드 처리 방식이 결정됩니다. 사용 가능한 값은 다음과 같습니다.
+
+| x-amz-content-sha256 값 | 설명 |
+|---|---|
+| `<페이로드 해시>` | 요청 페이로드 전체의 SHA-256 해시 값을 사용하는 기본 방식 |
+| `UNSIGNED-PAYLOAD` | 페이로드 서명을 생략 |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD` | AWS Chunked Upload 방식(각 청크에 서명 포함) |
+| `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload 방식(청크 서명 없이 트레일러 헤더 사용) |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload 방식(각 청크에 서명 포함 + 트레일러 헤더 사용) |
+
+> [참고]
+> 자세한 내용은 [Authenticating Requests: Using the Authorization Header (AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) 문서를 참고하세요.
+
+x-amz-content-sha256 값이 `STREAMING-UNSIGNED-PAYLOAD-TRAILER` 또는 `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER`인 경우 `x-amz-trailer` 요청 헤더로 트레일러에 전송할 체크섬 알고리즘을 선언해야 합니다. 지원하는 알고리즘은 다음과 같습니다.
+
+| x-amz-trailer 값 | 알고리즘 |
+|---|---|
+| `x-amz-checksum-crc32` | CRC-32 |
+| `x-amz-checksum-crc32c` | CRC-32C |
+| `x-amz-checksum-crc64nvme` | CRC-64/NVME |
+| `x-amz-checksum-sha1` | SHA-1 |
+| `x-amz-checksum-sha256` | SHA-256 |
+
+> [참고]
+> 트레일러 헤더를 이용한 서명 계산에 대한 자세한 내용은 [Signature calculations for trailing headers (chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) 문서를 참고하세요.
 
 
 <a id="bucket"></a>
@@ -206,7 +232,7 @@ S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 �
 * 버킷 이름은 IP 주소 형식(예: 192.168.5.4)을 사용하지 않습니다.
 * 버킷 이름은 xn--으로 시작할 수 없습니다.
 
-자세한 내용은 [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html) 문서를 참조하세요.
+자세한 내용은 [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html) 문서를 참고하세요.
 
 ```
 PUT /{bucket}
@@ -399,7 +425,7 @@ Authorization: AWS {access}:{signature}
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| ETag | Header | String | 오브젝트의 MD5 해시값 |
+| ETag | Header | String | 오브젝트의 MD5 해시 값 |
 | Last-Modified | Header | String | 오브젝트의 마지막 수정 일시(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 <a id="download-object"></a>
@@ -429,7 +455,7 @@ Authorization: AWS {access}:{signature}
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
 | Last-Modified | Header | String | 오브젝트의 마지막 수정 일시(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
-| ETag | Header | String | 오브젝트의 MD5 해시값 |
+| ETag | Header | String | 오브젝트의 MD5 해시 값 |
 
 <a id="delete-object"></a>
 ### 오브젝트 삭제
@@ -464,11 +490,11 @@ S3 호환 API를 이용하여 [AWS 명령줄 인터페이스](https://aws.amazon
 [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) 문서를 참조해 AWS 명령줄 인터페이스를 설치합니다.
 
 > [참고]
-> NHN Cloud 오브젝트 스토리지는 AWS CLI 버전 2.22.35까지 지원합니다.
+> NHN Cloud 오브젝트 스토리지는 AWS CLI 버전 2.34.38까지 지원합니다.
 
 <a id="aws-command-line-interface-configuration"></a>
 ### 설정
-AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 S3 API 자격 증명과 환경을 설정해야 합니다.
+AWS 명령줄 인터페이스를 사용하려면 먼저 S3 API 자격 증명과 환경을 설정해야 합니다.
 
 ```shell
 $ aws configure
@@ -499,8 +525,8 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 
 > [참고]
-> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 NHN Cloud 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
-> AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
+> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 NHN Cloud 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야 합니다.
+> AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참고하세요.
 
 <details>
 <summary>버킷 생성</summary>
@@ -554,17 +580,17 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 
 <blockquote>
 [참고]
-</br>
+<br/>
 오브젝트의 용량이 8MB 이상이면 AWS 명령줄 인터페이스는 오브젝트를 여러 개의 파트로 나누어 업로드합니다. 파트 오브젝트는 <code style="display: inline;">{bucket}+segments</code>라는 버킷에 <code style="display: inline;">{object-name}/{upload-id}/{part-number}</code> 형태의 이름으로 저장되고, 모든 파트 업로드가 끝나면 업로드 요청한 버킷에 파트 오브젝트를 연결한 오브젝트가 만들어집니다.
-</br></br>
+<br/><br/>
 파트 오브젝트가 저장되는 <code style="display: inline;">{bucket}+segments</code> 버킷은 S3 호환 API로는 접근할 수 없고, Object Storage API 또는 콘솔을 통해 접근할 수 있습니다.
-</br></br>
+<br/><br/>
 멀티파트 오브젝트의 ETag는 각 파트 오브젝트의 ETag 값을 이진 데이터로 변환하고 순서대로 연결해(concatenate) MD5 해시한 값입니다.
 </blockquote>
 
 <blockquote>
 [주의]
-</br>
+<br/>
 멀티파트로 업로드한 오브젝트의 일부 또는 전체 파트 오브젝트를 삭제하면 오브젝트에 접근할 수 없습니다.
 </blockquote>
 
@@ -590,12 +616,44 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
+<a id="aws-command-line-interface-virtual-hosted-style"></a>
+### 도메인 스타일 엔드포인트 사용
+S3 호환 API는 버킷 접근 방식으로 경로 스타일(Path-style)과 도메인 스타일(Virtual Hosted-style)을 모두 지원합니다. 도메인 스타일은 버킷 이름을 엔드포인트의 서브 도메인으로 사용합니다.
+
+| 방식 | 형식 |
+|---|---|
+| 경로 스타일(Path-style) | `https://{endpoint}/{bucket}/{object}` |
+| 도메인 스타일(Virtual Hosted-style) | `https://{bucket}.{endpoint}/{object}` |
+
+<br/>
+
+AWS 명령줄 인터페이스에서 도메인 스타일 엔드포인트를 사용하려면 `addressing_style` 옵션을 `virtual`로 설정합니다. 이 설정을 적용하면 AWS 명령줄 인터페이스가 엔드포인트와 버킷 이름을 조합해 자동으로 도메인 스타일 URL로 요청을 보냅니다.
+
+```shell
+$ aws configure set default.s3.addressing_style virtual
+```
+
+또는 `~/.aws/config` 파일에서 사용 중인 프로필 섹션에 다음 설정을 추가합니다.
+
+```ini
+[default]
+s3 =
+  addressing_style = virtual
+```
+
+| 이름 | 설명 |
+|---|---|
+| addressing_style | `virtual` - 도메인 스타일 사용<br/>`path` - 경로 스타일 사용<br/>`auto` - 자동 선택(기본값, NHN Cloud Object Storage처럼 커스텀 엔드포인트를 사용하면 경로 스타일로 동작) |
+
+> [주의]
+> 버킷 이름에 점(`.`)이 포함되어 있으면 도메인 스타일 사용 시 와일드카드 SSL 인증서의 유효 범위를 벗어나 인증서 검증에 실패할 수 있습니다. 이때는 경로 스타일을 사용하세요.
+
 <a id="aws-sdk"></a>
 ## AWS SDK
-AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용하여 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
+AWS는 여러 가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용하여 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
 > [참고]
-> 보다 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
+> 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참고하세요.
 
 AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
 
@@ -610,7 +668,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 ### Boto3 - Python SDK
 
 > [참고]
-> 보다 자세한 내용은 [AWS SDK for Python(Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+> 자세한 내용은 [AWS SDK for Python(Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참고하세요.
 
 #### Context
 
@@ -697,7 +755,7 @@ def delete_bucket(self, bucket_name):
 
 <blockquote>
 <p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 8MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
+파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 따라 결정됩니다. 기본 파트 크기는 8MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
 </blockquote>
 
 ```python
@@ -754,7 +812,7 @@ def delete(self, bucket_name, key):
 ### Java SDK
 
 > [참고]
-> 보다 자세한 내용은 [AWS SDK for Java 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html) 문서를 참조하세요.
+> 자세한 내용은 [AWS SDK for Java 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html) 문서를 참고하세요.
 
 #### Context
 
@@ -767,7 +825,7 @@ public class AwsSdkExample {
     private static final String access = "{access}";
     private static final String secret = "{secret}";
     private static final String region = "{region name}";
-    private static final String ednpoint = "{endpoint}";
+    private static final String endpoint = "{endpoint}";
 
     private AmazonS3 s3Client;
 
@@ -776,7 +834,7 @@ public class AwsSdkExample {
             new BasicAWSCredentials(access, secret);
         s3Client = AmazonS3ClientBuilder.standard()
             .withEndpointConfiguration(
-                new AwsClientBuilder.EndpointConfiguration(ednpoint, region)
+                new AwsClientBuilder.EndpointConfiguration(endpoint, region)
             )
             .withCredentials(
                 new AWSStaticCredentialsProvider(awsCredentials)
@@ -865,7 +923,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 <blockquote>
 <p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
+파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 따라 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
 </blockquote>
 
 ```java
@@ -941,7 +999,7 @@ public void deleteObject(
 ### .NET SDK
 
 > [참고]
-> 보다 자세한 내용은 [AWS SDK for .NET 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+> 자세한 내용은 [AWS SDK for .NET 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits) 문서를 참고하세요.
 
 #### Context
 
@@ -1093,7 +1151,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 
 <blockquote>
 <p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
+파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 따라 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
 </blockquote>
 
 ```csharp
@@ -1193,3 +1251,82 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 
 </details>
 
+<a id="aws-sdk-virtual-hosted-style"></a>
+### 도메인 스타일 엔드포인트 사용
+AWS SDK에서 도메인 스타일 엔드포인트를 사용하려면 클라이언트 설정에서 경로 스타일 접근을 비활성화합니다. 엔드포인트 URL과 자격 증명은 기존과 동일하게 사용하며, SDK가 버킷 이름을 서브 도메인으로 조합해 요청을 보냅니다.
+
+<details>
+<summary>Boto3 - Python SDK</summary>
+
+<code>botocore.client.Config</code>의 <code>s3.addressing_style</code> 값을 <code>virtual</code>로 지정해 클라이언트를 생성합니다.
+
+```python
+from boto3 import client
+from botocore.client import Config
+
+
+class Boto3Example(object):
+    _REGION = '{region name}'
+    _ENDPOINT = '{endpoint}'
+    _ACCESS = '{access}'
+    _SECRET = '{secret}'
+
+    def __init__(self):
+        config = Config(s3={'addressing_style': 'virtual'})
+        self.s3 = client(service_name='s3',
+                         region_name=self._REGION,
+                         endpoint_url=self._ENDPOINT,
+                         aws_access_key_id=self._ACCESS,
+                         aws_secret_access_key=self._SECRET,
+                         config=config)
+```
+
+</details>
+
+<details>
+<summary>Java SDK</summary>
+
+클라이언트 빌더에서 <code>enablePathStyleAccess()</code> 호출을 제거합니다.
+
+```java
+public AwsSdkExample() {
+    BasicAWSCredentials awsCredentials =
+        new BasicAWSCredentials(access, secret);
+    s3Client = AmazonS3ClientBuilder.standard()
+        .withEndpointConfiguration(
+            new AwsClientBuilder.EndpointConfiguration(endpoint, region)
+        )
+        .withCredentials(
+            new AWSStaticCredentialsProvider(awsCredentials)
+        )
+        .disableChunkedEncoding()
+        .build();
+}
+```
+
+</details>
+
+<details>
+<summary>.NET SDK</summary>
+
+<code>AmazonS3Config</code>에서 <code>ForcePathStyle</code> 속성 설정을 제거합니다.
+
+```csharp
+private static AmazonS3Client GetS3Client()
+{
+    var amazonS3Config =
+        new AmazonS3Config
+        {
+            ServiceURL = endpoint,
+            AuthenticationRegion = regionName,
+        };
+    var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+
+    return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
+}
+```
+
+</details>
+
+> [주의]
+> 버킷 이름에 점(`.`)이 포함되어 있으면 도메인 스타일 사용 시 와일드카드 SSL 인증서의 유효 범위를 벗어나 인증서 검증에 실패할 수 있습니다. 이때는 경로 스타일을 사용하세요.
