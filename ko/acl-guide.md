@@ -32,6 +32,8 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 | X-Container-Write | 컨테이너 내 오브젝트 변경 요청을 허용합니다. 오브젝트에 대한 PUT, POST, DELETE, COPY 요청이 해당됩니다. |
 | X-Container-View | 컨테이너 내 오브젝트 목록 조회 및 오브젝트의 정보 조회를 허용합니다. 컨테이너에 대한 GET, HEAD 요청 및 오브젝트에 대한 HEAD 요청이 해당됩니다. |
 
+> [참고]
+> `X-Container-Read`, `X-Container-Write`, `X-Container-View`에 설정할 수 있는 접근 정책 요소는 각 속성별로 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#acl)으로 설정할 때도 동일하게 적용됩니다.
 
 <br/>
 
@@ -49,7 +51,10 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 
 > [참고]
 > `<api-user-id>`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
-> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide/#authentication-token-issuance) 항목을 참조하세요.
+> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 및 권한](api-guide/#auth) 항목을 참조하세요.
+
+> [참고]
+> `<tenant-id>:`나 `:<api-user-id>`처럼 콜론의 한쪽이 비어 있는 값, `.`으로 시작하는 값은 사용할 수 없습니다.
 
 
 <a id="common-access-elements"></a>
@@ -63,6 +68,9 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 | `.r:<referrer>` | 요청 헤더를 참조하여 설정된 HTTP 리퍼러(HTTP Referer)에게 접근을 허용합니다.<br/>인증 토큰은 필요하지 않습니다. |
 | `.r:-<referrer>` | 요청 헤더를 참조하여 설정된 HTTP 리퍼러의 접근을 제한합니다.<br/>리퍼러 앞에 마이너스 기호(-)를 붙여 설정합니다. |
 | `.rlistings` | 읽기 권한이 있는 사용자에게 컨테이너 조회(GET 또는 HEAD 요청)를 허용합니다.<br/>이 정책 요소가 없으면 오브젝트 목록을 조회할 수 없습니다.<br/>이 정책 요소는 단독으로 설정할 수 없습니다. |
+
+> [참고]
+> 리퍼러에서 `*`는 전체 공개를 뜻하는 `.r:*`로만 사용할 수 있습니다. `*`를 다른 문자와 함께 넣은 값, 전체를 차단하는 `.r:-*`, 빈 값은 사용할 수 없습니다.
 
 
 <br/>
@@ -168,6 +176,8 @@ $ curl -X GET \
 #### 특정 HTTP 리퍼러 요청에 읽기 허용/거부
 HTTP 리퍼러(HTTP Referer)는 하이퍼링크를 통해 요청하는 웹 페이지의 주소 정보입니다. 요청 헤더에 포함되어 있습니다.
 컨테이너의 `X-Container-Read` 속성에 `.r:<referrer>` 또는 `.r:-<referrer>` 형태의 역할 기반 접근 정책 요소를 설정하면 특정 리퍼러의 접근 요청을 허용하거나 차단할 수 있습니다. 역할 기반 접근 정책 요소로 HTTP 리퍼러를 설정할 때는 프로토콜과 하위 경로를 제외한 도메인 이름을 입력해야 합니다.
+
+HTTP 리퍼러 접근 허용/차단 정책은 입력하는 순서와 관계없이 차단 정책이 우선 적용됩니다. 따라서 차단 대상으로 지정된 HTTP 리퍼러의 접근 요청은 모든 접근을 허용하는 `.r:*` 정책 요소를 함께 입력하더라도 거부됩니다.
 
 > [주의]
 > HTTP 리퍼러는 헤더 변조를 통해 사용자가 언제든지 변경할 수 있습니다. HTTP 리퍼러를 이용한 접근 정책은 보안에 취약하기 때문에 권장하지 않습니다.
@@ -300,34 +310,6 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
-</details>
-<br/>
-
-HTTP 리퍼러에 대한 접근 허용/차단 정책은 입력하는 순서에 따라 적용됩니다. 예를 들어, 리퍼러 차단 정책 요소 뒤에 모두에게 접근을 허용하는 `.r:*` 정책 요소를 입력했다면 리퍼러 차단 정책은 무시됩니다. 반대로 모두에게 접근을 허용하는 정책 요소를 먼저 입력하고 특정 리퍼러 차단 정책 요소를 뒤에 입력했다면, 설정된 리퍼러의 접근 요청을 제외한 모든 접근 요청이 허용됩니다.
-<br/>
-
-<details>
-<summary>HTTP 리퍼러 차단이 무시되는 잘못된 정책 설정 예시</summary>
-
-```
-$ curl -i -X POST \
-  -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
-```
-
-```
-$ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
-
-[오브젝트 다운로드]
-
-
-$ curl -O -X GET -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
-
-[오브젝트 다운로드]
-```
 </details>
 
 <details>
@@ -478,6 +460,10 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 ### API { #ip-based-access-api }
 
 API를 사용해 컨테이너의 `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List` 속성에 IP 기반 접근 정책 요소를 입력하면 IP 기반의 ACL을 활성화할 수 있습니다. `X-Container-Ip-Acl-Allowed-List`는 화이트리스트, `X-Container-Ip-Acl-Denied-List`는 블랙리스트를 의미합니다.
+
+> [참고]
+> `X-Container-Ip-Acl-Allowed-List`(화이트리스트)와 `X-Container-Ip-Acl-Denied-List`(블랙리스트)에 설정할 수 있는 정책 요소는 각각 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#ip-acl)으로 설정할 때도 동일하게 적용됩니다.
+
 <br>
 
 IP 기반 접근 정책 요소는 접근 권한과, IP 또는 네트워크 대역으로 이루어져 있으며 콤마(`,`)로 구분해 여러 개의 값을 입력할 수 있습니다. 접근 권한은 아래의 표와 같습니다.
