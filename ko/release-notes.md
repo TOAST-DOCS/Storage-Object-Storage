@@ -1,15 +1,30 @@
-<!-- pre-align:aligned sig=8a5faabd557c -->
-
 <a id="storage-object-storage-release-notes"></a>
 ## Storage > Object Storage > 릴리스 노트 { #storage-object-storage-release-notes }
 
+<a id="august-25-2026"></a>
+## 2026. 08. 25. { #august-25-2026 }
+<a id="august-25-2026-added-features"></a>
+### 기능 추가 { #august-25-2026-added-features }
+* [콘솔] 작업 이력 조회, 작업 중단 기능 추가
+    * 컨테이너 비우기, 오브젝트 복사/이동/삭제 작업 이력을 조회하고 작업을 중단하는 기능을 추가했습니다.
+* [API] 컨테이너 정책 문서를 통한 컨테이너 설정 기능 추가
+    * 접근 정책, CORS, 객체 잠금 컨테이너 설정을 지원합니다.
+
+<a id="august-25-2026-feature-updates"></a>
+### 기능 개선 { #august-25-2026-feature-updates }
+* [API] Amazon S3 API 호환성 개선
+    * 잠금 컨테이너 생성 및 설정을 지원합니다.
+
 <a id="may-27-2026"></a>
 ## 2026. 05. 27. { #may-27-2026 }
-<a id="added-features"></a>
-### 기능 추가 { #added-features }
+<a id="may-27-2026-added-features"></a>
+### 기능 추가 { #may-27-2026-added-features }
 * [콘솔] 수명 주기 규칙 설정 및 일괄 적용 기능 추가
 * [API] 컨테이너 정책 문서를 통한 컨테이너 설정 기능 추가
     * 수명 주기 규칙 설정을 지원합니다.
+
+<a id="may-27-2026-feature-updates"></a>
+### 기능 개선 { #may-27-2026-feature-updates }
 * [API] Amazon S3 API 호환성 개선
     * 도메인 스타일(Virtual Hosted Domain) 엔드포인트를 지원합니다.
     * Trailing Checksum을 통한 업로드 무결성 검증을 지원합니다.
@@ -17,8 +32,8 @@
 
 <a id="july-29-2025"></a>
 ## 2025. 07. 29. { #july-29-2025 }
-<a id="limiting-policy"></a>
-### 제한 정책 { #limiting-policy }
+<a id="july-29-2025-limiting-policy"></a>
+### 제한 정책 { #july-29-2025-limiting-policy }
 * [API] 쓰기 요청 속도 제한(rate limit) 적용
     * 스토리지 계정 단위로 초당 500건을 초과하는 요청에 제한 정책을 적용합니다.
 
@@ -28,13 +43,13 @@
 ### 기능 추가 { #may-27-2025-added-features }
 * [콘솔] 컨테이너 복제 일시 정지/재시작 기능 추가
 
-<a id="feature-updates"></a>
-### 기능 개선 { #feature-updates }
+<a id="may-27-2025-feature-updates"></a>
+### 기능 개선 { #may-27-2025-feature-updates }
 * [API] Amazon S3 API 호환성 개선
     * 오브젝트 목록에서 각 오브젝트의 LastModified 값이 밀리초 단위까지 표시되는 문제를 수정했습니다.
 
-<a id="bug-fixes"></a>
-### 버그 수정 { #bug-fixes }
+<a id="may-27-2025-bug-fixes"></a>
+### 버그 수정 { #may-27-2025-bug-fixes }
 * [API] Amazon S3 호환 API로 객체 잠금이 설정된 버킷에 멀티파트 업로드하면 요청이 실패하고 기존 파트 오브젝트가 삭제되는 버그 수정
 
 <a id="august-27-2024"></a>
