@@ -1,7 +1,7 @@
-<!-- pre-align:aligned sig=f120f3d694b4 -->
-
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > 컨테이너 정책 설정 가이드 { #storage-object-storage-container-policy-configuration-guide }
+
+이 문서는 컨테이너 정책 문서로 NHN Cloud 오브젝트 스토리지의 컨테이너 관련 설정을 관리하는 방법을 설명합니다.
 
 <a id="container-policy"></a>
 ### 컨테이너 정책 { #container-policy }
@@ -48,10 +48,10 @@ X-Auth-Token: {token-id}
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Account | URL | String | O | 스토리지 계정 |
-| Container | URL | String | O | 컨테이너 이름 |
-| policy | Query | String | O | 정책 조회를 위한 쿼리 파라미터<br>값을 지정하지 않으면 전체 정책 문서를, 기능별 최상위 키를 지정하면 해당 기능의 정책만 조회합니다. |
+| X-Auth-Token | Header | String | Y | 토큰 ID |
+| Account | URL | String | Y | 스토리지 계정 |
+| Container | URL | String | Y | 컨테이너 이름 |
+| policy | Query | String | Y | 정책 조회를 위한 쿼리 파라미터<br>값을 지정하지 않으면 전체 정책 문서를, 기능별 최상위 키를 지정하면 해당 기능의 정책만 조회합니다. |
 
 <a id="get-container-policy-response"></a>
 #### 응답
@@ -152,20 +152,20 @@ Content-Type: application/json
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 토큰 ID |
-| Content-Type | Header | String | O | `application/json`|
-| Account | URL | String | O | 스토리지 계정 |
-| Container | URL | String | O | 컨테이너 이름 |
-| - | Body | JSON | O | 설정할 정책 문서 |
+| X-Auth-Token | Header | String | Y | 토큰 ID |
+| Content-Type | Header | String | Y | `application/json`|
+| Account | URL | String | Y | 스토리지 계정 |
+| Container | URL | String | Y | 컨테이너 이름 |
+| - | Body | JSON | Y | 설정할 정책 문서 |
 
 <a id="set-container-policy-response"></a>
 #### 응답
 
 성공 시 HTTP 상태 코드 `204`를 반환합니다. 응답 본문은 없습니다.
 
-> [참고]
-> 같은 요청에서 헤더와 정책 문서를 함께 사용하면 정책 문서가 우선 적용됩니다.
-> 정책 문서가 스키마에 맞지 않으면 HTTP 상태 코드 `400`과 함께 오류 위치와 사유를 담은 메시지를 반환합니다.
+!!! tip "참고"
+    같은 요청에서 헤더와 정책 문서를 함께 사용하면 정책 문서가 우선 적용됩니다.
+    정책 문서가 스키마에 맞지 않으면 HTTP 상태 코드 `400`과 함께 오류 위치와 사유를 담은 메시지를 반환합니다.
 
 <br>
 
@@ -219,16 +219,16 @@ Content-Type: application/json
 
 | 필드 | 형식 | 필수 | 설명 | 비고 |
 |---|---|---|---|---|
-| `default_rule` | Object | - | 기본 규칙 | |
-| `default_rule.days` | Integer | O | 오브젝트 수명 주기 | 일 단위, 최대 36,500일 |
-| `default_rule.action.type` | Enum | O | 만료 동작 유형 | `"transfer"` (이동) 또는 `"delete"` (삭제) |
-| `default_rule.action.destination` | String | - | 만료 시 오브젝트를 이동할 대상 컨테이너 이름 | `type`이 `"transfer"`일 때 필수 |
-| `rules` | Array | - | 조건 규칙 목록 | 최대 30개 |
-| `rules[*].name` | String | O | 규칙 이름 | 컨테이너 내에서 중복될 수 없습니다. |
-| `rules[*].condition.prefix` | String | O | 오브젝트 이름의 접두사 조건 | 빈 문자열은 허용하지 않습니다. |
-| `rules[*].days` | Integer | O | 오브젝트 수명 주기 | 일 단위, 최대 36,500일 |
-| `rules[*].action.type` | Enum | O | 만료 동작 유형 | `"transfer"` (이동) 또는 `"delete"` (삭제) |
-| `rules[*].action.destination` | String | - | 만료 시 오브젝트를 이동할 대상 컨테이너 이름 | `type`이 `"transfer"`일 때 필수 |
+| `default_rule` | Object | N | 기본 규칙 | |
+| `default_rule.days` | Integer | Y | 오브젝트 수명 주기 | 일 단위, 최대 36,500일 |
+| `default_rule.action.type` | Enum | Y | 만료 동작 유형 | `"transfer"` (이동) 또는 `"delete"` (삭제) |
+| `default_rule.action.destination` | String | Conditional | 만료 시 오브젝트를 이동할 대상 컨테이너 이름 | `type`이 `"transfer"`일 때 필수 |
+| `rules` | Array | N | 조건 규칙 목록 | 최대 30개 |
+| `rules[*].name` | String | Y | 규칙 이름 | 컨테이너 내에서 중복될 수 없습니다. |
+| `rules[*].condition.prefix` | String | Y | 오브젝트 이름의 접두사 조건 | 빈 문자열은 허용하지 않습니다. |
+| `rules[*].days` | Integer | Y | 오브젝트 수명 주기 | 일 단위, 최대 36,500일 |
+| `rules[*].action.type` | Enum | Y | 만료 동작 유형 | `"transfer"` (이동) 또는 `"delete"` (삭제) |
+| `rules[*].action.destination` | String | Conditional | 만료 시 오브젝트를 이동할 대상 컨테이너 이름 | `type`이 `"transfer"`일 때 필수 |
 
 <br>
 
@@ -308,7 +308,7 @@ Content-Type: application/json
 | 쓰기 | `write` | 오브젝트 업로드, 삭제 등 변경 요청을 허용합니다. |
 | 조회 | `view` | 컨테이너의 오브젝트 목록 조회를 허용합니다. |
 
-정책 문서의 `read`, `write`, `view`는 각각 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Container-View` 속성에 대응합니다. 각 권한에 대한 자세한 내용은 [접근 정책 설정 가이드](acl-guide/#role-based-access-api)를 참고하세요.
+정책 문서의 `read`, `write`, `view`는 각각 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Container-View` 속성에 대응합니다. 각 권한의 자세한 내용은 [접근 정책 설정 가이드](acl-guide/#role-based-access-api)를 참고하세요.
 
 <br>
 
@@ -350,21 +350,21 @@ Content-Type: application/json
 
 | 필드 | 형식 | 필수 | 설명 | 비고 |
 |---|---|---|---|---|
-| `read` | Object | - | 읽기 권한 | `grantees`, `referrers`(`allow`, `deny`), `public`, `listing`을 합산하여 최대 100개 |
-| `read.public` | Boolean | - | 모든 사용자에게 읽기 허용 | `.r:*` 정책 요소에 대응하며, 인증 토큰 없이 접근을 허용합니다. |
-| `read.listing` | Boolean | - | 오브젝트 목록 조회 허용 | `.rlistings` 정책 요소에 대응하며, 읽기 권한이 있는 사용자에게 목록 조회를 허용합니다. 단독으로는 설정할 수 없습니다. |
-| `read.referrers.allow` | Array | - | 접근을 허용할 리퍼러(HTTP Referer) 도메인 목록 | 각 항목은 `.r:<referrer>` 정책 요소에 대응합니다. 빈 문자열이나 와일드카드 `*`는 허용하지 않으며, `,`를 포함하거나 `-`로 시작할 수 없습니다. |
-| `read.referrers.deny` | Array | - | 접근을 차단할 리퍼러(HTTP Referer) 도메인 목록 | 각 항목은 `.r:-<referrer>` 정책 요소에 대응합니다. 빈 문자열이나 와일드카드 `*`는 허용하지 않으며, `,`를 포함하거나 `-`로 시작할 수 없습니다. |
-| `read.grantees` | Array | - | 읽기 권한을 부여할 사용자 목록 | `<tenant>:<user>` 형식의 역할 기반 접근 정책 요소에 대응합니다. |
-| `read.grantees[*].tenant` | String | O | 테넌트(프로젝트) ID | 와일드카드 `*`를 사용할 수 있습니다. 빈 문자열은 허용하지 않으며, 값에 `,`나 `:`를 포함할 수 없습니다. |
-| `read.grantees[*].user` | String | O | API 사용자 ID | 와일드카드 `*`를 사용할 수 있습니다. 빈 문자열은 허용하지 않으며, 값에 `,`를 포함할 수 없습니다. |
-| `write` | Object | - | 쓰기 권한 | `grantees` 최대 100개 |
-| `write.grantees` | Array | - | 쓰기 권한을 부여할 사용자 목록 | `grantees` 형식은 `read.grantees`와 동일합니다. |
-| `view` | Object | - | 조회 권한 | `grantees` 최대 100개 |
-| `view.grantees` | Array | - | 조회 권한을 부여할 사용자 목록 | `grantees` 형식은 `read.grantees`와 동일합니다. |
+| `read` | Object | N | 읽기 권한 | `grantees`, `referrers`(`allow`, `deny`), `public`, `listing`을 합산하여 최대 100개 |
+| `read.public` | Boolean | N | 모든 사용자에게 읽기 허용 | `.r:*` 정책 요소에 대응하며, 인증 토큰 없이 접근을 허용합니다. |
+| `read.listing` | Boolean | N | 오브젝트 목록 조회 허용 | `.rlistings` 정책 요소에 대응하며, 읽기 권한이 있는 사용자에게 목록 조회를 허용합니다. 단독으로는 설정할 수 없습니다. |
+| `read.referrers.allow` | Array | N | 접근을 허용할 리퍼러(HTTP Referer) 도메인 목록 | 각 항목은 `.r:<referrer>` 정책 요소에 대응합니다. 빈 문자열이나 와일드카드 `*`는 허용하지 않으며, `,`를 포함하거나 `-`로 시작할 수 없습니다. |
+| `read.referrers.deny` | Array | N | 접근을 차단할 리퍼러(HTTP Referer) 도메인 목록 | 각 항목은 `.r:-<referrer>` 정책 요소에 대응합니다. 빈 문자열이나 와일드카드 `*`는 허용하지 않으며, `,`를 포함하거나 `-`로 시작할 수 없습니다. |
+| `read.grantees` | Array | N | 읽기 권한을 부여할 사용자 목록 | `<tenant>:<user>` 형식의 역할 기반 접근 정책 요소에 대응합니다. |
+| `read.grantees[*].tenant` | String | Y | 테넌트(프로젝트) ID | 와일드카드 `*`를 사용할 수 있습니다. 빈 문자열은 허용하지 않으며, 값에 `,`나 `:`를 포함할 수 없습니다. |
+| `read.grantees[*].user` | String | Y | API 사용자 ID | 와일드카드 `*`를 사용할 수 있습니다. 빈 문자열은 허용하지 않으며, 값에 `,`를 포함할 수 없습니다. |
+| `write` | Object | N | 쓰기 권한 | `grantees` 최대 100개 |
+| `write.grantees` | Array | N | 쓰기 권한을 부여할 사용자 목록 | `grantees` 형식은 `read.grantees`와 동일합니다. |
+| `view` | Object | N | 조회 권한 | `grantees` 최대 100개 |
+| `view.grantees` | Array | N | 조회 권한을 부여할 사용자 목록 | `grantees` 형식은 `read.grantees`와 동일합니다. |
 
-> [참고]
-> `public`, `listing`, `referrers`에 대응하는 요소는 접근 정책 설정 가이드의 [기타 접근 정책 요소](acl-guide/#common-access-elements)를, `grantees`에 대응하는 요소는 [역할 기반 접근 정책 요소](acl-guide/#role-based-access-elements)를 참고하세요.
+!!! tip "참고"
+    `public`, `listing`, `referrers`에 대응하는 요소는 접근 정책 설정 가이드의 [기타 접근 정책 요소](acl-guide/#common-access-elements)를, `grantees`에 대응하는 요소는 [역할 기반 접근 정책 요소](acl-guide/#role-based-access-elements)를 참고하세요.
 
 <a id="acl-schema-application-example"></a>
 #### 적용 예시
@@ -421,18 +421,18 @@ IP 접근 제어 정책 문서의 구조는 다음과 같습니다.
 
 | 필드 | 형식 | 필수 | 설명 | 비고 |
 |---|---|---|---|---|
-| `whitelist` | Array | - | 접근을 허용할 IP 목록 | 최대 100개 |
-| `whitelist[*].permission` | Enum | O | 규칙을 적용할 작업 유형 | `"read"`, `"write"`, `"full_control"` |
-| `whitelist[*].cidr` | String | O | IPv4 주소 또는 CIDR | 빈 문자열은 허용하지 않습니다. |
-| `blacklist` | Array | - | 접근을 차단할 IP 목록 | 최대 100개 |
-| `blacklist[*].permission` | Enum | O | 규칙을 적용할 작업 유형 | `"read"`, `"write"`, `"full_control"` |
-| `blacklist[*].cidr` | String | O | IPv4 주소 또는 CIDR | 빈 문자열은 허용하지 않습니다. |
-| `services` | Array | - | 서비스별 접근 제어 | |
-| `services[*].name` | Enum | O | 서비스 이름 | 현재 `service_gateway`만 지원합니다. |
-| `services[*].permission` | Enum | O | 허용하거나 차단할 작업 유형 | `"read"`, `"write"`, `"full_control"`, `"deny"` |
+| `whitelist` | Array | N | 접근을 허용할 IP 목록 | 최대 100개 |
+| `whitelist[*].permission` | Enum | Y | 규칙을 적용할 작업 유형 | `"read"`, `"write"`, `"full_control"` |
+| `whitelist[*].cidr` | String | Y | IPv4 주소 또는 CIDR | 빈 문자열은 허용하지 않습니다. |
+| `blacklist` | Array | N | 접근을 차단할 IP 목록 | 최대 100개 |
+| `blacklist[*].permission` | Enum | Y | 규칙을 적용할 작업 유형 | `"read"`, `"write"`, `"full_control"` |
+| `blacklist[*].cidr` | String | Y | IPv4 주소 또는 CIDR | 빈 문자열은 허용하지 않습니다. |
+| `services` | Array | N | 서비스별 접근 제어 | |
+| `services[*].name` | Enum | Y | 서비스 이름 | 현재 `service_gateway`만 지원합니다. |
+| `services[*].permission` | Enum | Y | 허용하거나 차단할 작업 유형 | `"read"`, `"write"`, `"full_control"`, `"deny"` |
 
-> [참고]
-> `cidr`에는 IPv4 주소 또는 CIDR을 입력합니다. IP 기반 접근 정책은 IPv4만 지원합니다.
+!!! tip "참고"
+    `cidr`에는 IPv4 주소 또는 CIDR을 입력합니다. IP 기반 접근 정책은 IPv4만 지원합니다.
 
 <a id="ip-acl-schema-application-example"></a>
 #### 적용 예시
@@ -456,7 +456,7 @@ IP 접근 제어 정책 문서의 구조는 다음과 같습니다.
 <a id="cors"></a>
 ## 교차 출처 리소스 공유(CORS) { #cors }
 
-컨테이너 정책 문서의 `cors` 키를 사용해 교차 출처 리소스 공유(CORS)를 설정합니다. CORS 설정과 허용 출처 형식에 대한 자세한 내용은 API 가이드의 [교차 출처 리소스 공유(CORS)](api-guide/#set-container-cors-policy)를 참고하세요.
+컨테이너 정책 문서의 `cors` 키를 사용해 교차 출처 리소스 공유(CORS)를 설정합니다. CORS 설정과 허용 출처 형식의 자세한 내용은 API 가이드의 [교차 출처 리소스 공유(CORS)](api-guide/#set-container-cors-policy)를 참고하세요.
 
 <br>
 
@@ -480,9 +480,9 @@ CORS 정책 문서의 구조는 다음과 같습니다.
 
 | 필드 | 형식 | 필수 | 설명 | 비고 |
 |---|---|---|---|---|
-| `allow_origins` | Array | - | 허용할 출처(Origin) 목록 | 최대 100개<br>각 항목에 공백을 포함할 수 없습니다. |
-| `max_age` | Integer | - | 프리플라이트 응답 캐시 시간 | 초 단위, 0 이상의 정수 |
-| `expose_headers` | Array | - | 브라우저에 노출할 응답 헤더 목록 | 최대 100개<br>각 항목에 공백을 포함할 수 없습니다. |
+| `allow_origins` | Array | N | 허용할 출처(Origin) 목록 | 최대 100개<br>각 항목에 공백을 포함할 수 없습니다. |
+| `max_age` | Integer | N | 프리플라이트 응답 캐시 시간 | 초 단위, 0 이상의 정수 |
+| `expose_headers` | Array | N | 브라우저에 노출할 응답 헤더 목록 | 최대 100개<br>각 항목에 공백을 포함할 수 없습니다. |
 
 <a id="cors-schema-application-example"></a>
 #### 적용 예시
@@ -524,7 +524,7 @@ CORS 정책 문서의 구조는 다음과 같습니다.
 
 | 필드 | 형식 | 필수 | 설명 | 비고 |
 |---|---|---|---|---|
-| `days` | Integer | O | 오브젝트 잠금 주기 | 일 단위, 0 ~ 36,500일(최대 100년) |
+| `days` | Integer | Y | 오브젝트 잠금 주기 | 일 단위, 0~36,500일(최대 100년) |
 
 <a id="lock-schema-application-rules"></a>
 #### 적용 규칙

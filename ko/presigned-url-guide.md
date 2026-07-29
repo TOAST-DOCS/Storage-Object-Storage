@@ -1,6 +1,8 @@
 <a id="storage-object-storage-presigned-url-guide"></a>
 ## Storage > Object Storage > 서명된 URL 가이드 { #storage-object-storage-presigned-url-guide }
 
+이 문서는 서명된 URL로 NHN Cloud 오브젝트 스토리지의 오브젝트에 한시적인 접근 권한을 부여하는 방법을 설명합니다.
+
 <a id="overview"></a>
 ## 서명된 URL { #overview }
 
@@ -22,11 +24,11 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/objec
 
 | 구성 요소 | 필수 여부 | 설명 |
 | --- | --- | --- |
-| Object URL | Required | 오브젝트의 전체 경로 URL |
-| temp_url_sig | Required | 허용된 HTTP 메서드, 만료 일시, 오브젝트의 전체 경로를 비밀 키로 서명한 HMAC 값 |
-| temp_url_expires | Required | 만료 일시. UNIX Epoch 타임스탬프 또는 ISO 8601 UTC 타임스탬프로 표현.<br>예: `1390852007` 또는 `2014-01-27T19:46:47Z` |
-| filename | Optional | 기본 파일명을 덮어씀 |
-| temp_url_prefix | Optional | 접두사 단위로 서명할 때 필요 |
+| Object URL | Y        | 오브젝트의 전체 경로 URL |
+| temp_url_sig | Y        | 허용된 HTTP 메서드, 만료 일시, 오브젝트의 전체 경로를 비밀 키로 서명한 HMAC 값 |
+| temp_url_expires | Y        | 만료 일시. UNIX Epoch 타임스탬프 또는 ISO 8601 UTC 타임스탬프로 표현.<br>예: `1390852007` 또는 `2014-01-27T19:46:47Z` |
+| filename | N        | 기본 파일명을 덮어씀 |
+| temp_url_prefix | N        | 접두사 단위로 서명할 때 필요 |
 
 <br>
 
@@ -45,18 +47,18 @@ https://{endpoint}/my-container/cat.jpg
 &X-Amz-Signature={signature-value}
 ```
 
-| 구성 요소 | 필수 여부 | 설명 |
-| --- | --- | --- |
-| Object URL | Required | 오브젝트의 전체 경로 URL (path-style: `https://{endpoint}/{bucket}/{object}`) |
-| X-Amz-Algorithm | Required | AWS Signature 버전과 알고리즘 식별. SigV4에서는 AWS4-HMAC-SHA256으로 설정 |
-| X-Amz-Credential | Required | Access Key ID와 서명이 유효한 scope(리전·서비스)를 제공. 형식: `{access-key-id}/{date}/{region}/{service}/aws4_request` (서비스는 `s3`, 리전은 `kr1` 등). URL에서 `/`는 `%2F`로 인코딩 |
-| X-Amz-Date | Required | 요청 일시. ISO 8601 `yyyyMMddTHHmmssZ` 형식(UTC)으로 표현<br>예: `20260601T223241Z` |
-| X-Amz-Expires | Required | 서명된 URL이 유효한 기간(초). 최소 `1`, 최대 `604800`(7일) |
-| X-Amz-SignedHeaders | Required | 서명 계산에 사용한 헤더 목록. 최소한 HTTP `host` 헤더를 포함하며, 요청에 추가하는 모든 `x-amz-*` 헤더도 포함 |
-| X-Amz-Signature | Required | 요청을 인증하는 HMAC 서명값. 서버가 계산한 값과 일치해야 하며, 아니면 요청 거부 |
+| 구성 요소 | 필수 여부 | 설명                                                                                                                       |
+| --- | --- |--------------------------------------------------------------------------------------------------------------------------|
+| Object URL | Y        | 오브젝트의 전체 경로 URL(path-style: `https://{endpoint}/{bucket}/{object}`)                                                      |
+| X-Amz-Algorithm | Y        | AWS Signature 버전과 알고리즘 식별. SigV4에서는 AWS4-HMAC-SHA256으로 설정                                                                |
+| X-Amz-Credential | Y        | Access Key ID와 서명이 유효한 scope(리전·서비스)를 제공. 형식: `{access-key-id}/{date}/{region}/{service}/aws4_request` (서비스는 `s3`, 리전은 ` kr1` 등). URL에서 `/`는 `%2F`로 인코딩 |
+| X-Amz-Date | Y        | 요청 일시. ISO 8601 `yyyyMMddTHHmmssZ` 형식(UTC)으로 표현<br>예: `20260601T223241Z`                                                 |
+| X-Amz-Expires | Y        | 서명된 URL이 유효한 기간(초). 최소 `1`, 최대 `604800`(7일)                                                                              |
+| X-Amz-SignedHeaders | Y        | 서명 계산에 사용한 헤더 목록. 최소한 HTTP `host` 헤더를 포함하며, 요청에 추가하는 모든 `x-amz-*` 헤더도 포함                                                 |
+| X-Amz-Signature | Y        | 요청을 인증하는 HMAC 서명 값. 서버가 계산한 값과 일치해야 하며, 아니면 요청 거부                                                                        |
 
-> [참고]
-> S3 서명된 URL에서는 접두사 단위 서명을 지원하지 않습니다. 항상 단일 오브젝트와 단일 작업(GET/PUT 등) 단위로 서명합니다. 
+!!! tip "참고"
+    S3 서명된 URL에서는 접두사 단위 서명을 지원하지 않습니다. 항상 단일 오브젝트와 단일 작업(GET/PUT 등) 단위로 서명합니다.
 
 <br>
 
@@ -77,10 +79,10 @@ Swift API와 S3 API는 오브젝트 경로 형식이 다르므로, 생성하려�
 
 TempURL은 스토리지 계정 또는 컨테이너에 미리 등록해 둔 비밀 키(Secret Key)로 서명합니다.
 
-* **스토리지 계정 레벨**에서 키를 설정하려면, 스토리지 계정에 대한 POST 요청에서 다음 헤더 중 하나 또는 둘 다를 임의의 값으로 설정합니다.
+* **스토리지 계정 레벨**에서 키를 설정하려면, 스토리지 계정 POST 요청에서 다음 헤더 중 하나 또는 둘 다를 임의의 값으로 설정합니다.
     * `X-Account-Meta-Temp-URL-Key`
     * `X-Account-Meta-Temp-URL-Key-2`
-* **컨테이너 레벨**에서 키를 설정하려면, 컨테이너에 대한 POST 또는 PUT 요청에서 다음 헤더 중 하나 또는 둘 다를 임의의 값으로 설정합니다.
+* **컨테이너 레벨**에서 키를 설정하려면, 컨테이너 POST 또는 PUT 요청에서 다음 헤더 중 하나 또는 둘 다를 임의의 값으로 설정합니다.
     * `X-Container-Meta-Temp-URL-Key`
     * `X-Container-Meta-Temp-URL-Key-2`
 
@@ -98,10 +100,10 @@ X-Auth-Token: {token-id}
 X-Container-Meta-Temp-URL-Key: {key}
 ```
 
-> [참고]
-> 오브젝트 스토리지는 스토리지 계정당 2개, 컨테이너당 2개의 비밀 키 값을 저장할 수 있습니다.
->
-> 요청을 검증할 때 오브젝트 스토리지는 모든 키에 대해 서명을 확인합니다. 각 레벨에서 키를 2개 사용하면, 기존 Temporary URL을 무효화하지 않고도 키를 교체(rotation)할 수 있습니다.
+!!! tip "참고"
+    오브젝트 스토리지는 스토리지 계정당 2개, 컨테이너당 2개의 비밀 키 값을 저장할 수 있습니다.
+
+    요청을 검증할 때 오브젝트 스토리지는 모든 키의 서명을 확인합니다. 각 레벨에서 키를 2개 사용하면, 기존 Temporary URL을 무효화하지 않고도 키를 교체(rotation)할 수 있습니다.
 
 Swift CLI를 사용하면 다음과 같이 비밀 키를 설정할 수 있습니다.
 
@@ -110,8 +112,8 @@ swift post -m "Temp-URL-Key:MYKEY"              # 스토리지 계정 단위 설
 swift post my-container -m "Temp-URL-Key:MYKEY" # 컨테이너 단위 설정
 ```
 
-> [참고]
-> Swift CLI를 사용하려면 먼저 인증이 필요합니다. 자세한 내용은 [Swift CLI 환경설정](cli-guide/#configuration)을 참고하세요.
+!!! tip "참고"
+    Swift CLI를 사용하려면 먼저 인증이 필요합니다. 자세한 내용은 [Swift CLI 환경설정](cli-guide/#configuration)을 참고하세요.
 
 <br>
 
