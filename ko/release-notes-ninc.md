@@ -4,7 +4,7 @@
 <a id="september-5-2024"></a>
 ## 2024. 09. 05. { #september-5-2024 }
 <a id="september-5-2024-feature-updates"></a>
-### 기능 개선 { #september-5-2024-feature-updates }
+### 기능 개선/변경 { #september-5-2024-feature-updates }
 * [콘솔][API] 서비스 게이트웨이 IP 접근 제어 설정 추가
     * 서비스 게이트웨이를 통한 요청에 IP ACL 예외 처리가 가능합니다.
 * [API] S3 호환성 개선
@@ -17,12 +17,12 @@
 <a id="june-4-2024"></a>
 ## 2024. 06. 04. { #june-4-2024 }
 <a id="june-4-2024-added-features"></a>
-### 기능 추가 { #june-4-2024-added-features }
+### 신규 기능 추가 { #june-4-2024-added-features }
 * [콘솔][API] 수명 주기 만료 동작 추가
     * 수명 주기가 만료된 오브젝트를 다른 컨테이너로 이동할 수 있습니다.
 
 <a id="june-4-2024-feature-updates"></a>
-### 기능 개선 { #june-4-2024-feature-updates }
+### 기능 개선/변경 { #june-4-2024-feature-updates }
 * [콘솔] 오브젝트 복사 기능 개선
     * 다수의 오브젝트를 선택하여 복사/이동할 수 있습니다.
 * [콘솔] 컨테이너 이름 규칙 변경
@@ -33,25 +33,25 @@
 <a id="march-5-2024"></a>
 ## 2024. 03. 05. { #march-5-2024 }
 <a id="march-5-2024-added-features"></a>
-### 기능 추가 { #march-5-2024-added-features }
+### 신규 기능 추가 { #march-5-2024-added-features }
 * [콘솔][API] 오브젝트 업로드 정책 설정 기능 추가
 * [콘솔] 컨테이너 비우기 기능 추가
 
 <a id="march-5-2024-feature-updates"></a>
-### 기능 변경 { #march-5-2024-feature-updates }
+### 기능 개선/변경 { #march-5-2024-feature-updates }
 * [콘솔] 오브젝트 삭제 기능 개선
 
 <a id="december-5-2023"></a>
 ## 2023. 12. 05. { #december-5-2023 }
 <a id="december-5-2023-added-features"></a>
-### 기능 추가 { #december-5-2023-added-features }
+### 신규 기능 추가 { #december-5-2023-added-features }
 * [API] Amazon S3 호환 API, AWS Signature V4 Chunked Upload 지원
 * [콘솔] 서명된 URL 생성 기능 추가
 
 <a id="september-12-2023"></a>
 ## 2023. 09. 12. { #september-12-2023 }
 <a id="september-12-2023-added-features"></a>
-### 기능 추가 { #september-12-2023-added-features }
+### 신규 기능 추가 { #september-12-2023-added-features }
 * [콘솔][API] IP ACL 기능 추가
 
 <a id="september-12-2023-bug-fixes"></a>
@@ -62,39 +62,39 @@
 <a id="december-6-2022"></a>
 ## 2022. 12. 06. { #december-6-2022 }
 <a id="december-6-2022-added-features"></a>
-### 기능 추가 { #december-6-2022-added-features }
+### 신규 기능 추가 { #december-6-2022-added-features }
 * [콘솔][API] 객체 잠금 컨테이너 설정 기능 추가
 
 <a id="october-25-2022"></a>
 ## 2022. 10. 25. { #october-25-2022 }
 <a id="october-25-2022-added-features"></a>
-### 기능 추가 { #october-25-2022-added-features }
+### 신규 기능 추가 { #october-25-2022-added-features }
 * [콘솔] 컨테이너 ACL 설정 기능 추가
 
 <a id="october-11-2022"></a>
 ## 2022. 10. 11. { #october-11-2022 }
 <a id="october-11-2022-added-features"></a>
-### 기능 추가 { #october-11-2022-added-features }
+### 신규 기능 추가 { #october-11-2022-added-features }
 * [콘솔] 교차 출처 리소스 공유(CORS) 설정 기능 추가
 
 <a id="october-11-2022-feature-updates"></a>
-### 기능 개선 { #october-11-2022-feature-updates }
+### 기능 개선/변경 { #october-11-2022-feature-updates }
 * [콘솔] 컨테이너 정보 조회, 설정 UI 개선
 
 <a id="august-23-2022"></a>
 ## 2022. 08. 23. { #august-23-2022 }
 <a id="august-23-2022-added-features"></a>
-### 기능 추가 { #august-23-2022-added-features }
+### 신규 기능 추가 { #august-23-2022-added-features }
 * [API] RFC를 준수하는 ETag 형식 사용 설정 기능 추가
 
 <a id="april-5-2022"></a>
 ## 2022. 04. 05. { #april-5-2022 }
 <a id="april-5-2022-added-features"></a>
-### 기능 추가 { #april-5-2022-added-features }
+### 신규 기능 추가 { #april-5-2022-added-features }
 * [콘솔] S3 API 자격 증명 발급 기능 추가
 
 <a id="april-5-2022-feature-updates"></a>
-### 기능 개선 { #april-5-2022-feature-updates }
+### 기능 개선/변경 { #april-5-2022-feature-updates }
 * [콘솔] 멀티파트 오브젝트 삭제 시 세그먼트 오브젝트 일괄 삭제
 * [API] 컨테이너 이름으로 입력 가능한 문자 제한
     * 일부 특수 문자(' " < > ;)와 공백, 상대 경로 문자(. ..)를 제한합니다.
@@ -102,7 +102,7 @@
 <a id="december-7-2021"></a>
 ## 2021. 12. 07. { #december-7-2021 }
 <a id="december-7-2021-feature-updates"></a>
-### 기능 개선 { #december-7-2021-feature-updates }
+### 기능 개선/변경 { #december-7-2021-feature-updates }
 * [콘솔] 정적 웹사이트 설정 시 입력 가능 문자 제한 규칙 변경
     * 최대 256 바이트, 영문자, 숫자, 일부 특수 문자(-, _, ., /)만 입력할 수 있습니다.
 * [콘솔] 오브젝트 복사 시 입력 제한 규칙 변경
@@ -112,7 +112,7 @@
 <a id="july-2-2021"></a>
 ## 2021. 07. 02. { #july-2-2021 }
 <a id="july-2-2021-feature-updates"></a>
-### 기능 개선 { #july-2-2021-feature-updates }
+### 기능 개선/변경 { #july-2-2021-feature-updates }
 * [콘솔] 컨테이너 설정 기능 개선
     * 컨테이너 단위로 접근 정책, 오브젝트 수명 주기, 버전 관리 정책, 정적 웹사이트 등을 설정할 수 있도록 기능을 개선했습니다.
 
@@ -122,27 +122,27 @@
 <a id="november-3-2020"></a>
 ## 2020. 11. 03. { #november-3-2020 }
 <a id="november-3-2020-added-features"></a>
-### 기능 추가 { #november-3-2020-added-features }
+### 신규 기능 추가 { #november-3-2020-added-features }
 * [API] Amazon S3 호환 API 추가
 
 <a id="april-24-2018"></a>
 ## 2018. 04. 24. { #april-24-2018 }
 <a id="april-24-2018-feature-updates"></a>
-### 기능 수정 { #april-24-2018-feature-updates }
+### 기능 개선/변경 { #april-24-2018-feature-updates }
 * [콘솔] 폴더명 특수 문자 제한
     * 컨테이너 및 폴더 이름으로 사용할 수 없는 특수 문자 목록에 슬래시(/)를 추가했습니다.
 
 <a id="october-26-2017"></a>
 ## 2017. 10. 26. { #october-26-2017 }
 <a id="october-26-2017-feature-updates"></a>
-### 기능 수정 { #october-26-2017-feature-updates }
+### 기능 개선/변경 { #october-26-2017-feature-updates }
 * [콘솔] 폴더명 특수 문자 제한
     * 컨테이너 및 폴더 이름에 일부 특수 문자(. .. & < > " ' ;)와 공백 문자는 사용할 수 없도록 수정했습니다.
 
 <a id="march-23-2017"></a>
 ## 2017. 03. 23. { #march-23-2017 }
 <a id="march-23-2017-feature-updates"></a>
-### 기능 개선 { #march-23-2017-feature-updates }
+### 기능 개선/변경 { #march-23-2017-feature-updates }
 * [콘솔] 업로드 가능한 파일 크기 명시
 	* 최대 5GB까지 업로드할 수 있습니다.
 
