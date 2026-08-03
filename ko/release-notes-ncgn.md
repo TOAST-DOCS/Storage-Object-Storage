@@ -32,9 +32,9 @@
 
 <a id="july-29-2025"></a>
 ## 2025. 07. 29. { #july-29-2025 }
-<a id="july-29-2025-limiting-policy"></a>
-### 제한 정책 { #july-29-2025-limiting-policy }
-* [API] 쓰기 요청 속도 제한(rate limit) 적용
+<a id="july-29-2025-feature-updates"></a>
+### 기능 개선/변경 { #july-29-2025-feature-updates }
+* [API] 쓰기 요청 속도 제한(rate limit) 정책 추가
     * 스토리지 계정 단위로 초당 500건을 초과하는 요청에 제한 정책을 적용합니다.
 
 <a id="may-29-2025"></a>
