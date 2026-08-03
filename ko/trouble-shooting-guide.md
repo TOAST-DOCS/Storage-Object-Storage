@@ -1,5 +1,3 @@
-<!-- pre-align:aligned sig=a08a3e30075c -->
-
 <a id="storage-object-storage-troubleshooting-guide"></a>
 ## Storage > Object Storage > 문제 해결 가이드 { #storage-object-storage-troubleshooting-guide }
 NHN Cloud Object Storage를 사용하면서 겪을 수 있는 다양한 문제들을 해결하는 방법을 설명합니다.

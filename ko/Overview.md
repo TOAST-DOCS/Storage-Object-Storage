@@ -1,5 +1,3 @@
-<!-- pre-align:aligned sig=5c3f66a53167 -->
-
 <a id="storage-object-storage-overview"></a>
 ## Storage > Object Storage > 개요 { #storage-object-storage-overview }
 오브젝트 스토리지는 다양한 유형의 데이터를 원하는 만큼 저장하고 필요할 때마다 가져올 수 있는 객체 스토리지 서비스입니다.
