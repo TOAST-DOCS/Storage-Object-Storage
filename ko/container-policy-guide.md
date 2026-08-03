@@ -163,7 +163,7 @@ Content-Type: application/json
 
 성공 시 HTTP 상태 코드 `204`를 반환합니다. 응답 본문은 없습니다.
 
-!!! tip "참고"
+!!! tip "알아두기"
     같은 요청에서 헤더와 정책 문서를 함께 사용하면 정책 문서가 우선 적용됩니다.
     정책 문서가 스키마에 맞지 않으면 HTTP 상태 코드 `400`과 함께 오류 위치와 사유를 담은 메시지를 반환합니다.
 
@@ -363,7 +363,7 @@ Content-Type: application/json
 | `view` | Object | N | 조회 권한 | `grantees` 최대 100개 |
 | `view.grantees` | Array | N | 조회 권한을 부여할 사용자 목록 | `grantees` 형식은 `read.grantees`와 동일합니다. |
 
-!!! tip "참고"
+!!! tip "알아두기"
     `public`, `listing`, `referrers`에 대응하는 요소는 접근 정책 설정 가이드의 [기타 접근 정책 요소](acl-guide/#common-access-elements)를, `grantees`에 대응하는 요소는 [역할 기반 접근 정책 요소](acl-guide/#role-based-access-elements)를 참고하세요.
 
 <a id="acl-schema-application-example"></a>
@@ -431,7 +431,7 @@ IP 접근 제어 정책 문서의 구조는 다음과 같습니다.
 | `services[*].name` | Enum | Y | 서비스 이름 | 현재 `service_gateway`만 지원합니다. |
 | `services[*].permission` | Enum | Y | 허용하거나 차단할 작업 유형 | `"read"`, `"write"`, `"full_control"`, `"deny"` |
 
-!!! tip "참고"
+!!! tip "알아두기"
     `cidr`에는 IPv4 주소 또는 CIDR을 입력합니다. IP 기반 접근 정책은 IPv4만 지원합니다.
 
 <a id="ip-acl-schema-application-example"></a>
@@ -544,3 +544,4 @@ CORS 정책 문서의 구조는 다음과 같습니다.
   }
 }
 ```
+s

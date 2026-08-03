@@ -57,7 +57,7 @@ https://{endpoint}/my-container/cat.jpg
 | X-Amz-SignedHeaders | Y        | 서명 계산에 사용한 헤더 목록. 최소한 HTTP `host` 헤더를 포함하며, 요청에 추가하는 모든 `x-amz-*` 헤더도 포함                                                 |
 | X-Amz-Signature | Y        | 요청을 인증하는 HMAC 서명 값. 서버가 계산한 값과 일치해야 하며, 아니면 요청 거부                                                                        |
 
-!!! tip "참고"
+!!! tip "알아두기"
     S3 서명된 URL에서는 접두사 단위 서명을 지원하지 않습니다. 항상 단일 오브젝트와 단일 작업(GET/PUT 등) 단위로 서명합니다.
 
 <br>
@@ -100,7 +100,7 @@ X-Auth-Token: {token-id}
 X-Container-Meta-Temp-URL-Key: {key}
 ```
 
-!!! tip "참고"
+!!! tip "알아두기"
     오브젝트 스토리지는 스토리지 계정당 2개, 컨테이너당 2개의 비밀 키 값을 저장할 수 있습니다.
 
     요청을 검증할 때 오브젝트 스토리지는 모든 키의 서명을 확인합니다. 각 레벨에서 키를 2개 사용하면, 기존 Temporary URL을 무효화하지 않고도 키를 교체(rotation)할 수 있습니다.
@@ -112,7 +112,7 @@ swift post -m "Temp-URL-Key:MYKEY"              # 스토리지 계정 단위 설
 swift post my-container -m "Temp-URL-Key:MYKEY" # 컨테이너 단위 설정
 ```
 
-!!! tip "참고"
+!!! tip "알아두기"
     Swift CLI를 사용하려면 먼저 인증이 필요합니다. 자세한 내용은 [Swift CLI 환경설정](cli-guide/#configuration)을 참고하세요.
 
 <br>

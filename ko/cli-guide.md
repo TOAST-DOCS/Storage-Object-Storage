@@ -14,7 +14,7 @@ python-swiftclient는 Python 패키지로 제공됩니다. pip를 이용해 설�
 pip install python-swiftclient python-keystoneclient
 ```
 
-!!! tip "참고"
+!!! tip "알아두기"
     Python 3.6 이상이 필요합니다. Python이 설치되어 있지 않다면 [Python 다운로드 페이지](https://www.python.org/downloads/)를 참고하여 설치합니다.
 
 설치가 완료되면 다음 명령으로 확인할 수 있습니다.
@@ -51,12 +51,12 @@ export OS_REGION_NAME=<리전 이름>
 
 <br/>
 
-!!! tip "주의"
+!!! danger "주의"
     오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다. 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 확인하세요.
 
 <!-- 개행을 위한 주석 -->
 
-!!! tip "참고"
+!!! tip "알아두기"
     API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 설정할 수 있습니다.
 
 <br/>
@@ -157,7 +157,7 @@ export OS_AUTH_TOKEN=gAAAAABi...
 $ eval $(swift auth)
 ```
 
-!!! tip "참고"
+!!! tip "알아두기"
     인증 토큰에는 만료 시간이 있습니다. 토큰이 만료되어 요청이 실패하면 `eval $(swift auth)`를 다시 실행해 갱신해야 합니다.
 
 <br/>
@@ -492,7 +492,7 @@ swift post [<options>] <container>
 
 <br/>
 
-!!! tip "참고"
+!!! tip "알아두기"
     ACL 설정 값은 [접근 정책 설정 가이드](acl-guide/)를 참고하세요.
 
     `--header` 옵션으로 설정할 수 있는 헤더 목록은 API 가이드의 [컨테이너 설정 변경](api-guide/#change-container-settings) 섹션을 참고하세요.

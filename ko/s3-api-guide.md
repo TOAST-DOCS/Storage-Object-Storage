@@ -57,7 +57,7 @@ X-Auth-Token: {token-id}
 | api-user-id | URL | String | Y | API 사용자 ID, API 엔드포인트 설정 대화 상자에서 확인 가능 |
 | tenant_id | Body | String | Y | 테넌트 ID. API 엔드포인트 설정 대화 상자에서 확인 가능 |
 
-!!! tip "참고"
+!!! tip "알아두기"
     `{api-user-id}`는 콘솔의 API 엔드포인트 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
     인증 토큰 발급 API를 사용하려면 API 가이드의 [인증 및 권한](api-guide/#auth) 항목을 참고하세요.
 
@@ -65,7 +65,7 @@ X-Auth-Token: {token-id}
 
 <!-- 개행을 위한 주석이므로 필수로 포함되어야 합니다. -->
 
-!!! tip "주의"
+!!! danger "주의"
     S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 사용하여 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급받아 사용하는 것을 권장합니다.
 
     S3 API 자격 증명을 발급받은 사용자 계정이 프로젝트에 대한 접근 권한을 잃거나 NHN Cloud를 탈퇴하여 삭제되면 자격 증명은 즉시 만료되어 사용할 수 없습니다.
@@ -214,7 +214,7 @@ AWS signature V4 서명 생성 시 `x-amz-content-sha256` 헤더가 필요합니
 | `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload 방식(청크 서명 없이 트레일러 헤더 사용) |
 | `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload 방식(각 청크에 서명 포함 + 트레일러 헤더 사용) |
 
-!!! tip "참고"
+!!! tip "알아두기"
     자세한 내용은 [Authenticating Requests: Using the Authorization Header (AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) 문서를 참고하세요.
 
 x-amz-content-sha256 값이 `STREAMING-UNSIGNED-PAYLOAD-TRAILER` 또는 `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER`인 경우 `x-amz-trailer` 요청 헤더로 트레일러에 전송할 체크섬 알고리즘을 선언해야 합니다. 지원하는 알고리즘은 다음과 같습니다.
@@ -227,7 +227,7 @@ x-amz-content-sha256 값이 `STREAMING-UNSIGNED-PAYLOAD-TRAILER` 또는 `STREAMI
 | `x-amz-checksum-sha1` | SHA-1 |
 | `x-amz-checksum-sha256` | SHA-256 |
 
-!!! tip "참고"
+!!! tip "알아두기"
     트레일러 헤더를 사용한 서명 계산에 대한 자세한 내용은 [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) 문서를 참고하세요.
 
 <a id="bucket"></a>
@@ -252,7 +252,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-!!! tip "참고"
+!!! tip "알아두기"
     웹 콘솔 또는 오브젝트 스토리지 API를 통해 만든 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
 <a id="create-bucket-request"></a>
@@ -334,7 +334,7 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-!!! tip "참고"
+!!! tip "알아두기"
     웹 콘솔 또는 오브젝트 스토리지 API를 통해 생성한 버킷의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
 <a id="get-bucket-request"></a>
@@ -477,7 +477,7 @@ Authorization: AWS {access}:{signature}
 | Rule.DefaultRetention.Days | Body | Integer | Conditional | 보관 기간(일). 양의 정수. Days 또는 Years 중 하나 필수 |
 | Rule.DefaultRetention.Years | Body | Integer | Conditional | 보관 기간(년). 양의 정수. Days 또는 Years 중 하나 필수 |
 
-!!! tip "참고"
+!!! tip "알아두기"
     `Rule`을 생략하면 기본 보관 기간이 0일로 설정됩니다.
     `Years`로 설정하더라도 조회 시에는 항상 `Days`로 변환하여 반환합니다.
 
@@ -535,7 +535,7 @@ Authorization: AWS {access}:{signature}
 | Rule.DefaultRetention.Mode | Body | String | 보관 모드 |
 | Rule.DefaultRetention.Days | Body | Integer | 보관 기간(일) |
 
-!!! tip "참고"
+!!! tip "알아두기"
     `Years`로 설정한 보관 기간도 조회 시에는 `Days`로 변환하여 반환합니다.
 
 <details>
@@ -682,7 +682,7 @@ GET /{bucket}/{obj}
 #### 응답
 요청이 올바르면 상태 코드 200을 반환합니다.
 
-!!! tip "참고"
+!!! tip "알아두기"
     Swift TempURL 방식과 언어별 직접 서명 예시 등 자세한 내용은 [서명된 URL 가이드](presigned-url-guide/)를 참고하세요.
 
 <a id="aws-command-line-interface"></a>
@@ -693,7 +693,7 @@ S3 호환 API를 사용하여 [AWS 명령줄 인터페이스](https://aws.amazon
 ### 설치 { #aws-command-line-interface-installation }
 [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) 문서를 참조해 AWS 명령줄 인터페이스를 설치합니다.
 
-!!! tip "참고"
+!!! tip "알아두기"
     NHN Cloud 오브젝트 스토리지는 AWS CLI 버전 2.34.38까지 지원합니다.
 
 <a id="aws-command-line-interface-configuration"></a>
@@ -727,7 +727,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 | command | AWS 명령줄 인터페이스 명령 |
 | bucket | 버킷 이름 |
 
-!!! tip "참고"
+!!! tip "알아두기"
     AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 NHN Cloud 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야 합니다.
     AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참고하세요.
 
@@ -828,14 +828,14 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp ./
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
-!!! tip "참고"
+!!! tip "알아두기"
     오브젝트의 용량이 8MB 이상이면 AWS 명령줄 인터페이스는 오브젝트를 여러 개의 파트로 나누어 업로드합니다. 파트 오브젝트는 <code style="display: inline;">{bucket}+segments</code>라는 버킷에 <code style="display: inline;">{object-name}/{upload-id}/{part-number}</code> 형태의 이름으로 저장되고, 모든 파트 업로드가 끝나면 업로드 요청한 버킷에 파트 오브젝트를 연결한 오브젝트가 만들어집니다.
 
     파트 오브젝트가 저장되는 <code style="display: inline;">{bucket}+segments</code> 버킷은 S3 호환 API로는 접근할 수 없고, Object Storage API 또는 콘솔을 통해 접근할 수 있습니다.
 
     멀티파트 오브젝트의 ETag는 각 파트 오브젝트의 ETag 값을 이진 데이터로 변환하고 순서대로 연결해(concatenate) MD5 해시한 값입니다.
 
-!!! tip "주의"
+!!! danger "주의"
     멀티파트로 업로드한 오브젝트의 일부 또는 전체 파트 오브젝트를 삭제하면 오브젝트에 접근할 수 없습니다.
 
 </details>
@@ -899,14 +899,14 @@ s3 =
 |---|---|
 | addressing_style | `virtual` - 도메인 스타일 사용<br>`path` - 경로 스타일 사용<br>`auto` - 자동 선택(기본값, NHN Cloud Object Storage처럼 커스텀 엔드포인트를 사용하면 경로 스타일로 동작) |
 
-!!! tip "주의"
+!!! danger "주의"
     버킷 이름에 점(`.`)이 포함되어 있으면 도메인 스타일 사용 시 와일드카드 SSL 인증서의 유효 범위를 벗어나 인증서 검증에 실패할 수 있습니다. 이때는 경로 스타일을 사용하세요.
 
 <a id="aws-sdk"></a>
 ## AWS SDK { #aws-sdk }
 AWS는 여러 가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 사용하여 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
-!!! tip "참고"
+!!! tip "알아두기"
     자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참고하세요.
 
 AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
@@ -921,7 +921,7 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 <a id="aws-sdk-boto3-python"></a>
 ### Boto3 - Python SDK { #aws-sdk-boto3-python }
 
-!!! tip "참고"
+!!! tip "알아두기"
     자세한 내용은 [AWS SDK for Python(Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참고하세요.
 
 <a id="aws-sdk-boto3-python-context"></a>
@@ -1060,7 +1060,7 @@ def get_object_lock_configuration(self, bucket_name):
 <details>
 <summary>오브젝트 업로드</summary>
 
-!!! tip "참고"
+!!! tip "알아두기"
     파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 따라 결정됩니다. 기본 파트 크기는 8MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.
 
 ```python
@@ -1133,7 +1133,7 @@ def generate_presigned_url(self, bucket_name, key, expires_in):
 <a id="aws-sdk-java"></a>
 ### Java SDK { #aws-sdk-java }
 
-!!! tip "참고"
+!!! tip "알아두기"
     자세한 내용은 [AWS SDK for Java 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html) 문서를 참고하세요.
 
 <a id="aws-sdk-java-context"></a>
@@ -1313,7 +1313,7 @@ public ObjectLockConfiguration getObjectLockConfiguration(
 <details>
 <summary>오브젝트 업로드</summary>
 
-!!! tip "참고"
+!!! tip "알아두기"
     파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 따라 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.
 
 ```java
@@ -1412,7 +1412,7 @@ public String generatePresignedUrl(
 <a id="aws-sdk-dotnet"></a>
 ### .NET SDK { #aws-sdk-dotnet }
 
-!!! tip "참고"
+!!! tip "알아두기"
     자세한 내용은 [AWS SDK for .NET 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits) 문서를 참고하세요.
 
 <a id="aws-sdk-dotnet-context"></a>
@@ -1659,7 +1659,7 @@ static async Task<GetObjectLockConfigurationResponse> GetObjectLockConfiguration
 <details>
 <summary>오브젝트 업로드</summary>
 
-!!! tip "참고"
+!!! tip "알아두기"
     파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 따라 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.
 
 ```csharp
@@ -1868,6 +1868,6 @@ private static AmazonS3Client GetS3Client()
 
 </details>
 
-!!! tip "주의"
+!!! danger "주의"
     버킷 이름에 점(`.`)이 포함되어 있으면 도메인 스타일 사용 시 와일드카드 SSL 인증서의 유효 범위를 벗어나 인증서 검증에 실패할 수 있습니다. 이때는 경로 스타일을 사용하세요.
 
