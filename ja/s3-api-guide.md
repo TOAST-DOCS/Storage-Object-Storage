@@ -1,5 +1,4 @@
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
-
 ## Storage > Object Storage > Amazon S3互換APIガイド { #storage-object-storage-amazon-s3-compatible-api-guide }
 NHN Cloud オブジェクトストレージは、AWS のオブジェクトストレージ S3 API と互換性のある API を提供します。そのため、Amazon S3 API を使用するように開発されたアプリケーションは、設定を変更するだけでそのまま使用できます。
 
@@ -34,7 +33,6 @@ NHN Cloud オブジェクトストレージは、AWS のオブジェクトスト
 この文書では、基本的な API の使用方法のみを説明します。高度な機能を使用するには、[Amazon S3 API ガイド](https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html)を参照するか、[AWS SDK](https://aws.amazon.com/ko/tools) の使用をお勧めします。
 
 <a id="s3-api-credential"></a>
-
 ## S3 API認証情報(S3 API Credential) { #s3-api-credential }
 
 <a id="obtain-s3-api-credentials"></a>
@@ -193,7 +191,6 @@ X-Auth-Token: {token-id}
 この API はレスポンス本文を返しません。リクエストが正しい場合、ステータスコード 204 を返します。
 
 <a id="create-signature"></a>
-
 ## 署名(signature)の生成 { #create-signature }
 S3 API を使用するには、認証情報を使用して署名を生成する必要があります。署名の生成方法については、[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) のドキュメントを参照してください。
 
@@ -234,7 +231,6 @@ x-amz-content-sha256 の値が `STREAMING-UNSIGNED-PAYLOAD-TRAILER` または `S
     トレーラーヘッダーを使用した署名計算の詳細については、[Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) のドキュメントを参照してください。
 
 <a id="bucket"></a>
-
 ## Bucket { #bucket }
 
 <a id="create-bucket"></a>
@@ -560,7 +556,6 @@ Authorization: AWS {access}:{signature}
 </details>
 
 <a id="object"></a>
-
 ## オブジェクト { #object }
 
 <a id="upload-object"></a>
@@ -652,7 +647,6 @@ Authorization: AWS {access}:{signature}
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード 204 を返します。
 
 <a id="presigned-url"></a>
-
 ## 署名付き URL の生成 { #presigned-url }
 **AWS Signature Version 4 (SigV4)** の署名をクエリパラメータに含めることで、認証トークン (Authorization ヘッダー) なしに一定時間オブジェクトにアクセスできる URL です。ダウンロードは `GET`、アップロードは `PUT` でリクエストします。
 
@@ -692,7 +686,6 @@ GET /{bucket}/{obj}
     Swift TempURL 方式や言語別の直接署名の例など、詳細については「[署名付き URL ガイド](presigned-url-guide/)」を参照してください。
 
 <a id="aws-command-line-interface"></a>
-
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
 S3互換APIを使用して、[AWS Command Line Interface](https://aws.amazon.com/ko/cli/)でNHN Cloudオブジェクトストレージを使用できます。
 
@@ -910,7 +903,6 @@ s3 =
     バケット名にピリオド(`.`)が含まれている場合、ドメインスタイルを使用するとワイルドカードSSL証明書の有効範囲外となり、証明書の検証に失敗する可能性があります。この場合はパススタイルを使用してください。
 
 <a id="aws-sdk"></a>
-
 ## AWS SDK { #aws-sdk }
 AWSは複数のプログラミング言語向けのSDKを提供しています。S3互換APIを使用して、AWS SDKでNHN Cloudオブジェクトストレージを使用できます。
 
@@ -927,7 +919,6 @@ AWS SDKを使用するために必要な主なパラメータは次のとおり�
 | endpoint | https://kr1-api-object-storage.nhncloudservice.com - 韓国(板橋)リージョン<br>https://kr2-api-object-storage.nhncloudservice.com - 韓国(坪村)リージョン<br>https://kr3-api-object-storage.nhncloudservice.com - 韓国(光州)リージョン<br>https://jp1-api-object-storage.nhncloudservice.com - 日本(東京)リージョン |
 
 <a id="aws-sdk-boto3-python"></a>
-
 ### Boto3 - Python SDK { #aws-sdk-boto3-python }
 
 !!! tip "ヒント"
@@ -1140,7 +1131,6 @@ def generate_presigned_url(self, bucket_name, key, expires_in):
 </details>
 
 <a id="aws-sdk-java"></a>
-
 ### Java SDK { #aws-sdk-java }
 
 !!! tip "ヒント"
@@ -1420,7 +1410,6 @@ public String generatePresignedUrl(
 </details>
 
 <a id="aws-sdk-dotnet"></a>
-
 ### .NET SDK { #aws-sdk-dotnet }
 
 !!! tip "ヒント"
@@ -1803,7 +1792,6 @@ static string GeneratePresignedUrl(
 </details>
 
 <a id="aws-sdk-virtual-hosted-style"></a>
-
 ### ドメインスタイルエンドポイントの使用 { #aws-sdk-virtual-hosted-style }
 AWS SDK でドメインスタイルエンドポイントを使用するには、クライアント設定でパススタイルアクセスを無効にします。エンドポイント URL と認証情報は従来と同様に使用し、SDK がバケット名をサブドメインとして組み合わせてリクエストを送信します。
 
