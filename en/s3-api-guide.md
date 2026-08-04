@@ -1,5 +1,3 @@
-<!-- pre-align:aligned sig=4f738374297a -->
-
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
 ## Storage > Object Storage > Amazon S3 Compatible API Guide { #storage-object-storage-amazon-s3-compatible-api-guide }
 NHN Cloud Object Storage provides API compatible with S3 API of AWS object storage. Therefore, you can use applications developed to use the Amazon S3 API as is, with only a few configuration changes.
@@ -11,6 +9,9 @@ The following Amazon S3 compatible API is provided.
 | PUT Bucket | Create bucket |
 | HEAD Bucket | Query bucket information |
 | DELETE Bucket | Delete bucket |
+| PUT Bucket Object Lock | Create Locked Bucket |
+| PUT Object Lock Configuration | Set Retention Period for Lock Bucket |
+| GET Object Lock Configuration | Get Lock Bucket Retention Period |
 | PUT Bucket ACL | Set bucket ACL |
 | GET Bucket ACL | Get bucket ACL |
 | GET Bucket Location | Get region with bucket |
@@ -29,16 +30,16 @@ The following Amazon S3 compatible API is provided.
 | List Multipart Uploads | List multipart objects under uploading |
 | DELETE Multiple Objects | Delete multiple objects |
 
-This document describes only the basic usage of API. To use advanced features, it is recommended that you see [Amazon S3 API Guide](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html) or use [AWS SDK](https://aws.amazon.com/tools).
+This document describes only the basic usage of API. To use advanced features, it is recommended that you see [Amazon S3 API Guide](https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html) or use [AWS SDK](https://aws.amazon.com/ko/tools).
 
 <a id="s3-api-credential"></a>
 ## S3 API Credentials { #s3-api-credential }
 
 <a id="obtain-s3-api-credentials"></a>
 ### Obtain S3 API Credentials { #obtain-s3-api-credentials }
-To use Amazon S3 compatible API, you must first obtain S3 API credentials in the form of AWS EC2. Credentials can be issued using the web console or API. To obtain credentials using the web console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
+To use the Amazon S3-compatible API, you must first obtain S3 API credentials in the AWS EC2 format. Credentials can be issued using the web console or API. To obtain credentials using the web console, refer to the [S3 API Credentials](console-guide/#s3-api-credentials) section.
 
-To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to [Object Storage API Guide](api-guide/#prerequisites).
+To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to the [Object Storage API Guide](api-guide/#auth).
 
 ```
 POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -52,22 +53,21 @@ X-Auth-Token: {token-id}
 
 | Name         | Type   | Format | Required | Description                                                  |
 | ------------ | ------ | ------ | -------- | ------------------------------------------------------------ |
-| X-Auth-Token | Header | String | O        | Issued token ID                                              |
-| api-user-id      | URL    | String | O        | API user ID, which can be found on the API Endpoint setting dialog box   |
-| tenant_id    | Body   | String | O        | Tenant ID, which can be found on the API Endpoint setting dialog box |
+| X-Auth-Token | Header | String | Y | Issued token ID |
+| api-user-id | URL | String | Y | API User ID, which can be found on the API Endpoint setting dialog box |
+| tenant_id | Body | String | Y | Tenant ID, which can be found in the API Endpoint setting dialog box |
+!!! tip "Tip"
+    `{api-user-id}` can be found in the **API user ID** field of the API Endpoint setting dialog on the console, or in the **access.user.id** field of the authentication token issuance API response body.
+    To use the authentication token issuance API, see [Authentication and Authorization](api-guide/#auth) in the API guide.
 
-> [Note]
-> `{api-user-id}` can be found in the **API User ID** item in the API Endpoint settings dialog box on the console or in the **access.user.id** field in the response body of the Authentication Token Issuance API.
-> To use the Authentication Token Issuance API, refer to [Authentication Token Issuance](api-guide/#authentication-token-issuance) in the API guide.
-> 
-> S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
+S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
 
 <!-- This is a comment for line break, so it must be included. -->
 
-> [Caution]
-> If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, it is recommended to delete the leaked credentials and obtain a new one.
->
-> If the user account issued with S3 API credentials loses access to the project or is deleted by leaving NHN Cloud, the credentials will immediately expire and cannot be used.
+!!! danger "Caution"
+    If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, we recommend that you delete the leaked credentials and obtain new ones.
+
+If the user account that was issued S3 API credentials loses access to the project or is deleted by leaving NHN Cloud, the credentials expire immediately and cannot be used.
 
 <details>
 <summary>Example</summary>
@@ -121,15 +121,15 @@ GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-i
 
 X-Auth-Token: {token-id}
 ```
+
 <a id="get-s3-api-credentials-request"></a>
 #### Request
 This API does not require a request body.
 
 | Name         | Type   | Format | Required | Description                               |
 | ------------ | ------ | ------ | -------- | ----------------------------------------- |
-| X-Auth-Token | Header | String | O        | Issued token ID                           |
-| user-id      | URL    | String | O        | User ID, included in the authentication token |
-
+| X-Auth-Token | Header | String | Y | Issued token ID |
+| user-id | URL | String | Y | User ID, included in the authentication token |
 <a id="get-s3-api-credentials-response"></a>
 #### Response
 
@@ -173,23 +173,24 @@ DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{use
 
 X-Auth-Token: {token-id}
 ```
-<a id="delete-s3-api-credentials-request"></a>
+
+<a id="get-s3-api-credentials-request"></a>
 #### Request
 This API does not require a request body.
 
 | Name         | Type   | Format | Required | Description                               |
 | ------------ | ------ | ------ | -------- | ----------------------------------------- |
-| X-Auth-Token | Header | String | O        | Issued token ID                           |
-| user-id      | URL    | String | O        | User ID, included in the authentication token |
-| access       | URL    | String | O        | S3 API credentials access key                     |
-
+| X-Auth-Token | Header | String | Y | Issued token ID |
+| user-id | URL | String | Y | User ID, included in the authentication token |
+| access | URL | String | Y | S3 API credentials access key |
 <a id="delete-s3-api-credentials-response"></a>
 #### Response
 This API does not return a response body. When the request is appropriate, return status code 204.
 
 <a id="create-signature"></a>
-## Create Signature { #create-signature }
-To use the S3 API, you must create a signature using credentials. For information on how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
+
+## Create a Signature { #create-signature }
+To use S3 API, you must create a signature using credentials. For information about how to sign, see [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html).
 
 The following information is required to create a signature.
 
@@ -198,7 +199,7 @@ The following information is required to create a signature.
 | Algorithm     | AWS4-HMAC-SHA256               |
 | Signed Time   | In the YYYYMMDDThhmmssZ format |
 | Service Name  | s3                             |
-| Region Name   | KR1 - Korea (Pangyo) region<br/>KR2 - Korea (Pyeongchon) Region<br/>KR3 - Korea (Gwangju) Region<br/>JP1 - Japan (Tokyo) Region |
+| Region Name | KR1 - Korea (Pangyo) Region<br>KR2 - Korea (Pyeongchon) Region<br>KR3 - Korea (Gwangju) Region<br>JP1 - Japan (Tokyo) Region |
 | Secret Key    | S3 API credentials secret key          |
 
 The `x-amz-content-sha256` header is required when generating an AWS Signature V4 signature. This header is included in the Canonical Request and used in signature calculation. The payload processing method is determined by the header value. The available values are as follows:
@@ -211,8 +212,8 @@ The `x-amz-content-sha256` header is required when generating an AWS Signature V
 | `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload method (uses trailer headers without chunk signatures) |
 | `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload method (includes a signature in each chunk + uses trailer headers) |
 
-> [Note]
-> For more information, see [Authenticating Requests: Using the Authorization Header (AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html).
+!!! tip "Note"
+    For more information, see [Authenticating Requests: Using the Authorization Header (AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html).
 
 If the `x-amz-content-sha256` value is `STREAMING-UNSIGNED-PAYLOAD-TRAILER` or `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER`, you must declare the checksum algorithm to be sent in the trailer using the `x-amz-trailer` request header. The supported algorithms are as follows:
 
@@ -224,15 +225,18 @@ If the `x-amz-content-sha256` value is `STREAMING-UNSIGNED-PAYLOAD-TRAILER` or `
 | `x-amz-checksum-sha1` | SHA-1 |
 | `x-amz-checksum-sha256` | SHA-256 |
 
-> [Note]
-> For more information on signature calculation using trailer headers, see [Signature calculations for trailing headers (chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html).
-
+!!! tip "Note"
+    For more information on signature calculations using trailing headers, see [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html).
 
 <a id="bucket"></a>
 ## Bucket { #bucket }
 <a id="create-bucket"></a>
 ### Create Bucket { #create-bucket }
 Creates a bucket. Bucket names must follow Amazon S3's naming rules:
+
+<a id="create-bucket"></a>
+### Create Bucket { #create-bucket }
+Creates a bucket. Bucket names must follow Amazon S3's bucket naming rules:
 
 * Bucket names must be between 3 and 63 characters long.
 * Bucket names can consist only of lowercase letters, numbers, dots (.), and hyphens (-).
@@ -249,8 +253,8 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-> [Note]
-> If a container name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
+!!! tip "Tip"
+    If a container name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
 
 <a id="create-bucket-request"></a>
 #### Request
@@ -258,10 +262,9 @@ This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
-| bucket        | URL    | String | O        | Bucket name                                      |
-| Date          | Header | String | O        | Request time                                     |
-| Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
-
+| bucket | URL | String | Y | Bucket name |
+| Date | Header | String | Y | Requested time |
+| Authorization | Header | String | Y | Comprised of S3 API credentials access key and signature |
 <a id="create-bucket-response"></a>
 #### Response
 This API does not return a response body. It returns a status code of 200 if the request is valid.
@@ -287,9 +290,8 @@ This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
-| Date          | Header | String | O        | Request Time                                     |
-| Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
-
+| Date | Header | String | Y | Requested time |
+| Authorization | Header | String | Y | Comprised of S3 API credentials access key and signature |
 <a id="list-buckets-response"></a>
 #### Response
 If the request is valid, returns a status code of 200 and a bucket list in XML format.
@@ -331,8 +333,8 @@ Date: 22:22:22 +0000, 22 Feb 2020
 Authorization: AWS {access}:{signature}
 ```
 
-> [Note]
-> If a bucket name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
+!!! tip "Note"
+    If a bucket name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
 
 <a id="get-bucket-request"></a>
 #### Request
@@ -340,10 +342,9 @@ This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
-| bucket        | URL    | String | O        | Bucket name                                      |
-| Date          | Header | String | O        | Request time                                     |
-| Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
-
+| bucket | URL | String | Y | Bucket name |
+| Date | Header | String | Y | Requested time |
+| Authorization | Header | String | Y | Comprised of S3 API credentials access key and signature |
 <a id="get-bucket-response"></a>
 #### Response
 If the request is valid, returns a status code of 200 and a object list in XML format.
@@ -404,16 +405,153 @@ This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
-| bucket        | URL    | String | O        | Bucket name                                      |
-| Date          | Header | String | O        | Request time                                     |
-| Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
-
+| bucket | URL | String | Y | Bucket name |
+| Date | Header | String | Y | Requested time |
+| Authorization | Header | String | Y | Comprised of S3 API credentials access key and signature |
 <a id="delete-bucket-response"></a>
 #### Response
 This API does not return a response body; it returns status code 204 if the request is valid.
 
+<a id="create-lock-bucket"></a>
+### Create Lock Bucket { #create-lock-bucket }
+Creates a bucket with object lock enabled. When creating the bucket, set the `x-amz-bucket-object-lock-enabled` header to `true`. The default retention period is set to 0 days.
+
+```
+PUT /{bucket}
+
+x-amz-bucket-object-lock-enabled: true
+Date: Sat, 22 Feb 2020 22:22:22 +0000
+Authorization: AWS {access}:{signature}
+```
+
+<a id="get-s3-api-credentials-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| bucket | URL | String | Y | Bucket name |
+| x-amz-bucket-object-lock-enabled | Header | Boolean | Y | Whether to enable object lock (`true`) |
+| Date | Header | String | Y | Requested time |
+| Authorization | Header | String | Y | Comprised of S3 API credentials access key and signature |
+<a id="create-lock-bucket-response"></a>
+#### Response
+This API does not return a response body. For a valid request, return status code 200.
+
+| Name | Type | Format | Description |
+|---|---|---|---|
+| Location | Header | String | Created bucket path |
+<a id="put-object-lock-configuration"></a>
+### Set Retention Period for Lock Bucket { #put-object-lock-configuration }
+Sets the default retention period for a lock bucket.
+
+```
+PUT /{bucket}?object-lock
+
+Date: Sat, 22 Feb 2020 22:22:22 +0000
+Authorization: AWS {access}:{signature}
+```
+
+<a id="put-object-lock-configuration-request"></a>
+#### Request
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| bucket | URL | String | Y | Bucket name |
+| Date | Header | String | Y | Requested time |
+| Authorization | Header | String | Y | Comprised of S3 API credentials access key and signature |
+You must include object lock settings in JSON format in the request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| ObjectLockEnabled | Body | String | Y | Object lock activation status. Only `Enabled` is allowed |
+| Rule | Body | Object | N | Default Retention Rule |
+| Rule.DefaultRetention | Body | Object | Conditional | Default retention period setting. Required when configuring a Rule |
+| Rule.DefaultRetention.Mode | Body | String | Conditional | Retention mode. Only `COMPLIANCE` is allowed |
+| Rule.DefaultRetention.Days | Body | Integer | Conditional | Retention period (days). A positive integer. Either Days or Years is required. |
+| Rule.DefaultRetention.Years | Body | Integer | Conditional | Retention period (years). A positive integer. Either Days or Years is required. |
+!!! tip "Note"
+    If you omit `Rule`, the default retention period is set to 0 days.
+    Even if you set the value in `Years`, it is always converted to and returned as `Days` when retrieved.
+
+<details>
+<summary>Example</summary>
+
+```json
+{
+    "ObjectLockEnabled": "Enabled",
+    "Rule": {
+        "DefaultRetention": {
+            "Mode": "COMPLIANCE",
+            "Days": 1
+        }
+    }
+}
+```
+
+</details>
+
+<a id="create-lock-bucket-response"></a>
+#### Response
+This API does not return a response body. For a valid request, return status code 200.
+
+<a id="get-object-lock-configuration"></a>
+### Get Object Lock Configuration { #get-object-lock-configuration }
+Retrieves the object lock settings of a locked bucket.
+
+```
+GET /{bucket}?object-lock
+
+Date: Sat, 22 Feb 2020 22:22:22 +0000
+Authorization: AWS {access}:{signature}
+```
+
+<a id="get-s3-api-credentials-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|---|---|---|---|---|
+| bucket | URL | String | Y | Bucket name |
+| Date | Header | String | Y | Requested time |
+| Authorization | Header | String | Y | Comprised of S3 API credentials access key and signature |
+<a id="get-object-lock-configuration-response"></a>
+#### Response
+For a valid request, return status code 200 and the object lock configuration in JSON format.
+
+| Name | Type | Format | Description |
+|---|---|---|---|
+| ObjectLockEnabled | Body | String | Object lock activation status |
+| Rule | Body | Object | Default Retention Rule |
+| Rule.DefaultRetention | Body | Object | Default retention period settings |
+| Rule.DefaultRetention.Mode | Body | String | Retention Mode |
+| Rule.DefaultRetention.Days | Body | Integer | Retention Period (day) |
+!!! tip "Note"
+    The retention period set in `Years` is also returned as `Days` when retrieved.
+
+<details>
+<summary>Example</summary>
+
+```json
+{
+    "ObjectLockEnabled": "Enabled",
+    "Rule": {
+        "DefaultRetention": {
+            "Mode": "COMPLIANCE",
+            "Days": 1
+        }
+    }
+}
+```
+
+</details>
+
 <a id="object"></a>
 ## Object { #object }
+<a id="upload-object"></a>
+### Upload Object { #upload-object }
+Uploads an object to the specified bucket.
+
 <a id="upload-object"></a>
 ### Upload Object { #upload-object }
 Uploads an object to the specified bucket.
@@ -431,11 +569,10 @@ This API does not return a response body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
-| bucket        | URL    | String | O        | Bucket name                                      |
-| obj           | URL    | String | O        | Object name                                      |
-| Date          | Header | String | O        | Request time                                     |
-| Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
-
+| bucket | URL | String | Y | Bucket name |
+| obj | URL | String | Y | Object name |
+| Date | Header | String | Y | Requested time |
+| Authorization | Header | String | Y | Comprised of S3 API credentials access key and signature |
 <a id="upload-object-response"></a>
 #### Response
 This API does not return a response body. It returns a status code of 200 if the request is valid.
@@ -462,11 +599,10 @@ This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
-| bucket        | URL    | String | O        | Bucket name                                      |
-| obj           | URL    | String | O        | Object name                                      |
-| Date          | Header | String | O        | Request time                                     |
-| Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
-
+| bucket | URL | String | Y | Bucket name |
+| obj | URL | String | Y | Object name |
+| Date | Header | String | Y | Requested time |
+| Authorization | Header | String | Y | Comprised of S3 API credentials access key and signature |
 <a id="download-object-response"></a>
 #### Response
 If the request is valid, returns the status code of 200.
@@ -493,25 +629,62 @@ This API does not require a request body.
 
 | Name          | Type   | Format | Required | Description                                      |
 | ------------- | ------ | ------ | -------- | ------------------------------------------------ |
-| bucket        | URL    | String | O        | Bucket name                                      |
-| obj           | URL    | String | O        | Object name                                      |
-| Date          | Header | String | O        | Requested time                                   |
-| Authorization | Header | String | O        | Comprised of S3 API credentials access key and signature |
-
+| bucket | URL | String | Y | Bucket name |
+| obj | URL | String | Y | Object name |
+| Date | Header | String | Y | Requested time |
+| Authorization | Header | String | Y | Comprised of S3 API credentials access key and signature |
 <a id="delete-object-response"></a>
 #### Response
 This API does not return a response body. It returns status code 204 if the request is valid.
 
+<a id="presigned-url"></a>
+## Create Signed URL { #presigned-url }
+This is a URL that embeds an **AWS Signature Version 4 (SigV4)** signature in the query parameters, allowing access to an object for a set period of time without an authentication token (Authorization header). Use `GET` for downloads and `PUT` for uploads.
+
+<a id="presigned-url-format"></a>
+### Signed URL Format { #presigned-url-format }
+
+```
+GET /{bucket}/{obj}
+?X-Amz-Algorithm=AWS4-HMAC-SHA256
+&X-Amz-Credential={access}%2F{date}%2F{region}%2Fs3%2Faws4_request
+&X-Amz-Date={date}
+&X-Amz-Expires={seconds}
+&X-Amz-SignedHeaders=host
+&X-Amz-Signature={signature}
+```
+
+<a id="get-s3-api-credentials-request"></a>
+#### Request
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description                                                                             |
+|---|---|---|---|--------------------------------------------------------------------------------|
+| bucket | URL | String | Y | Bucket name |
+| obj | URL | String | Y | Object name |
+| X-Amz-Algorithm | Query | String | Y | Signature algorithm. Set to AWS4-HMAC-SHA256                                                 |
+| X-Amz-Credential | Query | String | Y | Access key and signature scope. Format: `{access}/{date}/{region}/s3/aws4_request` (`/` encoded as `%2F`) |
+| X-Amz-Date | Query | String | Y | Signed Time. ISO 8601 `yyyyMMddTHHmmssZ` (UTC) |
+| X-Amz-Expires | Query | String | Y | Validity period (seconds). Min. `1`, Max. `604800` (7 days)                                              |
+| X-Amz-SignedHeaders | Query | String | Y | A list of headers included in the signature. Must include at least `host`                                                    |
+| X-Amz-Signature | Query | String | Y | HMAC signature value for authenticating the request |
+<a id="presigned-url-format-response"></a>
+#### Response
+For a valid request, return status code 200.
+
+!!! tip "Note"
+    For more information about Swift TempURL methods and per-language direct signing examples, see the [Signed URL Guide](presigned-url-guide/).
+
 <a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
-You can use NHN Cloud Object Storage with [AWS Command Line Interface](https://aws.amazon.com/cli/) using the S3 compatible API.
+You can use NHN Cloud Object Storage with the [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) using the S3 compatible API.
 
 <a id="aws-command-line-interface-installation"></a>
 ### Installation { #aws-command-line-interface-installation }
 Install the AWS Command Line Interface (CLI) by referencing the [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) documentation.  
 
-> [Note]
-> AWS CLI versions up to 2.34.38 are supported in NHN Cloud Object Storage.
+!!! tip "Note"
+    NHN Cloud Object Storage supports up to version 2.34.38 of the AWS CLI.
 
 <a id="aws-command-line-interface-configuration"></a>
 ### Configuration { #aws-command-line-interface-configuration }
@@ -529,8 +702,7 @@ Default output format [None]: json
 |---|---|
 | access | S3 API credentials access key |
 | secret | S3 API credentials secret key |
-| region name | KR1 - Korea (Pangyo) Region <br/>KR2 - Korea (Pyeongchon) Region <br/>KR3 - Korea (Gwangju) Region <br/>JP1 - Japan (Tokyo) Region <br/> |
-
+| region name | KR1 - Korea (Pangyo) Region<br>KR2 - Korea (Pyeongchon) Region<br>KR3 - Korea (Gwangju) Region<br>JP1 - Japan (Tokyo) Region |
 <a id="how-to-use-the-s3-commands"></a>
 ### How to Use the S3 Commands { #how-to-use-the-s3-commands }
 
@@ -540,14 +712,14 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | Name | Description |
 |---|---|
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region <br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) region <br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) Region<br>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) Region<br>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) Region<br>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) Region |
 | command | Command for AWS Command Line Interface |
 | bucket | Bucket name |
 
 
-> [Note]
-> Since AWS CLI is provided to use AWS, it is configured to use AWS domain. Therefore, to use NHN Cloud Object Storage, it is required to specify endpoint for every command.
-> Regarding commands for AWS Command Line Interface, see [Using high-level (s3) commands with the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html).
+!!! tip "Note"
+    Since the AWS CLI is provided for use with AWS, it is configured to use the AWS domain. Therefore, to use NHN Cloud Object Storage, you must specify an endpoint for every command.
+    For AWS CLI commands, see [Using high-level (s3) commands with the AWS CLI](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
 
 <details>
 <summary>Create Bucket</summary>
@@ -592,6 +764,54 @@ remove_bucket: example-bucket
 </details>
 
 <details>
+<summary>Lock Bucket</summary>
+
+Lock buckets are managed using <code>aws s3api</code> subcommands.
+<br>
+Use the <code>--object-lock-enabled-for-bucket</code> option with the <code>create-bucket</code> command to create a bucket with object lock enabled. The default retention period is set to 0 days.
+
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api create-bucket \
+  --bucket example-bucket \
+  --object-lock-enabled-for-bucket
+```
+
+To set the default retention period, use the <code>put-object-lock-configuration</code> command.
+
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api put-object-lock-configuration \
+    --bucket example-bucket \
+    --object-lock-configuration '{
+        "ObjectLockEnabled": "Enabled",
+        "Rule": {
+            "DefaultRetention": {
+                "Mode": "COMPLIANCE",
+                "Days": 1
+            }
+        }
+    }'
+```
+
+To retrieve the lock settings, use the <code>get-object-lock-configuration</code> command.
+
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api get-object-lock-configuration --bucket example-bucket
+{
+    "ObjectLockConfiguration": {
+        "ObjectLockEnabled": "Enabled",
+        "Rule": {
+            "DefaultRetention": {
+                "Mode": "COMPLIANCE",
+                "Days": 1
+            }
+        }
+    }
+}
+```
+
+</details>
+
+<details>
 <summary>Upload Object</summary>
 
 ```shell
@@ -599,21 +819,15 @@ $  aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp .
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
-<blockquote>
-[Note]
-<br/>
-If the object is larger than 8 MB, the AWS Command Line Interface splits the object into multiple parts and uploads them. The part object is stored in a bucket called <code style="display: inline;">{bucket}+segments</code> It is saved in the form of <code style="display: inline;">{object-name}/{upload-id}/{part-number}</code>, and when all parts are uploaded, an object linked to the part object is created in the bucket requested for upload.
-<br/><br/>
-The <code style="display: inline;">{bucket}+segments</code> bucket where the part object is stored cannot be accessed through the S3 compatible API, but can be accessed through the Object Storage API or the console.
-<br/><br/>
-The ETag of a multipart object is an MD5 hashed value by converting the ETag values of each part object into binary data and concatenating them in order.
-</blockquote>
+!!! tip "Note"
+    If an object is 8 MB or larger, the AWS Command Line Interface splits the object into multiple parts and uploads them. Part objects are stored in a bucket named <code style="display: inline;">{bucket}+segments</code> with names in the format <code style="display: inline;">{object-name}/{upload-id}/{part-number}</code>. When all part uploads are complete, an object that links the part objects is created in the bucket where the upload was requested.
 
-<blockquote>
-[Caution]
-<br/>
-If you delete some or all parts of an object uploaded as multipart, the object cannot be accessed.
-</blockquote>
+The <code style="display: inline;">{bucket}+segments</code> bucket, where part objects are stored, cannot be accessed with the S3-compatible API. You can access it through the Object Storage API or the console.
+
+The ETag of a multipart object is the MD5 hash of the binary data of each part object's ETag values concatenated in order.
+
+!!! danger "Caution"
+    If you delete some or all part objects of a multipart-uploaded object, the object becomes inaccessible.
 
 </details>
 
@@ -637,6 +851,16 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
+<details>
+<summary>Create Signed URL</summary>
+
+```shell
+$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
+https://kr1-api-object-storage.nhncloudservice.com/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=...
+```
+
+</details>
+
 <a id="aws-command-line-interface-virtual-hosted-style"></a>
 ### Use domain-style endpoints { #aws-command-line-interface-virtual-hosted-style }
 The S3-compatible API supports both Path-style and domain-style (virtual Hosted-style) bucket access methods. The domain-style uses the bucket name as a subdomain of the endpoint.
@@ -646,7 +870,7 @@ The S3-compatible API supports both Path-style and domain-style (virtual Hosted-
 | Path-style | `https://{endpoint}/{bucket}/{object}` |
 | Domain-style | `https://{bucket}.{endpoint}/{object}` |
 
-<br/>
+<br>
 
 To use domain-style endpoints in the AWS CLI, set the `addressing_style` option to `virtual`. When this setting is applied, the AWS CLI automatically combines the endpoint and bucket name to send requests in domain-style URL format.
 
@@ -664,17 +888,16 @@ s3 =
 
 | Name | Description |
 |---|---|
-| addressing_style | `virtual` - Uses domain-style<br/>`path` - Uses Path-style<br/>`auto` - Automatic selection (default; when using a custom endpoint such as NHN Cloud Object Storage, defaults to Path-style) |
-
-> [Caution]
-> If the bucket name contains a period (`.`), using domain-style may cause certificate validation to fail because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style.
+| addressing_style | `virtual` - Use domain style<br>`path` - Use path style<br>`auto` - Auto-select (default; uses path style when a custom endpoint such as NHN Cloud Object Storage is specified) |
+!!! danger "Caution"
+    If the bucket name contains a period (`.`), it may fall outside the scope of a wildcard SSL certificate when using domain-style access, causing certificate validation to fail. In this case, use path-style access instead.
 
 <a id="aws-sdk"></a>
 ## AWS SDK { #aws-sdk }
 AWS provides SDKs for many types of programming languages. By using the S3 compatible API, you can use NHN Cloud Object Storage with AWS SDK.
 
-> [Note]
-> For more information, see [AWS SDK](https://aws.amazon.com/en/tools).
+!!! tip "Note"
+    For more information, see the [AWS SDK](https://aws.amazon.com/ko/tools) documentation.
 
 The following are the major parameters required to use AWS SDK:
 
@@ -682,14 +905,13 @@ The following are the major parameters required to use AWS SDK:
 |---|---|
 | access | S3 API credentials access key |
 | secret | S3 API credentials secret key |
-| region name | KR1 - Korea (Pangyo) region <br/>KR2 - Korea (Pyeongchon) region<br/>KR3 - Korea (Gwangju) region<br/>JP1 - Japan (Tokyo) region |
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br/>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br/>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) region<br/>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region |
-
+| region name | KR1 - Korea (Pangyo) Region<br>KR2 - Korea (Pyeongchon) Region<br>KR3 - Korea (Gwangju) Region<br>JP1 - Japan (Tokyo) Region |
+| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) Region<br>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) Region<br>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) Region<br>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) Region |
 <a id="aws-sdk-boto3-python"></a>
 ### Boto3 - Python SDK { #aws-sdk-boto3-python }
 
-> [Note]
-> For more information, see [AWS SDK for Python (Boto3)](https://docs.aws.amazon.com/en_us/pythonsdk/?icmpid=docs_homepage_sdktoolkits).
+!!! tip "Note"
+    For more information, see the [AWS SDK for Python(Boto3)](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) documentation.
 
 <a id="aws-sdk-boto3-python-context"></a>
 #### Context
@@ -773,12 +995,62 @@ def delete_bucket(self, bucket_name):
 </details>
 
 <details>
+<summary>Lock Bucket</summary>
+
+Creating a lock bucket by setting <code>ObjectLockEnabledForBucket=True</code> in the <code>create_bucket</code> method. The default retention period is set to 0 days.
+
+```python
+def create_bucket_with_lock(self, bucket_name):
+    try:
+        return self.s3.create_bucket(
+            Bucket=bucket_name,
+            ObjectLockEnabledForBucket=True
+        )
+    except ClientError as e:
+        raise RuntimeError(e)
+```
+
+To set the default retention period, use the <code>put_object_lock_configuration</code> method.
+
+```python
+def put_object_lock_configuration(self, bucket_name, days):
+    lock_configuration = {
+        'ObjectLockEnabled': 'Enabled',
+        'Rule': {
+            'DefaultRetention': {
+                'Mode': 'COMPLIANCE',
+                'Days': days
+            }
+        }
+    }
+    try:
+        return self.s3.put_object_lock_configuration(
+            Bucket=bucket_name,
+            ObjectLockConfiguration=lock_configuration
+        )
+    except ClientError as e:
+        raise RuntimeError(e)
+```
+
+To retrieve the Lock settings, use the <code>get_object_lock_configuration</code> method.
+
+```python
+def get_object_lock_configuration(self, bucket_name):
+    try:
+        return self.s3.get_object_lock_configuration(
+            Bucket=bucket_name
+        )
+    except ClientError as e:
+        raise RuntimeError(e)
+```
+
+</details>
+
+<details>
 <summary>Upload Object</summary>
 
-<blockquote>
-<p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 8MiB, and you can specify a part size as small as 5MiB. The maximum number of part objects is 10,000.</p>
-</blockquote>
+!!! tip "Note"
+    The number of part objects is determined by the size of the object to be uploaded and the part size you set. The default part size is 8 MiB, and the minimum part size is 5 MiB. The maximum number of part objects is 10,000.
 
 ```python
 def upload(self, bucket_name, key, filename, part_size):
@@ -830,11 +1102,28 @@ def delete(self, bucket_name, key):
 
 </details>
 
+<details>
+<summary>Create Signed URL</summary>
+
+```python
+def generate_presigned_url(self, bucket_name, key, expires_in):
+    try:
+        # Use 'put_object' for uploads
+        return self.s3.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': bucket_name, 'Key': key},
+            ExpiresIn=expires_in)
+    except ClientError as e:
+        raise RuntimeError(e)
+```
+
+</details>
+
 <a id="aws-sdk-java"></a>
 ### Java SDK { #aws-sdk-java }
 
-> [Note]
-> For more information, see [AWS SDK for Java](https://docs.aws.amazon.com/en_us/sdk-for-java/index.html).
+!!! tip "Note"
+    For more information, see the [AWS SDK for Java](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html) documentation.
 
 <a id="aws-sdk-java-context"></a>
 #### Context
@@ -942,12 +1231,79 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 </details>
 
 <details>
+<summary>Lock Bucket</summary>
+
+Setting <code>withObjectLockEnabledForBucket(true)</code> in <code>CreateBucketRequest</code> creates a locked bucket. The default retention period is set to 0 days.
+
+```java
+public String createBucketWithLock(String bucketName) throws RuntimeException {
+    try {
+        CreateBucketRequest request = new CreateBucketRequest(bucketName)
+            .withObjectLockEnabledForBucket(true);
+        return s3Client.createBucket(request).toString();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+To set the default retention period, use the <code>setObjectLockConfiguration</code> method.
+
+```java
+public void putObjectLockConfiguration(
+    String bucketName, int days
+) throws RuntimeException {
+    try {
+        DefaultRetention retention = new DefaultRetention()
+            .withMode(ObjectLockRetentionMode.COMPLIANCE)
+            .withDays(days);
+        ObjectLockRule rule = new ObjectLockRule()
+            .withDefaultRetention(retention);
+        ObjectLockConfiguration configuration = new ObjectLockConfiguration()
+            .withObjectLockEnabled(ObjectLockEnabled.ENABLED)
+            .withRule(rule);
+        SetObjectLockConfigurationRequest request =
+            new SetObjectLockConfigurationRequest()
+                .withBucketName(bucketName)
+                .withObjectLockConfiguration(configuration);
+        s3Client.setObjectLockConfiguration(request);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+To retrieve the lock configuration, use the <code>getObjectLockConfiguration</code> method.
+
+```java
+public ObjectLockConfiguration getObjectLockConfiguration(
+    String bucketName
+) throws RuntimeException {
+    try {
+        GetObjectLockConfigurationRequest request =
+            new GetObjectLockConfigurationRequest()
+                .withBucketName(bucketName);
+        return s3Client.getObjectLockConfiguration(request)
+            .getObjectLockConfiguration();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+</details>
+
+<details>
 <summary>Upload Object</summary>
 
-<blockquote>
-<p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can specify an object size as small as 5MiB. The maximum number of part objects is 10,000.</p>
-</blockquote>
+!!! tip "알아두기"
+    The number of part objects is determined by the size of the uploaded object and the part size you set. The default part size is 5 MiB, and the minimum part size is 5 MiB. The maximum number of part objects is 10,000.
 
 ```java
 public void uploadObject(String bucketName, String objectKey, String filePath, long partSize) {
@@ -1018,11 +1374,35 @@ public void deleteObject(
 
 </details>
 
+<details>
+<summary>Create Signed URL</summary>
+
+```java
+public String generatePresignedUrl(
+    String bucketName, String objKeyName, long expirationMillis
+) throws RuntimeException {
+    try {
+        Date expiration = new Date(System.currentTimeMillis() + expirationMillis);
+        GeneratePresignedUrlRequest request =
+            new GeneratePresignedUrlRequest(bucketName, objKeyName)
+                .withMethod(HttpMethod.GET)          // Use HttpMethod.PUT for uploads
+                .withExpiration(expiration);
+        return s3Client.generatePresignedUrl(request).toString();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+</details>
+
 <a id="aws-sdk-dotnet"></a>
 ### .NET SDK { #aws-sdk-dotnet }
 
-> [Note]
-> For more information, see [AWS SDK for .NET](https://docs.aws.amazon.com/en_us/sdk-for-net/?icmpid=docs_homepage_sdktoolkits).
+!!! tip "Note"
+    For more information, see the [AWS SDK for .NET documentation](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits).
 
 <a id="aws-sdk-dotnet-context"></a>
 #### Context
@@ -1171,12 +1551,105 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 </details>
 
 <details>
+<summary>Lock Bucket</summary>
+
+Setting <code>ObjectLockEnabledForBucket = true</code> in <code>PutBucketRequest</code> creates a locked bucket. The default retention period is set to 0 days.
+
+```csharp
+static async Task<PutBucketResponse> CreateBucketWithLockAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        var putBucketRequest =
+            new PutBucketRequest
+            {
+                BucketName = bucketName,
+                UseClientRegion = true,
+                ObjectLockEnabledForBucket = true
+            };
+
+        return await s3Client.PutBucketAsync(putBucketRequest);
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+To set the default retention period, use the `PutObjectLockConfigurationAsync` method.
+
+```csharp
+static async Task<PutObjectLockConfigurationResponse> PutObjectLockConfigurationAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    int days)
+{
+    try
+    {
+        var request =
+            new PutObjectLockConfigurationRequest
+            {
+                BucketName = bucketName,
+                ObjectLockConfiguration =
+                    new ObjectLockConfiguration
+                    {
+                        ObjectLockEnabled = ObjectLockEnabled.Enabled,
+                        Rule =
+                            new ObjectLockRule
+                            {
+                                DefaultRetention =
+                                    new DefaultRetention
+                                    {
+                                        Mode = ObjectLockRetentionMode.Compliance,
+                                        Days = days
+                                    }
+                            }
+                    }
+            };
+
+        return await s3Client.PutObjectLockConfigurationAsync(request);
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+To retrieve the lock settings, use the <code>GetObjectLockConfigurationAsync</code> method.
+
+```csharp
+static async Task<GetObjectLockConfigurationResponse> GetObjectLockConfigurationAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        var request =
+            new GetObjectLockConfigurationRequest
+            {
+                BucketName = bucketName
+            };
+
+        return await s3Client.GetObjectLockConfigurationAsync(request);
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
 <summary>Upload Object</summary>
 
-<blockquote>
-<p>[Note]
-The number of part objects is determined by the size of the object being uploaded and the part size you set. The default part size is 5MiB, and you can set the object size as small as 5MiB. The maximum number of part objects is 10,000.</p>
-</blockquote>
+!!! tip "알아두기"
+    The number of part objects is determined by the size of the uploaded object and the part size you set. The default part size is 5 MiB, and the minimum part size is 5 MiB. The maximum number of part objects is 10,000.
 
 ```csharp
 private static async Task UploadObjectAsync(
@@ -1276,6 +1749,38 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 
 </details>
 
+<details>
+<summary>Create Signed URL</summary>
+
+```csharp
+static string GeneratePresignedUrl(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName,
+    double durationHours)
+{
+    try
+    {
+        var request =
+            new GetPreSignedUrlRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                Verb = HttpVerb.GET,                 // Use HttpVerb.PUT for uploads
+                Expires = DateTime.UtcNow.AddHours(durationHours)
+            };
+
+        return s3Client.GetPreSignedURL(request);
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
 <a id="aws-sdk-virtual-hosted-style"></a>
 ### Use domain-style endpoints { #aws-sdk-virtual-hosted-style }
 To use domain-style endpoints in the AWS SDK, disable path-style access in the client settings. The endpoint URL and credentials remain the same, and the SDK combines the bucket name as a subdomain to send requests.
@@ -1353,5 +1858,5 @@ private static AmazonS3Client GetS3Client()
 
 </details>
 
-> [Caution]
-> If the bucket name contains a period (`.`), using domain-style may cause certificate validation to fail because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style.
+!!! danger "Caution"
+    If the bucket name contains a period (`.`), it may fall outside the scope of a wildcard SSL certificate when using domain-style access, causing certificate validation to fail. In this case, use path-style access instead.
