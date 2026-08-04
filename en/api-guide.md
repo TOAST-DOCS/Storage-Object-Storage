@@ -1617,7 +1617,7 @@ Content-Type: {content-type}
 If you use either the `X-Delete-At` or `X-Delete-After` header, you can set the lifecycle of an object in seconds.
 <br/>
 
-!!! danger "주의"
+!!! danger "Caution"
     If an object name starts with `./` or `../`, the browser regards it as path character and access is unavailable on web console.
     If you have uploaded an object of such name via API, it must also be accessed via API.
 
