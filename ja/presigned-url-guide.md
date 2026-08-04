@@ -1,16 +1,14 @@
 <!-- pre-align:aligned sig=ba6b9ac2ecbb -->
 
 <a id="storage-object-storage-presigned-url-guide"></a>
+## Storage > Object Storage > 署名付き URL ガイド { #storage-object-storage-presigned-url-guide }
 
-## Storage > Object Storage > 서명된 URL 가이드 { #storage-object-storage-presigned-url-guide }
-
-このドキュメントは、署名付き URL を使用して NHN Cloud オブジェクトストレージのオブジェクトに一時的なアクセス権限を付与する方法について説明します。
+このドキュメントでは、署名付き URL を使用して NHN Cloud オブジェクトストレージのオブジェクトに一時的なアクセス権限を付与する方法について説明します。
 
 <a id="overview"></a>
-
 ## 署名付き URL { #overview }
 
-署名付き URL (presigned URL) は、シークレットキーであらかじめ署名しておいた一時アクセスリンクです。**URL にはアクセス対象のオブジェクト、許可する HTTP メソッド (GET/PUT)、有効期限**が含まれており、これをシークレットキーで署名します。
+署名付き URL（presigned URL）は、秘密鍵であらかじめ署名した一時アクセスリンクです。**URL にはアクセス対象のオブジェクト、許可する HTTP メソッド（GET/PUT）、有効期限**が含まれており、これを秘密鍵で署名します。
 
 <br>
 
@@ -28,9 +26,9 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/objec
 
 | 構成要素 | 必須 | 説明 |
 | --- | --- | --- |
-| Object URL | Y        | オブジェクトの完全パス URL |
-| temp_url_sig | Y        | 許可された HTTP メソッド、有効期限、オブジェクトの完全パスをシークレットキーで署名した HMAC 値 |
-| temp_url_expires | Y        | 有効期限。UNIX Epoch タイムスタンプまたは ISO 8601 UTC タイムスタンプで表現します。<br>例: `1390852007` または `2014-01-27T19:46:47Z` |
+| Object URL | Y        | オブジェクトのフルパス URL |
+| temp_url_sig | Y        | 許可された HTTP メソッド、有効期限、オブジェクトのフルパスを秘密鍵で署名した HMAC 値 |
+| temp_url_expires | Y        | 有効期限。UNIX Epoch タイムスタンプまたは ISO 8601 UTC タイムスタンプで表現。<br>例: `1390852007` または `2014-01-27T19:46:47Z` |
 | filename | N        | デフォルトのファイル名を上書きします |
 | temp_url_prefix | N        | プレフィックス単位で署名する場合に必要 |
 
@@ -39,7 +37,7 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/objec
 <a id="s3-presigned-url"></a>
 ### S3互換APIの署名付き URL { #s3-presigned-url }
 
-NHN Cloud オブジェクトストレージは S3互換API を提供しており、この場合に生成される署名付き URL は次の形式になります。
+NHN Cloud オブジェクトストレージは S3互換API を提供しており、この場合に生成される署名付き URL は次のような形式です。
 
 ```bash
 https://{endpoint}/my-container/cat.jpg
@@ -53,24 +51,23 @@ https://{endpoint}/my-container/cat.jpg
 
 | 構成要素 | 必須 | 説明                                                                                                                       |
 | --- | --- |--------------------------------------------------------------------------------------------------------------------------|
-| Object URL | Y        | オブジェクトの完全パス URL (path-style: `https://{endpoint}/{bucket}/{object}`)                                                      |
+| Object URL | Y        | オブジェクトのフルパス URL（path-style: `https://{endpoint}/{bucket}/{object}`）                                                      |
 | X-Amz-Algorithm | Y        | AWS Signature のバージョンとアルゴリズムを識別します。SigV4 では AWS4-HMAC-SHA256 に設定します |
-| X-Amz-Credential | Y        | Access Key ID と署名が有効なスコープ (リージョン・サービス) を提供します。形式: `{access-key-id}/{date}/{region}/{service}/aws4_request` (サービスは `s3`、リージョンは `kr1` など)。URL 内の `/` は `%2F` にエンコードします |
-| X-Amz-Date | Y        | リクエスト日時。ISO 8601 `yyyyMMddTHHmmssZ` 形式 (UTC) で表現します。<br>例: `20260601T223241Z`                                                 |
-| X-Amz-Expires | Y        | 署名付き URL の有効期間 (秒)。最小 `1`、最大 `604800` (7日間)                                                                              |
-| X-Amz-SignedHeaders | Y        | 署名計算に使用したヘッダーの一覧。最低限 HTTP `host` ヘッダーを含み、リクエストに追加するすべての `x-amz-*` ヘッダーも含めます |
+| X-Amz-Credential | Y        | Access Key ID と署名が有効なスコープ（リージョン・サービス）を指定します。形式: `{access-key-id}/{date}/{region}/{service}/aws4_request`（サービスは `s3`、リージョンは `kr1` など）。URL 内の `/` は `%2F` にエンコードします |
+| X-Amz-Date | Y        | リクエスト日時。ISO 8601 `yyyyMMddTHHmmssZ` 形式（UTC）で表現します。<br>例: `20260601T223241Z`                                                 |
+| X-Amz-Expires | Y        | 署名付き URL が有効な期間（秒）。最小 `1`、最大 `604800`（7 日）                                                                              |
+| X-Amz-SignedHeaders | Y        | 署名の計算に使用したヘッダーの一覧。最低限 HTTP `host` ヘッダーを含み、リクエストに追加するすべての `x-amz-*` ヘッダーも含めます |
 | X-Amz-Signature | Y        | リクエストを認証する HMAC 署名値。サーバーが計算した値と一致する必要があり、一致しない場合はリクエストが拒否されます |
 
 !!! tip "ヒント"
-    S3 署名付き URL では、プレフィックス単位の署名はサポートされていません。常に単一のオブジェクトと単一の操作 (GET/PUT など) 単位で署名します。
+    S3 署名付き URL では、プレフィックス単位の署名はサポートされていません。常に単一のオブジェクトと単一の操作（GET/PUT など）単位で署名します。
 
 <br>
 
 <a id="preparation"></a>
-
 ## 事前準備 { #preparation }
 
-署名付き URL を生成するには、まず署名対象オブジェクトの場所を決め、方式ごとに必要なキーと認証情報を準備します。署名対象はストレージエンドポイントとオブジェクトパスによって定まります。
+署名付き URL を生成するには、まず署名対象オブジェクトの場所を決定し、方式ごとに必要なキーと認証情報を準備します。署名対象はストレージエンドポイントとオブジェクトパスによって決まります。
 
 * ストレージエンドポイント: コンソールのオブジェクトストレージで確認
 * コンテナ名/オブジェクトパス: (例) `my-container/photos/cat.jpg`
@@ -80,10 +77,9 @@ Swift API と S3 API ではオブジェクトパスの形式が異なるため�
 <br>
 
 <a id="set-tempurl-key"></a>
+### Swift TempURL 秘密鍵の設定 { #set-tempurl-key }
 
-### Swift TempURL 秘密キーの設定 { #set-tempurl-key }
-
-TempURL は、ストレージアカウントまたはコンテナにあらかじめ登録しておいた秘密キー (Secret Key) で署名します。
+TempURL は、ストレージアカウントまたはコンテナにあらかじめ登録した秘密鍵 (Secret Key) で署名します。
 
 * **ストレージアカウントレベル**でキーを設定するには、ストレージアカウントへの POST リクエストで次のヘッダーのいずれか一方または両方を任意の値に設定します。
     * `X-Account-Meta-Temp-URL-Key`
@@ -107,27 +103,26 @@ X-Container-Meta-Temp-URL-Key: {key}
 ```
 
 !!! tip "ヒント"
-    オブジェクトストレージは、ストレージアカウントごとに 2 個、コンテナごとに 2 個の秘密キー値を保存できます。
+    オブジェクトストレージは、ストレージアカウントあたり 2 個、コンテナあたり 2 個の秘密鍵を保存できます。
 
-    リクエストを検証する際、オブジェクトストレージはすべてのキーの署名を確認します。各レベルで 2 つのキーを使用することで、既存の Temporary URL を無効化せずにキーをローテーション (rotation) できます。
+    リクエストを検証する際、オブジェクトストレージはすべてのキーの署名を確認します。各レベルで 2 つのキーを使用することで、既存の Temporary URL を無効化することなくキーをローテーション (rotation) できます。
 
-Swift CLI を使用すると、次のように秘密キーを設定できます。
+Swift CLI を使用すると、次のように秘密鍵を設定できます。
 
 ```bash
-swift post -m "Temp-URL-Key:MYKEY"              # ストレージアカウント単位で設定
-swift post my-container -m "Temp-URL-Key:MYKEY" # コンテナ単位で設定
+swift post -m "Temp-URL-Key:MYKEY"              # ストレージアカウント単位の設定
+swift post my-container -m "Temp-URL-Key:MYKEY" # コンテナ単位の設定
 ```
 
 !!! tip "ヒント"
-    Swift CLI を使用するには、まず認証が必要です。詳細については、[Swift CLI 環境設定](cli-guide/#configuration)を参照してください。
+    Swift CLI を使用するには、先に認証が必要です。詳細については、[Swift CLI 環境設定](cli-guide/#configuration)を参照してください。
 
 <br>
 
 <a id="obtain-s3-credentials"></a>
+### S3 API 認証情報の発行 { #obtain-s3-credentials }
 
-### S3 API認証情報の発行 { #obtain-s3-credentials }
-
-S3互換APIを使用するには、まず AWS EC2 形式の S3 API認証情報 (Access Key ID + Secret Access Key) を発行する必要があります。認証情報はウェブコンソールまたは API を使用して発行できます。ウェブコンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide/#s3-api-credentials)を参照してください。
+S3互換API を使用するには、まず AWS EC2 形式の S3 API 認証情報 (Access Key ID + Secret Access Key) を発行する必要があります。認証情報は、Web コンソールまたは API を使用して発行できます。Web コンソールを使用した認証情報の発行については、[S3 API 認証情報](console-guide/#s3-api-credentials)を参照してください。
 
 ```http
 POST https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -136,7 +131,7 @@ Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
-`Access Key ID` は URL の `X-Amz-Credential` に含まれ、`Secret Access Key` は署名の計算にのみ使用され、URL には含まれません。
+`Access Key ID` は URL の `X-Amz-Credential` に公開され、`Secret Access Key` は署名の計算にのみ使用され、URL には公開されません。
 
 <details>
 <summary>例</summary>
@@ -156,12 +151,11 @@ X-Auth-Token: {token-id}
 
 </details>
 
-`aws` CLI または SDK で署名を生成するには、発行した認証情報をローカルに設定する必要があります。詳細については、[Amazon S3互換APIガイド](s3-api-guide/#aws-command-line-interface-configuration)の設定セクションを参照してください。
+`aws` CLI または SDK で署名を生成するには、発行した認証情報をローカルに設定する必要があります。詳細については、[Amazon S3互換APIガイド](s3-api-guide/#aws-command-line-interface-configuration)の設定項目を参照してください。
 
 <br>
 
 <a id="create-presigned-url"></a>
-
 ## 署名付き URL の生成 { #create-presigned-url }
 
 事前準備が完了したら、署名付き URL を生成する方法について説明します。
@@ -205,7 +199,7 @@ hmac_body = '%s\n%s\n%s' % (method, expires, path)
 signature = hmac.new(key.encode(), hmac_body.encode(), sha512).hexdigest()
 ```
 
-HMAC 署名を生成する際、パスは URL エンコードしません。ただし、実際の HTTP リクエストを送信する際はパスを URL エンコードする必要があります。どちらの例でも、`MYKEY` の値は [Swift TempURL 秘密鍵の設定](#set-tempurl-key) で設定したキーの値のいずれかです。
+HMAC 署名を生成する際は、パスを URL エンコードしません。ただし、実際に HTTP リクエストを送信する際は、パスを URL エンコードする必要があります。どちらの例でも、`MYKEY` の値は [Swift TempURL 秘密鍵の設定](#set-tempurl-key) で設定したキー値のいずれかです。
 
 <details>
 <summary>Java</summary>
@@ -231,7 +225,7 @@ public class TempUrlSha256 {
         byte[] raw = mac.doFinal(hmacBody.getBytes(StandardCharsets.UTF_8));
 
         StringBuilder sb = new StringBuilder();
-        for (byte b : raw) sb.append(String.format("%02x", b));   // hex変換
+        for (byte b : raw) sb.append(String.format("%02x", b));   // hex 変換
         String signature = sb.toString();
 
         System.out.println(signature);
@@ -362,7 +356,7 @@ s3 = boto3.client(
                   s3={'addressing_style': 'path'}),
 )
 
-# アップロード(PUT)用署名付き URL — GET の場合は 'get_object'
+# アップロード(PUT)用署名付きURL — GETの場合は 'get_object'
 put_url = s3.generate_presigned_url(
     'put_object',
     Params={'Bucket': 'my-container', 'Key': 'cat.jpg'},
@@ -430,7 +424,7 @@ $s3 = new S3Client([
     ],
 ]);
 
-// アップロード(PUT)用署名付き URL — GET の場合は 'GetObject'
+// アップロード (PUT) 用の署名済み URL — GET の場合は 'GetObject'
 $cmd = $s3->getCommand('PutObject', ['Bucket' => 'my-container', 'Key' => 'cat.jpg']);
 echo (string) $s3->createPresignedRequest($cmd, '+1 hour')->getUri() . "\n";
 ```
@@ -440,10 +434,9 @@ echo (string) $s3->createPresignedRequest($cmd, '+1 hour')->getUri() . "\n";
 <br>
 
 <a id="usage"></a>
-
 ## 活用例 { #usage }
 
-署名付き URL には認証情報が含まれているため、認証トークンや署名ヘッダーなしに署名付き URL でリクエストを送信できます。どちらの方式（TempURL、SigV4）も使用方法は同じです。
+署名付き URL には認証情報が含まれているため、認証トークンや署名ヘッダーなしで署名付き URL にリクエストを送信できます。どちらの方式（TempURL、SigV4）も使用方法は同じです。
 
 <br>
 
