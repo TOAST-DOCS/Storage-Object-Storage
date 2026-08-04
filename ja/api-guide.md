@@ -1,7 +1,7 @@
 <!-- pre-align:aligned sig=288abf1f2a5c -->
 
 <a id="storage-object-storage-api-guide"></a>
-## Storage > Object Storage > API 가이드 { #storage-object-storage-api-guide }
+## Storage > Object Storage > APIガイド { #storage-object-storage-api-guide }
 
 このドキュメントでは、NHN Cloud オブジェクトストレージが提供する API を使用してストレージアカウント、コンテナ、オブジェクトを管理する方法について説明します。
 

@@ -572,7 +572,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 <a id="upload-object-request"></a>
-#### 요청
+#### リクエスト
 このAPIはリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -583,7 +583,7 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | Y | S3 API認証情報のアクセスキーと署名で構成 |
 
 <a id="upload-object-response"></a>
-#### 응답
+#### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード 200 を返します。
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -603,7 +603,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 <a id="download-object-request"></a>
-#### 요청
+#### リクエスト
 このAPIはリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -614,7 +614,7 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | Y | S3 API認証情報のアクセスキーと署名で構成 |
 
 <a id="download-object-response"></a>
-#### 응답
+#### レスポンス
 リクエストが正しい場合、ステータスコード 200 を返します。
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -634,7 +634,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 <a id="delete-object-request"></a>
-#### 요청
+#### リクエスト
 このAPIはリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -645,7 +645,7 @@ Authorization: AWS {access}:{signature}
 | Authorization | Header | String | Y | S3 API認証情報のアクセスキーと署名で構成 |
 
 <a id="delete-object-response"></a>
-#### 응답
+#### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード 204 を返します。
 
 <a id="presigned-url"></a>
@@ -666,7 +666,7 @@ GET /{bucket}/{obj}
 ```
 
 <a id="presigned-url-format-request"></a>
-#### 요청
+#### リクエスト
 このAPIはリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明                                                                             |
@@ -681,7 +681,7 @@ GET /{bucket}/{obj}
 | X-Amz-Signature | Query | String | Y | リクエストを認証する HMAC 署名値                                                             |
 
 <a id="presigned-url-format-response"></a>
-#### 응답
+#### レスポンス
 リクエストが正しい場合、ステータスコード 200 を返します。
 
 !!! tip "ヒント"

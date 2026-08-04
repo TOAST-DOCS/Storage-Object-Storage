@@ -1,7 +1,7 @@
 <!-- pre-align:aligned sig=ba6b9ac2ecbb -->
 
 <a id="storage-object-storage-presigned-url-guide"></a>
-## Storage > Object Storage > 서명된 URL 가이드 { #storage-object-storage-presigned-url-guide }
+## Storage > Object Storage > 署名付き URL ガイド { #storage-object-storage-presigned-url-guide }
 
 このドキュメントでは、署名付き URL を使用して NHN Cloud オブジェクトストレージのオブジェクトに一時的なアクセス権限を付与する方法について説明します。
 
@@ -59,7 +59,7 @@ https://{endpoint}/my-container/cat.jpg
 | X-Amz-SignedHeaders | Y        | 署名の計算に使用したヘッダーの一覧。最低限 HTTP `host` ヘッダーを含み、リクエストに追加するすべての `x-amz-*` ヘッダーも含めます |
 | X-Amz-Signature | Y        | リクエストを認証する HMAC 署名値。サーバーが計算した値と一致する必要があり、一致しない場合はリクエストが拒否されます |
 
-!!! tip "알아두기"
+!!! tip "ヒント"
     S3 署名付き URL では、プレフィックス単位の署名はサポートされていません。常に単一のオブジェクトと単一の操作（GET/PUT など）単位で署名します。
 
 <br>

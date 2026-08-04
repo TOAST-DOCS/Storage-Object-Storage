@@ -6,7 +6,7 @@ NHN Cloud Object Storage provides an API compatible with the S3 API of AWS objec
 
 The following Amazon S3 compatible API is provided.
 
-| S3 API 메서드 | 용도 |
+| S3 API Method | Usage |
 | --- | --- |
 | PUT Bucket | Create bucket |
 | HEAD Bucket | Query bucket information |
