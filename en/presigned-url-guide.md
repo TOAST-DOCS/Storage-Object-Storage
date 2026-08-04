@@ -1,11 +1,9 @@
 <a id="storage-object-storage-presigned-url-guide"></a>
-
 ## Storage > Object Storage > Presigned URL Guide { #storage-object-storage-presigned-url-guide }
 
 This document describes how to grant temporary access to objects in NHN Cloud Object Storage using presigned URLs.
 
 <a id="overview"></a>
-
 ## Presigned URL { #overview }
 
 A presigned URL is a temporary access link that is pre-signed with a secret key. The URL includes **the target object, the allowed HTTP method (GET/PUT), and an expiration time**, all signed with a secret key.
@@ -65,7 +63,6 @@ https://{endpoint}/my-container/cat.jpg
 <br>
 
 <a id="preparation"></a>
-
 ## Preparation { #preparation }
 
 To create a signed URL, first determine the location of the object to sign, and then prepare the keys and credentials required for each method. The signing target is defined by the storage endpoint and the object path.
@@ -157,7 +154,6 @@ To generate a signature using the `aws` CLI or SDK, you must configure the issue
 <br>
 
 <a id="create-presigned-url"></a>
-
 ## Create a Presigned URL { #create-presigned-url }
 
 After completing the prerequisites, this section describes how to create a presigned URL.
@@ -435,7 +431,6 @@ echo (string) $s3->createPresignedRequest($cmd, '+1 hour')->getUri() . "\n";
 <br>
 
 <a id="usage"></a>
-
 ## Use Cases { #usage }
 
 Because a presigned URL contains authentication information, you can send a request using the presigned URL without an authentication token or signature header. The usage is the same for both methods (TempURL and SigV4).
