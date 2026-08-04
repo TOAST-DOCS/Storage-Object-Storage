@@ -1,5 +1,3 @@
-<!-- pre-align:aligned sig=288abf1f2a5c -->
-
 <a id="storage-object-storage-api-guide"></a>
 ## Storage > Object Storage > API 가이드 { #storage-object-storage-api-guide }
 
