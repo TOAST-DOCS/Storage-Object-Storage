@@ -3,6 +3,8 @@
 <a id="storage-object-storage-api-guide"></a>
 ## Storage > Object Storage > APIガイド { #storage-object-storage-api-guide }
 
+このドキュメントでは、NHN Cloud オブジェクトストレージが提供するAPIを使用して、ストレージアカウント、コンテナ、オブジェクトを管理する方法について説明します。
+
 <a id="common"></a>
 ## オブジェクトストレージAPI共通情報 { #common }
 
@@ -256,8 +258,8 @@ X-Auth-Token: {token-id}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
 
 <a id="query-the-storage-account-response"></a>
 #### レスポンス
@@ -452,8 +454,8 @@ X-Auth-Token: {token-id}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
 
 <a id="list-containers-response"></a>
 #### レスポンス
@@ -622,11 +624,11 @@ X-Auth-Token: {token-id}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ストレージアカウント名。APIエンドポイント設定ダイアログボックスで確認 |
-| Container | URL | String | O | 作成するコンテナ名 |
-| X-Storage-Policy | Header | String | - | コンテナのストレージクラス<br/><b>Standard</b>:頻繁にアクセスするデータのための基本クラス<br/><b>Economy</b>:アクセス頻度の低いデータを長期間保管するのに適したクラス |
-| X-Container-Worm-Retention-Day | Header | Integer | - | コンテナの基本オブジェクトロック周期を日単位で設定 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Account | URL | String | Y | ストレージアカウント名。APIエンドポイント設定ダイアログボックスで確認 |
+| Container | URL | String | Y | 作成するコンテナ名 |
+| X-Storage-Policy | Header | String | N | コンテナのストレージクラス<br/><b>Standard</b>:頻繁にアクセスするデータのための基本クラス<br/><b>Economy</b>:アクセス頻度の低いデータを長期間保管するのに適したクラス |
+| X-Container-Worm-Retention-Day | Header | Integer | N | コンテナの基本オブジェクトロック周期を日単位で設定 |
 
 
 <a id="create-a-container-response"></a>
@@ -813,13 +815,13 @@ X-Auth-Token: {token-id}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ストレージアカウント名。APIエンドポイント設定ダイアログボックスで確認 |
-| Container | URL | String | O | 照会するコンテナ名 |
-| marker | Query | String | - | 基準オブジェクト名 |
-| prefix | Query | String | - | 検索するプレフィックス |
-| limit | Query | Integer | - | リストに表示するオブジェクト数 |
-| format | Query | String | - | レスポンス形式、 jsonまたはxml |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Account | URL | String | Y | ストレージアカウント名。APIエンドポイント設定ダイアログボックスで確認 |
+| Container | URL | String | Y | 照会するコンテナ名 |
+| marker | Query | String | N | 基準オブジェクト名 |
+| prefix | Query | String | N | 検索するプレフィックス |
+| limit | Query | Integer | N | リストに表示するオブジェクト数 |
+| format | Query | String | N | レスポンス形式、 jsonまたはxml |
 
 > [参考]
 > コンテナ照会APIは複数のクエリ(query)を提供します。すべてのクエリは`&`で接続して使用できます。
@@ -1034,27 +1036,27 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| X-Container-Read | Header | String | - | コンテナ読み取りに対するロールベースのアクセスルール設定 |
-| X-Container-Write | Header | String | - | コンテナ書き込みに対するロールベースのアクセスルール設定 |
-| X-Container-View | Header | String | - | コンテナ照会に対するロールベースのアクセスルール設定 |
-| X-Container-Ip-Acl-Allowed-List | Header | String | - | コンテナアクセスに対するIPベースのアクセスルールの設定 |
-| X-Container-Ip-Acl-Denied-List | Header | String | - | コンテナアクセスに対するIPベースのアクセスルールの設定 |
-| X-Container-Object-Lifecycle | Header | Integer | - | コンテナの基本オブジェクトライフサイクルを日単位で設定 |
-| X-Container-Object-Transfer-To | Header | String | - | オブジェクトのライフサイクルが終了したときに移動するコンテナ |
-| X-History-Location | Header | String | - | オブジェクトの以前バージョンを保管するコンテナを設定 |
-| X-Versions-Retention | Header | Integer | - | オブジェクトの以前のバージョンのライフサイクルを日単位で設定 |
-| X-Container-Meta-Web-Index | Header | String | - | 静的Webサイトインデックス文書オブジェクト設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
-| X-Container-Meta-Web-Error | Header | String | - | 静的Webサイトエラー文書オブジェクトサフィックス設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
-| X-Container-Meta-Access-Control-Allow-Origin | Header | String | - | CORS許可ホストリスト。 '*'ですべてのホストを許可するか、スペースで区切られたホストリストを入力できます。 |
-| X-Container-Rfc-Compliant-Etags | Header | String | - | RFCを遵守するETag形式を使用するかどうかの設定。trueまたはfalse |
-| X-Container-Worm-Retention-Day | Header | Integer | - | コンテナの基本オブジェクトロック周期を日単位で設定<br/>オブジェクトロックコンテナでのみ変更可能 |
-| X-Container-Object-Deny-Extension-Policy | Header | String | - | オブジェクトアップロードポリシーの拡張子ブラックリスト |
-| X-Container-Object-Deny-Keyword-Policy | Header | String | - | オブジェクトアップロードポリシーのファイル名ブラックリスト |
-| X-Container-Object-Allow-Extension-Policy | Header | String | - | オブジェクトアップロードポリシーの拡張子ホワイトリスト |
-| X-Container-Object-Allow-Keyword-Policy | Header | String | - | オブジェクトアップロードポリシーのファイル名ホワイトリスト |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container | URL | String | O | 修正するコンテナ名 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| X-Container-Read | Header | String | N | コンテナ読み取りに対するロールベースのアクセスルール設定 |
+| X-Container-Write | Header | String | N | コンテナ書き込みに対するロールベースのアクセスルール設定 |
+| X-Container-View | Header | String | N | コンテナ照会に対するロールベースのアクセスルール設定 |
+| X-Container-Ip-Acl-Allowed-List | Header | String | N | コンテナアクセスに対するIPベースのアクセスルールの設定 |
+| X-Container-Ip-Acl-Denied-List | Header | String | N | コンテナアクセスに対するIPベースのアクセスルールの設定 |
+| X-Container-Object-Lifecycle | Header | Integer | N | コンテナの基本オブジェクトライフサイクルを日単位で設定 |
+| X-Container-Object-Transfer-To | Header | String | N | オブジェクトのライフサイクルが終了したときに移動するコンテナ |
+| X-History-Location | Header | String | N | オブジェクトの以前バージョンを保管するコンテナを設定 |
+| X-Versions-Retention | Header | Integer | N | オブジェクトの以前のバージョンのライフサイクルを日単位で設定 |
+| X-Container-Meta-Web-Index | Header | String | N | 静的Webサイトインデックス文書オブジェクト設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
+| X-Container-Meta-Web-Error | Header | String | N | 静的Webサイトエラー文書オブジェクトサフィックス設定<br/>英数字、一部の特殊文字(`-`, `_`, `.`, `/`)のみ許可 |
+| X-Container-Meta-Access-Control-Allow-Origin | Header | String | N | CORS許可ホストリスト。 '*'ですべてのホストを許可するか、スペースで区切られたホストリストを入力できます。 |
+| X-Container-Rfc-Compliant-Etags | Header | String | N | RFCを遵守するETag形式を使用するかどうかの設定。trueまたはfalse |
+| X-Container-Worm-Retention-Day | Header | Integer | N | コンテナの基本オブジェクトロック周期を日単位で設定<br/>オブジェクトロックコンテナでのみ変更可能 |
+| X-Container-Object-Deny-Extension-Policy | Header | String | N | オブジェクトアップロードポリシーの拡張子ブラックリスト |
+| X-Container-Object-Deny-Keyword-Policy | Header | String | N | オブジェクトアップロードポリシーのファイル名ブラックリスト |
+| X-Container-Object-Allow-Extension-Policy | Header | String | N | オブジェクトアップロードポリシーの拡張子ホワイトリスト |
+| X-Container-Object-Allow-Keyword-Policy | Header | String | N | オブジェクトアップロードポリシーのファイル名ホワイトリスト |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container | URL | String | Y | 修正するコンテナ名 |
 <br/>
 
 <a id="set-container-rbac-policy"></a>
@@ -1115,6 +1117,8 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 
 ブラウザでObject Storage APIを直接呼び出すには、クロスソースリソース共有(CORS)設定が必要です。 `X-Container-Meta-Access-Control-Allow-Origin`ヘッダを利用して許可するソースリストを設定します。スペース(` `)で区切られた1つ以上のソースを入力するか、`*`を入力してすべてのソースを許可できます。
 
+> [参考]
+> `X-Container-Meta-Access-Control-Allow-Origin`に設定できる許可オリジンは最大100件です。この制限は[コンテナポリシー](container-policy-guide/#cors)で設定する場合も同様に適用されます。
 
 <details>
 <summary>CORS設定確認例</summary>
@@ -1461,9 +1465,9 @@ X-Auth-Token: {token-id}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container | URL| String |	O | 削除するコンテナ名 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container | URL| String |	Y | 削除するコンテナ名 |
 
 <a id="delete-a-container-response"></a>
 #### レスポンス
@@ -1605,14 +1609,14 @@ Content-Type: {content-type}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Content-type | Header | String | O | オブジェクトのコンテンツタイプ |
-| X-Delete-At | Header | Timestamp | - | オブジェクトの有効期限、UNIX時間(秒) |
-| X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、 UNIX時間(秒) |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container |	URL | String | O | コンテナ名 |
-| Object | URL | String |	O | 作成するオブジェクト名 |
-| - |	Body | Binary | O | 作成するオブジェクトの内容 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Content-type | Header | String | Y | オブジェクトのコンテンツタイプ |
+| X-Delete-At | Header | Timestamp | N | オブジェクトの有効期限、UNIX時間(秒) |
+| X-Delete-After | Header | Timestamp | N | オブジェクト有効時間、 UNIX時間(秒) |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container |	URL | String | Y | コンテナ名 |
+| Object | URL | String |	Y | 作成するオブジェクト名 |
+| - |	Body | Binary | Y | 作成するオブジェクトの内容 |
 
 
 <a id="set-object-lifecycle"></a>
@@ -1844,13 +1848,13 @@ Content-Type: {content-type}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Content-type | Header | String | O | オブジェクトのコンテンツタイプ |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container |	URL | String | O | コンテナ名 |
-| Object |	URL | String | O | 作成するオブジェクト名 |
-| Count | URL | Integer | O | 分割したオブジェクトの順番、例) 001, 002 |
-| - |	Body | Binary | O | 分割したオブジェクトの内容 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Content-type | Header | String | Y | オブジェクトのコンテンツタイプ |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container |	URL | String | Y | コンテナ名 |
+| Object |	URL | String | Y | 作成するオブジェクト名 |
+| Count | URL | Integer | Y | 分割したオブジェクトの順番、例) 001, 002 |
+| - |	Body | Binary | Y | 分割したオブジェクトの内容 |
 
 <br/>
 
@@ -1880,12 +1884,12 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}/
 ##### リクエスト
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header| String |	O | トークンID |
-| X-Object-Manifest | Header| String | O | 分割したセグメントオブジェクトをアップロードしたパス、 `{Segment-Container}/{Segment-Object}/` |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container |	URL | String | O | コンテナ名 |
-| Object |	URL | String | O | 作成するマニフェストオブジェクト名 |
-| - | Body| Binary | O | 空のデータ |
+| X-Auth-Token | Header| String |	Y | トークンID |
+| X-Object-Manifest | Header| String | Y | 分割したセグメントオブジェクトをアップロードしたパス、 `{Segment-Container}/{Segment-Object}/` |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container |	URL | String | Y | コンテナ名 |
+| Object |	URL | String | Y | 作成するマニフェストオブジェクト名 |
+| - | Body| Binary | Y | 空のデータ |
 
 <br/>
 
@@ -1918,14 +1922,14 @@ X-Auth-Token: {token-id}
 ##### リクエスト
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header| String |	O | トークンID |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container |	URL | String | O | コンテナ名 |
-| Object |	URL | String | O | 作成するマニフェストオブジェクト名 |
-| multipart-manifest | Query| String | O | マニフェスト作成時にputに設定 |
-| path | Body | String | O | セグメントオブジェクトのパス |
-| etag | Body | String | O | セグメントオブジェクトのetag |
-| size_bytes | Body | Integer | O | セグメントオブジェクトのサイズ(バイト単位) |
+| X-Auth-Token | Header| String |	Y | トークンID |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container |	URL | String | Y | コンテナ名 |
+| Object |	URL | String | Y | 作成するマニフェストオブジェクト名 |
+| multipart-manifest | Query| String | Y | マニフェスト作成時にputに設定 |
+| path | Body | String | Y | セグメントオブジェクトのパス |
+| etag | Body | String | Y | セグメントオブジェクトのetag |
+| size_bytes | Body | Integer | Y | セグメントオブジェクトのサイズ(バイト単位) |
 
 > [参考]
 > SLOマニフェストファイルが持っているセグメント情報を照会するには`multipart-manifest=get`クエリを利用する必要があります。
@@ -2215,14 +2219,14 @@ Content-Type: {content-type}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Content-type | Header | String | O | オブジェクトのコンテンツタイプ |
-| X-Delete-At | Header | Timestamp | - | オブジェクトの有効期限、UNIX時間(秒) |
-| X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、UNIX時間(秒) |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container |	URL | String | O | コンテナ名 |
-| Object | URL | String | O | 内容を修正するオブジェクト名 |
-| - |	Body | Binary | O | 修正するオブジェクトの内容 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Content-type | Header | String | Y | オブジェクトのコンテンツタイプ |
+| X-Delete-At | Header | Timestamp | N | オブジェクトの有効期限、UNIX時間(秒) |
+| X-Delete-After | Header | Timestamp | N | オブジェクト有効時間、UNIX時間(秒) |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container |	URL | String | Y | コンテナ名 |
+| Object | URL | String | Y | 内容を修正するオブジェクト名 |
+| - |	Body | Binary | Y | 修正するオブジェクトの内容 |
 
 <a id="update-an-object-response"></a>
 #### レスポンス
@@ -2245,10 +2249,10 @@ X-Auth-Token: {token-id}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container |	URL | String | O | コンテナ名 |
-| Object | URL | String | O | ダウンロードするオブジェクト名 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container |	URL | String | Y | コンテナ名 |
+| Object | URL | String | Y | ダウンロードするオブジェクト名 |
 
 <a id="query-object-information-response"></a>
 #### レスポンス
@@ -2307,10 +2311,10 @@ X-Auth-Token: {token-id}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container |	URL | String | O | コンテナ名 |
-| Object | URL | String | O | ダウンロードするオブジェクト名 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container |	URL | String | Y | コンテナ名 |
+| Object | URL | String | Y | ダウンロードするオブジェクト名 |
 
 <a id="download-an-object-response"></a>
 #### レスポンス
@@ -2485,17 +2489,17 @@ X-Copy-From: {SourceContainer}/{SourceObject}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Destination | Header | String | - | ターゲットオブジェクトのパス、`{ターゲットコンテナー}/{ターゲットオブジェクト}`<br/>COPYメソッドを使用する際に必要 |
-| X-Copy-From | Header | String | - | ソースオブジェクトのパス、`{ソースコンテナー}/{ソースオブジェクト}`<br/>PUTメソッドを使用する際に必要 |
-| X-Fresh-Metadata | Header | Boolean | - | オブジェクトのプロパティ初期化の有無<br/>値がtrueの場合、元オブジェクトのプロパティをコピーしません。<br/>デフォルト値はfalseです。 |
-| X-Object-Meta-{Key} | Header | String | - | ターゲットオブジェクトのメタデータ |
-| X-Delete-At | Header | Timestamp | - | ターゲットオブジェクトの有効期限、UNIX時間(秒) |
-| X-Delete-After | Header | Timestamp | - | ターゲットオブジェクトの有効時間、UNIX時間(秒) |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container | URL | String | O | コンテナー名<br/>COPYメソッド：ソースコンテナー<br/>PUTメソッド：ターゲットコンテナー |
-| Object | URL | String | O | オブジェクト名<br/>COPYメソッド：ソースオブジェクト<br/>PUTメソッド：ターゲットオブジェクト |
-| multipart-manifest | Query | String | - | 値がgetの場合、マニフェストオブジェクトのみコピー<br/>省略すると、セグメントをマージして単一オブジェクトとしてコピーします。<br/>COPYメソッド：クエリパラメータとして追加<br/>PUTメソッド：`X-Copy-From`ヘッダ値に追加 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Destination | Header | String | N | ターゲットオブジェクトのパス、`{ターゲットコンテナー}/{ターゲットオブジェクト}`<br/>COPYメソッドを使用する際に必要 |
+| X-Copy-From | Header | String | N | ソースオブジェクトのパス、`{ソースコンテナー}/{ソースオブジェクト}`<br/>PUTメソッドを使用する際に必要 |
+| X-Fresh-Metadata | Header | Boolean | N | オブジェクトのプロパティ初期化の有無<br/>値がtrueの場合、元オブジェクトのプロパティをコピーしません。<br/>デフォルト値はfalseです。 |
+| X-Object-Meta-{Key} | Header | String | N | ターゲットオブジェクトのメタデータ |
+| X-Delete-At | Header | Timestamp | N | ターゲットオブジェクトの有効期限、UNIX時間(秒) |
+| X-Delete-After | Header | Timestamp | N | ターゲットオブジェクトの有効時間、UNIX時間(秒) |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container | URL | String | Y | コンテナー名<br/>COPYメソッド：ソースコンテナー<br/>PUTメソッド：ターゲットコンテナー |
+| Object | URL | String | Y | オブジェクト名<br/>COPYメソッド：ソースオブジェクト<br/>PUTメソッド：ターゲットオブジェクト |
+| multipart-manifest | Query | String | N | 値がgetの場合、マニフェストオブジェクトのみコピー<br/>省略すると、セグメントをマージして単一オブジェクトとしてコピーします。<br/>COPYメソッド：クエリパラメータとして追加<br/>PUTメソッド：`X-Copy-From`ヘッダ値に追加 |
 
 <a id="preserve-object-properties"></a>
 ##### オブジェクトの属性保持
@@ -2712,14 +2716,14 @@ X-Object-Meta-{Key}: {Value}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| X-Object-Meta-{Key} | Header | String | - | 変更するメタデータ |
-| X-Delete-At | Header | Timestamp | - | オブジェクトの有効期限、UNIX時間(秒) |
-| X-Delete-After | Header | Timestamp | - | オブジェクト有効時間、UNIX時間(秒) |
-| X-Object-Worm-Retain-Until | Header | Timestamp | - | オブジェクトロック有効期限、UNIX時間(秒)<br/>設定された時間以降にのみ変更でき、オブジェクトロックコンテナでのみ変更可能 |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container | URL| String |	 O | コンテナ名 |
-| Object | URL| String |  O | メタデータを修正するオブジェクト名 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| X-Object-Meta-{Key} | Header | String | N | 変更するメタデータ |
+| X-Delete-At | Header | Timestamp | N | オブジェクトの有効期限、UNIX時間(秒) |
+| X-Delete-After | Header | Timestamp | N | オブジェクト有効時間、UNIX時間(秒) |
+| X-Object-Worm-Retain-Until | Header | Timestamp | N | オブジェクトロック有効期限、UNIX時間(秒)<br/>設定された時間以降にのみ変更でき、オブジェクトロックコンテナでのみ変更可能 |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container | URL| String |	 Y | コンテナ名 |
+| Object | URL| String |  Y | メタデータを修正するオブジェクト名 |
 
 > [参考]
 > オブジェクトロックコンテナにアップロードされたオブジェクトには、自動的にロック有効期限が設定されます。 
@@ -2889,10 +2893,10 @@ X-Auth-Token: {token-id}
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | トークンID |
-| Account | URL | String | O | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
-| Container | URL| String |	 O | コンテナ名 |
-| Object | URL| String |  O | 削除するオブジェクト名 |
+| X-Auth-Token | Header | String | Y | トークンID |
+| Account | URL | String | Y | ストレージアカウント。APIエンドポイント設定ダイアログボックスで確認 |
+| Container | URL| String |	 Y | コンテナ名 |
+| Object | URL| String |  Y | 削除するオブジェクト名 |
 
 <a id="delete-an-object-response"></a>
 #### レスポンス
