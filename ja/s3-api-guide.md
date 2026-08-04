@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=acedf0f45de3 -->
+
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
 ## Storage > Object Storage > Amazon S3互換APIガイド { #storage-object-storage-amazon-s3-compatible-api-guide }
 NHN Cloud オブジェクトストレージは、AWS のオブジェクトストレージ S3 API と互換性のある API を提供します。そのため、Amazon S3 API を使用するように開発されたアプリケーションは、設定を変更するだけでそのまま使用できます。
