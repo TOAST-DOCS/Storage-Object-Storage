@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=ba6b9ac2ecbb -->
+
 <a id="storage-object-storage-presigned-url-guide"></a>
 
 ## Storage > Object Storage > Presigned URL Guide { #storage-object-storage-presigned-url-guide }
