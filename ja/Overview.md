@@ -1,5 +1,3 @@
-<!-- pre-align:aligned sig=5c3f66a53167 -->
-
 <a id="storage-object-storage-overview"></a>
 ## Storage > Object Storage > 概要 { #storage-object-storage-overview }
 オブジェクトストレージはさまざまなタイプのデータを好きなだけ保存し、必要な時に取り出すことができるオブジェクトストレージサービスです。
