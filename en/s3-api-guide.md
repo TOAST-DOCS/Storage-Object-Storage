@@ -1,5 +1,4 @@
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
-
 ## Storage > Object Storage > Amazon S3-compatible API Guide { #storage-object-storage-amazon-s3-compatible-api-guide }
 NHN Cloud Object Storage provides an API compatible with the S3 API of AWS object storage. Therefore, you can use applications developed to use the Amazon S3 API as is, with only a few configuration changes.
 
@@ -34,7 +33,6 @@ The following Amazon S3 compatible API is provided.
 This document describes only the basic usage of API. To use advanced features, it is recommended that you see [Amazon S3 API Guide](https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html) or use [AWS SDK](https://aws.amazon.com/ko/tools).
 
 <a id="s3-api-credential"></a>
-
 ## S3 API Credentials { #s3-api-credential }
 
 <a id="obtain-s3-api-credentials"></a>
@@ -193,7 +191,6 @@ This API does not require a request body.
 This API does not return a response body. When the request is appropriate, it returns status code 204.
 
 <a id="create-signature"></a>
-
 ## Create Signature { #create-signature }
 To use S3 API, you must create a signature using credentials. For information on how to create a signature, refer to the [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) documentation.
 
@@ -234,7 +231,6 @@ If the `x-amz-content-sha256` value is `STREAMING-UNSIGNED-PAYLOAD-TRAILER` or `
     For more information on signature calculation using trailer headers (chunked uploads), refer to the [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) documentation.
 
 <a id="bucket"></a>
-
 ## Bucket { #bucket }
 
 <a id="create-bucket"></a>
@@ -560,7 +556,6 @@ For a valid request, returns status code 200 and the object lock configuration i
 </details>
 
 <a id="object"></a>
-
 ## Object { #object }
 
 <a id="upload-object"></a>
@@ -652,7 +647,6 @@ This API does not require a request body.
 This API does not return request body. When the request is appropriate, return status code 204.
 
 <a id="presigned-url"></a>
-
 ## Create Signed URL { #presigned-url }
 A URL that carries **AWS Signature Version 4 (SigV4)** signing in query parameters, allowing access to an object for a set period of time without an authentication token (Authorization header). Use `GET` for downloads and `PUT` for uploads.
 
@@ -692,12 +686,10 @@ For a valid request, return status code 200.
     For more information, including the Swift TempURL method and language-specific direct signing examples, see the [Signed URL Guide](presigned-url-guide/).
 
 <a id="aws-command-line-interface"></a>
-
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
 You can use NHN Cloud Object Storage with the [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) using the S3 compatible API.
 
 <a id="aws-command-line-interface-installation"></a>
-
 ### Installation { #aws-command-line-interface-installation }
 See [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) to install the AWS Command Line Interface.
 
@@ -705,7 +697,6 @@ See [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.
     NHN Cloud Object Storage supports AWS CLI up to version 2.34.38.
 
 <a id="aws-command-line-interface-configuration"></a>
-
 ### Configuration { #aws-command-line-interface-configuration }
 To use the AWS Command Line Interface, you must first configure the S3 API credentials and environment.
 
@@ -724,7 +715,6 @@ Default output format [None]: json
 | region name | KR1 - Korea (Pangyo) region<br>KR2 - Korea (Pyeongchon) region<br>KR3 - Korea (Gwangju) region<br>JP1 - Japan (Tokyo) region |
 
 <a id="how-to-use-the-s3-commands"></a>
-
 ### How to Use S3 Commands { #how-to-use-the-s3-commands }
 
 ```shell
@@ -881,7 +871,6 @@ https://kr1-api-object-storage.nhncloudservice.com/example-bucket/0428b9e3e419d4
 </details>
 
 <a id="aws-command-line-interface-virtual-hosted-style"></a>
-
 ### Use Domain-Style Endpoints { #aws-command-line-interface-virtual-hosted-style }
 The S3-compatible API supports both Path-style and Virtual Hosted-style as bucket access methods. Virtual Hosted-style uses the bucket name as a subdomain of the endpoint.
 
@@ -914,7 +903,6 @@ s3 =
     If the bucket name contains a period (`.`), using Virtual Hosted-style may result in certificate validation failure because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style instead.
 
 <a id="aws-sdk"></a>
-
 ## AWS SDK { #aws-sdk }
 AWS provides SDKs for many types of programming languages. By using the S3 compatible API, you can use NHN Cloud Object Storage with AWS SDK.
 
@@ -931,7 +919,6 @@ The key parameters required to use the AWS SDK are as follows:
 | endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) region<br>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region |
 
 <a id="aws-sdk-boto3-python"></a>
-
 ### Boto3 - Python SDK { #aws-sdk-boto3-python }
 
 !!! tip "Note"
@@ -1144,7 +1131,6 @@ def generate_presigned_url(self, bucket_name, key, expires_in):
 </details>
 
 <a id="aws-sdk-java"></a>
-
 ### Java SDK { #aws-sdk-java }
 
 !!! tip "Note"
@@ -1424,7 +1410,6 @@ public String generatePresignedUrl(
 </details>
 
 <a id="aws-sdk-dotnet"></a>
-
 ### .NET SDK { #aws-sdk-dotnet }
 
 !!! tip "Note"
@@ -1807,7 +1792,6 @@ static string GeneratePresignedUrl(
 </details>
 
 <a id="aws-sdk-virtual-hosted-style"></a>
-
 ### Use domain-style endpoints { #aws-sdk-virtual-hosted-style }
 To use domain-style endpoints in the AWS SDK, disable path-style access in the client configuration. The endpoint URL and credentials remain the same as before, and the SDK combines the bucket name as a subdomain to send requests.
 
