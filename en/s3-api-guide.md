@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=acedf0f45de3 -->
+
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
 ## Storage > Object Storage > Amazon S3-compatible API Guide { #storage-object-storage-amazon-s3-compatible-api-guide }
 NHN Cloud Object Storage provides an API compatible with the S3 API of AWS object storage. Therefore, you can use applications developed to use the Amazon S3 API as is, with only a few configuration changes.
