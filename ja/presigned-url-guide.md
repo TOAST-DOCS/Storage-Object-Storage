@@ -1,11 +1,9 @@
 <a id="storage-object-storage-presigned-url-guide"></a>
-
 ## Storage > Object Storage > 서명된 URL 가이드 { #storage-object-storage-presigned-url-guide }
 
 このドキュメントでは、署名付き URL を使用して NHN Cloud オブジェクトストレージのオブジェクトに一時的なアクセス権限を付与する方法について説明します。
 
 <a id="overview"></a>
-
 ## 署名付き URL { #overview }
 
 署名付き URL（presigned URL）は、秘密鍵であらかじめ署名した一時アクセスリンクです。**URL にはアクセス対象のオブジェクト、許可する HTTP メソッド（GET/PUT）、有効期限**が含まれており、これを秘密鍵で署名します。
@@ -65,7 +63,6 @@ https://{endpoint}/my-container/cat.jpg
 <br>
 
 <a id="preparation"></a>
-
 ## 事前準備 { #preparation }
 
 署名付き URL を生成するには、まず署名対象オブジェクトの場所を決定し、方式ごとに必要なキーと認証情報を準備します。署名対象はストレージエンドポイントとオブジェクトパスによって決まります。
@@ -78,7 +75,6 @@ Swift API と S3 API ではオブジェクトパスの形式が異なるため�
 <br>
 
 <a id="set-tempurl-key"></a>
-
 ### Swift TempURL 秘密鍵の設定 { #set-tempurl-key }
 
 TempURL は、ストレージアカウントまたはコンテナにあらかじめ登録した秘密鍵 (Secret Key) で署名します。
@@ -122,7 +118,6 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # コンテナ単位の設定
 <br>
 
 <a id="obtain-s3-credentials"></a>
-
 ### S3 API 認証情報の発行 { #obtain-s3-credentials }
 
 S3互換API を使用するには、まず AWS EC2 形式の S3 API 認証情報 (Access Key ID + Secret Access Key) を発行する必要があります。認証情報は、Web コンソールまたは API を使用して発行できます。Web コンソールを使用した認証情報の発行については、[S3 API 認証情報](console-guide/#s3-api-credentials)を参照してください。
@@ -159,7 +154,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="create-presigned-url"></a>
-
 ## 署名付き URL の生成 { #create-presigned-url }
 
 事前準備が完了したら、署名付き URL を生成する方法について説明します。
@@ -438,7 +432,6 @@ echo (string) $s3->createPresignedRequest($cmd, '+1 hour')->getUri() . "\n";
 <br>
 
 <a id="usage"></a>
-
 ## 活用例 { #usage }
 
 署名付き URL には認証情報が含まれているため、認証トークンや署名ヘッダーなしで署名付き URL にリクエストを送信できます。どちらの方式（TempURL、SigV4）も使用方法は同じです。
