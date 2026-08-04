@@ -1,11 +1,9 @@
 <a id="storage-object-storage-api-guide"></a>
-
 ## Storage > Object Storage > API Guide { #storage-object-storage-api-guide }
 
 This document describes how to manage storage accounts, containers, and objects using the APIs provided by NHN Cloud Object Storage.
 
 <a id="common"></a>
-
 ## Object Storage API Common Information { #common }
 
 <a id="endpoint"></a>
@@ -240,7 +238,6 @@ printf("%s\n", $token);
 </details>
 
 <a id="storage-account"></a>
-
 ## Storage Account { #storage-account }
 A storage account is a character string in the `AUTH_*****` format, included in the Object-Store API endpoint.
 
@@ -592,11 +589,9 @@ foreach($container_list as $container) {
 <br/>
 
 <a id="container"></a>
-
 ## Container { #container }
 
 <a id="create-a-container"></a>
-
 ### Create a Container { #create-a-container }
 Creates a container. To upload files to object storage, a container must be created.
 
@@ -803,7 +798,6 @@ $container->create($CONTAINER_NAME);
 <br/>
 
 <a id="get-a-container"></a>
-
 ### Get a Container { #get-a-container }
 Retrieves information about the specified container and the list of objects stored in it. The container's information can be viewed in the response header.
 
@@ -1006,7 +1000,6 @@ foreach ($object_list as $obj) {
 <br/>
 
 <a id="change-container-settings"></a>
-
 ### Change Container Settings { #change-container-settings }
 
 Changes the container settings. The container settings can be found in the response header when retrieving the container.
@@ -1035,7 +1028,6 @@ X-Container-Object-Allow-Keyword-Policy: {Whitelist for object upload policy fil
 ```
 
 <a id="change-container-settings-request"></a>
-
 #### Request
 A request body is not required.
 
@@ -1311,13 +1303,11 @@ If you use a header without a value, the setting will be removed. For example, i
 <br/>
 
 <a id="change-container-settings-response"></a>
-
 #### Response
 This API does not return a response body. When the request is appropriate, return status code 204.
 <br/>
 
 <a id="change-container-settings-code-example"></a>
-
 #### Code Example
 This is an example in which the user requests changing the setting so that all users may read from and write to containers. You can select the headers you need to change the settings and request in the same way.
 
@@ -1453,7 +1443,6 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 <br/>
 
 <a id="delete-a-container"></a>
-
 ### Delete a Container { #delete-a-container }
 
 Deletes the specified container. The container to be deleted must be empty.
@@ -1596,11 +1585,9 @@ $container->delete($CONTAINER_NAME);
 <br/>
 
 <a id="object"></a>
-
 ## Object { #object }
 
 <a id="upload-an-object"></a>
-
 ### Upload an Object { #upload-an-object }
 Uploads a new object to the specified container.
 
@@ -1831,14 +1818,12 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 <a id="multipart-upload"></a>
-
 ### Multipart Upload { #multipart-upload }
 An object whose size exceeds 5GB needs to be divided into segments of 5GB or smaller before uploading. If you upload segment objects and create a manifest object, you can use them as if they are a single object.
 
 <br/>
 
 <a id="upload-segment-object"></a>
-
 #### Upload Segment Objects
 Upload each segment object that the original object has been divided into.
 
@@ -1870,7 +1855,6 @@ This API does not return a response body. For a valid request, return status cod
 <br/>
 
 <a id="upload-manifest-object"></a>
-
 #### Create Manifest Object
 A manifest object can be created in two ways: either using **DLO** (Dynamic Large Object) or **SLO** (Static Large Object).
 
@@ -1949,7 +1933,6 @@ This API does not return a response body. For a valid request, return status cod
 <br/>
 
 <a id="multipart-upload-code-example"></a>
-
 #### Code Examples
 Example of multipart upload using the DLO method
 
@@ -2213,7 +2196,6 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 <br/>
 
 <a id="update-an-object"></a>
-
 ### Update an Object { #update-an-object }
 Same as the Upload an Object API, but if the object is already located in the container, the content of the object is updated.
 
@@ -2244,7 +2226,6 @@ This API does not return a response body. For a valid request, return status cod
 <br/>
 
 <a id="query-object-information"></a>
-
 ### Query Object Information { #query-object-information }
 Retrieves the information about the specified object. The object information can be found in the response header.
 
@@ -2307,7 +2288,6 @@ date: Wed, 16 Oct 2024 23:43:36 GMT
 <br/>
 
 <a id="download-an-object"></a>
-
 ### Download an Object { #download-an-object }
 Downloads an object.
 
@@ -2479,7 +2459,6 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br/>
 
 <a id="copy-an-object"></a>
-
 ### Copy an Object { #copy-an-object }
 Copies an object to another container. All properties of the source object are copied along with it.
 
@@ -2712,7 +2691,6 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 <br/>
 
 <a id="modify-object-metadata"></a>
-
 ### Modify Object Metadata { #modify-object-metadata }
 Modifies the metadata of the specified object.
 
@@ -2888,7 +2866,6 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 <br/>
 
 <a id="delete-an-object"></a>
-
 ### Delete an Object { #delete-an-object }
 Deletes the specified object.
 
@@ -3037,7 +3014,6 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 <br/>
 
 <a id="limiting-policy"></a>
-
 ## Limiting Policy { #limiting-policy }
 
 <a id="request-rate-limit"></a>
@@ -3092,7 +3068,6 @@ To prevent response delays or failures, adjust your write requests so that they 
 <br/>
 
 <a id="references"></a>
-
 ## References { #references }
 
 Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
