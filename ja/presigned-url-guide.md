@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=ba6b9ac2ecbb -->
+
 <a id="storage-object-storage-presigned-url-guide"></a>
 
 ## Storage > Object Storage > 서명된 URL 가이드 { #storage-object-storage-presigned-url-guide }
