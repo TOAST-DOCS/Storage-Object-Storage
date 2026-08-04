@@ -1,7 +1,7 @@
-<!-- pre-align:aligned sig=57f0cee284f8 -->
-
 <a id="storage-object-storage-acl-configuration-guide"></a>
 ## Storage > Object Storage > ACL Configuration Guide { #storage-object-storage-acl-configuration-guide }
+
+This document describes how to set role-based access policies and IP-based access policies for containers in NHN Cloud Object Storage.
 
 <a id="role-based-access-policies"></a>
 ## Role-based Access Policies { #role-based-access-policies }
@@ -33,6 +33,9 @@ You can use the API to set access policies for different situations by entering 
 | X-Container-View | Allow viewing a list of objects within a container and viewing information about them. This includes GET and HEAD requests for containers and HEAD requests for objects. |
 
 
+!!! tip "Tip"
+    The maximum number of access policy elements that can be set for `X-Container-Read`, `X-Container-Write`, and `X-Container-View` is 100 per property. This limit also applies when configuring via [container policy](container-policy-guide/#acl).
+
 <br/>
 
 <a id="role-based-access-elements"></a>
@@ -47,10 +50,12 @@ The role-based access policy elements that can be set are as follows. All policy
 | `*:<api-user-id>` | The object can be accessed with an authentication token issued to a specific user, regardless of the project.<br/>Both read and write permissions can be granted. |
 | `*:*` | Regardless of the project, any user who can obtain an authentication token can access the object.<br/>Both read and write permissions can be granted. |
 
-> [Note]
->  `<api-user-id>` can be found in the **API User ID** item in the API Endpoint Settings dialog box on the console or in the **access.user.id** field in the response body of the Authentication Token Issuance API.
-> To use the Authentication Token Issuance API, see [Authentication Token Issuance](api-guide/#authentication-token-issuance) in the API Guide.
+!!! tip "Tip"
+    You can find `<api-user-id>` by referring to the **API User ID** field in the API Endpoint setting dialog on the console, or in the **access.user.id** field of the authentication token issuance API response body.
+    To use the authentication token issuance API, refer to [Authentication and Authorization](api-guide/#auth) in the API guide.
 
+!!! tip "Note"
+    Values with one side of the colon empty, such as `<tenant-id>:` or `:<api-user-id>`, and values that start with `.` cannot be used.
 
 <a id="common-access-elements"></a>
 #### Other Access Policy Elements
@@ -64,6 +69,9 @@ The `X-Container-Read` property accepts the following additional policy elements
 | `.r:-<referrer>` | Restrict access to the HTTP referrer specified by the request header.<br/>Set the referrer by prefixing it with a minus sign (-). |
 | `.rlistings` | Allow users with read permission to retrieve containers (GET or HEAD requests).<br/>If this policy element is not present, object listings cannot be retrieved.<br/>This policy element cannot be set alone. |
 
+
+!!! tip "Note"
+    In referrers, `*` can only be used as `.r:*`, which means full public access. Values that combine `*` with other characters, `.r:-*` for blocking all access, and empty values cannot be used.
 
 <br/>
 
@@ -85,10 +93,8 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-<blockquote>
-<p>[Note]
-When sending a header without a value using curl, a semicolon (;) must be appended to the header name.</p>
-</blockquote>
+!!! tip "Notice"
+    When sending a header without a value using curl, a semicolon (;) must be appended to the header name.
 
 If a request is made without a valid authentication token, an error message is responded.
 
@@ -170,8 +176,10 @@ $ curl -X GET \
 HTTP referer is the address information of a web page that is requested through a hyperlink. It is included in the request header.
 If you set an role-based access policy element in the form of `.r:<referrer>` or `.r:-<referrer>` in the `X-Container-Read` property of the container, you can allow or block access requests from specific referers. When setting the HTTP referer with an role-based access policy element, you must enter the domain name without the protocol and sub-path.
 
-> [Caution]
-> The HTTP referer can be changed at any time by the user through header tampering. Access policies using the HTTP referer are not recommended because they are vulnerable to security attacks.
+The HTTP referer access allow/block policy applies the block policy first, regardless of the order in which it is entered. Therefore, access requests from an HTTP referer designated as a block target are denied even if you also enter the `.r:*` policy element that allows all access.
+
+!!! danger "Caution"
+    The HTTP referer can be changed at any time by the user through header tampering. Access policies using the HTTP referer are not recommended because they are vulnerable to security attacks.
 
 <details>
 <summary>Example of allowing read requests from specific HTTP referer</summary>
@@ -302,34 +310,6 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 ```
 
 </details>
-<br/>
-
-The policy to allow/block access for the HTTP referer is applied according to the entered order. For example, if you enter an `.r:*` policy element that allows access to all users after the block referer policy element, the block referer policy is ignored. Conversely, if a policy element that allows access to all users is entered first and a block policy element for a specific referer is entered later, all access requests are allowed except for the set referer's access request.
-<br/>
-
-<details>
-<summary>Example of incorrect policy setting that ignores HTTP referer blocking</summary>
-
-```
-$ curl -i -X POST \
-  -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
-```
-
-```
-$ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
-
-[Object download]
-
-
-$ curl -O -X GET -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
-
-[Object download]
-```
-</details>
 
 <details>
 <summary>Example of policy setting that allows all access requests except for access requests from a specific HTTP referer</summary>
@@ -360,8 +340,8 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 #### Allow read/write to specific projects or specific users
 If you set an role-based access policy element in the form of `<tenant-id>:<api-user-id>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API User ID grants access to all projects or all users. A valid authentication token is required when making an access request.
 
-> [Note]
-> The read permission granted by the ACL policy that requires an authentication token includes the object list query permission.
+!!! tip "Tip"
+    The read permission granted by the ACL policy that requires an authentication token includes the object list query permission.
 
 <details>
 <summary>Example of granting read/write permission to a specific user in a specific project</summary>
@@ -452,17 +432,17 @@ Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/ove
 You can use the console or API to specify whitelists and blacklists to restrict read/write access to containers from specific IPs. You can't use whitelists and blacklists at the same time. If you enter both a whitelist and a blacklist, only the whitelist is used. IP-based access policies support IPv4 only. For requests through the service gateway, you can specify a separate exception.
 
 
-> [Caution]
-> IP-based access policies are used to control access from public IPs. Registering private IPs to whitelist can result in an inaccessible container.
-> If the container becomes inaccessible due to incorrect settings, you can no longer change the policy. If you encounter this issue, please contact Customer Center.
+!!! danger "Caution"
+    IP-based access policies are intended to control access through public IPs. If you register only private IPs in the whitelist, you could end up with an inaccessible container.
+    If the container becomes inaccessible due to an incorrect configuration, you will no longer be able to change the policy. If this issue occurs, please contact the Customer Center.
 
 <a id="ip-based-access-console"></a>
 ### Console { #ip-based-access-console }
 
 Select IP-based container access policy from the container access policy setting dialog box in the container management windows.
 
-> [Caution]
-> If you don't have read permission, you can no longer handle that container from the console.
+!!! danger "Caution"
+    If you do not have read permission, you can no longer manage the container from the console.
 
 <a id="ip-based-access-whitelist"></a>
 #### Whitelist
@@ -479,7 +459,11 @@ Controls requests through the service gateway. If not set, requests can be denie
 <a id="ip-based-access-api"></a>
 ### API { #ip-based-access-api }
 
-You can use the API to enable IP-based ACLs by entering IP-based access policy elements in the container's `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties.`X-Container-Ip-Acl-Allowed-List` indicates whitelist, `X-Container-Ip-Acl-Denied-List` indicates blacklist.
+You can use the API to enable IP-based ACL by entering IP-based access policy elements in the `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties of a container. `X-Container-Ip-Acl-Allowed-List` represents a whitelist, and `X-Container-Ip-Acl-Denied-List` represents a blacklist.
+
+!!! tip "Note"
+    The maximum number of policy elements that can be set in `X-Container-Ip-Acl-Allowed-List` (whitelist) and `X-Container-Ip-Acl-Denied-List` (blacklist) is 100 each. The same limit applies when setting via [container policy](container-policy-guide/#ip-acl).
+
 <br>
 
 An IP-based access policy element consists of access permission and an IP or network band, and you can enter multiple values separated by commas (`, `). The access permissions are shown in the table below.
