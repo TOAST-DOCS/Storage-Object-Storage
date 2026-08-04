@@ -1,5 +1,3 @@
-<!-- pre-align:aligned sig=4d6c14c57aab -->
-
 <a id="storage-object-storage-cli-guide"></a>
 ## Storage > Object Storage > CLIガイド { #storage-object-storage-cli-guide }
 OpenStack Swift コマンドラインインターフェース(CLI)でNHN CloudのObject Storageサービスを使用する方法を説明します。
@@ -16,8 +14,8 @@ python-swiftclientはPythonパッケージとして提供されます。pipを�
 pip install python-swiftclient python-keystoneclient
 ```
 
-> [参考]
-> Python 3.6以上が必要です。Pythonがインストールされていない場合は、[Pythonダウンロードページ](https://www.python.org/downloads/)を参照してインストールしてください。
+!!! tip "알아두기"
+    Python 3.6以上が必要です。Pythonがインストールされていない場合は、[Pythonダウンロードページ](https://www.python.org/downloads/)を参照してインストールしてください。
 
 インストールが完了すると、次のコマンドで確認できます。
 
@@ -53,13 +51,13 @@ export OS_REGION_NAME=<リージョン名>
 
 <br/>
 
-> [注意]
-> Object Storageは、基本インフラサービスとは異なるテナントIDを持っています。Object Storageサービスページの**APIエンドポイント設定**ボタンをクリックして確認してください。
+!!! danger "주의"
+    Object Storageは、基本インフラサービスとは異なるテナントIDを持っています。Object Storageサービスページの**APIエンドポイント設定**ボタンをクリックして確認してください。
 
 <!-- 改行のためのコメント -->
 
-> [参考]
-> APIパスワードは、Object Storageサービスページの**APIエンドポイント設定**ボタンをクリックして設定できます。
+!!! tip "알아두기"
+    APIパスワードは、Object Storageサービスページの**APIエンドポイント設定**ボタンをクリックして設定できます。
 
 <br/>
 
@@ -159,8 +157,8 @@ export OS_AUTH_TOKEN=gAAAAABi...
 $ eval $(swift auth)
 ```
 
-> [参考]
-> 認証トークンには有効期限があります。トークンが満了してリクエストが失敗した場合は、`eval $(swift auth)`を再実行して更新する必要があります。
+!!! tip "알아두기"
+    認証トークンには有効期限があります。トークンが満了してリクエストが失敗した場合は、`eval $(swift auth)`を再実行して更新する必要があります。
 
 <br/>
 
@@ -494,10 +492,10 @@ swift post [<options>] <container>
 
 <br/>
 
-> [参考]
-> ACL設定値については、[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
->
-> `--header`オプションで設定できるヘッダ一覧については、APIガイドの[コンテナ設定の変更](api-guide/#change-container-settings)セクションを参照してください。
+!!! tip "알아두기"
+    ACL設定値については、[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
+
+    `--header`オプションで設定できるヘッダ一覧については、APIガイドの[コンテナ設定の変更](api-guide/#change-container-settings)セクションを参照してください。
 
 <br/>
 
