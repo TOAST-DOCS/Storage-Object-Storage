@@ -1,5 +1,3 @@
-<!-- pre-align:aligned sig=5c3f66a53167 -->
-
 <a id="storage-object-storage-overview"></a>
 ## Storage > Object Storage > Overview { #storage-object-storage-overview }
 Object storage is an object storage service that allows you to store various types of data as much as you want and import them whenever needed.
