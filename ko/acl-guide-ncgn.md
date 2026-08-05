@@ -1,12 +1,15 @@
-## Storage > Object Storage > 접근 정책 설정 가이드
+<a id="storage-object-storage-acl-configuration-guide"></a>
+## Storage > Object Storage > 접근 정책 설정 가이드 { #storage-object-storage-acl-configuration-guide }
+
+이 문서는 NHN Cloud 오브젝트 스토리지의 컨테이너에 역할 기반 접근 정책과 IP 기반 접근 정책을 설정하는 방법을 설명합니다.
 
 <a id="role-based-access-policies"></a>
-## 역할 기반 접근 정책
+## 역할 기반 접근 정책 { #role-based-access-policies }
 
 콘솔 또는 API를 사용해 다른 사용자에게 컨테이너의 읽기/쓰기 접근 권한을 부여할 수 있습니다.
 
 <a id="role-based-access-console"></a>
-### 콘솔
+### 콘솔 { #role-based-access-console }
 콘솔에서는 [컨테이너 생성](console-guide-ncgn/#create-container) 대화 상자 또는 [컨테이너 관리](console-guide-ncgn/#manage-container) 창의 컨테이너 접근 정책 설정 대화 상자에서 컨테이너 접근 정책을 선택할 수 있습니다. 선택할 수 있는 정책은 `PRIVATE`과 `PUBLIC` 두 가지로 제한됩니다.
 
 <a id="role-based-access-private"></a>
@@ -20,7 +23,7 @@
 <br/>
 
 <a id="role-based-access-api"></a>
-### API
+### API { #role-based-access-api }
 API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Container-View` 속성에 역할 기반 접근 정책 요소를 입력하면 여러 가지 상황에 맞게 접근 정책을 설정할 수 있습니다. 각 속성은 아래와 같습니다.
 
 | 속성 | 설명 |
@@ -29,6 +32,8 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 | X-Container-Write | 컨테이너 내 오브젝트 변경 요청을 허용합니다. 오브젝트에 대한 PUT, POST, DELETE, COPY 요청이 해당됩니다. |
 | X-Container-View | 컨테이너 내 오브젝트 목록 조회 및 오브젝트의 정보 조회를 허용합니다. 컨테이너에 대한 GET, HEAD 요청 및 오브젝트에 대한 HEAD 요청이 해당됩니다. |
 
+!!! tip "알아두기"
+    `X-Container-Read`, `X-Container-Write`, `X-Container-View`에 설정할 수 있는 접근 정책 요소는 각 속성별로 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide-ncgn/#acl)으로 설정할 때도 동일하게 적용됩니다.
 
 <br/>
 
@@ -44,10 +49,12 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 | `*:<api-user-id>` | 프로젝트와 관계없이 특정 사용자에게 발급된 인증 토큰으로 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
 | `*:*` | 프로젝트와 관계없이 인증 토큰을 발급 받을 수 있는 사용자라면 누구나 오브젝트에 접근할 수 있습니다.<br/>읽기, 쓰기 권한을 모두 부여할 수 있습니다. |
 
-> [참고]
-> `<api-user-id>`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
-> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide-ncgn/#authentication-token-issuance) 항목을 참조하세요.
+!!! tip "알아두기"
+    `<api-user-id>`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참고하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
+    인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 및 권한](api-guide-ncgn/#auth) 항목을 참고하세요.
 
+!!! tip "알아두기"
+    `<tenant-id>:`나 `:<api-user-id>`처럼 콜론의 한쪽이 비어 있는 값, `.`으로 시작하는 값은 사용할 수 없습니다.
 
 <a id="common-access-elements"></a>
 #### 기타 접근 정책 요소
@@ -61,6 +68,8 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 | `.r:-<referrer>` | 요청 헤더를 참조하여 설정된 HTTP 리퍼러의 접근을 제한합니다.<br/>리퍼러 앞에 마이너스 기호(-)를 붙여 설정합니다. |
 | `.rlistings` | 읽기 권한이 있는 사용자에게 컨테이너 조회(GET 또는 HEAD 요청)를 허용합니다.<br/>이 정책 요소가 없으면 오브젝트 목록을 조회할 수 없습니다.<br/>이 정책 요소는 단독으로 설정할 수 없습니다. |
 
+!!! tip "알아두기"
+    리퍼러에서 `*`는 전체 공개를 뜻하는 `.r:*`로만 사용할 수 있습니다. `*`를 다른 문자와 함께 넣은 값, 전체를 차단하는 `.r:-*`, 빈 값은 사용할 수 없습니다.
 
 <br/>
 
@@ -82,10 +91,8 @@ $ curl -i -X POST \
   https://api-object-storage.gncloud.go.kr/v1/AUTH_*****/container
 ```
 
-<blockquote>
-<p>[참고]
-curl을 이용하여 값이 없는 헤더를 보낼 때는 헤더 이름에 세미콜론(;)을 붙여야 합니다.</p>
-</blockquote>
+!!! tip "알아두기"
+    curl을 이용하여 값이 없는 헤더를 보낼 때는 헤더 이름에 세미콜론(;)을 붙여야 합니다.
 
 유효한 인증 토큰 없이 요청하면 에러 메시지를 응답합니다.
 
@@ -166,8 +173,10 @@ $ curl -X GET \
 HTTP 리퍼러(HTTP Referer)는 하이퍼링크를 통해 요청하는 웹 페이지의 주소 정보입니다. 요청 헤더에 포함되어 있습니다.
 컨테이너의 `X-Container-Read` 속성에 `.r:<referrer>` 또는 `.r:-<referrer>` 형태의 역할 기반 접근 정책 요소를 설정하면 특정 리퍼러의 접근 요청을 허용하거나 차단할 수 있습니다. 역할 기반 접근 정책 요소로 HTTP 리퍼러를 설정할 때는 프로토콜과 하위 경로를 제외한 도메인 이름을 입력해야 합니다.
 
-> [주의]
-> HTTP 리퍼러는 헤더 변조를 통해 사용자가 언제든지 변경할 수 있습니다. HTTP 리퍼러를 이용한 접근 정책은 보안에 취약하기 때문에 권장하지 않습니다.
+HTTP 리퍼러 접근 허용/차단 정책은 입력하는 순서와 관계없이 차단 정책이 우선 적용됩니다. 따라서 차단 대상으로 지정된 HTTP 리퍼러의 접근 요청은 모든 접근을 허용하는 `.r:*` 정책 요소를 함께 입력하더라도 거부됩니다.
+
+!!! danger "주의"
+    HTTP 리퍼러는 헤더 변조를 통해 사용자가 언제든지 변경할 수 있습니다. HTTP 리퍼러를 이용한 접근 정책은 보안에 취약하기 때문에 권장하지 않습니다.
 
 <details>
 <summary>특정 HTTP 리퍼러 읽기 요청 허용 예시</summary>
@@ -298,34 +307,6 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 ```
 
 </details>
-<br/>
-
-HTTP 리퍼러에 대한 접근 허용/차단 정책은 입력하는 순서에 따라 적용됩니다. 예를 들어, 리퍼러 차단 정책 요소 뒤에 모두에게 접근을 허용하는 `.r:*` 정책 요소를 입력했다면 리퍼러 차단 정책은 무시됩니다. 반대로 모두에게 접근을 허용하는 정책 요소를 먼저 입력하고 특정 리퍼러 차단 정책 요소를 뒤에 입력했다면, 설정된 리퍼러의 접근 요청을 제외한 모든 접근 요청이 허용됩니다.
-<br/>
-
-<details>
-<summary>HTTP 리퍼러 차단이 무시되는 잘못된 정책 설정 예시</summary>
-
-```
-$ curl -i -X POST \
-  -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
-  https://api-object-storage.gncloud.go.kr/v1/AUTH_*****/container
-```
-
-```
-$ curl -O -X GET \
-  https://api-object-storage.gncloud.go.kr/v1/AUTH_*****/container/object
-
-[오브젝트 다운로드]
-
-
-$ curl -O -X GET -H 'Referer: https://bar.foo.com' \
-  https://api-object-storage.gncloud.go.kr/v1/AUTH_*****/container/object
-
-[오브젝트 다운로드]
-```
-</details>
 
 <details>
 <summary>특정 HTTP 리퍼러의 접근 요청을 제외한 모든 접근 요청을 허용하는 정책 설정 예시</summary>
@@ -356,8 +337,8 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 #### 특정 프로젝트 또는 특정 사용자에게 읽기/쓰기 허용
 컨테이너의 `X-Container-Read`와 `X-Container-Write` 속성에 `<tenant-id>:<api-user-id>` 형태의 역할 기반 접근 정책 요소를 설정하면 특정 프로젝트 또는 특정 사용자에게 읽기/쓰기 권한을 각각 부여할 수 있습니다. 테넌트 ID 또는 API 사용자 ID 대신 와일드카드 문자 `*`를 입력하면 모든 프로젝트 또는 모든 사용자에게 접근 권한을 부여합니다. 접근 요청을 할 때는 반드시 유효한 인증 토큰이 필요합니다.
 
-> [참고]
-> 인증 토큰이 필요한 ACL 정책으로 부여된 읽기 권한에는 오브젝트 목록 조회 권한이 포함되어 있습니다.
+!!! tip "알아두기"
+    인증 토큰이 필요한 ACL 정책으로 부여된 읽기 권한에는 오브젝트 목록 조회 권한이 포함되어 있습니다.
 
 <details>
 <summary>특정 프로젝트의 특정 사용자에게 읽기/쓰기 권한 부여 예시</summary>
@@ -438,26 +419,26 @@ $ curl -i -X POST \
 빈 헤더를 입력하면 설정된 역할 기반 접근 정책 요소를 모두 삭제할 수 있습니다. 역할 기반 접근 정책 요소가 없는 컨테이너는 허가된 사용자만 접근할 수 있는 **PRIVATE** 컨테이너가 됩니다. `컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용` 항목을 참고하세요.
 
 <a id="role-based-access-references"></a>
-### References
+### References { #role-based-access-references }
 Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/overview_acl.html](https://docs.openstack.org/swift/latest/overview_acl.html)
 
 <a id="ip-based-access-policies"></a>
-## IP 기반 접근 정책
+## IP 기반 접근 정책 { #ip-based-access-policies }
 
 콘솔 또는 API를 사용해 화이트리스트와 블랙리스트를 지정하여 특정 IP에서 컨테이너의 읽기/쓰기 접근 권한을 제한할 수 있습니다. 화이트리스트와 블랙리스트는 동시에 사용할 수 없습니다. 화이트리스트와 블랙리스트를 모두 입력한 경우 화이트리스트만 사용됩니다. IP 기반 접근 정책은 IPv4만 지원합니다. 서비스 게이트웨이를 통한 요청의 경우 별도의 예외를 지정할 수 있습니다.
 
 
-> [주의]
-> IP 기반 접근 정책은 퍼블릭 IP를 통한 접근을 제어하는 용도입니다. 화이트리스트에 프라이빗 IP만 등록하면 접근할 수 없는 컨테이너가 될 수 있습니다.
-> 잘못된 설정으로 접근 권한이 없는 컨테이너가 되었다면 더 이상 정책을 변경할 수 없습니다. 이러한 문제가 발생할 경우 고객 센터로 문의하세요.
+!!! danger "주의"
+    IP 기반 접근 정책은 퍼블릭 IP를 통한 접근을 제어하는 용도입니다. 화이트리스트에 프라이빗 IP만 등록하면 접근할 수 없는 컨테이너가 될 수 있습니다.
+    잘못된 설정으로 접근 권한이 없는 컨테이너가 되었다면 더 이상 정책을 변경할 수 없습니다. 이러한 문제가 발생할 경우 고객 센터로 문의하세요.
 
 <a id="ip-based-access-console"></a>
-### 콘솔
+### 콘솔 { #ip-based-access-console }
 
 컨테이너 관리 창의 컨테이너 접근 정책 설정 대화 상자에서 IP 기반의 컨테이너 접근 정책을 선택합니다. 
 
-> [주의]
-> 읽기 권한이 없는 경우 콘솔에서 해당 컨테이너의 조작은 더 이상 불가능합니다.
+!!! danger "주의"
+    읽기 권한이 없는 경우 콘솔에서 해당 컨테이너의 조작은 더 이상 불가능합니다.
 
 <a id="ip-based-access-whitelist"></a>
 #### 화이트리스트
@@ -472,9 +453,13 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 서비스 게이트웨이를 통한 요청을 제어합니다. 설정하지 않으면 화이트리스트와 블랙리스트 설정에 따라 요청이 거부될 수 있습니다.
 
 <a id="ip-based-access-api"></a>
-### API
+### API { #ip-based-access-api }
 
 API를 사용해 컨테이너의 `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List` 속성에 IP 기반 접근 정책 요소를 입력하면 IP 기반의 ACL을 활성화할 수 있습니다. `X-Container-Ip-Acl-Allowed-List`는 화이트리스트, `X-Container-Ip-Acl-Denied-List`는 블랙리스트를 의미합니다.
+
+!!! tip "알아두기"
+    `X-Container-Ip-Acl-Allowed-List`(화이트리스트)와 `X-Container-Ip-Acl-Denied-List`(블랙리스트)에 설정할 수 있는 정책 요소는 각각 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide-ncgn/#ip-acl)으로 설정할 때도 동일하게 적용됩니다.
+
 <br>
 
 IP 기반 접근 정책 요소는 접근 권한과, IP 또는 네트워크 대역으로 이루어져 있으며 콤마(`,`)로 구분해 여러 개의 값을 입력할 수 있습니다. 접근 권한은 아래의 표와 같습니다.
