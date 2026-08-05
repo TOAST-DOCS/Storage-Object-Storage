@@ -1,11 +1,12 @@
-## Storage > Object Storage > CLIガイド
+<a id="storage-object-storage-cli-guide"></a>
+## Storage > Object Storage > CLIガイド { #storage-object-storage-cli-guide }
 OpenStack Swift コマンドラインインターフェース(CLI)でNHN CloudのObject Storageサービスを使用する方法を説明します。
 
 <a id="python-swiftclient"></a>
-## python-swiftclient
+## python-swiftclient { #python-swiftclient }
 
 <a id="install"></a>
-### インストール
+### インストール { #install }
 
 python-swiftclientはPythonパッケージとして提供されます。pipを利用してインストールします。
 
@@ -13,8 +14,8 @@ python-swiftclientはPythonパッケージとして提供されます。pipを�
 pip install python-swiftclient python-keystoneclient
 ```
 
-> [参考]
-> Python 3.6以上が必要です。Pythonがインストールされていない場合は、[Pythonダウンロードページ](https://www.python.org/downloads/)を参照してインストールしてください。
+!!! tip "ヒント"
+    Python 3.6 以上が必要です。Python がインストールされていない場合は、[Python ダウンロードページ](https://www.python.org/downloads/)を参照してインストールします。
 
 インストールが完了すると、次のコマンドで確認できます。
 
@@ -26,7 +27,7 @@ python-swiftclient x.x.x
 <br/>
 
 <a id="configuration"></a>
-### 環境設定
+### 環境設定 { #configuration }
 
 Swift CLIを使用するには、認証に必要な環境変数を設定する必要があります。Object Storageサービスページの**APIエンドポイント設定**ボタンをクリックして必要な情報を確認できます。
 
@@ -50,13 +51,13 @@ export OS_REGION_NAME=<リージョン名>
 
 <br/>
 
-> [注意]
-> Object Storageは、基本インフラサービスとは異なるテナントIDを持っています。Object Storageサービスページの**APIエンドポイント設定**ボタンをクリックして確認してください。
+!!! danger "注意"
+    Object Storageは、基本インフラサービスとは異なるテナントIDを持っています。Object Storageサービスページの**APIエンドポイント設定**ボタンをクリックして確認してください。
 
 <!-- 改行のためのコメント -->
 
-> [参考]
-> APIパスワードは、Object Storageサービスページの**APIエンドポイント設定**ボタンをクリックして設定できます。
+!!! tip "ヒント"
+    API パスワードは、Object Storage サービスページの **[API エンドポイント設定]** ボタンをクリックして設定できます。
 
 <br/>
 
@@ -92,7 +93,7 @@ $ swift stat
 <br/>
 
 <a id="basic-usage"></a>
-## 基本的な使用方法
+## 基本的な使用方法 { #basic-usage }
 基本的な使用方法は次のとおりです。
 
 ```
@@ -102,7 +103,7 @@ swift <subcommand> [<options>] [<container> [<object>]]
 <br/>
 
 <a id="subcommands"></a>
-### サブコマンド
+### サブコマンド { #subcommands }
 主要なサブコマンドは次のとおりです。
 
 | サブコマンド | 説明 |
@@ -120,7 +121,7 @@ swift <subcommand> [<options>] [<container> [<object>]]
 <br/>
 
 <a id="options"></a>
-### 共通オプション
+### 共通オプション { #options }
 
 全てのサブコマンドに共通で使用できるオプションです。
 
@@ -134,7 +135,7 @@ swift <subcommand> [<options>] [<container> [<object>]]
 <br/>
 
 <a id="auth-info"></a>
-### 動作方式と認証情報の活用
+### 動作方式と認証情報の活用 { #auth-info }
 
 Swift CLIは基本的にコマンドを実行するたびにIdentity APIを呼び出してトークンとサービスカタログを取得した後、サブコマンドに該当するSwift APIを呼び出します。
 
@@ -156,13 +157,13 @@ export OS_AUTH_TOKEN=gAAAAABi...
 $ eval $(swift auth)
 ```
 
-> [参考]
-> 認証トークンには有効期限があります。トークンが満了してリクエストが失敗した場合は、`eval $(swift auth)`を再実行して更新する必要があります。
+!!! tip "ヒント"
+    認証トークンには有効期限があります。トークンが期限切れになってリクエストが失敗した場合は、`eval $(swift auth)` を再度実行して更新する必要があります。
 
 <br/>
 
 <a id="stat"></a>
-## 情報照会
+## 情報照会 { #stat }
 ストレージアカウント、コンテナ、オブジェクトの情報を照会します。
 
 ```
@@ -178,7 +179,7 @@ swift stat [<options>] [<container> [<object>]]
 <br/>
 
 <a id="stat-account"></a>
-### ストレージアカウント情報照会
+### ストレージアカウント情報照会 { #stat-account }
 ストレージアカウントの情報を照会します。
 
 ```
@@ -195,7 +196,7 @@ $ swift stat
 <br/>
 
 <a id="stat-container"></a>
-### コンテナ情報照会
+### コンテナ情報照会 { #stat-container }
 コンテナの情報を照会します。
 
 ```
@@ -216,7 +217,7 @@ $ swift stat media
 <br/>
 
 <a id="stat-object"></a>
-### オブジェクト情報照会
+### オブジェクト情報照会 { #stat-object }
 オブジェクトの情報を照会します。
 
 ```
@@ -235,7 +236,7 @@ $ swift stat media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br/>
 
 <a id="list"></a>
-## 一覧照会
+## 一覧照会 { #list }
 コンテナまたはオブジェクト一覧を照会します。
 
 ```
@@ -256,7 +257,7 @@ swift list [container] [options]
 <br/>
 
 <a id="list-containers"></a>
-### コンテナ一覧照会
+### コンテナ一覧照会 { #list-containers }
 コンテナ一覧を照会します。
 
 ```
@@ -267,7 +268,7 @@ media
 <br/>
 
 <a id="list-objects"></a>
-### オブジェクト一覧照会
+### オブジェクト一覧照会 { #list-objects }
 オブジェクト一覧を照会します。
 
 ```
@@ -280,7 +281,7 @@ $ swift list media
 <br/>
 
 <a id="create-container"></a>
-## コンテナ作成
+## コンテナ作成 { #create-container }
 新規コンテナを作成します。
 
 ```
@@ -297,7 +298,7 @@ media
 <br/>
 
 <a id="upload"></a>
-## オブジェクトのアップロード
+## オブジェクトのアップロード { #upload }
 オブジェクトをアップロードまたは上書き(overwrite)します。複数のオブジェクトを一括でアップロードできます。
 
 ```
@@ -335,7 +336,7 @@ $ swift list media
 <br/>
 
 <a id="multipart-upload"></a>
-### マルチパートアップロード
+### マルチパートアップロード { #multipart-upload }
 `--segment-size`オプションでセグメントサイズを指定すると、ファイルを分割してマルチパートアップロードします。
 
 ```
@@ -368,7 +369,7 @@ test.mp4/slo/1635487628.192050/20971520/10485760/00000001
 <br/>
 
 <a id="download"></a>
-## オブジェクトのダウンロード
+## オブジェクトのダウンロード { #download }
 オブジェクトを現在のパスにダウンロードします。複数のオブジェクトをダウンロードできます。
 
 ```
@@ -398,7 +399,7 @@ $ swift download media 153206025029118e96e38b95b78281c8.jpg
 <br/>
 
 <a id="download-all"></a>
-### コンテナ単位のダウンロード
+### コンテナ単位のダウンロード { #download-all }
 ダウンロードするオブジェクトを省略すると、指定したコンテナの全てのオブジェクトをダウンロードします。
 
 ```
@@ -411,7 +412,7 @@ $ swift download media
 <br/>
 
 <a id="copy"></a>
-## オブジェクトのコピー
+## オブジェクトのコピー { #copy }
 オブジェクトを指定したパスにコピーします。コピー時にメタデータを追加または変更できます。
 
 ```
@@ -429,7 +430,7 @@ swift copy [--destination </container/object>] [--fresh-metadata] [--meta <name:
 <br/>
 
 <a id="copy-same-container"></a>
-### 同じコンテナ内でのコピー
+### 同じコンテナ内でのコピー { #copy-same-container }
 対象オブジェクト名を元と異なるように指定する必要があります。
 
 ```
@@ -441,7 +442,7 @@ created container media
 <br/>
 
 <a id="copy-other-container"></a>
-### 別のコンテナへのコピー
+### 別のコンテナへのコピー { #copy-other-container }
 対象オブジェクト名を省略すると、元と同じ名前でコピーします。
 
 ```
@@ -453,7 +454,7 @@ created container pics
 <br/>
 
 <a id="copy-with-metadata"></a>
-### メタデータの追加コピー
+### メタデータの追加コピー { #copy-with-metadata }
 `--meta`オプションを使用して、コピー時にメタデータを追加できます。
 
 ```
@@ -467,13 +468,13 @@ created container media
 <br/>
 
 <a id="post"></a>
-## 設定変更
+## 設定変更 { #post }
 コンテナまたはオブジェクトの設定を変更します。
 
 <br/>
 
 <a id="post-container"></a>
-### コンテナ設定の変更
+### コンテナ設定の変更 { #post-container }
 コンテナの設定を変更します。コンテナ設定は[コンテナ情報照会コマンド](cli-guide/#stat-container)で確認できます。
 
 ```
@@ -491,10 +492,10 @@ swift post [<options>] <container>
 
 <br/>
 
-> [参考]
-> ACL設定値については、[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
->
-> `--header`オプションで設定できるヘッダ一覧については、APIガイドの[コンテナ設定の変更](api-guide/#change-container-settings)セクションを参照してください。
+!!! tip "ヒント"
+    ACL の設定値については、[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
+
+`--header` オプションで設定できるヘッダーの一覧については、API ガイドの [コンテナ設定の変更](api-guide/#change-container-settings) セクションを参照してください。
 
 <br/>
 
@@ -507,7 +508,7 @@ $ swift post --read-acl ".r:*" media
 <br/>
 
 <a id="post-object"></a>
-### オブジェクトメタデータの変更
+### オブジェクトメタデータの変更 { #post-object }
 オブジェクトのメタデータを変更します。オブジェクトのメタデータは[オブジェクト情報照会コマンド](cli-guide/#stat-object)で確認できます。
 
 ```
@@ -531,13 +532,13 @@ $ swift post --header "Content-Type:image/png" media 797619b171a455e9eec8a87f94e
 <br/>
 
 <a id="delete"></a>
-## 削除
+## 削除 { #delete }
 コンテナまたはオブジェクトを削除します。
 
 <br/>
 
 <a id="delete-container"></a>
-### コンテナの削除
+### コンテナの削除 { #delete-container }
 指定したコンテナ内のオブジェクトを全て削除した後、コンテナを削除します。
 
 ```
@@ -564,7 +565,7 @@ $ swift delete media
 <br/>
 
 <a id="delete-object"></a>
-### オブジェクトの削除
+### オブジェクトの削除 { #delete-object }
 指定したオブジェクトを削除します。
 
 ```
@@ -586,7 +587,7 @@ $ swift delete media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br/>
 
 <a id="tempurl"></a>
-## 署名付きURLの作成
+## 署名付きURLの作成 { #tempurl }
 トークンなしでコンテナまたはオブジェクトにアクセスできる署名付きURLを作成します。
 
 ```
@@ -627,7 +628,7 @@ $ curl https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b948944
 <br/>
 
 <a id="tempurl-key"></a>
-### Temp-URL-Keyの登録
+### Temp-URL-Keyの登録 { #tempurl-key }
 署名付きURLを作成するには、コンテナにTemp-URL-Keyを事前に登録する必要があります。設定されたキーは[コンテナ情報照会コマンド](cli-guide/#stat-container)で確認できます。
 
 ```
@@ -646,5 +647,5 @@ $ swift stat media
 ```
 
 <a id="reference"></a>
-## References
+## References { #reference }
 Object Storage service (swift) command-line client - [https://docs.openstack.org/ocata/cli-reference/swift.html](https://docs.openstack.org/ocata/cli-reference/swift.html)

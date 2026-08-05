@@ -1,10 +1,13 @@
-## Storage > Object Storage > Console Guide
+<a id="storage-object-storage-console-guide"></a>
+## Storage > Object Storage > Console Guide { #storage-object-storage-console-guide }
+
+This document describes how to manage containers and objects in Object Storage from the NHN Cloud console.
 
 <a id="container"></a>
-## Container
+## Container { #container }
 
 <a id="create-container"></a>
-### Create Container
+### Create Container { #create-container }
 Creates containers. Uploading objects in an object storage requires one or more containers. If you set encryption, the uploaded object is automatically encrypted and saved.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
@@ -53,13 +56,13 @@ Creates containers. Uploading objects in an object storage requires one or more 
 </table>
 
 <a id="storage-class"></a>
-### Storage class
+### Storage class { #storage-class }
 You can choose a storage class based on how often you access your data and your cost requirements. We offer Standard class for frequently accessed data and Economy class for long-term storage of less frequently accessed data at a lower cost.
 
-> [Note]
-> You cannot change the storage class of an already created container.
-> Objects uploaded to Economy class containers are subject to a minimum storage period of 30 days. Objects deleted before 30 days are also charged for the remaining storage period.
-> Economy class containers are charged per 1,000 API requests (excluding HEAD/DELETE requests).
+!!! tip "Note"
+    You cannot change the storage class of an already created container.
+    Objects uploaded to Economy class containers are subject to a minimum storage period of 30 days. Objects deleted before 30 days are also charged for the remaining storage period.
+    Economy class containers are charged per 1,000 API requests (excluding HEAD/DELETE requests).
 
 <a id="set-object-lock-cycle"></a>
 #### Object Lock Settings
@@ -77,27 +80,27 @@ The policies for encryption container are as follows.
 * You cannot change the symmetric key ID that is registered when creating an encryption container. To change the symmetric key, you must use the key rotation feature of Secure Key Manager.
 * If you rotate the symmetric key configured in an encryption container from Secure Key Manager and then upload a new object, the object encrypted with the previous version key is re-encrypted with the rotated key. This process may take a long time depending on the amount of data. Make sure not to delete the previous version key before re-encryption is complete.
 
-> [Caution]
-If you delete the symmetric key configured in an encryption container from Secure Key Manager, the encrypted object cannot be decrypted. You must carefully manage the symmetric key not to delete it accidentally.
+!!! danger "Caution"
+    If you delete the symmetric key configured in an encryption container from Secure Key Manager, the encrypted object cannot be decrypted. You must carefully manage the symmetric key not to delete it accidentally.
 
 <a id="empty-a-container"></a>
-### Empty a Container
+### Empty a Container { #empty-a-container }
 Deletes all objects inside the selected container. 
 
-> [Note]
-> Objects whose lock expiration date has not passed are not deleted.
-> For multipart objects inside the selected container, only the manifest object is deleted. Segment objects located in other containers are not deleted.
+!!! tip "Note"
+    Objects whose lock expiration date has not passed are not deleted.
+    For multipart objects inside the selected container, only the manifest object is deleted. Segment objects located in other containers are not deleted.
 
-> [Caution]
-> If you are using the replication setting, objects in the target container might also be deleted.
-> If you upload objects to a container that is undergoing a container emptying operation, they might be deleted.
+!!! danger "Caution"
+    If you are using the replication setting, objects in the target container might also be deleted.
+    If you upload objects to a container that is undergoing a container emptying operation, they might be deleted.
 
 <a id="delete-container"></a>
-### Delete Container
+### Delete Container { #delete-container }
 Deletes selected containers. Check if the containers are empty before deleting them. If any objects are left inside a container, you cannot delete the relevant container.
 
 <a id="manage-container"></a>
-### Manage Container
+### Manage Container { #manage-container }
 Checks basic information of the selected containers and manage the settings.
 
 <a id="container-basic-info"></a>
@@ -293,9 +296,10 @@ For more information on lifecycle settings, see [How to apply lifecycle rules](c
   </tr>
 </table>
 
-> [Note]
-> It is applied only to objects uploaded after the object lifecycle is set.
-> Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
+!!! tip "Note"
+    It is applied only to objects uploaded after the object lifecycle is set.
+    The maximum number of conditional rules that can be configured is 30. This limit also applies when configuring via [Container Policy](container-policy-guide/#lifecycle).
+    Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
 
 <a id="set-object-lifecycle-batch"></a>
 ##### Bulk Apply Rules
@@ -326,9 +330,9 @@ Object version control settings allow you to keep previous versions of objects. 
   </tr>
 </table>
 
-> [Caution]
-> If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
-> If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
+!!! danger "Caution"
+    If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
+    If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
 
 <a id="change-object-lock-cycle"></a>
@@ -353,10 +357,10 @@ You can check and change the object lock cycle of object lock containers. The ob
   </tr>
 </table>
 
-> [Note]
-> The changed object lock cycle is applied to objects uploaded after changing the settings. 
-> You cannot change a general container to an object lock container and vice versa.
-> You cannot specify an object lock container as an archive container or replication target container.
+!!! tip "Note"
+    The changed object lock cycle is applied to objects uploaded after changing the settings.
+    You cannot change a general container to an object lock container and vice versa.
+    You cannot specify an object lock container as an archive container or replication target container.
 
 <a id="set-container-replication"></a>
 #### Replication
@@ -415,8 +419,8 @@ The replication policies are as follows:
     * When objects whose lifecycle has expired but have not yet been deleted are replicated to the target container, the lifecycle setting is removed. When subsequently deleted from the source container, the deletion is propagated to the target container and the object is deleted.
     * Delete marker objects in the archive container are not replicated.
 
-> [Caution]
-> If you specify an encryption container as the replication target container and then delete the symmetric key from Secure Key Manager, the encryption container fails to be replicated.
+!!! danger "Caution"
+    If you specify an encryption container as the replication target container and then delete the symmetric key from Secure Key Manager, the encryption container fails to be replicated.
 <br/>
 
 <a id="resume-container-replication"></a>
@@ -430,34 +434,34 @@ Resumes the replication of a suspended container from the point it was suspended
 
 Suspends container replication. While replication is suspended, any deletions or modifications to objects in the source container are not replicated.
 
-> [Caution]
-> Objects in the source container that are deleted during the replication suspend period might not be reflected in the target container.
+!!! danger "Caution"
+    Objects in the source container that are deleted during the replication suspend period might not be reflected in the target container.
 <br/>
 
 <a id="object"></a>
-## Object
+## Object { #object }
 
 <a id="create-folder"></a>
-### Create Folder
+### Create Folder { #create-folder }
 Create folders. Folders are virtual units to bundle objects within a container into a group. Similar to folders in Windows or directories in Linux, they help users to manage objects hierarchically. Folder names are limited to 256 letters in English or 85 characters in Korean.
 
-> [Note]
-> Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
+!!! tip "Note"
+    Folder for object storage is different from the directory provided by the file system. It is a pseudo folder provided for user's convenience. When a folder is created, an empty object named `{folder-name}/` is created. Objects within the folder will have names in the form of `{folder-name}/{object-name}`. Objects in the form of `{folder-name}/{object-name}` can be created directly without generating empty objects in the form of `{folder-name}/` by using the Copy Object function to copy objects into a new folder. If this copied object is deleted, it will appear as if the folder is also deleted. If you copy the object to a folder that you created in advance, the folder remains even if the object is deleted.
 
 <a id="delete-folder"></a>
-### Delete Folder
+### Delete Folder { #delete-folder }
 Deletes a folder. Deletes all objects in the folder and the folder object.
 For multipart objects inside a folder, only the manifest object is deleted; segment objects that are not included in the selection are not deleted.
 
 <a id="upload-object"></a>
-### Upload Object
+### Upload Object { #upload-object }
 All objects must be uploaded to containers. One object cannot be larger than 5GB.
 
-> [Note]
-> Files exceeding 5GB cannot be uploaded in a web console. If the size of the object to be uploaded exceeds 5GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5GB before uploading. For more details, refer to [Multipart Upload](api-guide/#multipart-upload) of the API guide.
+!!! tip "Note"
+    Files exceeding 5GB cannot be uploaded in a web console. If the size of the object to be uploaded exceeds 5GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5GB before uploading. For more details, refer to [Multipart Upload](api-guide/#multipart-upload) of the API guide.
 
 <a id="download-object"></a>
-### Download Object
+### Download Object { #download-object }
 Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the `Copy URL` button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
 
 <details style="padding-top: 15px; padding-bottom: 10px;">
@@ -485,39 +489,39 @@ Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 </details>
 
 <a id="copy-or-move-object"></a>
-### Copy/Move Object
+### Copy/Move Object { #copy-or-move-object }
 Copy or move objects to the specified container. You can select multiple objects to copy or move to a different container or to a new path in the same container. 
 
-> [Note]
-> The maximum length of the path that can be entered depends on the length of the object name. The length of the path to copy plus the object name must be 1024 bytes or less.
-> `{Maximum length of the path} = 1024 - {Length of the object name} - 1`
->
-> For multipart objects, only manifest objects can be copied or moved. 
+!!! tip "Note"
+    The maximum length of the path that can be entered depends on the length of the object name. The length of the path to copy plus the object name must be 1024 bytes or less.
+    `{Maximum length of the path} = 1024 - {Length of the object name} - 1`
+
+    For multipart objects, only manifest objects can be copied or moved.
 
 <a id="delete-object"></a>
-### Delete Object
+### Delete Object { #delete-object }
 Deletes the selected objects. You can select and delete multiple objects at the same time. 
 
-> [Note]
-> When you delete a multipart object, only the selected manifest object is deleted. Unselected segment objects are not deleted.
+!!! tip "Note"
+    When you delete a multipart object, only the selected manifest object is deleted. Unselected segment objects are not deleted.
 
 <a id="create-signed-url"></a>
-### Create Signed URL
+### Create Signed URL { #create-signed-url }
 Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies.
 
-> [Note]
-> Only single objects can be selected, not folder objects.
-> The validity period can be set in minutes, up to 720 minutes.
+!!! tip "Note"
+    Only single objects can be selected, not folder objects.
+    The validity period can be set in minutes, up to 720 minutes.
 
-> [Caution]
-> Signed URLs should be used with caution because if they are exposed, anyone can access the selected object. It is recommended that you set an appropriate validity period for your situation and use it to reduce the damage if your signed URL is exposed.
+!!! danger "Caution"
+    Signed URLs should be used with caution because if they are exposed, anyone can access the selected object. It is recommended that you set an appropriate validity period for your situation and use it to reduce the damage if your signed URL is exposed.
 
 <a id="manage-object"></a>
-### Manage Object
+### Manage Object { #manage-object }
 Check the selected object information and manage the properties.
 
-> [Note]
-> If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
+!!! tip "Note"
+    If you set both an object expiration date and a lock expiration date, the object expiration date must always be set after the lock expiration date.
 
 <a id="set-object-expiration"></a>
 #### Change Object Expiration Date
@@ -530,13 +534,13 @@ You can change the expiration date for selected objects.
 You can change the lock expiration date for selected objects. It cannot be changed prior to the previously set expiration date.
 
 <a id="prefix-search"></a>
-## Prefix Search
+## Prefix Search { #prefix-search }
 If you enter a prefix in the search bar and click the **Search** button, you can search for containers, folders, and objects that begin with the prefix you entered. You can search for containers in the container list, and search for folders and objects in the object list.
 
 <a id="s3-api-credentials"></a>
-## S3 API Credentials
+## S3 API Credentials { #s3-api-credentials }
 You can obtain credentials required to use Amazon S3 compatible API. S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
 
-> [Caution]
-> If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, it is recommended to delete the leaked credentials and obtain a new one.
+!!! danger "Caution"
+    If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, it is recommended to delete the leaked credentials and obtain a new one.
 

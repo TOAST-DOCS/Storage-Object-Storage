@@ -1,19 +1,20 @@
-## Third-Party Tools Usage Guide
+<a id="third-party-tools-usage-guide"></a>
+## Third-Party Tools Usage Guide { #third-party-tools-usage-guide }
 
 This document describes how to use the NHN Cloud Object Storage service with third-party tools.
 
 <a id="cyberduck"></a>
-## Cyberduck
+## Cyberduck { #cyberduck }
 
 Cyberduck is an open-source cloud storage browser.
 
 <a id="install-cyberduck"></a>
-### Install Cyberduck
+### Install Cyberduck { #install-cyberduck }
 
 Download and install the installation file for user’s operating system from the [Cyberduck download page ](https://cyberduck.io/download/).
 
 <a id="cyberduck-object-storage-connection-settings"></a>
-### Object Storage Connection Settings
+### Object Storage Connection Settings { #cyberduck-object-storage-connection-settings }
 
 To connect to object storage, you must create a bookmark that stores connection information. By clicking **New Connection** button at the top of browser, you can create a new bookmark. Select **OpenStack Swift (Keystone 2.0)** from the drop-down menu, enter the required information, and click the **Connect** button to create a bookmark.
 
@@ -43,63 +44,63 @@ To connect to object storage, you must create a bookmark that stores connection 
   </tr>
 </table>
 
-> [Note] 
-> See [Set the API Password](api-guide/#set-the-api-password) in the API guide for information on how to set API passwords.
+!!! tip "Note"
+    See [Authentication and Authorization](api-guide/#auth) in the API guide for information on how to set API passwords.
 
 <a id="cyberduck-connect-object-storage"></a>
-### Connect Object Storage
+### Connect Object Storage { #cyberduck-connect-object-storage }
 
 Double-click the bookmark you want to connect in order to access object storage.
 
 <a id="cyberduck-retrieve-container-or-object"></a>
-### Retrieve Container/Object
+### Retrieve Container/Object { #cyberduck-retrieve-container-or-object }
 
 When accessing object storage, a list of containers for **All Regions** appears in the browser. You can retrieve a list of objects in a container by double-clicking the desired container.
 
-> [Note] 
-> If there are containers with the same name in different regions, multiple containers with the same name are displayed. 
-> Select **View > Column > Region** from the menu to display regions in the column entry.
+!!! tip "Note"
+    If there are containers with the same name in different regions, multiple containers with the same name are displayed.
+    Select **View > Column > Region** from the menu to display regions in the column entry.
 
 <a id="cyberduck-create-container"></a>
-### Create Container
+### Create Container { #cyberduck-create-container }
 
 You can create a new container by right-clicking an empty space in the container list and selecting **New Folder...**. After entering the container's name and region, click the **Create** button to create a container.
 
-> [Note] 
->  You can refresh the container list by right-clicking an empty space in the list and selecting **View Again**.
+!!! tip "Note"
+    You can refresh the container list by right-clicking an empty space in the list and selecting **View Again**.
 
 <a id="cyberduck-upload-object"></a>
-### Upload Object
+### Upload Object { #cyberduck-upload-object }
 
 Select a container and click **Action** > **Upload…** at the top of the browser, or right-click the object list and click **Upload…** to select and upload the file.
 
-> [Note] 
-> If you upload or create a folder with Cyberduck, another 0 byte object with the same folder name is created. The object can be found with the console or object storage API and can be deleted.
+!!! tip "Note"
+    If you upload or create a folder with Cyberduck, another 0 byte object with the same folder name is created. The object can be found with the console or object storage API and can be deleted.
 
 <a id="cyberduck-download-object"></a>
-### Download Object
+### Download Object { #cyberduck-download-object }
 
 Select and right-click an object to download, select **Download**. You can download the object by dragging and dropping.
 
-> [Note] 
-> When you download an object, it is saved to your local **Downloads** folder by default. Right-click it and select **Download to Specified Location** to download to the specified path.
-> When uploading or downloading an object, the **Send** window pops up to check the progress.
+!!! tip "Note"
+    When you download an object, it is saved to your local **Downloads** folder by default. Right-click it and select **Download to Specified Location** to download to the specified path.
+    When uploading or downloading an object, the **Send** window pops up to check the progress.
 
 <a id="cyberduck-delete-container"></a>
-### Delete Container
+### Delete Container { #cyberduck-delete-container }
 
 Select the container to delete and right-click and select **Delete** to delete it.
 
-> [Caution] 
-> When deleting containers, all objects in the containers are deleted.
+!!! danger "Caution"
+    When deleting containers, all objects in the containers are deleted.
 
 <a id="cyberduck-delete-object"></a>
-### Delete Object
+### Delete Object { #cyberduck-delete-object }
 
 Select the object to delete and right-click and select **Delete**.
 
 <a id="cyberduck-synchronize-folder"></a>
-### Synchronize Folder
+### Synchronize Folder { #cyberduck-synchronize-folder }
 
 You can synchronize local folders with containers or folders. Select a container or folder and right-click and select **Synchronize**. 
 Folder synchronization provides three methods of download, upload, and mirror.
@@ -119,16 +120,16 @@ Upload files that are changed or added in your local to object storage.
 
 Compare local and object storage to upload or download changed or missing files or objects.
 
-> [Note] 
-> For more information on synchronization, see [Cyberduck Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders).
+!!! tip "Note"
+    For more information on synchronization, see [Cyberduck Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders).
 
 <a id="terraform"></a>
-## Terraform
+## Terraform { #terraform }
 
 Terraform is an open-source tool that enables you to build infrastructure easily, make changes safely, and manage configurations efficiently. For basic usage, see [User Guide > NHN Cloud > Terraform User Guide](/nhncloud/en/terraform-guide/).
 
 <a id="terraform-resource-dependency"></a>
-### Resource Dependency
+### Resource Dependency { #terraform-resource-dependency }
 
 In general, each resource is independent, but it can also have dependencies on certain other resources. Terraform automatically establishes dependencies when a resource's label references information from another resource.
 For example, the `object1 object` contained in the `container1` container might be represented as follows:
@@ -147,11 +148,11 @@ resource "nhncloud_objectstorage_object_v1" "object_1" {
 }
 ```
 
-> [Note]
-> For information on how to specify explicit resource dependencies, see [Terraform's Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) documentation.
+!!! tip "Note"
+    For information on how to specify explicit resource dependencies, see [Terraform's Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) documentation.
 
 <a id="terraform-resources-object-storage"></a>
-### Resources - Object Storage
+### Resources - Object Storage { #terraform-resources-object-storage }
 
 <a id="terraform-resources-create-container"></a>
 #### Create a Container
@@ -184,7 +185,7 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 | Name | Type | Required | Description |
 | ---- | ---- | ---- | ---- |
 | region | String | | Region to manage NHN Cloud resources |
-| name | String | O | Container name |
+| name | String | Y | Container name |
 | container_read | String | | Sets the role-based access rules for container read |
 | container_write | String | | Role-based access rules for container writes |
 | force_destroy | Boolean | | Whether to force container deletion, `true` or `false`<br>You can't recover objects that were deleted together. |
@@ -304,7 +305,7 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 </table>
 
 <a id="reference"></a>
-## Reference
+## Reference { #reference }
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
