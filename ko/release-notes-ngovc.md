@@ -18,10 +18,7 @@
 ### 기능 개선/변경 { #july-24-2026-feature-updates }
 * [API] Amazon S3 API 호환성 개선
     * 오브젝트 목록에서 각 오브젝트의 LastModified 값이 밀리초 단위까지 표시되는 문제를 수정했습니다.
-
-<a id="july-24-2026-limiting-policy"></a>
-### 제한 정책 { #july-24-2026-limiting-policy }
-* [API] 쓰기 요청 속도 제한(rate limit) 적용
+* [API] 쓰기 요청 속도 제한(rate limit) 정책 추가
     * 스토리지 계정 단위로 초당 500건을 초과하는 요청에 제한 정책을 적용합니다.
 
 <a id="july-24-2026-bug-fixes"></a>
