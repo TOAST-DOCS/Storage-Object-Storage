@@ -1,33 +1,6 @@
 <a id="storage-object-storage-release-notes"></a>
 ## Storage > Object Storage > 릴리스 노트 { #storage-object-storage-release-notes }
 
-<a id="july-24-2026"></a>
-## 2026. 07. 24. { #july-24-2026 }
-<a id="july-24-2026-added-features"></a>
-### 신규 기능 추가 { #july-24-2026-added-features }
-* [콘솔] 수명 주기 규칙 설정 및 일괄 적용 기능 추가
-* [API] 컨테이너 정책 문서를 통한 컨테이너 설정 기능 추가
-    * 수명 주기 규칙 설정을 지원합니다.
-* [API] Amazon S3 API 호환성 개선
-    * 도메인 스타일(Virtual Hosted Domain) 엔드포인트를 지원합니다.
-    * Trailing Checksum을 통한 업로드 무결성 검증을 지원합니다.
-    * CORS Preflight 요청을 지원합니다.
-* [콘솔] 암호화 컨테이너 설정 기능 추가
-
-<a id="july-24-2026-feature-updates"></a>
-### 기능 개선/변경 { #july-24-2026-feature-updates }
-* [API] Amazon S3 API 호환성 개선
-    * 오브젝트 목록에서 각 오브젝트의 LastModified 값이 밀리초 단위까지 표시되는 문제를 수정했습니다.
-
-<a id="july-24-2026-limiting-policy"></a>
-### 제한 정책 { #july-24-2026-limiting-policy }
-* [API] 쓰기 요청 속도 제한(rate limit) 적용
-    * 스토리지 계정 단위로 초당 500건을 초과하는 요청에 제한 정책을 적용합니다.
-
-<a id="july-24-2026-bug-fixes"></a>
-### 버그 수정 { #july-24-2026-bug-fixes }
-* [API] Amazon S3 호환 API로 객체 잠금이 설정된 버킷에 멀티파트 업로드하면 요청이 실패하고 기존 파트 오브젝트가 삭제되는 버그 수정
-
 <a id="september-5-2024"></a>
 ## 2024. 09. 05. { #september-5-2024 }
 <a id="september-5-2024-feature-updates"></a>
