@@ -1,11 +1,12 @@
-## Storage > Object Storage > CLI 가이드
+<a id="storage-object-storage-cli-guide"></a>
+## Storage > Object Storage > CLI 가이드 { #storage-object-storage-cli-guide }
 OpenStack Swift 명령줄 인터페이스(CLI)로 NHN Cloud 오브젝트 스토리지 서비스를 사용하는 방법을 설명합니다.
 
 <a id="python-swiftclient"></a>
-## python-swiftclient
+## python-swiftclient { #python-swiftclient }
 
 <a id="install"></a>
-### 설치
+### 설치 { #install }
 
 python-swiftclient는 Python 패키지로 제공됩니다. pip를 이용해 설치합니다.
 
@@ -13,8 +14,8 @@ python-swiftclient는 Python 패키지로 제공됩니다. pip를 이용해 설�
 pip install python-swiftclient python-keystoneclient
 ```
 
-> [참고]
-> Python 3.6 이상이 필요합니다. Python이 설치되어 있지 않다면 [Python 다운로드 페이지](https://www.python.org/downloads/)를 참고하여 설치합니다.
+!!! tip "알아두기"
+    Python 3.6 이상이 필요합니다. Python이 설치되어 있지 않다면 [Python 다운로드 페이지](https://www.python.org/downloads/)를 참고하여 설치합니다.
 
 설치가 완료되면 다음 명령으로 확인할 수 있습니다.
 
@@ -26,7 +27,7 @@ python-swiftclient x.x.x
 <br/>
 
 <a id="configuration"></a>
-### 환경 설정
+### 환경 설정 { #configuration }
 
 Swift CLI를 사용하려면 인증에 필요한 환경 변수를 설정해야 합니다. 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 필요한 정보를 확인할 수 있습니다.
 
@@ -50,13 +51,13 @@ export OS_REGION_NAME=<리전 이름>
 
 <br/>
 
-> [주의]
-> 오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다. 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 확인하세요.
+!!! danger "주의"
+    오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다. 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 확인하세요.
 
 <!-- 개행을 위한 주석 -->
 
-> [참고]
-> API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 설정할 수 있습니다.
+!!! tip "알아두기"
+    API 비밀번호는 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 설정할 수 있습니다.
 
 <br/>
 
@@ -92,7 +93,7 @@ $ swift stat
 <br/>
 
 <a id="basic-usage"></a>
-## 기본 사용 방법
+## 기본 사용 방법 { #basic-usage }
 기본 사용 방법은 다음과 같습니다.
 
 ```
@@ -102,7 +103,7 @@ swift <subcommand> [<options>] [<container> [<object>]]
 <br/>
 
 <a id="subcommands"></a>
-### 서브커맨드
+### 서브커맨드 { #subcommands }
 주요 서브커맨드는 다음과 같습니다.
 
 | 서브커맨드 | 설명 |
@@ -120,7 +121,7 @@ swift <subcommand> [<options>] [<container> [<object>]]
 <br/>
 
 <a id="options"></a>
-### 공통 옵션
+### 공통 옵션 { #options }
 
 모든 서브커맨드에 공통으로 사용할 수 있는 옵션입니다.
 
@@ -134,7 +135,7 @@ swift <subcommand> [<options>] [<container> [<object>]]
 <br/>
 
 <a id="auth-info"></a>
-### 동작 방식과 인증 정보 활용
+### 동작 방식과 인증 정보 활용 { #auth-info }
 
 Swift CLI는 기본적으로 명령을 실행할 때마다 Identity API를 호출해 토큰과 서비스 카탈로그를 얻은 다음, 서브커맨드에 해당하는 Swift API를 호출합니다.
 
@@ -156,13 +157,13 @@ export OS_AUTH_TOKEN=gAAAAABi...
 $ eval $(swift auth)
 ```
 
-> [참고]
-> 인증 토큰에는 만료 시간이 있습니다. 토큰이 만료되어 요청이 실패하면 `eval $(swift auth)`를 다시 실행해 갱신해야 합니다.
+!!! tip "알아두기"
+    인증 토큰에는 만료 시간이 있습니다. 토큰이 만료되어 요청이 실패하면 `eval $(swift auth)`를 다시 실행해 갱신해야 합니다.
 
 <br/>
 
 <a id="stat"></a>
-## 정보 조회
+## 정보 조회 { #stat }
 스토리지 계정, 컨테이너, 오브젝트의 정보를 조회합니다.
 
 ```
@@ -178,7 +179,7 @@ swift stat [<options>] [<container> [<object>]]
 <br/>
 
 <a id="stat-account"></a>
-### 스토리지 계정 정보 조회
+### 스토리지 계정 정보 조회 { #stat-account }
 스토리지 계정의 정보를 조회합니다.
 
 ```
@@ -195,7 +196,7 @@ $ swift stat
 <br/>
 
 <a id="stat-container"></a>
-### 컨테이너 정보 조회
+### 컨테이너 정보 조회 { #stat-container }
 컨테이너의 정보를 조회합니다.
 
 ```
@@ -216,7 +217,7 @@ $ swift stat media
 <br/>
 
 <a id="stat-object"></a>
-### 오브젝트 정보 조회
+### 오브젝트 정보 조회 { #stat-object }
 오브젝트의 정보를 조회합니다.
 
 ```
@@ -235,7 +236,7 @@ $ swift stat media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br/>
 
 <a id="list"></a>
-## 목록 조회
+## 목록 조회 { #list }
 컨테이너 또는 오브젝트 목록을 조회합니다.
 
 ```
@@ -256,7 +257,7 @@ swift list [container] [options]
 <br/>
 
 <a id="list-containers"></a>
-### 컨테이너 목록 조회
+### 컨테이너 목록 조회 { #list-containers }
 컨테이너 목록을 조회합니다.
 
 ```
@@ -267,7 +268,7 @@ media
 <br/>
 
 <a id="list-objects"></a>
-### 오브젝트 목록 조회
+### 오브젝트 목록 조회 { #list-objects }
 오브젝트 목록을 조회합니다.
 
 ```
@@ -280,7 +281,7 @@ $ swift list media
 <br/>
 
 <a id="create-container"></a>
-## 컨테이너 생성
+## 컨테이너 생성 { #create-container }
 신규 컨테이너를 생성합니다.
 
 ```
@@ -297,7 +298,7 @@ media
 <br/>
 
 <a id="upload"></a>
-## 오브젝트 업로드
+## 오브젝트 업로드 { #upload }
 오브젝트를 업로드 또는 업데이트(overwrite)합니다. 여러 오브젝트를 한꺼번에 업로드할 수 있습니다.
 
 ```
@@ -335,7 +336,7 @@ $ swift list media
 <br/>
 
 <a id="multipart-upload"></a>
-### 멀티파트 업로드
+### 멀티파트 업로드 { #multipart-upload }
 `--segment-size` 옵션으로 세그먼트 크기를 지정하면 파일을 분할해 멀티파트 업로드합니다.
 
 ```
@@ -368,7 +369,7 @@ test.mp4/slo/1635487628.192050/20971520/10485760/00000001
 <br/>
 
 <a id="download"></a>
-## 오브젝트 다운로드
+## 오브젝트 다운로드 { #download }
 오브젝트를 현재 경로에 다운로드합니다. 여러 개의 오브젝트를 다운로드할 수 있습니다.
 
 ```
@@ -398,7 +399,7 @@ $ swift download media 153206025029118e96e38b95b78281c8.jpg
 <br/>
 
 <a id="download-all"></a>
-### 컨테이너 단위 다운로드
+### 컨테이너 단위 다운로드 { #download-all }
 다운로드할 오브젝트를 생략하면 지정한 컨테이너의 모든 오브젝트를 다운로드합니다.
 
 ```
@@ -411,7 +412,7 @@ $ swift download media
 <br/>
 
 <a id="copy"></a>
-## 오브젝트 복사
+## 오브젝트 복사 { #copy }
 오브젝트를 지정한 경로로 복사합니다. 복사하면서 메타데이터를 추가하거나 변경할 수 있습니다.
 
 ```
@@ -429,7 +430,7 @@ swift copy [--destination </container/object>] [--fresh-metadata] [--meta <name:
 <br/>
 
 <a id="copy-same-container"></a>
-### 같은 컨테이너 내에서 복사
+### 같은 컨테이너 내에서 복사 { #copy-same-container }
 대상 오브젝트 이름을 원본과 다르게 지정해야 합니다.
 
 ```
@@ -441,7 +442,7 @@ created container media
 <br/>
 
 <a id="copy-other-container"></a>
-### 다른 컨테이너로 복사
+### 다른 컨테이너로 복사 { #copy-other-container }
 대상 오브젝트 이름을 생략하면 원본과 같은 이름으로 복사합니다.
 
 ```
@@ -453,7 +454,7 @@ created container pics
 <br/>
 
 <a id="copy-with-metadata"></a>
-### 메타데이터 추가 복사
+### 메타데이터 추가 복사 { #copy-with-metadata }
 `--meta` 옵션으로 복사하면서 메타데이터를 추가할 수 있습니다.
 
 ```
@@ -467,13 +468,13 @@ created container media
 <br/>
 
 <a id="post"></a>
-## 설정 변경
+## 설정 변경 { #post }
 컨테이너 또는 오브젝트의 설정을 변경합니다.
 
 <br/>
 
 <a id="post-container"></a>
-### 컨테이너 설정 변경
+### 컨테이너 설정 변경 { #post-container }
 컨테이너의 설정을 변경합니다. 컨테이너 설정은 [컨테이너 정보 조회 명령](cli-guide/#stat-container)으로 확인할 수 있습니다.
 
 ```
@@ -491,10 +492,10 @@ swift post [<options>] <container>
 
 <br/>
 
-> [참고]
-> ACL 설정 값은 [접근 정책 설정 가이드](acl-guide/)를 참고하세요.
->
-> `--header` 옵션으로 설정할 수 있는 헤더 목록은 API 가이드의 [컨테이너 설정 변경](api-guide/#change-container-settings) 섹션을 참고하세요.
+!!! tip "알아두기"
+    ACL 설정 값은 [접근 정책 설정 가이드](acl-guide/)를 참고하세요.
+
+    `--header` 옵션으로 설정할 수 있는 헤더 목록은 API 가이드의 [컨테이너 설정 변경](api-guide/#change-container-settings) 섹션을 참고하세요.
 
 <br/>
 
@@ -507,7 +508,7 @@ $ swift post --read-acl ".r:*" media
 <br/>
 
 <a id="post-object"></a>
-### 오브젝트 메타데이터 변경
+### 오브젝트 메타데이터 변경 { #post-object }
 오브젝트의 메타데이터를 변경합니다. 오브젝트의 메타데이터는 [오브젝트 정보 조회 명령](cli-guide/#stat-object)으로 확인할 수 있습니다.
 
 ```
@@ -531,13 +532,13 @@ $ swift post --header "Content-Type:image/png" media 797619b171a455e9eec8a87f94e
 <br/>
 
 <a id="delete"></a>
-## 삭제
+## 삭제 { #delete }
 컨테이너 또는 오브젝트를 삭제합니다.
 
 <br/>
 
 <a id="delete-container"></a>
-### 컨테이너 삭제
+### 컨테이너 삭제 { #delete-container }
 지정한 컨테이너의 내부 오브젝트를 모두 삭제한 뒤 컨테이너를 삭제합니다.
 
 ```
@@ -564,7 +565,7 @@ $ swift delete media
 <br/>
 
 <a id="delete-object"></a>
-### 오브젝트 삭제
+### 오브젝트 삭제 { #delete-object }
 지정한 오브젝트를 삭제합니다.
 
 ```
@@ -586,7 +587,7 @@ $ swift delete media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br/>
 
 <a id="tempurl"></a>
-## 서명된 URL 생성
+## 서명된 URL 생성 { #tempurl }
 토큰 없이 컨테이너 또는 오브젝트에 접근할 수 있는 서명된 URL을 생성합니다.
 
 ```
@@ -627,7 +628,7 @@ $ curl https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_6dbc368b94
 <br/>
 
 <a id="tempurl-key"></a>
-### Temp-URL-Key 등록
+### Temp-URL-Key 등록 { #tempurl-key }
 서명된 URL을 생성하려면 컨테이너에 Temp-URL-Key를 미리 등록해야 합니다. 설정된 키는 [컨테이너 정보 조회 명령](cli-guide/#stat-container)으로 확인할 수 있습니다.
 
 ```
@@ -646,7 +647,7 @@ $ swift stat media
 ```
 
 <a id="reference"></a>
-## References
+## References { #reference }
 Object Storage service (swift) command-line client - [https://docs.openstack.org/ocata/cli-reference/swift.html](https://docs.openstack.org/ocata/cli-reference/swift.html)
 
 
