@@ -1,21 +1,21 @@
 <!-- pre-align:aligned sig=ba6b9ac2ecbb -->
 
 <a id="storage-object-storage-presigned-url-guide"></a>
-## Storage > Object Storage > 서명된 URL 가이드 { #storage-object-storage-presigned-url-guide }
+## Storage > Object Storage > Presigned URL Guide { #storage-object-storage-presigned-url-guide }
 
-이 문서는 서명된 URL로 NHN Cloud 오브젝트 스토리지의 오브젝트에 한시적인 접근 권한을 부여하는 방법을 설명합니다.
+This document describes how to grant temporary access to objects in NHN Cloud Object Storage using presigned URLs.
 
 <a id="overview"></a>
-## 서명된 URL { #overview }
+## Presigned URL { #overview }
 
-서명된 URL(presigned URL)은 비밀 키로 미리 서명해 둔 임시 접근 링크입니다. **URL에 접근 대상 오브젝트, 허용할 HTTP 메서드(GET/PUT), 만료 시각**을 포함하고 이를 비밀 키로 서명합니다.
+A presigned URL is a temporary access link that is pre-signed with a secret key. The URL includes **the target object, the allowed HTTP method (GET/PUT), and an expiration time**, all signed with a secret key.
 
 <br>
 
 <a id="swift-tempurl"></a>
 ### Swift TempURL { #swift-tempurl }
 
-Swift의 Temporary URL은 오브젝트의 URL에 쿼리 파라미터가 추가된 형태입니다.
+A Swift Temporary URL is a standard object URL with query parameters appended to it.
 
 ```bash
 https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/object
@@ -24,20 +24,20 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/objec
 &filename=My+Test+File.pdf
 ```
 
-| 구성 요소 | 필수 여부 | 설명 |
+| Component | Required | Description |
 | --- | --- | --- |
-| Object URL | Y        | 오브젝트의 전체 경로 URL |
-| temp_url_sig | Y        | 허용된 HTTP 메서드, 만료 일시, 오브젝트의 전체 경로를 비밀 키로 서명한 HMAC 값 |
-| temp_url_expires | Y        | 만료 일시. UNIX Epoch 타임스탬프 또는 ISO 8601 UTC 타임스탬프로 표현.<br>예: `1390852007` 또는 `2014-01-27T19:46:47Z` |
-| filename | N        | 기본 파일명을 덮어씀 |
-| temp_url_prefix | N        | 접두사 단위로 서명할 때 필요 |
+| Object URL | Y        | The full path URL of the object |
+| temp_url_sig | Y        | An HMAC value created by signing the allowed HTTP method, expiration time, and full path of the object with a secret key |
+| temp_url_expires | Y        | Expiration time. Expressed as a UNIX Epoch timestamp or an ISO 8601 UTC timestamp.<br>Example: `1390852007` or `2014-01-27T19:46:47Z` |
+| filename | N        | Overrides the default filename |
+| temp_url_prefix | N        | Required when signing by prefix |
 
 <br>
 
 <a id="s3-presigned-url"></a>
-### S3 호환 서명된 URL { #s3-presigned-url }
+### S3-compatible Presigned URL { #s3-presigned-url }
 
-NHN Cloud 오브젝트 스토리지는 S3 호환 API를 제공하며, 이때 생성하는 서명된 URL은 다음과 같은 형태입니다.
+NHN Cloud Object Storage provides an S3-compatible API, and presigned URLs generated with this API have the following format.
 
 ```bash
 https://{endpoint}/my-container/cat.jpg
@@ -49,42 +49,42 @@ https://{endpoint}/my-container/cat.jpg
 &X-Amz-Signature={signature-value}
 ```
 
-| 구성 요소 | 필수 여부 | 설명                                                                                                                       |
+| Component | Required | Description                                                                                                                       |
 | --- | --- |--------------------------------------------------------------------------------------------------------------------------|
-| Object URL | Y        | 오브젝트의 전체 경로 URL(path-style: `https://{endpoint}/{bucket}/{object}`)                                                      |
-| X-Amz-Algorithm | Y        | AWS Signature 버전과 알고리즘 식별. SigV4에서는 AWS4-HMAC-SHA256으로 설정                                                                |
-| X-Amz-Credential | Y        | Access Key ID와 서명이 유효한 scope(리전·서비스)를 제공. 형식: `{access-key-id}/{date}/{region}/{service}/aws4_request` (서비스는 `s3`, 리전은 ` kr1` 등). URL에서 `/`는 `%2F`로 인코딩 |
-| X-Amz-Date | Y        | 요청 일시. ISO 8601 `yyyyMMddTHHmmssZ` 형식(UTC)으로 표현<br>예: `20260601T223241Z`                                                 |
-| X-Amz-Expires | Y        | 서명된 URL이 유효한 기간(초). 최소 `1`, 최대 `604800`(7일)                                                                              |
-| X-Amz-SignedHeaders | Y        | 서명 계산에 사용한 헤더 목록. 최소한 HTTP `host` 헤더를 포함하며, 요청에 추가하는 모든 `x-amz-*` 헤더도 포함                                                 |
-| X-Amz-Signature | Y        | 요청을 인증하는 HMAC 서명 값. 서버가 계산한 값과 일치해야 하며, 아니면 요청 거부                                                                        |
+| Object URL | Y        | The full path URL of the object (path-style: `https://{endpoint}/{bucket}/{object}`)                                                      |
+| X-Amz-Algorithm | Y        | Identifies the AWS Signature version and algorithm. Set to AWS4-HMAC-SHA256 for SigV4 |
+| X-Amz-Credential | Y        | Provides the Access Key ID and the scope (region and service) in which the signature is valid. Format: `{access-key-id}/{date}/{region}/{service}/aws4_request` (service is `s3`, region is `kr1`, etc.). In URLs, `/` is encoded as `%2F` |
+| X-Amz-Date | Y        | Request date and time. Expressed in ISO 8601 `yyyyMMddTHHmmssZ` format (UTC).<br>Example: `20260601T223241Z`                                                 |
+| X-Amz-Expires | Y        | The duration (in seconds) for which the presigned URL is valid. Minimum `1`, maximum `604800` (7 days)                                                              |
+| X-Amz-SignedHeaders | Y        | List of headers used in the signature calculation. Must include at least the HTTP `host` header, as well as all `x-amz-*` headers added to the request |
+| X-Amz-Signature | Y        | The HMAC signature value that authenticates the request. Must match the value calculated by the server; otherwise, the request is rejected |
 
-!!! tip "알아두기"
-    S3 서명된 URL에서는 접두사 단위 서명을 지원하지 않습니다. 항상 단일 오브젝트와 단일 작업(GET/PUT 등) 단위로 서명합니다.
+!!! tip "Note"
+    S3 presigned URLs do not support prefix-based signing. They always sign for a single object and a single operation (GET/PUT, etc.).
 
 <br>
 
 <a id="preparation"></a>
-## 사전 준비 { #preparation }
+## Preparation { #preparation }
 
-서명된 URL을 생성하려면 먼저 서명 대상 오브젝트의 위치를 정하고, 방식별로 필요한 키와 자격 증명을 준비합니다. 서명 대상은 스토리지 엔드포인트와 오브젝트 경로로 정해집니다.
+To create a signed URL, first determine the location of the object to sign, and then prepare the keys and credentials required for each method. The signing target is defined by the storage endpoint and the object path.
 
-* 스토리지 엔드포인트: 콘솔의 오브젝트 스토리지에서 확인
-* 컨테이너 이름/오브젝트 경로: (예시) `my-container/photos/cat.jpg`
+* Storage endpoint: Check in Object Storage on the console
+* Container name/object path: (example) `my-container/photos/cat.jpg`
 
-Swift API와 S3 API는 오브젝트 경로 형식이 다르므로, 생성하려는 방식에 맞는 경로를 사용해야 합니다.
+Swift API and S3 API use different object path formats, so you must use the path format that matches the method you want to use.
 
 <br>
 
 <a id="set-tempurl-key"></a>
-### Swift TempURL 비밀 키 설정 { #set-tempurl-key }
+### Set Swift TempURL Secret Key { #set-tempurl-key }
 
-TempURL은 스토리지 계정 또는 컨테이너에 미리 등록해 둔 비밀 키(Secret Key)로 서명합니다.
+TempURL signs requests using a secret key that is pre-registered on the storage account or container.
 
-* **스토리지 계정 레벨**에서 키를 설정하려면, 스토리지 계정 POST 요청에서 다음 헤더 중 하나 또는 둘 다를 임의의 값으로 설정합니다.
+* To set a key at the **storage account level**, set one or both of the following headers to an arbitrary value in a POST request to the storage account:
     * `X-Account-Meta-Temp-URL-Key`
     * `X-Account-Meta-Temp-URL-Key-2`
-* **컨테이너 레벨**에서 키를 설정하려면, 컨테이너 POST 또는 PUT 요청에서 다음 헤더 중 하나 또는 둘 다를 임의의 값으로 설정합니다.
+* To set a key at the **container level**, set one or both of the following headers to an arbitrary value in a POST or PUT request to the container:
     * `X-Container-Meta-Temp-URL-Key`
     * `X-Container-Meta-Temp-URL-Key-2`
 
@@ -102,27 +102,27 @@ X-Auth-Token: {token-id}
 X-Container-Meta-Temp-URL-Key: {key}
 ```
 
-!!! tip "알아두기"
-    오브젝트 스토리지는 스토리지 계정당 2개, 컨테이너당 2개의 비밀 키 값을 저장할 수 있습니다.
+!!! tip "Note"
+    Object Storage can store up to 2 secret key values per storage account and 2 per container.
 
-    요청을 검증할 때 오브젝트 스토리지는 모든 키의 서명을 확인합니다. 각 레벨에서 키를 2개 사용하면, 기존 Temporary URL을 무효화하지 않고도 키를 교체(rotation)할 수 있습니다.
+    When validating a request, Object Storage checks the signatures of all keys. Using 2 keys at each level allows you to rotate keys without invalidating existing temporary URLs.
 
-Swift CLI를 사용하면 다음과 같이 비밀 키를 설정할 수 있습니다.
+You can set a secret key using the Swift CLI as follows:
 
 ```bash
-swift post -m "Temp-URL-Key:MYKEY"              # 스토리지 계정 단위 설정
-swift post my-container -m "Temp-URL-Key:MYKEY" # 컨테이너 단위 설정
+swift post -m "Temp-URL-Key:MYKEY"              # Account Setting
+swift post my-container -m "Temp-URL-Key:MYKEY" # Container Settings
 ```
 
-!!! tip "알아두기"
-    Swift CLI를 사용하려면 먼저 인증이 필요합니다. 자세한 내용은 [Swift CLI 환경설정](cli-guide/#configuration)을 참고하세요.
+!!! tip "Note"
+    Authentication is required before using the Swift CLI. For more information, see [Swift CLI Configuration](cli-guide/#configuration).
 
 <br>
 
 <a id="obtain-s3-credentials"></a>
-### S3 API 자격 증명 발급 { #obtain-s3-credentials }
+### Obtain S3 API Credentials { #obtain-s3-credentials }
 
-S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명(Access Key ID + Secret Access Key)을 발급받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 사용하여 발급받을 수 있습니다. 웹 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide/#s3-api-credentials) 항목을 참고하세요.
+To use the S3-compatible API, you must first obtain S3 API credentials in the AWS EC2 format (Access Key ID + Secret Access Key). Credentials can be issued using the web console or API. To obtain credentials using the web console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
 
 ```http
 POST https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -131,10 +131,10 @@ Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
-`Access Key ID`는 URL의 `X-Amz-Credential`에 노출되고, `Secret Access Key`는 서명 계산에만 쓰이며 URL에 노출되지 않습니다.
+The `Access Key ID` is exposed in the URL as `X-Amz-Credential`, while the `Secret Access Key` is used only for signature calculation and is not exposed in the URL.
 
 <details>
-<summary>예시</summary>
+<summary>Example</summary>
 
 ```json
 {
@@ -151,21 +151,21 @@ X-Auth-Token: {token-id}
 
 </details>
 
-`aws` CLI 또는 SDK로 서명을 생성하려면, 발급받은 자격 증명을 로컬에 설정해야 합니다. 자세한 내용은 [Amazon S3 호환 API 가이드](s3-api-guide/#aws-command-line-interface-configuration) 설정 항목을 참고하세요.
+To generate a signature using the `aws` CLI or SDK, you must configure the issued credentials locally. For more information, see the configuration section of the [Amazon S3-compatible API Guide](s3-api-guide/#aws-command-line-interface-configuration).
 
 <br>
 
 <a id="create-presigned-url"></a>
-## 서명된 URL 생성 { #create-presigned-url }
+## Create a Presigned URL { #create-presigned-url }
 
-사전 준비를 마친 뒤, 서명된 URL을 생성하는 방법을 설명합니다.
+After completing the prerequisites, this section describes how to create a presigned URL.
 
 <br>
 
 <a id="create-manual-signature"></a>
-### 직접 서명 { #create-manual-signature }
+### Create a Signature Manually { #create-manual-signature }
 
-다음은 오브젝트 기반 Temporary URL용 HMAC-SHA256 서명 예시입니다.
+The following is an example of an HMAC-SHA256 signature for an object-based Temporary URL.
 
 ```python
 import hmac
@@ -182,7 +182,7 @@ hmac_body = '%s\n%s\n%s' % (method, expires, path)
 signature = hmac.new(key.encode(), hmac_body.encode(), sha256).hexdigest()
 ```
 
-Temporary URL은 접두사 기반으로도 생성할 수 있습니다. 접두사로 시작하는 모든 오브젝트에 유효한 서명을 만들 수 있습니다. 다음은 접두사 기반 Temporary URL용 HMAC-SHA512 서명 예시입니다.
+You can also create a Temporary URL based on a prefix. This allows you to create a signature that is valid for all objects that start with the prefix. The following is an example of an HMAC-SHA512 signature for a prefix-based Temporary URL.
 
 ```python
 import hmac
@@ -199,13 +199,13 @@ hmac_body = '%s\n%s\n%s' % (method, expires, path)
 signature = hmac.new(key.encode(), hmac_body.encode(), sha512).hexdigest()
 ```
 
-HMAC 서명을 생성할 때는 경로를 URL 인코딩하지 않습니다. 다만, 실제 HTTP 요청을 보낼 때는 경로를 URL 인코딩해야 합니다. 두 예시 모두 `MYKEY` 값은 [Swift TempURL 비밀 키 설정](#set-tempurl-key)에서 설정한 키 값 중 하나입니다.
+When generating an HMAC signature, do not URL-encode the path. However, when sending an actual HTTP request, the path must be URL-encoded. In both examples, the `MYKEY` value is one of the key values set in [Set Swift TempURL Secret Key](#set-tempurl-key).
 
 <details>
 <summary>Java</summary>
 
 ```java
-// 오브젝트 기반 (HMAC-SHA256)
+// Object-based (HMAC-SHA256)
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
@@ -225,7 +225,7 @@ public class TempUrlSha256 {
         byte[] raw = mac.doFinal(hmacBody.getBytes(StandardCharsets.UTF_8));
 
         StringBuilder sb = new StringBuilder();
-        for (byte b : raw) sb.append(String.format("%02x", b));   // hex 변환
+        for (byte b : raw) sb.append(String.format("%02x", b));   // hex conversion
         String signature = sb.toString();
 
         System.out.println(signature);
@@ -234,7 +234,7 @@ public class TempUrlSha256 {
 ```
 
 ```java
-// 접두사 기반 (HMAC-SHA512)
+// Prefix-based (HMAC-SHA512)
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
@@ -269,7 +269,7 @@ public class TempUrlSha512Prefix {
 
 ```php
 <?php
-// 오브젝트 기반 (HMAC-SHA256)
+// Object-based (HMAC-SHA256)
 $method            = 'GET';
 $durationInSeconds = 60 * 60 * 24;
 $expires           = time() + $durationInSeconds;
@@ -277,13 +277,12 @@ $path              = '/v1/my_account/container/object';
 $key               = 'MYKEY';
 
 $hmacBody  = "$method\n$expires\n$path";
-$signature = hash_hmac('sha256', $hmacBody, $key);   // 기본 출력이 hex
+$signature = hash_hmac('sha256', $hmacBody, $key);   // Default output is hex
 echo $signature . "\n";
 ```
 
 ```php
-<?php
-// 접두사 기반 (HMAC-SHA512)
+// Prefix-based (HMAC-SHA512)
 $method            = 'GET';
 $durationInSeconds = 60 * 60 * 24;
 $expires           = time() + $durationInSeconds;
@@ -300,9 +299,9 @@ echo $signature . "\n";
 <br>
 
 <a id="create-swift-tempurl-cli"></a>
-### Swift CLI 사용 { #create-swift-tempurl-cli }
+### Use the Swift CLI { #create-swift-tempurl-cli }
 
-Swift CLI의 `tempurl` 명령은 `temp_url_sig`와 `temp_url_expires` 쿼리 파라미터를 자동으로 생성합니다.
+The `tempurl` command of the Swift CLI automatically generates the `temp_url_sig` and `temp_url_expires` query parameters.
 
 ```bash
 # GET
@@ -314,7 +313,7 @@ $ swift tempurl PUT 3600 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/
 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=b1c4e9f2a8d7035641c2e9d8f4b1a7d063c5e8f9a2b1d4e70f3a8c1d9e2b5f40&temp_url_expires=1772755199
 ```
 
-Temporary URL을 생성하려면 이 경로 앞에 오브젝트 스토리지 호스트 이름을 붙입니다. 다음과 같습니다.
+To create a Temporary URL, prepend the Object Storage hostname to this path, as follows.
 
 ```bash
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e4790a1b2c3d4e5f60718293a4b5&temp_url_expires=1772755199
@@ -323,9 +322,9 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4c
 <br>
 
 <a id="create-aws-cli"></a>
-### AWS CLI 사용 { #create-aws-cli }
+### Use the AWS CLI { #create-aws-cli }
 
-`aws` CLI로 서명을 생성하려면, [S3 API 자격 증명 발급](#obtain-s3-credentials)에서 발급받은 access/secret을 로컬에 설정해야 합니다.
+To generate a signature with the `aws` CLI, you must configure the access key and secret key issued in [Obtain S3 API Credentials](#obtain-s3-credentials) on your local environment.
 
 ```bash
 aws s3 presign s3://my-container/cat.jpg \
@@ -333,14 +332,14 @@ aws s3 presign s3://my-container/cat.jpg \
   --endpoint-url https://kr1-api-object-storage.nhncloudservice.com
 ```
 
-`aws s3 presign`은 GET 전용이므로, PUT(업로드) 서명된 URL은 SDK로 생성해야 합니다.
+Because `aws s3 presign` supports GET only, you must use the SDK to create a presigned URL for PUT (upload).
 
 <br>
 
 <a id="create-aws-sdk"></a>
-### AWS SDK 사용 { #create-aws-sdk }
+### Use the AWS SDK { #create-aws-sdk }
 
-SDK로는 다운로드(GET)와 업로드(PUT)용 서명된 URL을 모두 생성할 수 있습니다.
+With the SDK, you can create presigned URLs for both download (GET) and upload (PUT).
 
 ```python
 import boto3
@@ -356,7 +355,7 @@ s3 = boto3.client(
                   s3={'addressing_style': 'path'}),
 )
 
-# 업로드(PUT)용 서명된 URL — GET이면 'get_object'
+# Signed URL for upload (PUT) — use 'get_object' for GET
 put_url = s3.generate_presigned_url(
     'put_object',
     Params={'Bucket': 'my-container', 'Key': 'cat.jpg'},
@@ -394,7 +393,7 @@ public class PresignPut {
 
         PutObjectPresignRequest preq = PutObjectPresignRequest.builder()
             .signatureDuration(Duration.ofHours(1))
-            .putObjectRequest(put)                       // GET이면 getObjectRequest
+            .putObjectRequest(put)                       // For GET, use getObjectRequest
             .build();
 
         System.out.println(presigner.presignPutObject(preq).url());  // presignGetObject ↔ presignPutObject
@@ -424,7 +423,7 @@ $s3 = new S3Client([
     ],
 ]);
 
-// 업로드(PUT)용 서명된 URL — GET이면 'GetObject'
+// Signed URL for upload (PUT) — use 'GetObject' for GET
 $cmd = $s3->getCommand('PutObject', ['Bucket' => 'my-container', 'Key' => 'cat.jpg']);
 echo (string) $s3->createPresignedRequest($cmd, '+1 hour')->getUri() . "\n";
 ```
@@ -434,14 +433,14 @@ echo (string) $s3->createPresignedRequest($cmd, '+1 hour')->getUri() . "\n";
 <br>
 
 <a id="usage"></a>
-## 활용 예시 { #usage }
+## Use Cases { #usage }
 
-서명된 URL에 인증 정보가 포함되어 있으므로, 인증 토큰이나 서명 헤더 없이 서명된 URL로 요청을 보낼 수 있습니다. 두 방식(TempURL, SigV4) 모두 사용법은 동일합니다.
+Because a presigned URL contains authentication information, you can send a request using the presigned URL without an authentication token or signature header. The usage is the same for both methods (TempURL and SigV4).
 
 <br>
 
 <a id="usage-download"></a>
-### 다운로드 { #usage-download }
+### Download { #usage-download }
 
 ```bash
 # Swift TempURL
@@ -456,7 +455,7 @@ curl -O "https://kr1-api-object-storage.nhncloudservice.com/my-container/cat.jpg
 <br>
 
 <a id="usage-upload"></a>
-### 업로드 { #usage-upload }
+### Upload { #usage-upload }
 
 ```bash
 # Swift TempURL

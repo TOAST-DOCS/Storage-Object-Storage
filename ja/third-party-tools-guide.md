@@ -1,5 +1,3 @@
-<!-- pre-align:aligned sig=3eabcf443966 -->
-
 <a id="third-party-tools-usage-guide"></a>
 ## サードパーティツールの使用ガイド { #third-party-tools-usage-guide }
 
@@ -46,8 +44,8 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
   </tr>
 </table>
 
-> [参考]
-> APIパスワードの設定方法は、APIガイドの[APIパスワード設定](api-guide/#set-the-api-password)項目を参照してください。
+!!! tip "ヒント"
+    APIパスワードの設定方法は、APIガイドの[認証および権限](api-guide/#auth)項目を参照してください。
 
 <a id="cyberduck-connect-object-storage"></a>
 ### オブジェクトストレージの接続 { #cyberduck-connect-object-storage }
@@ -59,42 +57,42 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 
 オブジェクトストレージに接続すると、**すべてのリージョン**のコンテナリストがブラウザに表示されます。コンテナをダブルクリックしてコンテナのオブジェクトリストを照会できます。
 
-> [参考]
-> 異なるリージョンに同じ名前のコンテナがある場合、同じ名前のコンテナが複数表示されます。
-> メニューから**表示 > 列 > 地域**を選択すると、列項目にリージョンを表示できます。
+!!! tip "ヒント"
+    異なるリージョンに同じ名前のコンテナがある場合、同じ名前のコンテナが複数表示されます。
+    メニューから**表示 > 列 > 地域**を選択すると、列項目にリージョンを表示できます。
 
 <a id="cyberduck-create-container"></a>
 ### コンテナの作成 { #cyberduck-create-container }
 
 コンテナリストの空きスペースで右クリックし、**新規フォルダ...**を選択して新しいコンテナを作成できます。コンテナの名前とリージョンを入力し、**作成**をクリックすると、コンテナが作成されます。
 
-> [参考]
-> コンテナリストの空きスペースで右クリックし、**再表示**を選択すると、コンテナリストを更新できます。
+!!! tip "ヒント"
+    コンテナリストの空きスペースで右クリックし、**再表示**を選択すると、コンテナリストを更新できます。
 
 <a id="cyberduck-upload-object"></a>
 ### オブジェクトのアップロード { #cyberduck-upload-object }
 
 コンテナを選択した後、ブラウザ上部の**アクション** > **アップロード...**をクリックするか、オブジェクトリストで右クリックした後、**アップロード...**をクリックしてファイルを選択してアップロードします。
 
-> [参考]
-> Cyberduckでフォルダをアップロードまたは作成すると、フォルダ名と同じ0バイトのオブジェクトがもう一つ作成されます。これはコンソールまたはオブジェクトストレージAPIで確認でき、削除しても構いません。
+!!! tip "ヒント"
+    Cyberduckでフォルダをアップロードまたは作成すると、フォルダ名と同じ0バイトのオブジェクトがもう一つ作成されます。これはコンソールまたはオブジェクトストレージAPIで確認でき、削除しても構いません。
 
 <a id="cyberduck-download-object"></a>
 ### オブジェクトのダウンロード { #cyberduck-download-object }
 
 ダウンロードするオブジェクトを選択した後、右クリックして**ダウンロード**を選択します。ドラッグ＆ドロップでオブジェクトをダウンロードすることもできます。
 
-> [参考]
-> オブジェクトをダウンロードすると、基本的にローカルの**ダウンロード**フォルダに保存されます。右クリックして**指定した場所にダウンロード**を選択すると、指定したパスにダウンロードできます。
-> オブジェクトをアップロードまたはダウンロードすると、**転送**ウィンドウがポップアップして進行状況を把握できます。
+!!! tip "ヒント"
+    オブジェクトをダウンロードすると、基本的にローカルの**ダウンロード**フォルダに保存されます。右クリックして**指定した場所にダウンロード**を選択すると、指定したパスにダウンロードできます。
+    オブジェクトをアップロードまたはダウンロードすると、**転送**ウィンドウがポップアップして進行状況を把握できます。
 
 <a id="cyberduck-delete-container"></a>
 ### コンテナの削除 { #cyberduck-delete-container }
 
 削除するコンテナを選択し、右クリックして**削除**を選択します。
 
-> [注意]
-> コンテナを削除すると、コンテナ内のオブジェクトも全て削除されるので注意が必要です。
+!!! danger "注意"
+    コンテナを削除すると、コンテナ内のオブジェクトも全て削除されるので注意が必要です。
 
 <a id="cyberduck-delete-object"></a>
 ### オブジェクトの削除 { #cyberduck-delete-object }
@@ -122,8 +120,8 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 
 ローカルとオブジェクトストレージを比較して変更または不足しているファイルまたはオブジェクトをアップロードまたはダウンロードします。
 
-> [参考]
-> 同期の詳細は、[CyberduckのSynchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders)ドキュメントを参照してください。
+!!! tip "ヒント"
+    同期の詳細は、[CyberduckのSynchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders)ドキュメントを参照してください。
 
 <a id="terraform"></a>
 ## Terraform { #terraform }
@@ -150,8 +148,8 @@ resource "nhncloud_objectstorage_object_v1" "object_1" {
 }
 ```
 
-> [参考]
-> 明示的なリソース依存関係の指定方法は、[TerraformのResource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies)ドキュメントを参照してください。
+!!! tip "ヒント"
+    明示的なリソース依存関係の指定方法は、[TerraformのResource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies)ドキュメントを参照してください。
 
 <a id="terraform-resources-object-storage"></a>
 ### Resources - Object Storage { #terraform-resources-object-storage }
@@ -187,7 +185,7 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 | 名前 | タイプ | 必須 | 説明 |
 | ---- | ---- | ---- | ---- |
 | region | String | | NHN Cloudリソースを管理するリージョン |
-| name | String | O | コンテナ名 |
+| name | String | Y | コンテナ名 |
 | container_read | String | | コンテナの読み取りに対する役割ベースのアクセスルールを設定 |
 | container_write | String | | コンテナの書き込みに対するロールベースアクセスルール |
 | force_destroy | Boolean | | コンテナを強制的に削除するかどうか、 `true`または`false`<br> 一緒に削除されたオブジェクトは復元できません。 |

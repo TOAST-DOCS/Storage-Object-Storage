@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=acedf0f45de3 -->
+
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
 ## Storage > Object Storage > Amazon S3 호환 API 가이드 { #storage-object-storage-amazon-s3-compatible-api-guide }
 NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 Amazon S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
