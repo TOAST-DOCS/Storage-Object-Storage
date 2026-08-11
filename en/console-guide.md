@@ -440,7 +440,7 @@ Suspends container replication. While replication is suspended, any deletions or
     Objects in the source container that are deleted during the replication suspend period might not be reflected in the target container.
 <br/>
 
-<a id="object"></a>
+<a id="task-record"></a>
 
 #### Task History
 You can view the history of tasks that batch-process multiple objects. The task types for which history is provided are as follows:
