@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=4d6c14c57aab -->
+
 <a id="storage-object-storage-cli-guide"></a>
 ## Storage > Object Storage > CLI 가이드 { #storage-object-storage-cli-guide }
 OpenStack Swift 명령줄 인터페이스(CLI)로 NHN Cloud 오브젝트 스토리지 서비스를 사용하는 방법을 설명합니다.

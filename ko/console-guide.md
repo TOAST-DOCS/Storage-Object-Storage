@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=b6b8b52c0876 -->
+
 <a id="storage-object-storage-console-guide"></a>
 ## Storage > Object Storage > 콘솔 사용 가이드 { #storage-object-storage-console-guide }
 

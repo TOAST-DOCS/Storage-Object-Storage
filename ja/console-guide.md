@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=b6b8b52c0876 -->
+
 <a id="storage-object-storage-console-guide"></a>
 ## Storage > Object Storage > コンソール使用ガイド { #storage-object-storage-console-guide }
 
@@ -442,7 +444,6 @@ IPベースのアクセスポリシーを管理します。アクセスポリシ
 <br/>
 
 <a id="task-record"></a>
-
 #### 作業履歴
 複数のオブジェクトを一括処理する作業の履歴を確認できます。履歴を提供する作業の種類は次のとおりです。
 
@@ -559,7 +560,6 @@ IPベースのアクセスポリシーを管理します。アクセスポリシ
 <br>
 
 <a id="object"></a>
-
 ## オブジェクト { #object }
 
 <a id="create-folder"></a>

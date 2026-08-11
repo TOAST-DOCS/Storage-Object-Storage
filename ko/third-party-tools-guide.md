@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=3eabcf443966 -->
+
 <a id="third-party-tools-usage-guide"></a>
 ## 서드 파티 도구 사용 가이드 { #third-party-tools-usage-guide }
 

@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=90b39f34080f -->
+
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > Container Policy Configuration Guide { #storage-object-storage-container-policy-configuration-guide }
 
@@ -388,7 +390,6 @@ Use the `ip_acl` key in the container policy document to configure IP-based acce
 <br>
 
 <a id="ip-acl-schema"></a>
-
 ### JSON Policy Document Schema { #ip-acl-schema }
 
 The structure of the IP access control policy document is as follows.

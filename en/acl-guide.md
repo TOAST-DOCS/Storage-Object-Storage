@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=57f0cee284f8 -->
+
 <a id="storage-object-storage-acl-configuration-guide"></a>
 ## Storage > Object Storage > ACL Configuration Guide { #storage-object-storage-acl-configuration-guide }
 
