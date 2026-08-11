@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=4d6c14c57aab -->
+
 <a id="storage-object-storage-cli-guide"></a>
 ## Storage > Object Storage > CLI Guide { #storage-object-storage-cli-guide }
 

@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=57f0cee284f8 -->
+
 <a id="storage-object-storage-acl-configuration-guide"></a>
 ## Storage > Object Storage > 접근 정책 설정 가이드 { #storage-object-storage-acl-configuration-guide }
 

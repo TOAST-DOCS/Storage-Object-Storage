@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=b6b8b52c0876 -->
+
 <a id="storage-object-storage-console-guide"></a>
 ## Storage > Object Storage > Console Guide { #storage-object-storage-console-guide }
 
@@ -441,7 +443,6 @@ Suspends container replication. While replication is suspended, any deletions or
 <br/>
 
 <a id="task-record"></a>
-
 #### Task History
 You can view the history of tasks that batch-process multiple objects. The task types for which history is provided are as follows:
 
@@ -558,7 +559,6 @@ The following additional information is displayed for object copy/move tasks:
 <br>
 
 <a id="object"></a>
-
 ## Object { #object }
 
 <a id="create-folder"></a>

@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=90b39f34080f -->
+
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > コンテナポリシー設定ガイド { #storage-object-storage-container-policy-configuration-guide }
 
@@ -389,7 +391,6 @@ Content-Type: application/json
 <br>
 
 <a id="ip-acl-schema"></a>
-
 ### JSON ポリシードキュメントのスキーマ { #ip-acl-schema }
 
 IP アクセス制御ポリシードキュメントの構造は次のとおりです。
@@ -499,7 +500,6 @@ CORS ポリシードキュメントの構造は次のとおりです。
 <br>
 
 <a id="lock-schema"></a>
-
 ### JSON ポリシードキュメントスキーマ { #lock-schema }
 
 オブジェクトロックポリシードキュメントの構造は次のとおりです。

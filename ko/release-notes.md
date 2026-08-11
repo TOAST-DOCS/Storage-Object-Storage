@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=79f355249cbd -->
+
 <a id="storage-object-storage-release-notes"></a>
 ## Storage > Object Storage > 릴리스 노트 { #storage-object-storage-release-notes }
 
