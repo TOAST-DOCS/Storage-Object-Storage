@@ -1,69 +1,76 @@
-## Storage > Object Storage > Amazon S3 호환 API 가이드
+<!-- pre-align:aligned sig=acedf0f45de3 -->
+
+<a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
+## Storage > Object Storage > Amazon S3 호환 API 가이드 { #storage-object-storage-amazon-s3-compatible-api-guide }
 NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API와 호환되는 API를 제공합니다. 따라서 Amazon S3 API를 사용하도록 개발된 애플리케이션을 설정만 변경하여 그대로 사용할 수 있습니다.
 
 제공하는 Amazon S3 호환 API는 다음과 같습니다.
 
 | S3 API 메서드 | 용도 |
 | --- | --- |
-| [PUT Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html) | 버킷 생성 |
-| [HEAD Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html) | 버킷 정보 조회 |
-| [DELETE Bucket](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html) | 버킷 삭제 |
-| [PUT Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html) | 버킷 ACL 설정 |
-| [GET Bucket ACL](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html) | 버킷 ACL 조회 |
-| [GET Bucket Location](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html) | 버킷이 있는 리전 조회 |
-| [GET Bucket List Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html) | 버킷의 오브젝트 목록 조회 |
-| [GET Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html) | 오브젝트 다운로드 |
-| [HEAD Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html) | 오브젝트 정보 조회 |
-| [PUT Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html) | 오브젝트 업로드 |
-| [PUT Object Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html) | 오브젝트 복사 |
-| [DELETE Object](http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html) | 오브젝트 삭제 |
-| [Initiate Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html) | 멀티파트 업로드 초기화 |
-| [Upload Part](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html) | 파트 업로드 |
-| [Upload Part Copy](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html) | 파트 복사 |
-| [Complete Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html) | 멀티파트 업로드 완료 |
-| [Abort Multipart Upload](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html) | 멀티파트 업로드 중단 |
-| [List Parts](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 멀티파트 오브젝트의 파트 오브젝트 리스트 |
-| [List Multipart Uploads](http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html) | 업로드 진행 중인 멀티파트 오브젝트의 파트 오브젝트 리스트 |
-| [DELETE Multiple Objects](http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html) | 멀티파트 오브젝트 삭제 |
+| PUT Bucket | 버킷 생성 |
+| HEAD Bucket | 버킷 정보 조회 |
+| DELETE Bucket | 버킷 삭제 |
+| PUT Bucket Object Lock | 잠금 버킷 생성 |
+| PUT Object Lock Configuration | 잠금 버킷 보관 기간 설정 |
+| GET Object Lock Configuration | 잠금 버킷 보관 기간 조회 |
+| PUT Bucket ACL | 버킷 ACL 설정 |
+| GET Bucket ACL | 버킷 ACL 조회 |
+| GET Bucket Location | 버킷이 있는 리전 조회 |
+| GET Bucket List Objects | 버킷의 오브젝트 목록 조회 |
+| GET Object | 오브젝트 다운로드 |
+| HEAD Object | 오브젝트 정보 조회 |
+| PUT Object | 오브젝트 업로드 |
+| PUT Object Copy | 오브젝트 복사 |
+| DELETE Object | 오브젝트 삭제 |
+| Initiate Multipart Upload | 멀티파트 업로드 초기화 |
+| Upload Part | 파트 업로드 |
+| Upload Part Copy | 파트 복사 |
+| Complete Multipart Upload | 멀티파트 업로드 완료 |
+| Abort Multipart Upload | 멀티파트 업로드 중단 |
+| List Parts | 멀티파트 오브젝트의 파트 오브젝트 리스트 |
+| List Multipart Uploads | 업로드 진행 중인 멀티파트 오브젝트의 파트 오브젝트 리스트 |
+| DELETE Multiple Objects | 2개 이상의 오브젝트 삭제 |
 
-이 문서는 기본적인 API 사용 방법만을 설명합니다. 고급 기능을 사용하려면 [Amazon S3 API 가이드](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
+이 문서는 기본적인 API 사용 방법만 설명합니다. 고급 기능을 사용하려면 [Amazon S3 API 가이드](https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html)를 참고하거나, [AWS SDK](https://aws.amazon.com/ko/tools) 사용을 권장합니다.
 
 <a id="s3-api-credential"></a>
-## S3 API 자격 증명(S3 API Credential)
+## S3 API 자격 증명(S3 API Credential) { #s3-api-credential }
 
 <a id="obtain-s3-api-credentials"></a>
-### S3 API 자격 증명 발급
-Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급 받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 이용하여 발급 받을 수 있습니다. 웹 콘솔을 이용한 자격 증명 발급은 [S3 API 자격 증명](console-guide-ngcc/#s3-api-credentials) 항목을 참조하세요.
+### S3 API 자격 증명 발급 { #obtain-s3-api-credentials }
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide-ngcc/#s3-api-credentials) 항목을 참고합니다.
 
-API를 이용하여 자격 증명을 발급 받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide-ngcc/#prerequisites)를 참조하세요.
+API를 사용하여 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide-ngcc/#auth)를 참고합니다.
 
 ```
-POST    https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0/users/{api-user-id}/credentials/OS-EC2
+POST https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
+<a id="obtain-s3-api-credentials-request"></a>
 #### 요청
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급 받은 토큰 ID |
-| api-user-id | URL | String | O | API 사용자 ID, API Endpoint 설정 대화 상자에서 확인 가능 |
-| tenant_id | Body | String | O | 테넌트 ID. API Endpoint 설정 대화 상자에서 확인 가능 |
+| X-Auth-Token | Header | String | Y | 발급받은 토큰 ID |
+| api-user-id | URL | String | Y | API 사용자 ID, API 엔드포인트 설정 대화 상자에서 확인 가능 |
+| tenant_id | Body | String | Y | 테넌트 ID. API 엔드포인트 설정 대화 상자에서 확인 가능 |
 
-> [참고]
-> `{api-user-id}`는 콘솔의 API Endpoint 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
-> 인증 토큰 발급 API를 이용하려면 API 가이드의 [인증 토큰 발급](api-guide-ngcc/#authentication-token-issuance) 항목을 참조하세요.
->
-> S3 API 자격 증명은 유효 기간이 없으며, 사용자별로 프로젝트당 최대 3개까지 발급 받을 수 있습니다.
+!!! tip "알아두기"
+    `{api-user-id}`는 콘솔의 API 엔드포인트 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
+    인증 토큰 발급 API를 사용하려면 API 가이드의 [인증 및 권한](api-guide-ngcc/#auth) 항목을 참고합니다.
+
+    S3 API 자격 증명은 유효 기간이 없으며, 사용자별로 프로젝트당 최대 3개까지 발급받을 수 있습니다.
 
 <!-- 개행을 위한 주석이므로 필수로 포함되어야 합니다. -->
 
-> [주의]
-> S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 이용하여 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급 받아 사용하는 것을 권장합니다.
->
-> S3 API 자격 증명을 발급 받은 사용자 계정이 프로젝트에 대한 접근 권한을 잃거나 NHN Cloud를 탈퇴하여 삭제되면 자격 증명은 즉시 만료되어 사용할 수 없습니다.
+!!! danger "주의"
+    S3 API 자격 증명 키가 유출되면 누구나 유출된 키를 사용하여 오브젝트에 접근할 수 있습니다. 키가 유출되었다면 유출된 자격 증명을 삭제하고 새로 발급받아 사용하는 것을 권장합니다.
+
+    S3 API 자격 증명을 발급받은 사용자 계정이 프로젝트에 대한 접근 권한을 잃거나 NHN Cloud를 탈퇴하여 삭제되면 자격 증명은 즉시 만료되어 사용할 수 없습니다.
 
 <details>
 <summary>예시</summary>
@@ -76,6 +83,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
+<a id="obtain-s3-api-credentials-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -106,24 +114,27 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="get-s3-api-credentials"></a>
-### S3 API 자격 증명 조회
-발급 받은 S3 API 자격 증명을 조회합니다.
+### S3 API 자격 증명 조회 { #get-s3-api-credentials }
+발급받은 S3 API 자격 증명을 조회합니다.
 
 **[Method, URL]**
 
 ```
-GET   https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0/users/{user-id}/credentials/OS-EC2
+GET https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
+
+<a id="get-s3-api-credentials-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급 받은 토큰 ID |
-| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
+| X-Auth-Token | Header | String | Y | 발급받은 토큰 ID |
+| user-id | URL | String | Y | 사용자 ID, 인증 토큰에 포함되어 있음 |
 
+<a id="get-s3-api-credentials-response"></a>
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
@@ -156,31 +167,34 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="delete-s3-api-credentials"></a>
-### S3 API 자격 증명 삭제
-발급 받은 S3 API 자격 증명을 삭제합니다.
+### S3 API 자격 증명 삭제 { #delete-s3-api-credentials }
+발급받은 S3 API 자격 증명을 삭제합니다.
 
 **[Method, URL]**
 
 ```
-DELETE   https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
+
+<a id="delete-s3-api-credentials-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| X-Auth-Token | Header | String | O | 발급 받은 토큰 ID |
-| user-id | URL | String | O | 사용자 ID, 인증 토큰에 포함되어 있음 |
-| access | URL | String | O | S3 API 자격 증명 접근 키 |
+| X-Auth-Token | Header | String | Y | 발급받은 토큰 ID |
+| user-id | URL | String | Y | 사용자 ID, 인증 토큰에 포함되어 있음 |
+| access | URL | String | Y | S3 API 자격 증명 접근 키 |
 
+<a id="delete-s3-api-credentials-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 <a id="create-signature"></a>
-## 서명(signature) 생성
-S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고하십시오.
+## 서명(signature) 생성 { #create-signature }
+S3 API를 사용하려면 자격 증명을 사용하여 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고합니다.
 
 서명 생성에 필요한 정보는 다음과 같습니다.
 
@@ -192,12 +206,37 @@ S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 �
 | 리전 이름 | KR4 - 한국(대구) 리전 |
 | 비밀 키 | S3 API 자격 증명 비밀 키 |
 
+AWS signature V4 서명 생성 시 `x-amz-content-sha256` 헤더가 필요합니다. 이 헤더는 정규 요청(Canonical Request)에 포함되어 서명 계산에 사용되며, 헤더 값에 따라 페이로드 처리 방식이 결정됩니다. 사용 가능한 값은 다음과 같습니다.
+
+| x-amz-content-sha256 값 | 설명 |
+|---|---|
+| `<페이로드 해시>` | 요청 페이로드 전체의 SHA-256 해시 값을 사용하는 기본 방식 |
+| `UNSIGNED-PAYLOAD` | 페이로드 서명을 생략 |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD` | AWS Chunked Upload 방식(각 청크에 서명 포함) |
+| `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload 방식(청크 서명 없이 트레일러 헤더 사용) |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload 방식(각 청크에 서명 포함 + 트레일러 헤더 사용) |
+
+!!! tip "알아두기"
+    자세한 내용은 [Authenticating Requests: Using the Authorization Header(AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) 문서를 참고합니다.
+
+x-amz-content-sha256 값이 `STREAMING-UNSIGNED-PAYLOAD-TRAILER` 또는 `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER`인 경우 `x-amz-trailer` 요청 헤더로 트레일러에 전송할 체크섬 알고리즘을 선언해야 합니다. 지원하는 알고리즘은 다음과 같습니다.
+
+| x-amz-trailer 값 | 알고리즘 |
+|---|---|
+| `x-amz-checksum-crc32` | CRC-32 |
+| `x-amz-checksum-crc32c` | CRC-32C |
+| `x-amz-checksum-crc64nvme` | CRC-64/NVME |
+| `x-amz-checksum-sha1` | SHA-1 |
+| `x-amz-checksum-sha256` | SHA-256 |
+
+!!! tip "알아두기"
+    트레일러 헤더를 사용한 서명 계산 방법에 관한 자세한 내용은 [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) 문서를 참고합니다.
 
 <a id="bucket"></a>
-## 버킷(Bucket)
+## 버킷(Bucket) { #bucket }
 
 <a id="create-bucket"></a>
-### 버킷 생성
+### 버킷 생성 { #create-bucket }
 버킷을 생성합니다. 버킷 이름은 다음과 같은 Amazon S3의 명명 규칙을 따라야 합니다.
 
 * 버킷 이름은 3자에서 63자 사이여야 합니다.
@@ -206,7 +245,7 @@ S3 API를 사용하려면 자격 증명을 이용하여 서명을 생성해야 �
 * 버킷 이름은 IP 주소 형식(예: 192.168.5.4)을 사용하지 않습니다.
 * 버킷 이름은 xn--으로 시작할 수 없습니다.
 
-자세한 내용은 [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html) 문서를 참조하세요.
+자세한 내용은 [Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html) 문서를 참고합니다.
 
 ```
 PUT /{bucket}
@@ -215,18 +254,20 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-> [참고]
-> 웹 콘솔 또는 오브젝트 스토리지 API를 통해 만든 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
+!!! tip "알아두기"
+    콘솔 또는 오브젝트 스토리지 API로 생성한 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
+<a id="create-bucket-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | Y | 버킷 이름 |
+| Date | Header | String | Y | 요청 시각 |
+| Authorization | Header | String | Y | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="create-bucket-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
@@ -235,7 +276,7 @@ Authorization: AWS {access}:{signature}
 | Location | Header | String | 생성한 버킷 경로 |
 
 <a id="list-buckets"></a>
-### 버킷 목록 조회
+### 버킷 목록 조회 { #list-buckets }
 버킷 목록을 조회합니다.
 
 ```
@@ -245,14 +286,16 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="list-buckets-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
+| Date | Header | String | Y | 요청 시각 |
+| Authorization | Header | String | Y | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="list-buckets-response"></a>
 #### 응답
 요청이 올바르면 상태 코드 200과 XML 형식으로 구성된 버킷 목록을 반환합니다.
 
@@ -283,7 +326,7 @@ Authorization: AWS {access}:{signature}
 </details>
 
 <a id="get-bucket"></a>
-### 버킷 조회
+### 버킷 조회 { #get-bucket }
 지정한 버킷의 정보와 내부에 저장된 오브젝트 목록을 조회합니다.
 
 ```
@@ -293,18 +336,20 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
-> [참고]
-> 웹 콘솔 또는 오브젝트 스토리지 API를 통해 생성한 버킷의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
+!!! tip "알아두기"
+    콘솔 또는 오브젝트 스토리지 API를 사용하여 생성한 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
+<a id="get-bucket-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | Y | 버킷 이름 |
+| Date | Header | String | Y | 요청 시각 |
+| Authorization | Header | String | Y | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="get-bucket-response"></a>
 #### 응답
 요청이 올바르면 상태 코드 200과 XML 형식으로 구성된 오브젝트 목록을 반환합니다.
 
@@ -348,7 +393,7 @@ Authorization: AWS {access}:{signature}
 </details>
 
 <a id="delete-bucket"></a>
-### 버킷 삭제
+### 버킷 삭제 { #delete-bucket }
 지정한 버킷을 삭제합니다. 삭제할 버킷은 비어 있어야 합니다.
 
 ```
@@ -358,23 +403,165 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="delete-bucket-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | Y | 버킷 이름 |
+| Date | Header | String | Y | 요청 시각 |
+| Authorization | Header | String | Y | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="delete-bucket-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
+<a id="create-lock-bucket"></a>
+### 잠금 버킷 생성 { #create-lock-bucket }
+오브젝트 잠금이 활성화된 버킷을 생성합니다. 버킷을 생성할 때 `x-amz-bucket-object-lock-enabled` 헤더를 `true`로 설정합니다. 기본 보관 기간은 0일로 설정됩니다.
+
+```
+PUT /{bucket}
+
+x-amz-bucket-object-lock-enabled: true
+Date: Sat, 22 Feb 2020 22:22:22 +0000
+Authorization: AWS {access}:{signature}
+```
+
+<a id="create-lock-bucket-request"></a>
+#### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| bucket | URL | String | Y | 버킷 이름 |
+| x-amz-bucket-object-lock-enabled | Header | Boolean | Y | 오브젝트 잠금 활성화 여부(`true`) |
+| Date | Header | String | Y | 요청 시각 |
+| Authorization | Header | String | Y | S3 API 자격 증명 접근 키와 서명으로 구성 |
+
+<a id="create-lock-bucket-response"></a>
+#### 응답
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+
+| 이름 | 종류 | 형식 | 설명 |
+|---|---|---|---|
+| Location | Header | String | 생성한 버킷 경로 |
+
+<a id="put-object-lock-configuration"></a>
+### 잠금 버킷 보관 기간 설정 { #put-object-lock-configuration }
+잠금 버킷의 기본 보관 기간을 설정합니다.
+
+```
+PUT /{bucket}?object-lock
+
+Date: Sat, 22 Feb 2020 22:22:22 +0000
+Authorization: AWS {access}:{signature}
+```
+
+<a id="put-object-lock-configuration-request"></a>
+#### 요청
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| bucket | URL | String | Y | 버킷 이름 |
+| Date | Header | String | Y | 요청 시각 |
+| Authorization | Header | String | Y | S3 API 자격 증명 접근 키와 서명으로 구성 |
+
+요청 본문에 JSON 형식의 오브젝트 잠금 설정을 포함해야 합니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| ObjectLockEnabled | Body | String | Y | 오브젝트 잠금 활성화 상태. `Enabled`만 허용 |
+| Rule | Body | Object | N | 기본 보관 규칙 |
+| Rule.DefaultRetention | Body | Object | Conditional | 기본 보관 기간 설정. Rule 설정 시 필수 |
+| Rule.DefaultRetention.Mode | Body | String | Conditional | 보관 모드. `COMPLIANCE`만 허용 |
+| Rule.DefaultRetention.Days | Body | Integer | Conditional | 보관 기간(일). 양의 정수. Days 또는 Years 중 하나 필수 |
+| Rule.DefaultRetention.Years | Body | Integer | Conditional | 보관 기간(년). 양의 정수. Days 또는 Years 중 하나 필수 |
+
+!!! tip "알아두기"
+    `Rule`을 생략하면 기본 보관 기간이 0일로 설정됩니다.
+    `Years`로 설정하더라도 조회 시에는 항상 `Days`로 변환하여 반환합니다.
+
+<details>
+<summary>예시</summary>
+
+```json
+{
+    "ObjectLockEnabled": "Enabled",
+    "Rule": {
+        "DefaultRetention": {
+            "Mode": "COMPLIANCE",
+            "Days": 1
+        }
+    }
+}
+```
+
+</details>
+
+<a id="put-object-lock-configuration-response"></a>
+#### 응답
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+
+<a id="get-object-lock-configuration"></a>
+### 잠금 버킷 보관 기간 조회 { #get-object-lock-configuration }
+잠금 버킷의 오브젝트 잠금 설정을 조회합니다.
+
+```
+GET /{bucket}?object-lock
+
+Date: Sat, 22 Feb 2020 22:22:22 +0000
+Authorization: AWS {access}:{signature}
+```
+
+<a id="get-object-lock-configuration-request"></a>
+#### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+|---|---|---|---|---|
+| bucket | URL | String | Y | 버킷 이름 |
+| Date | Header | String | Y | 요청 시각 |
+| Authorization | Header | String | Y | S3 API 자격 증명 접근 키와 서명으로 구성 |
+
+<a id="get-object-lock-configuration-response"></a>
+#### 응답
+요청이 올바르면 상태 코드 200과 JSON 형식의 오브젝트 잠금 설정을 반환합니다.
+
+| 이름 | 종류 | 형식 | 설명 |
+|---|---|---|---|
+| ObjectLockEnabled | Body | String | 오브젝트 잠금 활성화 상태 |
+| Rule | Body | Object | 기본 보관 규칙 |
+| Rule.DefaultRetention | Body | Object | 기본 보관 기간 설정 |
+| Rule.DefaultRetention.Mode | Body | String | 보관 모드 |
+| Rule.DefaultRetention.Days | Body | Integer | 보관 기간(일) |
+
+!!! tip "알아두기"
+    `Years`로 설정한 보관 기간도 조회 시에는 `Days`로 변환하여 반환합니다.
+
+<details>
+<summary>예시</summary>
+
+```json
+{
+    "ObjectLockEnabled": "Enabled",
+    "Rule": {
+        "DefaultRetention": {
+            "Mode": "COMPLIANCE",
+            "Days": 1
+        }
+    }
+}
+```
+
+</details>
+
 <a id="object"></a>
-## 오브젝트
+## 오브젝트 { #object }
 
 <a id="upload-object"></a>
-### 오브젝트 업로드
+### 오브젝트 업로드 { #upload-object }
 지정한 버킷에 오브젝트를 업로드합니다.
 
 ```
@@ -384,26 +571,28 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="upload-object-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| obj | URL | String | O | 오브젝트 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | Y | 버킷 이름 |
+| obj | URL | String | Y | 오브젝트 이름 |
+| Date | Header | String | Y | 요청 시각 |
+| Authorization | Header | String | Y | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="upload-object-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
-| ETag | Header | String | 오브젝트의 MD5 해시값 |
+| ETag | Header | String | 오브젝트의 MD5 해시 값 |
 | Last-Modified | Header | String | 오브젝트의 마지막 수정 일시(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
 
 <a id="download-object"></a>
-### 오브젝트 다운로드
+### 오브젝트 다운로드 { #download-object }
 오브젝트를 다운로드합니다.
 
 ```
@@ -413,26 +602,28 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="download-object-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| obj | URL | String | O | 오브젝트 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | Y | 버킷 이름 |
+| obj | URL | String | Y | 오브젝트 이름 |
+| Date | Header | String | Y | 요청 시각 |
+| Authorization | Header | String | Y | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="download-object-response"></a>
 #### 응답
 요청이 올바르면 상태 코드 200을 반환합니다.
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
 | Last-Modified | Header | String | 오브젝트의 마지막 수정 일시(e.g. Wed, 01 Mar 2006 12:00:00 GMT) |
-| ETag | Header | String | 오브젝트의 MD5 해시값 |
+| ETag | Header | String | 오브젝트의 MD5 해시 값 |
 
 <a id="delete-object"></a>
-### 오브젝트 삭제
+### 오브젝트 삭제 { #delete-object }
 지정한 오브젝트를 삭제합니다.
 
 ```
@@ -442,33 +633,74 @@ Date: Sat, 22 Feb 2020 22:22:22 +0000
 Authorization: AWS {access}:{signature}
 ```
 
+<a id="delete-object-request"></a>
 #### 요청
 이 API는 요청 본문을 요구하지 않습니다.
 
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
-| bucket | URL | String | O | 버킷 이름 |
-| obj | URL | String | O | 오브젝트 이름 |
-| Date | Header | String | O | 요청 시각 |
-| Authorization | Header | String | O | S3 API 자격 증명 접근 키와 서명으로 구성 |
+| bucket | URL | String | Y | 버킷 이름 |
+| obj | URL | String | Y | 오브젝트 이름 |
+| Date | Header | String | Y | 요청 시각 |
+| Authorization | Header | String | Y | S3 API 자격 증명 접근 키와 서명으로 구성 |
 
+<a id="delete-object-response"></a>
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
+<a id="presigned-url"></a>
+## 서명된 URL 생성 { #presigned-url }
+**AWS Signature Version 4(SigV4)** 서명을 쿼리 파라미터에 담아, 인증 토큰(Authorization 헤더) 없이 일정 시간 동안 오브젝트에 접근할 수 있는 URL입니다. 다운로드는 `GET`, 업로드는 `PUT`으로 요청합니다.
+
+<a id="presigned-url-format"></a>
+### 서명된 URL 형식 { #presigned-url-format }
+
+```
+GET /{bucket}/{obj}
+?X-Amz-Algorithm=AWS4-HMAC-SHA256
+&X-Amz-Credential={access}%2F{date}%2F{region}%2Fs3%2Faws4_request
+&X-Amz-Date={date}
+&X-Amz-Expires={seconds}
+&X-Amz-SignedHeaders=host
+&X-Amz-Signature={signature}
+```
+
+<a id="presigned-url-format-request"></a>
+#### 요청
+이 API는 요청 본문을 요구하지 않습니다.
+
+| 이름 | 종류 | 형식 | 필수 | 설명                                                                             |
+|---|---|---|---|--------------------------------------------------------------------------------|
+| bucket | URL | String | Y | 버킷 이름                                                                          |
+| obj | URL | String | Y | 오브젝트 이름                                                                        |
+| X-Amz-Algorithm | Query | String | Y | 서명 알고리즘. AWS4-HMAC-SHA256으로 설정                                                 |
+| X-Amz-Credential | Query | String | Y | 접근 키와 서명 scope. `{access}/{date}/{region}/s3/aws4_request` 형식(`/`는 `%2F`로 인코딩) |
+| X-Amz-Date | Query | String | Y | 서명 시각. ISO 8601 `yyyyMMddTHHmmssZ`(UTC)                                        |
+| X-Amz-Expires | Query | String | Y | 유효 기간(초). 최소 `1`, 최대 `604800`(7일)                                              |
+| X-Amz-SignedHeaders | Query | String | Y | 서명에 포함한 헤더 목록. 최소 `host` 포함                                                    |
+| X-Amz-Signature | Query | String | Y | 요청을 인증하는 HMAC 서명 값                                                             |
+
+<a id="presigned-url-format-response"></a>
+#### 응답
+요청이 올바르면 상태 코드 200을 반환합니다.
+
+!!! tip "알아두기"
+    Swift TempURL 방식과 언어별 직접 서명 예시 등 자세한 내용은 [서명된 URL 가이드](presigned-url-guide-ngcc/)를 참고합니다.
+
 <a id="aws-command-line-interface"></a>
-## AWS 명령줄 인터페이스(CLI)
-S3 호환 API를 이용하여 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
+## AWS 명령줄 인터페이스(CLI) { #aws-command-line-interface }
+S3 호환 API를 사용하여 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
 
 <a id="aws-command-line-interface-installation"></a>
-### 설치
+### 설치 { #aws-command-line-interface-installation }
 [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) 문서를 참조해 AWS 명령줄 인터페이스를 설치합니다.
 
-> [참고]
-> NHN Cloud 오브젝트 스토리지는 AWS CLI 버전 2.22.35까지 지원합니다.
+!!! tip "알아두기"
+    NHN Cloud 오브젝트 스토리지는 AWS CLI 버전 2.34.38까지 지원합니다.
 
 <a id="aws-command-line-interface-configuration"></a>
-### 설정
-AWS 명령줄 인터페이스를 사용하기 위해서는 먼저 S3 API 자격 증명과 환경을 설정해야 합니다.
+### 설정 { #aws-command-line-interface-configuration }
+AWS 명령줄 인터페이스를 사용하려면 먼저 S3 API 자격 증명과 환경을 설정해야 합니다.
 
 ```shell
 $ aws configure
@@ -485,7 +717,7 @@ Default output format [None]: json
 | region name | KR4 - 한국(대구) 리전 |
 
 <a id="how-to-use-the-s3-commands"></a>
-### S3 명령 사용 방법
+### S3 명령 사용 방법 { #how-to-use-the-s3-commands }
 
 ```shell
 aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
@@ -497,10 +729,9 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 | command | AWS 명령줄 인터페이스 명령 |
 | bucket | 버킷 이름 |
 
-
-> [참고]
-> AWS 명령줄 인터페이스는 AWS를 사용하기 위해 제공되는 도구이기 때문에 AWS 도메인을 사용하도록 설정되어 있습니다. 따라서 NHN Cloud 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야합니다.
-> AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참조하세요.
+!!! tip "알아두기"
+    AWS 명령줄 인터페이스는 기본적으로 AWS 도메인을 사용하도록 설정된 도구입니다. 따라서 NHN Cloud 오브젝트 스토리지를 사용하려면 반드시 매 명령마다 엔드포인트를 지정해야 합니다.
+    AWS 명령줄 인터페이스 명령은 [AWS CLI에서 상위 수준(s3) 명령 사용](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) 문서를 참고합니다.
 
 <details>
 <summary>버킷 생성</summary>
@@ -521,7 +752,6 @@ $ aws --endpoint-url=http://ngcc-kr4-swift.kr.cloud.toastoven.net s3 ls
 ```
 
 </details>
-
 
 <details>
 <summary>버킷 조회</summary>
@@ -545,6 +775,54 @@ remove_bucket: example-bucket
 </details>
 
 <details>
+<summary>잠금 버킷</summary>
+
+잠금 버킷은 <code>aws s3api</code> 하위 명령으로 관리합니다.
+<br>
+<code>create-bucket</code> 명령에 <code>--object-lock-enabled-for-bucket</code> 옵션을 사용하면 오브젝트 잠금이 활성화된 버킷을 생성합니다. 기본 보관 기간은 0일로 설정됩니다.
+
+```shell
+$ aws --endpoint-url=http://ngcc-kr4-swift.kr.cloud.toastoven.net s3api create-bucket \
+  --bucket example-bucket \
+  --object-lock-enabled-for-bucket
+```
+
+기본 보관 기간을 설정하려면 <code>put-object-lock-configuration</code> 명령을 사용합니다.
+
+```shell
+$ aws --endpoint-url=http://ngcc-kr4-swift.kr.cloud.toastoven.net s3api put-object-lock-configuration \
+    --bucket example-bucket \
+    --object-lock-configuration '{
+        "ObjectLockEnabled": "Enabled",
+        "Rule": {
+            "DefaultRetention": {
+                "Mode": "COMPLIANCE",
+                "Days": 1
+            }
+        }
+    }'
+```
+
+잠금 설정을 조회하려면 <code>get-object-lock-configuration</code> 명령을 사용합니다.
+
+```shell
+$ aws --endpoint-url=http://ngcc-kr4-swift.kr.cloud.toastoven.net s3api get-object-lock-configuration --bucket example-bucket
+{
+    "ObjectLockConfiguration": {
+        "ObjectLockEnabled": "Enabled",
+        "Rule": {
+            "DefaultRetention": {
+                "Mode": "COMPLIANCE",
+                "Days": 1
+            }
+        }
+    }
+}
+```
+
+</details>
+
+<details>
 <summary>오브젝트 업로드</summary>
 
 ```shell
@@ -552,21 +830,15 @@ $ aws --endpoint-url=http://ngcc-kr4-swift.kr.cloud.toastoven.net s3 cp ./3b5ab4
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
-<blockquote>
-[참고]
-</br>
-오브젝트의 용량이 8MB 이상이면 AWS 명령줄 인터페이스는 오브젝트를 여러 개의 파트로 나누어 업로드합니다. 파트 오브젝트는 <code style="display: inline;">{bucket}+segments</code>라는 버킷에 <code style="display: inline;">{object-name}/{upload-id}/{part-number}</code> 형태의 이름으로 저장되고, 모든 파트 업로드가 끝나면 업로드 요청한 버킷에 파트 오브젝트를 연결한 오브젝트가 만들어집니다.
-</br></br>
-파트 오브젝트가 저장되는 <code style="display: inline;">{bucket}+segments</code> 버킷은 S3 호환 API로는 접근할 수 없고, Object Storage API 또는 콘솔을 통해 접근할 수 있습니다.
-</br></br>
-멀티파트 오브젝트의 ETag는 각 파트 오브젝트의 ETag 값을 이진 데이터로 변환하고 순서대로 연결해(concatenate) MD5 해시한 값입니다.
-</blockquote>
+!!! tip "알아두기"
+    오브젝트의 용량이 8MB 이상이면 AWS 명령줄 인터페이스는 오브젝트를 여러 개의 파트로 나누어 업로드합니다. 파트 오브젝트는 <code style="display: inline;">{bucket}+segments</code>라는 버킷에 <code style="display: inline;">{object-name}/{upload-id}/{part-number}</code> 형태의 이름으로 저장되고, 모든 파트 업로드가 끝나면 업로드 요청한 버킷에 파트 오브젝트를 연결한 오브젝트가 만들어집니다.
 
-<blockquote>
-[주의]
-</br>
-멀티파트로 업로드한 오브젝트의 일부 또는 전체 파트 오브젝트를 삭제하면 오브젝트에 접근할 수 없습니다.
-</blockquote>
+    파트 오브젝트가 저장되는 <code style="display: inline;">{bucket}+segments</code> 버킷은 S3 호환 API로는 접근할 수 없고, Object Storage API 또는 콘솔을 통해 접근할 수 있습니다.
+
+    멀티파트 오브젝트의 ETag는 각 파트 오브젝트의 ETag 값을 이진 데이터로 변환하고 순서대로 연결해(concatenate) MD5 해시한 값입니다.
+
+!!! danger "주의"
+    멀티파트로 업로드한 오브젝트의 일부 또는 전체 파트 오브젝트를 삭제하면 오브젝트에 접근할 수 없습니다.
 
 </details>
 
@@ -590,12 +862,54 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
-<a id="aws-sdk"></a>
-## AWS SDK
-AWS는 여러가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 이용하여 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
+<details>
+<summary>서명된 URL 생성</summary>
 
-> [참고]
-> 보다 자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참조하세요.
+```shell
+$ aws --endpoint-url=http://ngcc-kr4-swift.kr.cloud.toastoven.net s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
+http://ngcc-kr4-swift.kr.cloud.toastoven.net/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=...
+```
+
+</details>
+
+<a id="aws-command-line-interface-virtual-hosted-style"></a>
+### 도메인 스타일 엔드포인트 사용 { #aws-command-line-interface-virtual-hosted-style }
+S3 호환 API는 버킷 접근 방식으로 경로 스타일(Path-style)과 도메인 스타일(Virtual Hosted-style)을 모두 지원합니다. 도메인 스타일은 버킷 이름을 엔드포인트의 서브 도메인으로 사용합니다.
+
+| 방식 | 형식 |
+|---|---|
+| 경로 스타일(Path-style) | `https://{endpoint}/{bucket}/{object}` |
+| 도메인 스타일(Virtual Hosted-style) | `https://{bucket}.{endpoint}/{object}` |
+
+<br>
+
+AWS 명령줄 인터페이스에서 도메인 스타일 엔드포인트를 사용하려면 `addressing_style` 옵션을 `virtual`로 설정합니다. 이 설정을 적용하면 AWS 명령줄 인터페이스가 엔드포인트와 버킷 이름을 조합해 자동으로 도메인 스타일 URL로 요청을 보냅니다.
+
+```shell
+$ aws configure set default.s3.addressing_style virtual
+```
+
+또는 `~/.aws/config` 파일에서 사용 중인 프로필 섹션에 다음 설정을 추가합니다.
+
+```ini
+[default]
+s3 =
+  addressing_style = virtual
+```
+
+| 이름 | 설명 |
+|---|---|
+| addressing_style | `virtual` - 도메인 스타일 사용<br>`path` - 경로 스타일 사용<br>`auto` - 자동 선택(기본값, NHN Cloud Object Storage처럼 커스텀 엔드포인트를 사용하면 경로 스타일로 동작) |
+
+!!! danger "주의"
+    버킷 이름에 점(`.`)이 포함되어 있으면 도메인 스타일 사용 시 와일드카드 SSL 인증서의 유효 범위를 벗어나 인증서 검증에 실패할 수 있습니다. 이때는 경로 스타일을 사용하세요.
+
+<a id="aws-sdk"></a>
+## AWS SDK { #aws-sdk }
+AWS는 여러 가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 사용하여 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
+
+!!! tip "알아두기"
+    자세한 내용은 [AWS SDK](https://aws.amazon.com/ko/tools) 문서를 참고합니다.
 
 AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습니다.
 
@@ -604,14 +918,15 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
 | region name | KR4 - 한국(대구) 리전 |
-| endpoint | http://ngcc-kr4-swift.kr.cloud.toastoven.net - 한국(대구) 리전 | 
+| endpoint | http://ngcc-kr4-swift.kr.cloud.toastoven.net - 한국(대구) 리전 |
 
 <a id="aws-sdk-boto3-python"></a>
-### Boto3 - Python SDK
+### Boto3 - Python SDK { #aws-sdk-boto3-python }
 
-> [참고]
-> 보다 자세한 내용은 [AWS SDK for Python(Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+!!! tip "알아두기"
+    자세한 내용은 [AWS SDK for Python(Boto3) 설명서](https://docs.aws.amazon.com/ko_kr/pythonsdk/?icmpid=docs_homepage_sdktoolkits) 문서를 참고합니다.
 
+<a id="aws-sdk-boto3-python-context"></a>
 #### Context
 
 <details>
@@ -693,12 +1008,62 @@ def delete_bucket(self, bucket_name):
 </details>
 
 <details>
+<summary>잠금 버킷</summary>
+
+<code>create_bucket</code> 메서드에 <code>ObjectLockEnabledForBucket=True</code>를 설정하면 잠금 버킷을 생성합니다. 기본 보관 기간은 0일로 설정됩니다.
+
+```python
+def create_bucket_with_lock(self, bucket_name):
+    try:
+        return self.s3.create_bucket(
+            Bucket=bucket_name,
+            ObjectLockEnabledForBucket=True
+        )
+    except ClientError as e:
+        raise RuntimeError(e)
+```
+
+기본 보관 기간을 설정하려면 <code>put_object_lock_configuration</code> 메서드를 사용합니다.
+
+```python
+def put_object_lock_configuration(self, bucket_name, days):
+    lock_configuration = {
+        'ObjectLockEnabled': 'Enabled',
+        'Rule': {
+            'DefaultRetention': {
+                'Mode': 'COMPLIANCE',
+                'Days': days
+            }
+        }
+    }
+    try:
+        return self.s3.put_object_lock_configuration(
+            Bucket=bucket_name,
+            ObjectLockConfiguration=lock_configuration
+        )
+    except ClientError as e:
+        raise RuntimeError(e)
+```
+
+잠금 설정을 조회하려면 <code>get_object_lock_configuration</code> 메서드를 사용합니다.
+
+```python
+def get_object_lock_configuration(self, bucket_name):
+    try:
+        return self.s3.get_object_lock_configuration(
+            Bucket=bucket_name
+        )
+    except ClientError as e:
+        raise RuntimeError(e)
+```
+
+</details>
+
+<details>
 <summary>오브젝트 업로드</summary>
 
-<blockquote>
-<p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 8MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
-</blockquote>
+!!! tip "알아두기"
+    파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 따라 결정됩니다. 기본 파트 크기는 8MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.
 
 ```python
 def upload(self, bucket_name, key, filename, part_size):
@@ -750,12 +1115,30 @@ def delete(self, bucket_name, key):
 
 </details>
 
+<details>
+<summary>서명된 URL 생성</summary>
+
+```python
+def generate_presigned_url(self, bucket_name, key, expires_in):
+    try:
+        # 업로드용은 'put_object'
+        return self.s3.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': bucket_name, 'Key': key},
+            ExpiresIn=expires_in)
+    except ClientError as e:
+        raise RuntimeError(e)
+```
+
+</details>
+
 <a id="aws-sdk-java"></a>
-### Java SDK
+### Java SDK { #aws-sdk-java }
 
-> [참고]
-> 보다 자세한 내용은 [AWS SDK for Java 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html) 문서를 참조하세요.
+!!! tip "알아두기"
+    자세한 내용은 [AWS SDK for Java 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-java/index.html) 문서를 참고합니다.
 
+<a id="aws-sdk-java-context"></a>
 #### Context
 
 <details>
@@ -767,7 +1150,7 @@ public class AwsSdkExample {
     private static final String access = "{access}";
     private static final String secret = "{secret}";
     private static final String region = "{region name}";
-    private static final String ednpoint = "{endpoint}";
+    private static final String endpoint = "{endpoint}";
 
     private AmazonS3 s3Client;
 
@@ -776,7 +1159,7 @@ public class AwsSdkExample {
             new BasicAWSCredentials(access, secret);
         s3Client = AmazonS3ClientBuilder.standard()
             .withEndpointConfiguration(
-                new AwsClientBuilder.EndpointConfiguration(ednpoint, region)
+                new AwsClientBuilder.EndpointConfiguration(endpoint, region)
             )
             .withCredentials(
                 new AWSStaticCredentialsProvider(awsCredentials)
@@ -861,12 +1244,79 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 </details>
 
 <details>
+<summary>잠금 버킷</summary>
+
+<code>CreateBucketRequest</code>에 <code>withObjectLockEnabledForBucket(true)</code>를 설정하면 잠금 버킷을 생성합니다. 기본 보관 기간은 0일로 설정됩니다.
+
+```java
+public String createBucketWithLock(String bucketName) throws RuntimeException {
+    try {
+        CreateBucketRequest request = new CreateBucketRequest(bucketName)
+            .withObjectLockEnabledForBucket(true);
+        return s3Client.createBucket(request).toString();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+기본 보관 기간을 설정하려면 <code>setObjectLockConfiguration</code> 메서드를 사용합니다.
+
+```java
+public void putObjectLockConfiguration(
+    String bucketName, int days
+) throws RuntimeException {
+    try {
+        DefaultRetention retention = new DefaultRetention()
+            .withMode(ObjectLockRetentionMode.COMPLIANCE)
+            .withDays(days);
+        ObjectLockRule rule = new ObjectLockRule()
+            .withDefaultRetention(retention);
+        ObjectLockConfiguration configuration = new ObjectLockConfiguration()
+            .withObjectLockEnabled(ObjectLockEnabled.ENABLED)
+            .withRule(rule);
+        SetObjectLockConfigurationRequest request =
+            new SetObjectLockConfigurationRequest()
+                .withBucketName(bucketName)
+                .withObjectLockConfiguration(configuration);
+        s3Client.setObjectLockConfiguration(request);
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+잠금 설정을 조회하려면 <code>getObjectLockConfiguration</code> 메서드를 사용합니다.
+
+```java
+public ObjectLockConfiguration getObjectLockConfiguration(
+    String bucketName
+) throws RuntimeException {
+    try {
+        GetObjectLockConfigurationRequest request =
+            new GetObjectLockConfigurationRequest()
+                .withBucketName(bucketName);
+        return s3Client.getObjectLockConfiguration(request)
+            .getObjectLockConfiguration();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+</details>
+
+<details>
 <summary>오브젝트 업로드</summary>
 
-<blockquote>
-<p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
-</blockquote>
+!!! tip "알아두기"
+    파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 따라 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.
 
 ```java
 public void uploadObject(String bucketName, String objectKey, String filePath, long partSize) {
@@ -937,12 +1387,37 @@ public void deleteObject(
 
 </details>
 
+<details>
+<summary>서명된 URL 생성</summary>
+
+```java
+public String generatePresignedUrl(
+    String bucketName, String objKeyName, long expirationMillis
+) throws RuntimeException {
+    try {
+        Date expiration = new Date(System.currentTimeMillis() + expirationMillis);
+        GeneratePresignedUrlRequest request =
+            new GeneratePresignedUrlRequest(bucketName, objKeyName)
+                .withMethod(HttpMethod.GET)          // 업로드용은 HttpMethod.PUT
+                .withExpiration(expiration);
+        return s3Client.generatePresignedUrl(request).toString();
+    } catch (AmazonServiceException e) {
+        throw new RuntimeException(e);
+    } catch (SdkClientException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+</details>
+
 <a id="aws-sdk-dotnet"></a>
-### .NET SDK
+### .NET SDK { #aws-sdk-dotnet }
 
-> [참고]
-> 보다 자세한 내용은 [AWS SDK for .NET 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits) 문서를 참조하세요.
+!!! tip "알아두기"
+    자세한 내용은 [AWS SDK for .NET 설명서](https://docs.aws.amazon.com/ko_kr/sdk-for-net/?icmpid=docs_homepage_sdktoolkits) 문서를 참고합니다.
 
+<a id="aws-sdk-dotnet-context"></a>
 #### Context
 
 <details>
@@ -1089,12 +1564,105 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 </details>
 
 <details>
+<summary>잠금 버킷</summary>
+
+<code>PutBucketRequest</code>에 <code>ObjectLockEnabledForBucket = true</code>를 설정하면 잠금 버킷을 생성합니다. 기본 보관 기간은 0일로 설정됩니다.
+
+```csharp
+static async Task<PutBucketResponse> CreateBucketWithLockAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        var putBucketRequest =
+            new PutBucketRequest
+            {
+                BucketName = bucketName,
+                UseClientRegion = true,
+                ObjectLockEnabledForBucket = true
+            };
+
+        return await s3Client.PutBucketAsync(putBucketRequest);
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+기본 보관 기간을 설정하려면 <code>PutObjectLockConfigurationAsync</code> 메서드를 사용합니다.
+
+```csharp
+static async Task<PutObjectLockConfigurationResponse> PutObjectLockConfigurationAsync(
+    AmazonS3Client s3Client,
+    string bucketName,
+    int days)
+{
+    try
+    {
+        var request =
+            new PutObjectLockConfigurationRequest
+            {
+                BucketName = bucketName,
+                ObjectLockConfiguration =
+                    new ObjectLockConfiguration
+                    {
+                        ObjectLockEnabled = ObjectLockEnabled.Enabled,
+                        Rule =
+                            new ObjectLockRule
+                            {
+                                DefaultRetention =
+                                    new DefaultRetention
+                                    {
+                                        Mode = ObjectLockRetentionMode.Compliance,
+                                        Days = days
+                                    }
+                            }
+                    }
+            };
+
+        return await s3Client.PutObjectLockConfigurationAsync(request);
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+잠금 설정을 조회하려면 <code>GetObjectLockConfigurationAsync</code> 메서드를 사용합니다.
+
+```csharp
+static async Task<GetObjectLockConfigurationResponse> GetObjectLockConfigurationAsync(
+    AmazonS3Client s3Client,
+    string bucketName)
+{
+    try
+    {
+        var request =
+            new GetObjectLockConfigurationRequest
+            {
+                BucketName = bucketName
+            };
+
+        return await s3Client.GetObjectLockConfigurationAsync(request);
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<details>
 <summary>오브젝트 업로드</summary>
 
-<blockquote>
-<p>[참고]
-파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 의해 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.</p>
-</blockquote>
+!!! tip "알아두기"
+    파트 오브젝트의 개수는 업로드할 오브젝트의 용량과 설정한 파트 크기에 따라 결정됩니다. 기본 파트 크기는 5MiB이고, 최소 5MiB부터 지정할 수 있습니다. 파트 오브젝트의 최대 개수는 10,000개입니다.
 
 ```csharp
 private static async Task UploadObjectAsync(
@@ -1192,4 +1760,116 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 ```
 
 </details>
+
+<details>
+<summary>서명된 URL 생성</summary>
+
+```csharp
+static string GeneratePresignedUrl(
+    AmazonS3Client s3Client,
+    string bucketName,
+    string keyName,
+    double durationHours)
+{
+    try
+    {
+        var request =
+            new GetPreSignedUrlRequest
+            {
+                BucketName = bucketName,
+                Key = keyName,
+                Verb = HttpVerb.GET,                 // 업로드용은 HttpVerb.PUT
+                Expires = DateTime.UtcNow.AddHours(durationHours)
+            };
+
+        return s3Client.GetPreSignedURL(request);
+    }
+    catch (AmazonS3Exception e)
+    {
+        throw e;
+    }
+}
+```
+
+</details>
+
+<a id="aws-sdk-virtual-hosted-style"></a>
+### 도메인 스타일 엔드포인트 사용 { #aws-sdk-virtual-hosted-style }
+AWS SDK에서 도메인 스타일 엔드포인트를 사용하려면 클라이언트 설정에서 경로 스타일 접근을 비활성화합니다. 엔드포인트 URL과 자격 증명은 기존과 동일하게 사용하며, SDK가 버킷 이름을 서브 도메인으로 조합해 요청을 보냅니다.
+
+<details>
+<summary>Boto3 - Python SDK</summary>
+
+<code>botocore.client.Config</code>의 <code>s3.addressing_style</code> 값을 <code>virtual</code>로 지정해 클라이언트를 생성합니다.
+
+```python
+from boto3 import client
+from botocore.client import Config
+
+
+class Boto3Example(object):
+    _REGION = '{region name}'
+    _ENDPOINT = '{endpoint}'
+    _ACCESS = '{access}'
+    _SECRET = '{secret}'
+
+    def __init__(self):
+        config = Config(s3={'addressing_style': 'virtual'})
+        self.s3 = client(service_name='s3',
+                         region_name=self._REGION,
+                         endpoint_url=self._ENDPOINT,
+                         aws_access_key_id=self._ACCESS,
+                         aws_secret_access_key=self._SECRET,
+                         config=config)
+```
+
+</details>
+
+<details>
+<summary>Java SDK</summary>
+
+클라이언트 빌더에서 <code>enablePathStyleAccess()</code> 호출을 제거합니다.
+
+```java
+public AwsSdkExample() {
+    BasicAWSCredentials awsCredentials =
+        new BasicAWSCredentials(access, secret);
+    s3Client = AmazonS3ClientBuilder.standard()
+        .withEndpointConfiguration(
+            new AwsClientBuilder.EndpointConfiguration(endpoint, region)
+        )
+        .withCredentials(
+            new AWSStaticCredentialsProvider(awsCredentials)
+        )
+        .disableChunkedEncoding()
+        .build();
+}
+```
+
+</details>
+
+<details>
+<summary>.NET SDK</summary>
+
+<code>AmazonS3Config</code>에서 <code>ForcePathStyle</code> 속성 설정을 제거합니다.
+
+```csharp
+private static AmazonS3Client GetS3Client()
+{
+    var amazonS3Config =
+        new AmazonS3Config
+        {
+            ServiceURL = endpoint,
+            AuthenticationRegion = regionName,
+        };
+    var basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+
+    return new AmazonS3Client(basicAWSCredentials, amazonS3Config);
+}
+```
+
+</details>
+
+!!! danger "주의"
+    버킷 이름에 점(`.`)이 포함되어 있으면 도메인 스타일 사용 시 와일드카드 SSL 인증서의 유효 범위를 벗어나 인증서 검증에 실패할 수 있습니다. 이때는 경로 스타일을 사용하세요.
 
