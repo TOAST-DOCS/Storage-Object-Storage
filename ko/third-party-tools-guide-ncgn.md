@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=3eabcf443966 -->
+
 <a id="third-party-tools-usage-guide"></a>
 ## 서드 파티 도구 사용 가이드 { #third-party-tools-usage-guide }
 
@@ -45,7 +47,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 </table>
 
 !!! tip "알아두기"
-    API 비밀번호 설정 방법은 API 가이드의 [인증 및 권한](api-guide-ncgn/#auth) 항목을 참고하세요.
+    API 비밀번호 설정 방법은 API 가이드의 [인증 및 권한](api-guide-ncgn/#auth) 항목을 참고합니다.
 
 <a id="cyberduck-connect-object-storage"></a>
 ### 오브젝트 스토리지 연결 { #cyberduck-connect-object-storage }
@@ -121,7 +123,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 로컬과 오브젝트 스토리지를 비교하여 변경되거나 누락된 파일 또는 오브젝트를 업로드하거나 다운로드합니다.
 
 !!! tip "알아두기"
-    동기화에 대한 더 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하세요.
+    동기화에 대한 더 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고합니다.
 
 <a id="reference"></a>
 ## 참고 사이트 { #reference }

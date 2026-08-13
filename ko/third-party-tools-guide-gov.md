@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=3eabcf443966 -->
+
 <a id="third-party-tools-usage-guide"></a>
 ## 서드 파티 도구 사용 가이드 { #third-party-tools-usage-guide }
 
@@ -45,7 +47,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 </table>
 
 !!! tip "알아두기"
-    API 비밀번호 설정 방법은 API 가이드의 [인증 및 권한](api-guide-gov/#auth) 항목을 참고하세요.
+    API 비밀번호 설정 방법은 API 가이드의 [인증 및 권한](api-guide-gov/#auth) 항목을 참고합니다.
 
 <a id="cyberduck-connect-object-storage"></a>
 ### 오브젝트 스토리지 연결 { #cyberduck-connect-object-storage }
@@ -121,12 +123,12 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 로컬과 오브젝트 스토리지를 비교하여 변경되거나 누락된 파일 또는 오브젝트를 업로드하거나 다운로드합니다.
 
 !!! tip "알아두기"
-    동기화에 대한 더 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고하세요.
+    동기화에 대한 더 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고합니다.
 
 <a id="terraform"></a>
 ## Terraform { #terraform }
 
-Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > NHN Cloud > Terraform 사용 가이드](/nhncloud/ko/terraform-guide-gov/)를 참고하세요.
+Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > NHN Cloud > Terraform 사용 가이드](/nhncloud/ko/terraform-guide-gov/)를 참고합니다.
 
 <a id="terraform-resource-dependency"></a>
 ### 리소스 의존성 { #terraform-resource-dependency }
@@ -144,12 +146,12 @@ resource "nhncloud_objectstorage_container_v1" "container_1" {
 resource "nhncloud_objectstorage_object_v1" "object_1" {
   container_name = nhncloud_objectstorage_container_v1.container_1.name
   name           = "object1"
-  source       = "/tmp/dummy"
+  source         = "/tmp/dummy"
 }
 ```
 
 !!! tip "알아두기"
-    명시적인 리소스 의존성 지정 방법은 [Terraform의 Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) 문서를 참고하세요.
+    명시적인 리소스 의존성 지정 방법은 [Terraform의 Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) 문서를 참고합니다.
 
 <a id="terraform-resources-object-storage"></a>
 ### Resources - Object Storage { #terraform-resources-object-storage }
@@ -187,7 +189,7 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 | region | String | | NHN Cloud 리소스를 관리할 리전 |
 | name | String | Y | 컨테이너 이름 |
 | container_read | String | | 컨테이너 읽기에 대한 역할 기반 접근 규칙 설정 |
-| container_write | String | | 컨테이너 쓰기에 대한 역할 기반 접근 규칙 |
+| container_write | String | | 컨테이너 쓰기에 대한 역할 기반 접근 규칙 설정 |
 | force_destroy | Boolean | | 컨테이너 강제 삭제 여부, `true` 또는 `false`<br>함께 삭제된 오브젝트는 복구할 수 없습니다. |
 | versioning_legacy | Object | | 오브젝트 버전 관리 설정 |
 | versioning_legacy.type | String | | `history`로 지정 |
@@ -202,8 +204,8 @@ resource "nhncloud_objectstorage_object_v1" "object_1" {
   region         = "KR1"
   container_name = nhncloud_objectstorage_container_v1.container_1.name
   name           = "test/test1.json"
-  content_type = "application/json"
-  content      = <<JSON
+  content_type   = "application/json"
+  content        = <<JSON
                {
                  "key" : "value"
                }
@@ -215,7 +217,7 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
   region         = "KR2"
   container_name = nhncloud_objectstorage_container_v1.container_1.name
   name           = "test/test2.json"
-  source       = "./test2.txt"
+  source         = "./test2.txt"
 }
 ```
 
@@ -299,7 +301,7 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 			<td>detect_content_type</td>
 			<td>Boolean</td>
 			<td></td>
-			<td>콘텐츠 타입 추론 여부<br/>설정 시 <code>content_type</code>이 무시됩니다.</td>
+			<td>콘텐츠 타입 추론 여부<br>설정 시 <code>content_type</code>이 무시됩니다.</td>
 		</tr>
 	</tbody>
 </table>

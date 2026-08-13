@@ -1,3 +1,5 @@
+<!-- pre-align:aligned sig=5c3f66a53167 -->
+
 <a id="storage-object-storage-overview"></a>
 ## Storage > Object Storage > 개요 { #storage-object-storage-overview }
 오브젝트 스토리지는 다양한 유형의 데이터를 원하는 만큼 저장하고 필요할 때마다 가져올 수 있는 객체 스토리지 서비스입니다.
@@ -14,7 +16,7 @@
 
 <a id="control-accessibility"></a>
 ### 접근성 제어 { #control-accessibility }
-컨테이너별로 접근 권한을 제어할 수 있습니다. 누구나 조회할 수 있도록 퍼블릭으로 설정할 수도 있고, 역할 기반 접근 제어(RBAC)를 이용하여 NHN Cloud의 프로젝트 또는 개별 사용자 단위로 읽기/쓰기 권한을 차등 부여할 수 있습니다.
+컨테이너별로 접근 권한을 제어할 수 있습니다. 누구나 조회할 수 있도록 퍼블릭으로 설정할 수도 있고, 역할 기반 접근 제어(RBAC)를 사용하여 NHN Cloud의 프로젝트 또는 개별 사용자 단위로 읽기/쓰기 권한을 차등 부여할 수 있습니다.
 
 <a id="convenient-web-console"></a>
 ### 편리한 웹 콘솔 { #convenient-web-console }
@@ -22,35 +24,35 @@
 
 <a id="rest-api"></a>
 ### REST API { #rest-api }
-컨테이너와 오브젝트를 제어할 수 있는 HTTP 기반의 REST API를 제공합니다. REST API를 이용하여 사용자의 애플리케이션에서 오브젝트 스토리지를 사용할 수 있습니다.
+컨테이너와 오브젝트를 제어할 수 있는 HTTP 기반의 REST API를 제공합니다. REST API를 사용하여 사용자의 애플리케이션에서 오브젝트 스토리지를 사용할 수 있습니다.
 
 <a id="amazon-s3-compatible-api"></a>
 ### Amazon S3 호환 API { #amazon-s3-compatible-api }
-Amazon S3와 호환되는 API를 제공합니다. S3 호환 API를 이용하여 Amazon Web Service 소프트웨어 개발 키트(SDK) 기반의 애플리케이션과 다양한 서드파티 도구를 사용할 수 있습니다.
+Amazon S3와 호환되는 API를 제공합니다. S3 호환 API를 사용하여 Amazon Web Service 소프트웨어 개발 키트(SDK) 기반의 애플리케이션과 다양한 서드파티 도구를 사용할 수 있습니다.
 
 <a id="life-cycle-control"></a>
 ### 수명 주기 제어 { #life-cycle-control }
 컨테이너 또는 개별 오브젝트 단위로 수명 주기 제어 기능을 제공합니다. 이를 통해 스토리지 사용량을 효율적으로 관리할 수 있습니다.
 
 <a id="object-lock"></a>
-### 객체 잠금 { #object-lock }
-사용자의 부주의한 덮어쓰기, 삭제 요청으로부터 데이터를 보호하기 위한 객체 잠금 기능(Write Once Read Many, WORM)을 제공합니다.
+### 오브젝트 잠금 { #object-lock }
+사용자의 부주의한 덮어쓰기 또는 삭제 요청으로부터 데이터를 보호하기 위한 오브젝트 잠금 기능(Write Once Read Many, WORM)을 제공합니다.
 
 <a id="version-management"></a>
 ### 버전 관리 { #version-management }
-버전 관리 기능을 이용하여 오브젝트를 업데이트, 삭제한 이력을 관리하고, 이전 버전으로 복원할 수 있습니다.
+버전 관리 기능을 사용하여 오브젝트를 업데이트하거나 삭제한 이력을 관리하고, 이전 버전으로 복원할 수 있습니다.
 
 <a id="disaster-recovery"></a>
 ### 재해 복구(disaster recovery) { #disaster-recovery }
-컨테이너 복제 기능으로 컨테이너의 오브젝트를 다른 리전의 컨테이너에 복제할 수 있습니다. 복제된 데이터를 이용하여 예기치 않은 재해 상황에 대비할 수 있습니다.
+컨테이너 복제 기능으로 컨테이너의 오브젝트를 다른 리전의 컨테이너에 복제할 수 있습니다. 복제된 데이터를 사용하여 예기치 않은 재해 상황에 대비할 수 있습니다.
 
 <a id="data-encryption-for-improved-security"></a>
 ### 보안성 향상을 위한 데이터 암호화 { #data-encryption-for-improved-security }
-서버 측 암호화 기능을 이용하여 중요한 데이터를 암호화하여 보안성을 높일 수 있습니다. 암호화에 사용되는 대칭 키는 NHN Cloud의 Secure Key Manager 서비스에서 안전하게 관리됩니다.
+서버 측 암호화 기능으로 중요한 데이터를 보호하여 보안성을 높일 수 있습니다. 암호화에 사용되는 대칭 키는 NHN Cloud의 Secure Key Manager 서비스에서 안전하게 관리됩니다.
 
 <a id="convenient-cloud-accessibility"></a>
 ### 편리한 클라우드 접근성 { #convenient-cloud-accessibility }
-NHN Cloud의 Service Gateway 서비스를 통해 외부 네트워크와 격리된 사용자 VPC 내의 인스턴스에서 사설 네트워크를 통해 오브젝트 스토리지에 접근할 수 있습니다.
+NHN Cloud의 Service Gateway 서비스를 통해 외부 네트워크와 격리된 사용자 VPC 내 인스턴스에서 사설 네트워크를 통해 오브젝트 스토리지에 접근할 수 있습니다.
 
 <a id="access-history"></a>
 ### 접근 기록 { #access-history }
@@ -75,5 +77,5 @@ NHN Cloud의 CloudTrail 서비스를 통해 오브젝트 스토리지에 접근�
 오브젝트 스토리지의 사용자 계정입니다. NHN Cloud 오브젝트 스토리지는 계정 단위로 격리됩니다.
 
 <a id="api-endpoint"></a>
-### API Endpoint { #api-endpoint }
+### API 엔드포인트 { #api-endpoint }
 오브젝트 스토리지에 REST API로 접근하기 위해 제공되는 HTTP URL입니다.

@@ -310,7 +310,7 @@ Content-Type: application/json
 | 쓰기 | `write` | 오브젝트 업로드, 삭제 등 변경 요청을 허용합니다. |
 | 조회 | `view` | 컨테이너의 오브젝트 목록 조회를 허용합니다. |
 
-정책 문서의 `read`, `write`, `view`는 각각 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Container-View` 속성에 대응합니다. 각 권한의 자세한 내용은 [접근 정책 설정 가이드](acl-guide-gov/#role-based-access-api)를 참고합니다.
+정책 문서의 `read`, `write`, `view`는 각각 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Container-View` 속성에 대응합니다. 각 권한의 자세한 내용은 [접근 정책 설정 가이드](acl-guide-ninc/#role-based-access-api)를 참고합니다.
 
 <br>
 
@@ -366,7 +366,7 @@ Content-Type: application/json
 | `view.grantees` | Array | N | 조회 권한을 부여할 사용자 목록 | `grantees` 형식은 `read.grantees`와 동일합니다. |
 
 !!! tip "알아두기"
-    `public`, `listing`, `referrers`에 대응하는 요소는 접근 정책 설정 가이드의 [기타 접근 정책 요소](acl-guide-gov/#common-access-elements)를, `grantees`에 대응하는 요소는 [역할 기반 접근 정책 요소](acl-guide-gov/#role-based-access-elements)를 참고합니다.
+    `public`, `listing`, `referrers`에 대응하는 요소는 접근 정책 설정 가이드의 [기타 접근 정책 요소](acl-guide-ninc/#common-access-elements)를, `grantees`에 대응하는 요소는 [역할 기반 접근 정책 요소](acl-guide-ninc/#role-based-access-elements)를 참고합니다.
 
 <a id="acl-schema-application-example"></a>
 #### 적용 예시
@@ -393,7 +393,7 @@ Content-Type: application/json
 <a id="ip-acl"></a>
 ## IP 접근 제어(IP ACL) { #ip-acl }
 
-컨테이너 정책 문서의 `ip_acl` 키를 사용해 IP 기반 접근 제어를 설정합니다. 화이트리스트와 블랙리스트는 동시에 사용할 수 없으며, 둘 다 설정하면 화이트리스트만 적용됩니다. 그 외 동작 방식은 접근 정책 설정 가이드의 [IP 기반 접근 정책](acl-guide-gov/#ip-based-access-policies)을 참고합니다.
+컨테이너 정책 문서의 `ip_acl` 키를 사용해 IP 기반 접근 제어를 설정합니다. 화이트리스트와 블랙리스트는 동시에 사용할 수 없으며, 둘 다 설정하면 화이트리스트만 적용됩니다. 그 외 동작 방식은 접근 정책 설정 가이드의 [IP 기반 접근 정책](acl-guide-ninc/#ip-based-access-policies)을 참고합니다.
 
 <br>
 
@@ -458,7 +458,7 @@ IP 접근 제어 정책 문서의 구조는 다음과 같습니다.
 <a id="cors"></a>
 ## 교차 출처 리소스 공유(CORS) { #cors }
 
-컨테이너 정책 문서의 `cors` 키를 사용해 교차 출처 리소스 공유(CORS)를 설정합니다. CORS 설정과 허용 출처 형식의 자세한 내용은 API 가이드의 [교차 출처 리소스 공유(CORS)](api-guide-gov/#set-container-cors-policy)를 참고합니다.
+컨테이너 정책 문서의 `cors` 키를 사용해 교차 출처 리소스 공유(CORS)를 설정합니다. CORS 설정과 허용 출처 형식의 자세한 내용은 API 가이드의 [교차 출처 리소스 공유(CORS)](api-guide-ninc/#set-container-cors-policy)를 참고합니다.
 
 <br>
 
@@ -504,7 +504,7 @@ CORS 정책 문서의 구조는 다음과 같습니다.
 <a id="lock"></a>
 ## 오브젝트 잠금 { #lock }
 
-컨테이너 정책 문서의 `lock` 키를 사용해 오브젝트 잠금(WORM, Write-Once-Read-Many)의 잠금 주기를 설정합니다. 오브젝트 잠금의 개념과 제약은 API 가이드의 [오브젝트 잠금 기간 변경](api-guide-gov/#set-container-object-lock-cycle)을 참고합니다.
+컨테이너 정책 문서의 `lock` 키를 사용해 오브젝트 잠금(WORM, Write-Once-Read-Many)의 잠금 주기를 설정합니다. 오브젝트 잠금의 개념과 제약은 API 가이드의 [오브젝트 잠금 기간 변경](api-guide-ninc/#set-container-object-lock-cycle)을 참고합니다.
 
 <br>
 
