@@ -3,6 +3,8 @@
 <a id="storage-object-storage-acl-configuration-guide"></a>
 ## Storage > Object Storage > アクセスポリシー設定ガイド { #storage-object-storage-acl-configuration-guide }
 
+NHN Cloud オブジェクトストレージのコンテナに、ロールベースのアクセスポリシーおよび IP ベースのアクセスポリシーを設定する方法を説明します。
+
 <a id="role-based-access-policies"></a>
 ## ロールベースのアクセスポリシー { #role-based-access-policies }
 
@@ -33,6 +35,9 @@ APIを使用してコンテナの`X-Container-Read`、`X-Container-Write`、`X-C
 | X-Container-View | コンテナ内のオブジェクト一覧の照会及びオブジェクトの情報照会を許可します。コンテナに対するGET、HEADリクエスト及びオブジェクトに対するHEADリクエストが該当します。 |
 
 
+!!! tip "ヒント"
+    `X-Container-Read`、`X-Container-Write`、`X-Container-View` に設定できるアクセスポリシー要素は、各属性につき最大 100 個です。この制限は [コンテナポリシー](container-policy-guide/#acl) で設定する場合にも同様に適用されます。
+
 <br/>
 
 <a id="role-based-access-elements"></a>
@@ -47,10 +52,12 @@ APIを使用してコンテナの`X-Container-Read`、`X-Container-Write`、`X-C
 | `*:<api-user-id>` | プロジェクトに関係なく、特定ユーザーに発行された認証トークンでオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を付与できます。 |
 | `*:*` | プロジェクトに関係なく、認証トークンを発行できるユーザーなら誰でもオブジェクトにアクセスできます。<br/>書き込み、読み取り権限を付与できます。 |
 
-> [参考]
-> `<api-user-id>`は、コンソールのAPI Endpoint設定ダイアログボックスで**APIユーザーID**項目を参照するか、認証トークン発行APIレスポンス本文の**access.user.id**フィールドで確認できます。
-> 認証トークン発行APIを利用するには、APIガイドの[認証トークン発行](api-guide/#authentication-token-issuance)項目を参照してください。
+!!! tip "ヒント"
+    `<api-user-id>` は、コンソールの API Endpoint 設定ダイアログボックスで **[APIユーザーID]** 項目を参照するか、認証トークン発行 API のレスポンス本文の **access.user.id** フィールドで確認できます。
+    認証トークン発行 API を使用するには、API ガイドの [認証および権限](api-guide/#auth) を参照してください。
 
+!!! tip "ヒント"
+    `<tenant-id>:` や `:<api-user-id>` のようにコロンの片側が空の値、または `.` で始まる値は使用できません。
 
 <a id="common-access-elements"></a>
 #### その他のアクセスポリシー要素
@@ -64,6 +71,9 @@ APIを使用してコンテナの`X-Container-Read`、`X-Container-Write`、`X-C
 | `.r:-<referrer>` | リクエストヘッダを参照し、設定されたHTTPリファラーからのアクセスを制限します。<br/>リファラーの前にマイナス記号(-)を付けて設定します。 |
 | `.rlistings` | 読み取り権限のあるユーザーに、コンテナの照会(GETまたはHEADリクエスト)を許可します。<br/>このポリシー要素がない場合、オブジェクト一覧を照会できません。<br/>このポリシー要素は、単独では設定できません。 |
 
+
+!!! tip "ヒント"
+    リファラーで `*` は全体公開を意味する `.r:*` としてのみ使用できます。`*` を他の文字と組み合わせた値、全体をブロックする `.r:-*`、空の値は使用できません。
 
 <br/>
 
@@ -85,10 +95,8 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-<blockquote>
-<p>[参考]
-curlを利用して値がないヘッダを送る時は、ヘッダ名にセミコロン(`;`)をつける必要があります。</p>
-</blockquote>
+!!! tip "ヒント"
+    curl を使用して値のないヘッダーを送信する場合は、ヘッダー名にセミコロン (;) を付ける必要があります。
 
 有効な認証トークンなしでリクエストするとエラーメッセージを返します。
 
@@ -170,8 +178,10 @@ $ curl -X GET \
 HTTPリファラー(HTTP Referer)は、ハイパーリンクを介してリクエストするWebページのアドレス情報です。リクエストヘッダに含まれています。
 コンテナの`X-Container-Read`プロパティに`.r:<referrer>`または`.r:-<referrer>`形式のロールベースのアクセスポリシー要素を設定すると、特定リファラーのアクセスリクエストを許可またはブロックできます。ロールベースのアクセスポリシー要素でHTTPリファラーを設定する時は、プロトコルとサブパスを除くドメイン名を入力する必要があります。
 
-> [注意]
-> HTTPリファラーはヘッダを編集してユーザーがいつでも変更できます。 HTTPリファラーを利用したアクセスポリシーはセキュリティに脆弱であるため推奨しません。
+HTTP リファラーのアクセス許可/拒否ポリシーは、入力する順序に関係なく、拒否ポリシーが優先して適用されます。そのため、拒否対象として指定された HTTP リファラーからのアクセス要求は、すべてのアクセスを許可する `.r:*` ポリシー要素を併せて入力しても拒否されます。
+
+!!! danger "注意"
+    HTTP リファラーは、ヘッダーの改ざんによりユーザーがいつでも変更できます。HTTP リファラーを使用したアクセスポリシーはセキュリティ上の脆弱性があるため、使用することをお勧めしません。
 
 <details>
 <summary>特定HTTPリファラーの読み取りリクエストを許可する例</summary>
@@ -302,34 +312,6 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 ```
 
 </details>
-<br/>
-
-HTTPリファラーのアクセス許可/ブロックポリシーは、入力した順序で適用されます。例えば、リファラーブロックポリシー要素の後ろに全てのアクセスを許可する`.r:*`ポリシー要素を入力すると、リファラーブロックポリシーは無視されます。反対に、全てのアクセスを許可するポリシー要素を先に入力して特定リファラーブロックポリシー要素を後ろに入力すると、設定されたリファラーのアクセスリクエストを除くすべてのアクセスリクエストが許可されます。
-<br/>
-
-<details>
-<summary>HTTPリファラーブロックが無視される無効なポリシー設定例</summary>
-
-```
-$ curl -i -X POST \
-  -H 'X-Auth-Token: ${token-id}' \
-  -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
-```
-
-```
-$ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
-
-[オブジェクトのダウンロード]
-
-
-$ curl -O -X GET -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
-
-[オブジェクトのダウンロード]
-```
-</details>
 
 <details>
 <summary>特定HTTPリファラーのアクセスリクエストを除くすべてのアクセスリクエストを許可するポリシー設定例</summary>
@@ -360,8 +342,8 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 #### 特定プロジェクトまたは特定ユーザーに書き込み/読み取りを許可
 コンテナの`X-Container-Read`と`X-Container-Write`プロパティに`<tenant-id>:<api-user-id>`形式のロールベースのアクセスポリシー要素を設定すると、特定プロジェクトまたは特定ユーザーに書き込み/読み取り権限をそれぞれ付与できます。テナントIDまたはAPIユーザーIDの代わりにワイルドカード文字`*`を入力すると、すべてのプロジェクトまたはすべてのユーザーにアクセス権限を付与します。アクセスリクエストを行う時は必ず有効な認証トークンが必要です。
 
-> [参考]
-> 認証トークンが必要なACLポリシーで付与された読み取り権限にはオブジェクトリスト照会権限が含まれています。
+!!! tip "ヒント"
+    認証トークンが必要な ACL ポリシーで付与された読み取りアクセス許可には、オブジェクト一覧の照会アクセス許可が含まれています。
 
 <details>
 <summary>特定プロジェクトの特定ユーザーに書き込み/読み取り権限を付与する例</summary>
@@ -452,17 +434,17 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 コンソールまたはAPIを使用してホワイトリストとブラックリストを指定して特定IPからコンテナの読み取り/書き込みアクセス権限を制限できます。ホワイトリストとブラックリストは同時に使用できません。ホワイトリストとブラックリストの両方を入力した場合、ホワイトリストのみ使用されます。 IPベースのアクセスポリシーはIPv4のみサポートします。サービスゲートウェイ経由のリクエストの場合、別途の例外を指定できます。
 
 
-> [注意]
-> IPベースのアクセスポリシーは、パブリックIP経由のアクセスを制御する用途です。ホワイトリストにプライベートIPのみを登録すると、アクセスできないコンテナになる可能性があります。
-> 誤った設定を行ってアクセス権限のないコンテナになった場合、ポリシーを変更することはできません。このような問題が発生した場合は、サポートにお問い合わせください。
+!!! danger "注意"
+    IPベースのアクセスポリシーは、パブリック IP を介したアクセスを制御するためのものです。ホワイトリストにプライベート IP のみを登録すると、アクセスできないコンテナになる可能性があります。
+    誤った設定によりアクセス権限のないコンテナになった場合、ポリシーを変更することはできません。このような問題が発生した場合は、カスタマーセンターにお問い合わせください。
 
 <a id="ip-based-access-console"></a>
 ### コンソール { #ip-based-access-console }
 
 コンテナ管理ウィンドウのコンテナアクセスポリシー設定ダイアログボックスでIPベースのコンテナアクセスポリシーを選択します。 
 
-> [注意]
-> 読み取り権限がない場合、コンソールで該当コンテナの操作はできなくなります。
+!!! danger "注意"
+    読み取り権限がない場合、コンソールからそのコンテナを操作することはできなくなります。
 
 <a id="ip-based-access-whitelist"></a>
 #### ホワイトリスト
@@ -479,7 +461,11 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 <a id="ip-based-access-api"></a>
 ### API { #ip-based-access-api }
 
-APIを使用してコンテナの`X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`プロパティにACLポリシー要素を入力するとIPベースのACLを有効化できます。 `X-Container-Ip-Acl-Allowed-List`はホワイトリスト、`X-Container-Ip-Acl-Denied-List`はブラックリストを意味します。
+API を使用してコンテナの `X-Container-Ip-Acl-Allowed-List`、`X-Container-Ip-Acl-Denied-List` 属性に IP ベースのアクセスポリシー要素を入力すると、IP ベースの ACL を有効にできます。`X-Container-Ip-Acl-Allowed-List` はホワイトリスト、`X-Container-Ip-Acl-Denied-List` はブラックリストを意味します。
+
+!!! tip "ヒント"
+    `X-Container-Ip-Acl-Allowed-List`(ホワイトリスト)と`X-Container-Ip-Acl-Denied-List`(ブラックリスト)に設定できるポリシー要素はそれぞれ最大100個です。この制限は[コンテナポリシー](container-policy-guide/#ip-acl)で設定する場合にも同様に適用されます。
+
 <br>
 
 ロールベースのアクセスポリシー要素はアクセス権限と、IPまたはネットワーク帯域で構成されており、コンマ(`,`)で区切って複数の値を入力できます。アクセス権限は下記の表の通りです。

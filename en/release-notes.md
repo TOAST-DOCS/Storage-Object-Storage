@@ -1,25 +1,42 @@
-<!-- pre-align:aligned sig=8a5faabd557c -->
+<!-- pre-align:aligned sig=79f355249cbd -->
 
 <a id="storage-object-storage-release-notes"></a>
 ## Storage > Object Storage > Release Notes { #storage-object-storage-release-notes }
 
+<a id="august-25-2026"></a>
+## August 25, 2026 { #august-25-2026 }
+<a id="august-25-2026-added-features"></a>
+### Added Features { #august-25-2026-added-features }
+* [Console] Added features to view task history and stop tasks
+    * Added features to view the history of empty container, copy/move/delete object tasks, and stop tasks.
+* [API] Added the feature for container configuration using container policy documents
+    * Added support for access policy, CORS, and object lock container settings.
+
+<a id="august-25-2026-feature-updates"></a>
+### Feature Updates { #august-25-2026-feature-updates }
+* [API] Improved Amazon S3 API compatibility
+    * Added support for creating and configuring lock containers.
+
 <a id="may-27-2026"></a>
 ## May 27, 2026 { #may-27-2026 }
-<a id="added-features"></a>
-### Added Features { #added-features }
+<a id="may-27-2026-added-features"></a>
+### Added Features { #may-27-2026-added-features }
 * [Console] Added features to configure lifecycle rules and apply them in bulk
-* [API] Added the feature for container configuration with container policy documents
+* [API] Added the feature for container configuration using container policy documents
     * Added support for configuring lifecycle rules.
+
+<a id="may-27-2026-feature-updates"></a>
+### Feature Updates { #may-27-2026-feature-updates }
 * [API] Improved Amazon S3 API compatibility
     * Added support for domain-style (Virtual Hosted Domain) endpoints.
-    * Added support for integrity verification for upload with Trailing Checksum.
+    * Added support for integrity verification for upload using Trailing Checksum.
     * Added support for CORS Preflight requests.
 
 <a id="july-29-2025"></a>
 ## July 29, 2025 { #july-29-2025 }
-<a id="limiting-policy"></a>
-### Limiting Policy { #limiting-policy }
-* [API] Added the write request rate limit
+<a id="july-29-2025-feature-updates"></a>
+### Feature Updates { #july-29-2025-feature-updates }
+* [API] Added a write request rate limit policy
     * A rate limiting policy is applied to write requests that exceed 500 requests per second, per storage account.
 
 <a id="may-27-2025"></a>
@@ -28,13 +45,13 @@
 ### Added Features { #may-27-2025-added-features }
 * [Console] Added the feature to resume/suspend container replication
 
-<a id="feature-updates"></a>
-### Feature Updates { #feature-updates }
+<a id="may-27-2025-feature-updates"></a>
+### Feature Updates { #may-27-2025-feature-updates }
 * [API] Improved Amazon S3 API compatibility
     * Fixed issue where the LastModified value of each objects in the object list was displayed to the nearest millisecond
 
-<a id="bug-fixes"></a>
-### Bug Fixes { #bug-fixes }
+<a id="may-27-2025-bug-fixes"></a>
+### Bug Fixes { #may-27-2025-bug-fixes }
 * [API] Fixed issue where multipart uploads to buckets with object locks using Amazon S3 compatible APIs would cause requests to fail and existing part objects to be deleted
 
 <a id="august-27-2024"></a>
@@ -42,7 +59,7 @@
 <a id="august-27-2024-feature-updates"></a>
 ### Feature Updates { #august-27-2024-feature-updates }
 * [Console][API] Added service gateway IP access control settings
-    * You can handle IP ACL exceptions for requests through the service gateway
+    * You can handle IP ACL exceptions for requests using the service gateway
 * [Console] Added the feature for replication to a different project in the same organization
 * [API] Improved Amazon S3 API compatibility
     * Improved response compatibility for the following errors
@@ -73,7 +90,7 @@
 <a id="february-27-2024-added-features"></a>
 ### Added Features { #february-27-2024-added-features }
 * [Console][API] Added object upload policy configuration feature
-* [Console][API] Added the feature to empty containers
+* [Console] Added the feature to empty containers
 
 <a id="february-27-2024-feature-updates"></a>
 ### Feature Updates { #february-27-2024-feature-updates }

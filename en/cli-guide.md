@@ -17,8 +17,8 @@ python-swiftclient is provided as a Python package. Install it using pip.
 pip install python-swiftclient python-keystoneclient
 ```
 
-> [Note]
-> Python 3.6 or later is required. If Python is not installed, refer to the [Python download page](https://www.python.org/downloads/) for installation instructions.
+!!! tip "Note"
+    Python 3.6 or later is required. If Python is not installed, refer to the [Python download page](https://www.python.org/downloads/) for installation instructions.
 
 Once the installation is complete, you can verify it with the following command.
 
@@ -54,13 +54,13 @@ export OS_REGION_NAME=<Region name>
 
 <br/>
 
-> [Caution]
-> Object Storage has a different tenant ID from the basic infrastructure service. Click the **API Endpoint Settings** button on the Object Storage service page to verify.
+!!! danger "Caution"
+    Object Storage has a different tenant ID from the basic infrastructure service. Click the **API Endpoint Settings** button on the Object Storage service page to verify.
 
 <!-- 개행을 위한 주석 -->
 
-> [Note]
-> The API password can be configured by clicking the **API Endpoint Settings** button on the Object Storage service page.
+!!! tip "Note"
+    The API password can be configured by clicking the **API Endpoint Settings** button on the Object Storage service page.
 
 <br/>
 
@@ -160,8 +160,8 @@ Applying the output environment variables to the shell allows subsequent command
 $ eval $(swift auth)
 ```
 
-> [Note]
-> Authentication tokens have an expiration time. If a request fails due to a token expiry, run `eval $(swift auth)` again to renew it.
+!!! tip "Note"
+    Authentication tokens have an expiration time. If a request fails due to a token expiry, run `eval $(swift auth)` again to renew it.
 
 <br/>
 
@@ -495,10 +495,10 @@ swift post [<options>] <container>
 
 <br/>
 
-> [Note]
-> For ACL setting values, see the [Access policy configuration guide](acl-guide/).
->
-> For the list of headers that can be set with the `--header` option, see the [Change container settings](api-guide/#change-container-settings) section in the API guide.
+!!! tip "Note"
+    For ACL setting values, see the [Access policy configuration guide](acl-guide/).
+
+    For the list of headers that can be set with the `--header` option, see the [Change container settings](api-guide/#change-container-settings) section in the API guide.
 
 <br/>
 

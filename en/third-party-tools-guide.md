@@ -46,8 +46,8 @@ To connect to object storage, you must create a bookmark that stores connection 
   </tr>
 </table>
 
-> [Note] 
-> See [Set the API Password](api-guide/#set-the-api-password) in the API guide for information on how to set API passwords.
+!!! tip "Note"
+    See [Authentication and Authorization](api-guide/#auth) in the API guide for information on how to set API passwords.
 
 <a id="cyberduck-connect-object-storage"></a>
 ### Connect Object Storage { #cyberduck-connect-object-storage }
@@ -59,42 +59,42 @@ Double-click the bookmark you want to connect in order to access object storage.
 
 When accessing object storage, a list of containers for **All Regions** appears in the browser. You can retrieve a list of objects in a container by double-clicking the desired container.
 
-> [Note] 
-> If there are containers with the same name in different regions, multiple containers with the same name are displayed. 
-> Select **View > Column > Region** from the menu to display regions in the column entry.
+!!! tip "Note"
+    If there are containers with the same name in different regions, multiple containers with the same name are displayed.
+    Select **View > Column > Region** from the menu to display regions in the column entry.
 
 <a id="cyberduck-create-container"></a>
 ### Create Container { #cyberduck-create-container }
 
 You can create a new container by right-clicking an empty space in the container list and selecting **New Folder...**. After entering the container's name and region, click the **Create** button to create a container.
 
-> [Note] 
->  You can refresh the container list by right-clicking an empty space in the list and selecting **View Again**.
+!!! tip "Note"
+    You can refresh the container list by right-clicking an empty space in the list and selecting **View Again**.
 
 <a id="cyberduck-upload-object"></a>
 ### Upload Object { #cyberduck-upload-object }
 
 Select a container and click **Action** > **Upload…** at the top of the browser, or right-click the object list and click **Upload…** to select and upload the file.
 
-> [Note] 
-> If you upload or create a folder with Cyberduck, another 0 byte object with the same folder name is created. The object can be found with the console or object storage API and can be deleted.
+!!! tip "Note"
+    If you upload or create a folder with Cyberduck, another 0 byte object with the same folder name is created. The object can be found with the console or object storage API and can be deleted.
 
 <a id="cyberduck-download-object"></a>
 ### Download Object { #cyberduck-download-object }
 
 Select and right-click an object to download, select **Download**. You can download the object by dragging and dropping.
 
-> [Note] 
-> When you download an object, it is saved to your local **Downloads** folder by default. Right-click it and select **Download to Specified Location** to download to the specified path.
-> When uploading or downloading an object, the **Send** window pops up to check the progress.
+!!! tip "Note"
+    When you download an object, it is saved to your local **Downloads** folder by default. Right-click it and select **Download to Specified Location** to download to the specified path.
+    When uploading or downloading an object, the **Send** window pops up to check the progress.
 
 <a id="cyberduck-delete-container"></a>
 ### Delete Container { #cyberduck-delete-container }
 
 Select the container to delete and right-click and select **Delete** to delete it.
 
-> [Caution] 
-> When deleting containers, all objects in the containers are deleted.
+!!! danger "Caution"
+    When deleting containers, all objects in the containers are deleted.
 
 <a id="cyberduck-delete-object"></a>
 ### Delete Object { #cyberduck-delete-object }
@@ -122,8 +122,8 @@ Upload files that are changed or added in your local to object storage.
 
 Compare local and object storage to upload or download changed or missing files or objects.
 
-> [Note] 
-> For more information on synchronization, see [Cyberduck Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders).
+!!! tip "Note"
+    For more information on synchronization, see [Cyberduck Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders).
 
 <a id="terraform"></a>
 ## Terraform { #terraform }
@@ -150,8 +150,8 @@ resource "nhncloud_objectstorage_object_v1" "object_1" {
 }
 ```
 
-> [Note]
-> For information on how to specify explicit resource dependencies, see [Terraform's Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) documentation.
+!!! tip "Note"
+    For information on how to specify explicit resource dependencies, see [Terraform's Resource dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies) documentation.
 
 <a id="terraform-resources-object-storage"></a>
 ### Resources - Object Storage { #terraform-resources-object-storage }
@@ -187,7 +187,7 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 | Name | Type | Required | Description |
 | ---- | ---- | ---- | ---- |
 | region | String | | Region to manage NHN Cloud resources |
-| name | String | O | Container name |
+| name | String | Y | Container name |
 | container_read | String | | Sets the role-based access rules for container read |
 | container_write | String | | Role-based access rules for container writes |
 | force_destroy | Boolean | | Whether to force container deletion, `true` or `false`<br>You can't recover objects that were deleted together. |
