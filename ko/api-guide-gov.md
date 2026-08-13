@@ -22,7 +22,7 @@ API를 사용하려면 API 엔드포인트와 토큰이 필요합니다. [IaaS �
 ### 인증 및 권한 { #auth }
 
 오브젝트 스토리지는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
-IaaS 토큰 발급 및 사용에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-gov/)을 참고합니다.
+IaaS 토큰 발급 및 사용 방법에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token-gov/)을 참고합니다.
 
 !!! danger "주의"
     오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다.
@@ -263,7 +263,7 @@ X-Auth-Token: {token-id}
 
 <a id="query-the-storage-account-response"></a>
 #### 응답
-응답 본문을 반환하지 않습니다. 사용 현황은 헤더에 포함되어 있습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 사용 현황은 헤더에 포함되어 있습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
@@ -626,7 +626,7 @@ X-Auth-Token: {token-id}
 
 <a id="create-a-container-response"></a>
 #### 응답
-응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 컨테이너가 생성되었다면 상태 코드 201을 반환합니다.
 
 <a id="create-a-container-code-example"></a>
 #### 코드 예시
@@ -820,13 +820,13 @@ X-Auth-Token: {token-id}
 
 <a id="list-objects-over-10k"></a>
 ##### 1만 개 이상의 오브젝트 목록 조회
-컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 사용해야 합니다. marker 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다.
+컨테이너 조회 API로 조회할 수 있는 목록의 오브젝트 수는 1만 개로 제한되어 있습니다. 1만 개 이상의 오브젝트 목록을 조회하려면 `marker` 질의를 사용해야 합니다. `marker` 질의는 지정한 오브젝트의 다음 오브젝트부터 최대 1만 개의 목록을 반환합니다.
 
 <br>
 
 <a id="list-objects-with-a-prefix"></a>
 ##### 접두사로 시작하는 오브젝트 목록 조회
-`prefix` 질의를 사용하면 지정한 접두사로 시작하는 오브젝트 목록을 반환합니다. prefix 질의를 통해 하위 폴더의 오브젝트 목록을 조회할 수 있습니다.
+`prefix` 질의를 사용하면 지정한 접두사로 시작하는 오브젝트 목록을 반환합니다. `prefix` 질의를 통해 하위 폴더의 오브젝트 목록을 조회할 수 있습니다.
 
 <br>
 
@@ -1035,7 +1035,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 | X-Container-View | Header | String | N | 컨테이너 조회에 대한 역할 기반 접근 규칙 설정 |
 | X-Container-Ip-Acl-Allowed-List | Header | String | N | 컨테이너 접근에 대한 IP 기반 접근 규칙 설정 |
 | X-Container-Ip-Acl-Denied-List | Header | String | N | 컨테이너 접근에 대한 IP 기반 접근 규칙 설정 |
-| X-Container-Ip-Acl-Service-Gateway-Control | Header | String | N | 서비스 게이트웨이를 통한 요청의 접근 권한 설정, `read`, `write`, `rw`, `deny` |
+| X-Container-Ip-Acl-Service-Gateway-Control | Header | String | N | 서비스 게이트웨이 요청의 접근 권한 설정, `read`, `write`, `rw`, `deny` |
 | X-Container-Object-Lifecycle | Header | Integer | N | 컨테이너의 기본 오브젝트 수명 주기를 일 단위로 설정 |
 | X-Container-Object-Transfer-To | Header | String | N | 오브젝트의 수명 주기가 만료되었을 때 이동할 컨테이너 |
 | X-History-Location | Header | String | N | 오브젝트의 이전 버전을 보관할 컨테이너를 설정 |
@@ -1126,7 +1126,7 @@ https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_6dbc368b94894416b
 브라우저에서 CORS를 허용한 사이트로 이동한 뒤 다음 스크립트를 실행합니다. 스크립트는 브라우저가 제공하는 개발자 도구의 콘솔에서 실행할 수 있습니다.
 
 <br>
-예) `https://example.com/`
+예: `https://example.com/`
 
 ```
 var token = "****";
@@ -1299,7 +1299,7 @@ The object name must not contain the following keywords: example
 
 <a id="change-container-settings-response"></a>
 #### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 <br>
 
 <a id="change-container-settings-code-example"></a>
@@ -1459,7 +1459,7 @@ X-Auth-Token: {token-id}
 
 <a id="delete-a-container-response"></a>
 #### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 <br>
 
@@ -1612,12 +1612,12 @@ Content-Type: {content-type}
 <br>
 
 !!! danger "주의"
-    오브젝트의 이름이 `./` 또는 `../`로 시작한다면 브라우저가 이를 경로 문자로 인식해 웹 콘솔에서 접근할 수 없습니다.
+    오브젝트의 이름이 `./` 또는 `../`로 시작한다면 브라우저가 이를 경로 문자로 인식해 콘솔에서 접근할 수 없습니다.
     API를 사용하여 이러한 이름의 오브젝트를 업로드했다면 API로 접근해야 합니다.
 
 <a id="upload-an-object-response"></a>
 #### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 <a id="upload-an-object-code-example"></a>
 #### 코드 예시
@@ -1833,20 +1833,20 @@ Content-Type: {content-type}
 
 ##### 요청
 
-| 이름 | 종류 | 형식 | 필수 | 설명 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | Y | 토큰 ID |
-| Content-Type | Header | String | Y | 오브젝트의 콘텐츠 타입 |
+| 이름 | 종류 | 형식 | 필수 | 설명                               |
+|---|---|---|---|----------------------------------|
+| X-Auth-Token | Header | String | Y | 토큰 ID                            |
+| Content-Type | Header | String | Y | 오브젝트의 콘텐츠 타입                     |
 | Account | URL | String | Y | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
-| Container | URL | String | Y | 컨테이너 이름 |
-| Object | URL | String | Y | 생성할 오브젝트 이름 |
-| Count | URL | String | Y | 분할한 오브젝트의 순번, 예) 001, 002 |
-| - | Body | Binary | Y | 분할한 오브젝트의 내용 |
+| Container | URL | String | Y | 컨테이너 이름                          |
+| Object | URL | String | Y | 생성할 오브젝트 이름                      |
+| Count | URL | String | Y | 분할한 오브젝트의 순번, 예: 001, 002        |
+| - | Body | Binary | Y | 분할한 오브젝트의 내용                     |
 
 <br>
 
 ##### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 <br>
 
@@ -1926,7 +1926,7 @@ X-Auth-Token: {token-id}
 <br>
 
 ##### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 <br>
 
@@ -2195,7 +2195,7 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 
 <a id="update-an-object"></a>
 ### 오브젝트 내용 수정 { #update-an-object }
-오브젝트 업로드 API와 같습니다. 다만 같은 이름의 오브젝트가 이미 컨테이너에 있으면 그 오브젝트의 내용을 수정합니다.
+오브젝트 업로드 API와 같습니다. 다만 같은 이름의 오브젝트가 이미 컨테이너에 있으면 그 오브젝트의 내용을 덮어씁니다.
 
 ```
 PUT /v1/{Account}/{Container}/{Object}
@@ -2219,7 +2219,7 @@ Content-Type: {content-type}
 
 <a id="update-an-object-response"></a>
 #### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 <br>
 
@@ -2245,7 +2245,7 @@ X-Auth-Token: {token-id}
 
 <a id="query-object-information-response"></a>
 #### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 200을 반환합니다.
 
 | 이름 | 종류 | 형식 | 설명 |
 |---|---|---|---|
@@ -2537,7 +2537,7 @@ X-Copy-From: {SourceContainer}/{SourceObject}; multipart-manifest=get
 
 <a id="copy-an-object-response"></a>
 #### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 201을 반환합니다.
 
 <a id="copy-an-object-code-example"></a>
 #### 코드 예시
@@ -2721,7 +2721,7 @@ X-Object-Meta-{Key}: {Value}
 
 <a id="modify-object-metadata-response"></a>
 #### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 202를 반환합니다.
 
 <a id="modify-object-metadata-code-example"></a>
 #### 코드 예시
@@ -2889,7 +2889,7 @@ X-Auth-Token: {token-id}
 
 <a id="delete-an-object-response"></a>
 #### 응답
-응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
+이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
 <br>
 
@@ -3017,20 +3017,20 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 <a id="request-rate-limit"></a>
 ### 요청 속도 제한 { #request-rate-limit }
-오브젝트 스토리지는 시스템 안정성을 위해 스토리지 계정(account) 단위로 쓰기 요청 속도 제한(rate limit)을 적용합니다.
+오브젝트 스토리지는 시스템 안정성을 유지하고자 스토리지 계정(account) 단위로 쓰기 요청 속도 제한(rate limit)을 적용합니다.
 
 | 구분 | 항목 | 설명 |
 |---|---|---|
 | 제한 조건 | 요청 속도 제한 | 500 요청/초 |
 | 적용 대상 | 적용 단위 | 스토리지 계정(account) 단위 |
-| 적용 대상 | 적용 메서드 | POST: 컨테이너 설정 변경, 오브젝트 속성/메타데이터 수정<br>PUT: 컨테이너 생성, 오브젝트 업로드<br>DELETE: 컨테이너/오브젝트 삭제<br>COPY: 오브젝트 복사 |
+| 적용 대상 | 적용 메서드 | `POST`: 컨테이너 설정 변경, 오브젝트 속성/메타데이터 수정<br>`PUT`: 컨테이너 생성, 오브젝트 업로드<br>`DELETE`: 컨테이너/오브젝트 삭제<br>`COPY`: 오브젝트 복사 |
 | 동작 방식 | 제한 초과 시 처리 방식 | 지연 후 처리, 지연 시간이 60초를 초과하면 429 응답 반환 |
 
 요청 속도 제한을 초과한 쓰기 요청에 적용되는 정책은 다음과 같습니다.
 
 * 초과된 쓰기 요청은 즉시 거부되지 않고 지연 처리됩니다.
 * 지연 시간은 초과 요청량에 따라 점진적으로 증가하며, 최대 60초까지 늘어날 수 있습니다.
-* 지연 시간이 60초를 초과하면 요청은 실패하고 429 Too Many Requests 응답을 반환합니다.
+* 지연 시간이 60초를 초과하면 요청은 실패하고 `429 Too Many Requests` 응답을 반환합니다.
 
 응답 지연이나 실패를 방지하려면 쓰기 요청이 속도 제한을 초과하지 않도록 조정하세요.
 

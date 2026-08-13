@@ -32,10 +32,10 @@
 
 API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Container-View` 속성에 역할 기반 접근 정책 요소를 입력하면 여러 가지 상황에 맞게 접근 정책을 설정할 수 있습니다. 각 속성은 다음과 같습니다.
 
-| 속성 | 설명 |
-| --- | --- |
-| X-Container-Read | 컨테이너 정보 조회와 컨테이너 내 오브젝트 정보 조회 및 다운로드를 허용합니다. 컨테이너 및 오브젝트에 대한 GET, HEAD 요청이 해당됩니다. |
-| X-Container-Write | 컨테이너 내 오브젝트 변경 요청을 허용합니다. 오브젝트에 대한 PUT, POST, DELETE, COPY 요청이 해당됩니다. |
+| 속성 | 설명                                                                                       |
+| --- |------------------------------------------------------------------------------------------|
+| X-Container-Read | 컨테이너 정보 조회와 컨테이너 내 오브젝트 정보 조회 및 다운로드를 허용합니다. 컨테이너 및 오브젝트의 GET, HEAD 요청이 해당됩니다.           |
+| X-Container-Write | 컨테이너 내 오브젝트 변경 요청을 허용합니다. 오브젝트에 대한 PUT, POST, DELETE, COPY 요청이 해당됩니다.                    |
 | X-Container-View | 컨테이너 내 오브젝트 목록 조회 및 오브젝트의 정보 조회를 허용합니다. 컨테이너에 대한 GET, HEAD 요청 및 오브젝트에 대한 HEAD 요청이 해당됩니다. |
 
 !!! tip "알아두기"
@@ -363,7 +363,7 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-오브젝트에 접근을 요청할 때는 반드시 허가된 테넌트 ID와 API 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
+오브젝트에 접근을 요청할 때는 반드시 허가된 테넌트 ID와 API 사용자 ID로 발급한 유효한 인증 토큰이 필요합니다.
 
 ```
 $ curl -X GET \
@@ -392,7 +392,7 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-오브젝트에 접근을 요청할 때는 반드시 허가된 테넌트 ID와 API 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
+오브젝트에 접근을 요청할 때는 반드시 허가된 테넌트 ID와 API 사용자 ID로 발급한 유효한 인증 토큰이 필요합니다.
 <br><br>
 </details>
 
@@ -407,7 +407,7 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-오브젝트에 접근을 요청할 때는 프로젝트와 관계없이 허가된 API 사용자 ID로 발급받은 유효한 인증 토큰이 필요합니다.
+오브젝트에 접근을 요청할 때는 프로젝트와 관계없이 허가된 API 사용자 ID로 발급한 유효한 인증 토큰이 필요합니다.
 <br><br>
 </details>
 
@@ -439,7 +439,7 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 <a id="ip-based-access-policies"></a>
 ## IP 기반 접근 정책 { #ip-based-access-policies }
 
-콘솔 또는 API를 사용해 화이트리스트와 블랙리스트를 지정하여 특정 IP에서 컨테이너의 읽기/쓰기 접근 권한을 제한할 수 있습니다. 화이트리스트와 블랙리스트를 함께 설정할 수 있지만, 이 경우 화이트리스트만 적용되고 블랙리스트는 무시됩니다. IP 기반 접근 정책은 IPv4만 지원합니다. 서비스 게이트웨이를 통한 요청에는 별도의 예외를 지정할 수 있습니다.
+콘솔 또는 API를 사용해 화이트리스트와 블랙리스트를 지정하여 특정 IP에서 컨테이너의 읽기/쓰기 접근 권한을 제한할 수 있습니다. 화이트리스트와 블랙리스트를 함께 설정할 수 있지만, 이 경우 화이트리스트만 적용되고 블랙리스트는 무시됩니다. IP 기반 접근 정책은 IPv4만 지원합니다. 서비스 게이트웨이 요청에는 별도의 예외를 지정할 수 있습니다.
 
 !!! danger "주의"
     IP 기반 접근 정책은 퍼블릭 IP를 통한 접근을 제어하는 용도입니다. 화이트리스트에 프라이빗 IP만 등록하면 접근할 수 없는 컨테이너가 될 수 있습니다.
@@ -473,7 +473,7 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
 
 API를 사용해 컨테이너의 `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List` 속성에 IP 기반 접근 정책 요소를 입력하면 IP 기반 접근 정책을 활성화할 수 있습니다. `X-Container-Ip-Acl-Allowed-List`는 화이트리스트, `X-Container-Ip-Acl-Denied-List`는 블랙리스트를 의미합니다.
 
-IP 기반 접근 정책이 설정된 컨테이너의 속성을 변경하려면 허가된 테넌트 ID와 API 사용자 ID로 발급받은 유효한 인증 토큰이 필요하며, 허용된 IP에서 요청해야 합니다.
+IP 기반 접근 정책이 설정된 컨테이너의 속성을 변경하려면 허가된 테넌트 ID와 API 사용자 ID로 발급한 유효한 인증 토큰이 필요하며, 허용된 IP에서 요청해야 합니다.
 
 !!! tip "알아두기"
     `X-Container-Ip-Acl-Allowed-List`(화이트리스트)와 `X-Container-Ip-Acl-Denied-List`(블랙리스트)에 설정할 수 있는 정책 요소는 각각 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide-gov/#ip-acl)으로 설정할 때도 동일하게 적용됩니다.
@@ -488,7 +488,7 @@ IP 기반 접근 정책 요소는 접근 권한과 IP 또는 네트워크 대역
 | `w` | 쓰기 권한입니다. PUT, POST, DELETE, COPY 요청이 해당됩니다. |
 | `a` | 읽기와 쓰기 권한을 모두 의미합니다. GET, HEAD, PUT, POST, DELETE, COPY 요청이 해당됩니다. |
 
-서비스 게이트웨이를 통한 요청을 제어하려면 컨테이너의 X-Container-Ip-Acl-Service-Gateway-Control 속성에 권한을 설정합니다. 설정할 수 있는 권한은 다음과 같습니다.
+서비스 게이트웨이 요청을 제어하려면 컨테이너의 X-Container-Ip-Acl-Service-Gateway-Control 속성에 권한을 설정합니다. 설정할 수 있는 권한은 다음과 같습니다.
 
 | 권한 | 설명 |
 | --- | --- |
@@ -537,7 +537,7 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.gov-nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-설정된 IP 기반 접근 정책과 관계없이 서비스 게이트웨이를 통한 요청은 모두 허용합니다.
+설정된 IP 기반 접근 정책과 관계없이 서비스 게이트웨이 요청은 모두 허용합니다.
 
 <br><br>
 </details>

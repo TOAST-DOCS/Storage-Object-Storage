@@ -2,10 +2,10 @@
 
 <a id="storage-object-storage-troubleshooting-guide"></a>
 ## Storage > Object Storage > 문제 해결 가이드 { #storage-object-storage-troubleshooting-guide }
-이 문서는 NHN Cloud 오브젝트 스토리지를 사용하면서 겪을 수 있는 다양한 문제들을 해결하는 방법을 설명합니다.
+이 문서는 NHN Cloud 오브젝트 스토리지를 사용하면서 겪을 수 있는 다양한 문제를 해결하는 방법을 설명합니다.
 
 <a id="jdk-ssl-error"></a>
-### JDK를 사용하는 애플리케이션에서 오브젝트 스토리지에 접근하면 SSL 오류가 발생합니다 { #jdk-ssl-error }
+### JDK를 사용하는 애플리케이션의 오브젝트 스토리지 접근 시 SSL 오류 발생 { #jdk-ssl-error }
 
 ```
 peer not authenticated; nested exception is javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated
@@ -13,14 +13,15 @@ peer not authenticated; nested exception is javax.net.ssl.SSLPeerUnverifiedExcep
 
 JDK 11.0.2에서 TLS 1.3을 사용할 때 발생할 수 있는 JDK 버그입니다.
 
-JDK를 11.0.3 이상 버전으로 업데이트하거나 애플리케이션을 실행할 때 다음과 같이 TLS 1.2를 사용하도록 옵션을 추가해야 합니다.
+1. JDK를 11.0.3 이상 버전으로 업데이트합니다.
+2. 또는 애플리케이션을 실행할 때 다음과 같이 TLS 1.2를 사용하도록 옵션을 추가합니다.
 
 ```
 java -Djdk.tls.client.protocols=TLSv1.2 -jar
 ```
 
 <a id="multipart-upload-korean-filename-error"></a>
-### Windows 환경에서 이름에 한글이 포함된 파일을 멀티파트 업로드하면 실패합니다 { #multipart-upload-korean-filename-error }
+### Windows 환경에서 한글 파일명의 멀티파트 업로드 실패 { #multipart-upload-korean-filename-error }
 
 Windows OS의 기본 한글 인코딩 방식은 유니코드가 아닌 CP949 형식입니다. 한글이 포함된 이름을 가진 파일을 멀티파트 업로드할 때 인코딩 방식의 차이로 인해 매니페스트 오브젝트를 구성하는 단계에서 오류 응답을 받을 수 있습니다. 특히 시스템의 기본 인코딩 설정을 따르는 Cyberduck 등의 서드파티 도구를 사용할 때 발생할 수 있습니다.
 

@@ -35,7 +35,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
   </tr>
   <tr>
     <td rowspan="2">Tenant ID:Access Key</td>
-    <td><b>Tenant ID</b>: 사용자의 프로젝트 ID입니다. 웹 콘솔의 <b>프로젝트 관리 > 프로젝트 기본 정보</b>에서 확인할 수 있습니다.</td>
+    <td><b>Tenant ID</b>: 사용자의 프로젝트 ID입니다. 콘솔의 <b>프로젝트 관리 > 프로젝트 기본 정보</b>에서 확인할 수 있습니다.</td>
   </tr>
   <tr>
     <td><b>Access ID</b>: NHN Cloud 계정 ID(이메일 형식) 또는 IAM 계정 ID를 입력합니다.</td>
@@ -123,7 +123,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 로컬과 오브젝트 스토리지를 비교하여 변경되거나 누락된 파일 또는 오브젝트를 업로드하거나 다운로드합니다.
 
 !!! tip "알아두기"
-    동기화에 대한 더 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고합니다.
+    동기화 방법에 관한 더 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고합니다.
 
 <a id="reference"></a>
 ## 참고 사이트 { #reference }

@@ -39,7 +39,7 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 
 <a id="obtain-s3-api-credentials"></a>
 ### S3 API 자격 증명 발급 { #obtain-s3-api-credentials }
-Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 사용하여 발급받을 수 있습니다. 웹 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide-ncgn/#s3-api-credentials) 항목을 참고합니다.
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide-ncgn/#s3-api-credentials) 항목을 참고합니다.
 
 API를 사용하여 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide-ncgn/#auth)를 참고합니다.
 
@@ -217,7 +217,7 @@ AWS signature V4 서명 생성 시 `x-amz-content-sha256` 헤더가 필요합니
 | `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload 방식(각 청크에 서명 포함 + 트레일러 헤더 사용) |
 
 !!! tip "알아두기"
-    자세한 내용은 [Authenticating Requests: Using the Authorization Header (AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) 문서를 참고합니다.
+    자세한 내용은 [Authenticating Requests: Using the Authorization Header(AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) 문서를 참고합니다.
 
 x-amz-content-sha256 값이 `STREAMING-UNSIGNED-PAYLOAD-TRAILER` 또는 `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER`인 경우 `x-amz-trailer` 요청 헤더로 트레일러에 전송할 체크섬 알고리즘을 선언해야 합니다. 지원하는 알고리즘은 다음과 같습니다.
 
@@ -230,7 +230,7 @@ x-amz-content-sha256 값이 `STREAMING-UNSIGNED-PAYLOAD-TRAILER` 또는 `STREAMI
 | `x-amz-checksum-sha256` | SHA-256 |
 
 !!! tip "알아두기"
-    트레일러 헤더를 사용한 서명 계산에 대한 자세한 내용은 [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) 문서를 참고합니다.
+    트레일러 헤더를 사용한 서명 계산 방법에 관한 자세한 내용은 [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) 문서를 참고합니다.
 
 <a id="bucket"></a>
 ## 버킷(Bucket) { #bucket }
@@ -255,7 +255,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 !!! tip "알아두기"
-    웹 콘솔 또는 오브젝트 스토리지 API로 생성한 컨테이너(버킷)의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
+    콘솔 또는 오브젝트 스토리지 API로 생성한 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
 <a id="create-bucket-request"></a>
 #### 요청
@@ -337,7 +337,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 !!! tip "알아두기"
-    웹 콘솔 또는 오브젝트 스토리지 API를 통해 생성한 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
+    콘솔 또는 오브젝트 스토리지 API를 사용하여 생성한 컨테이너의 이름이 버킷 명명 규칙에 위배되면 S3 호환 API로는 접근할 수 없습니다.
 
 <a id="get-bucket-request"></a>
 #### 요청

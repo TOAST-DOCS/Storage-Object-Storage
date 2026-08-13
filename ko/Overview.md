@@ -19,8 +19,8 @@
 컨테이너별로 접근 권한을 제어할 수 있습니다. 누구나 조회할 수 있도록 퍼블릭으로 설정할 수도 있고, 역할 기반 접근 제어(RBAC)를 사용하여 NHN Cloud의 프로젝트 또는 개별 사용자 단위로 읽기/쓰기 권한을 차등 부여할 수 있습니다.
 
 <a id="convenient-web-console"></a>
-### 편리한 웹 콘솔 { #convenient-web-console }
-사용자 편의를 위해 익숙한 계층적 디렉터리 구조로 데이터를 관리할 수 있는 웹 콘솔을 제공합니다. 컨테이너 내에 가상의 폴더를 만들어 오브젝트들을 그룹화하여 관리할 수 있습니다.
+### 편리한 콘솔 { #convenient-web-console }
+사용자 편의를 위해 익숙한 계층적 디렉터리 구조로 데이터를 관리할 수 있는 콘솔을 제공합니다. 컨테이너 내에 가상의 폴더를 만들어 오브젝트들을 그룹화하여 관리할 수 있습니다.
 
 <a id="rest-api"></a>
 ### REST API { #rest-api }
@@ -28,7 +28,7 @@
 
 <a id="amazon-s3-compatible-api"></a>
 ### Amazon S3 호환 API { #amazon-s3-compatible-api }
-Amazon S3와 호환되는 API를 제공합니다. S3 호환 API를 사용하여 Amazon Web Service 소프트웨어 개발 키트(SDK) 기반의 애플리케이션과 다양한 서드파티 도구를 사용할 수 있습니다.
+Amazon S3와 호환되는 API를 제공합니다. S3 호환 API를 사용하여 Amazon Web Services 소프트웨어 개발 키트(SDK) 기반의 애플리케이션과 다양한 서드파티 도구를 사용할 수 있습니다.
 
 <a id="life-cycle-control"></a>
 ### 수명 주기 제어 { #life-cycle-control }
@@ -52,7 +52,7 @@ Amazon S3와 호환되는 API를 제공합니다. S3 호환 API를 사용하여 
 
 <a id="convenient-cloud-accessibility"></a>
 ### 편리한 클라우드 접근성 { #convenient-cloud-accessibility }
-NHN Cloud의 Service Gateway 서비스를 통해 외부 네트워크와 격리된 사용자 VPC 내 인스턴스에서 사설 네트워크를 통해 오브젝트 스토리지에 접근할 수 있습니다.
+NHN Cloud의 Service Gateway를 통해 외부 네트워크와 격리된 사용자 VPC 내 인스턴스에서 사설 네트워크를 통해 오브젝트 스토리지에 접근할 수 있습니다.
 
 <a id="access-history"></a>
 ### 접근 기록 { #access-history }

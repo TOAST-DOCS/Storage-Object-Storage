@@ -360,7 +360,7 @@ swift upload --segment-size <size> [--segment-container <segment-container>] <co
 
 <br>
 
-`--segment-container`를 지정하지 않으면 `<container>_segments`라는 이름의 컨테이너를 만들고 세그먼트 오브젝트를 업로드합니다.
+`--segment-container`를 지정하지 않으면 `<container>_segments`라는 이름의 컨테이너를 생성하고 세그먼트 오브젝트를 업로드합니다.
 
 ```bash
 $ swift upload --segment-size 10m media test.mp4

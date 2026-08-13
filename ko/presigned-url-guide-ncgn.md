@@ -52,7 +52,7 @@ https://{endpoint}/my-container/cat.jpg
 | 구성 요소 | 필수 | 설명 |
 | --- | --- | --- |
 | Object URL | Y | 오브젝트의 전체 경로 URL(path-style: `https://{endpoint}/{bucket}/{object}`) |
-| X-Amz-Algorithm | Y | AWS Signature 버전과 알고리즘 식별. SigV4에서는 AWS4-HMAC-SHA256으로 설정 |
+| X-Amz-Algorithm | Y | AWS Signature 버전과 알고리즘 식별. SigV4에서는 `AWS4-HMAC-SHA256`으로 설정 |
 | X-Amz-Credential | Y | Access Key ID와 서명이 유효한 scope(리전·서비스)를 제공. 형식: `{access-key-id}/{date}/{region}/{service}/aws4_request` (서비스는 `s3`, 리전은 `kr1` 등). URL에서 `/`는 `%2F`로 인코딩 |
 | X-Amz-Date | Y | 요청 일시. ISO 8601 `yyyyMMddTHHmmssZ` 형식(UTC)으로 표현<br>예: `20260601T223241Z` |
 | X-Amz-Expires | Y | 서명된 URL이 유효한 기간(초). 최소 `1`, 최대 `604800`(7일) |
@@ -105,7 +105,7 @@ X-Container-Meta-Temp-URL-Key: {key}
 !!! tip "알아두기"
     오브젝트 스토리지는 스토리지 계정당 2개, 컨테이너당 2개의 비밀 키 값을 저장할 수 있습니다.
 
-    요청을 검증할 때 오브젝트 스토리지는 모든 키의 서명을 확인합니다. 각 레벨에서 키를 2개 사용하면, 기존 TempURL을 무효화하지 않고도 키를 교체(rotation)할 수 있습니다.
+    요청을 검증할 때 오브젝트 스토리지는 모든 키의 서명을 확인합니다. 각 레벨에서 키를 2개 사용하면, 기존 TempURL을 유지한 채로 키를 교체(rotation)할 수 있습니다.
 
 Swift CLI를 사용하면 다음과 같이 비밀 키를 설정할 수 있습니다.
 
@@ -122,7 +122,7 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # 컨테이너 단위 설정
 <a id="obtain-s3-credentials"></a>
 ### S3 API 자격 증명 발급 { #obtain-s3-credentials }
 
-S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명(Access Key ID + Secret Access Key)을 발급받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 사용하여 발급받을 수 있습니다. 웹 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide-ncgn/#s3-api-credentials) 항목을 참고합니다.
+S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명(Access Key ID + Secret Access Key)을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide-ncgn/#s3-api-credentials) 항목을 참고합니다.
 
 ```http
 POST https://api-identity-infrastructure.gncloud.go.kr/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -151,7 +151,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
-`aws` CLI 또는 SDK로 서명을 생성하려면, 발급받은 자격 증명을 로컬에 설정해야 합니다. 자세한 내용은 [Amazon S3 호환 API 가이드](s3-api-guide-ncgn/#aws-command-line-interface-configuration) 설정 항목을 참고합니다.
+`aws` CLI 또는 SDK로 서명을 생성하려면, 발급한 자격 증명을 로컬에 설정해야 합니다. 자세한 내용은 [Amazon S3 호환 API 가이드](s3-api-guide-ncgn/#aws-command-line-interface-configuration) 설정 항목을 참고합니다.
 
 <br>
 
@@ -314,7 +314,7 @@ $ swift tempurl PUT 3600 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/
 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=b1c4e9f2a8d7035641c2e9d8f4b1a7d063c5e8f9a2b1d4e70f3a8c1d9e2b5f40&temp_url_expires=1772755199
 ```
 
-TempURL을 생성하려면 이 경로 앞에 오브젝트 스토리지 호스트 이름을 붙입니다. 다음과 같습니다.
+TempURL을 생성하려면 이 경로 앞에 오브젝트 스토리지 호스트 이름을 붙입니다.
 
 ```bash
 https://api-object-storage.gncloud.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e4790a1b2c3d4e5f60718293a4b5&temp_url_expires=1772755199
@@ -325,7 +325,7 @@ https://api-object-storage.gncloud.go.kr/v1/AUTH_6dbc368b94894416bec4cdfc65b5e06
 <a id="create-aws-cli"></a>
 ### AWS CLI 사용 { #create-aws-cli }
 
-`aws` CLI로 서명을 생성하려면, [S3 API 자격 증명 발급](#obtain-s3-credentials)에서 발급받은 Access Key와 Secret Key를 로컬에 설정해야 합니다.
+`aws` CLI로 서명을 생성하려면, [S3 API 자격 증명 발급](#obtain-s3-credentials)에서 발급한 Access Key와 Secret Key를 로컬에 설정해야 합니다.
 
 ```bash
 aws s3 presign s3://my-container/cat.jpg \
