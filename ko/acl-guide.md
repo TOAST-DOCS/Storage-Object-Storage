@@ -1,3 +1,5 @@
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=13e8165cba5c -->
 
 <a id="storage-object-storage-acl-configuration-guide"></a>
@@ -13,7 +15,7 @@
 <a id="role-based-access-console"></a>
 ### 콘솔 { #role-based-access-console }
 
-콘솔에서는 [컨테이너 생성](console-guide/#create-container) 대화 상자 또는 [컨테이너 관리](console-guide/#manage-container) 창의 컨테이너 접근 정책 설정 대화 상자에서 컨테이너 접근 정책을 선택할 수 있습니다. 선택할 수 있는 정책은 `PRIVATE`과 `PUBLIC` 두 가지로 제한됩니다.
+콘솔에서는 [컨테이너 생성](console-guide$[ file_suffix ]$/#create-container) 대화 상자 또는 [컨테이너 관리](console-guide$[ file_suffix ]$/#manage-container) 창의 컨테이너 접근 정책 설정 대화 상자에서 컨테이너 접근 정책을 선택할 수 있습니다. 선택할 수 있는 정책은 `PRIVATE`과 `PUBLIC` 두 가지로 제한됩니다.
 
 <a id="role-based-access-private"></a>
 #### PRIVATE
@@ -39,7 +41,7 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 | X-Container-View | 컨테이너 내 오브젝트 목록 조회 및 오브젝트의 정보 조회를 허용합니다. 컨테이너에 대한 GET, HEAD 요청 및 오브젝트에 대한 HEAD 요청이 해당됩니다. |
 
 !!! tip "알아두기"
-    `X-Container-Read`, `X-Container-Write`, `X-Container-View`에 설정할 수 있는 접근 정책 요소는 각 속성별로 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#acl)으로 설정할 때도 동일하게 적용됩니다.
+    `X-Container-Read`, `X-Container-Write`, `X-Container-View`에 설정할 수 있는 접근 정책 요소는 각 속성별로 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide$[ file_suffix ]$/#acl)으로 설정할 때도 동일하게 적용됩니다.
 
 <br>
 
@@ -57,7 +59,7 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 
 !!! tip "알아두기"
     `{api-user-id}`는 콘솔의 API 엔드포인트 설정 대화 상자의 **API 사용자 ID** 항목이나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
-    인증 토큰 발급 API를 사용하려면 API 가이드의 [인증 및 권한](api-guide/#auth) 항목을 참고합니다.
+    인증 토큰 발급 API를 사용하려면 API 가이드의 [인증 및 권한](api-guide$[ file_suffix ]$/#auth) 항목을 참고합니다.
 
 !!! tip "알아두기"
     `{tenant-id}:`나 `:{api-user-id}`처럼 콜론의 한쪽이 비어 있는 값, `.`으로 시작하는 값은 사용할 수 없습니다.
@@ -95,7 +97,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read;' \
   -H 'X-Container-Write;' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 !!! tip "알아두기"
@@ -105,7 +107,7 @@ $ curl -i -X POST \
 
 ```
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -115,7 +117,7 @@ $ curl -X GET \
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 [컨테이너의 오브젝트 목록]
 ```
@@ -135,18 +137,18 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .rlistings' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 [컨테이너의 오브젝트 목록]
 ```
@@ -157,18 +159,18 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -194,7 +196,7 @@ HTTP 리퍼러 접근 허용/차단 정책은 입력 순서와 관계없이 차�
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 API 요청 헤더에 허용된 HTTP 리퍼러 주소를 명시해 요청하면 오브젝트에 접근할 수 있습니다.
@@ -202,14 +204,14 @@ API 요청 헤더에 허용된 HTTP 리퍼러 주소를 명시해 요청하면 �
 ```
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com/some/path' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -218,21 +220,21 @@ API 요청 헤더에 허용된 리퍼러 주소가 없거나 리퍼러 주소에
 
 ```
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: https://example.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -243,20 +245,20 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://qux.baz.foo.com/some/path' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -266,7 +268,7 @@ $ curl -O -X GET \
 ```
 $ curl -X GET \
   -H 'Referer: https://foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -277,20 +279,20 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:foo.com, .r:.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://baz.foo.com/some/path' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -303,7 +305,7 @@ $ curl -O -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:-bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 HTTP 리퍼러 도메인 이름 앞에 마이너스 기호를 붙여 설정하면 해당 HTTP 리퍼러의 요청을 차단합니다.
@@ -311,7 +313,7 @@ HTTP 리퍼러 도메인 이름 앞에 마이너스 기호를 붙여 설정하�
 ```
 $ curl -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -325,19 +327,19 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .r:-bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 
 
 $ curl -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -360,7 +362,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:{api-user-id}' \
   -H 'X-Container-Write: {tenant-id}:{api-user-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근을 요청할 때는 반드시 허가된 테넌트 ID와 API 사용자 ID로 발급한 유효한 인증 토큰이 필요합니다.
@@ -368,14 +370,14 @@ $ curl -i -X POST \
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 [컨테이너의 오브젝트 목록]
 
 
 $ curl -O -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [오브젝트 다운로드]
 ```
@@ -389,7 +391,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:*' \
   -H 'X-Container-Write: {tenant-id}:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근을 요청할 때는 반드시 허가된 테넌트 ID와 API 사용자 ID로 발급한 유효한 인증 토큰이 필요합니다.
@@ -404,7 +406,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:{api-user-id}' \
   -H 'X-Container-Write: *:{api-user-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근을 요청할 때는 프로젝트와 관계없이 허가된 API 사용자 ID로 발급한 유효한 인증 토큰이 필요합니다.
@@ -419,7 +421,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:*' \
   -H 'X-Container-Write: *:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 오브젝트에 접근을 요청할 때는 반드시 유효한 인증 토큰이 필요합니다.
@@ -476,7 +478,7 @@ API를 사용해 컨테이너의 `X-Container-Ip-Acl-Allowed-List`, `X-Container
 IP 기반 접근 정책이 설정된 컨테이너의 속성을 변경하려면 허가된 테넌트 ID와 API 사용자 ID로 발급한 유효한 인증 토큰이 필요하며, 허용된 IP에서 요청해야 합니다.
 
 !!! tip "알아두기"
-    `X-Container-Ip-Acl-Allowed-List`(화이트리스트)와 `X-Container-Ip-Acl-Denied-List`(블랙리스트)에 설정할 수 있는 정책 요소는 각각 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#ip-acl)으로 설정할 때도 동일하게 적용됩니다.
+    `X-Container-Ip-Acl-Allowed-List`(화이트리스트)와 `X-Container-Ip-Acl-Denied-List`(블랙리스트)에 설정할 수 있는 정책 요소는 각각 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide$[ file_suffix ]$/#ip-acl)으로 설정할 때도 동일하게 적용됩니다.
 
 <br>
 
@@ -504,7 +506,7 @@ IP 기반 접근 정책 요소는 접근 권한과 IP 또는 네트워크 대역
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Allowed-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 192.168.0.1은 읽기 요청만, 192.168.0.2는 쓰기 요청만 할 수 있으며 172.16.0.0/24 대역의 모든 IP는 읽기와 쓰기 요청을 모두 할 수 있습니다. 그 외의 모든 IP는 요청이 거부됩니다.
@@ -519,7 +521,7 @@ $ curl -i -X POST \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Denied-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 192.168.0.1은 읽기 요청이, 192.168.0.2는 쓰기 요청이 거부되며 172.16.0.0/24 대역의 모든 IP는 읽기와 쓰기 요청을 모두 할 수 없습니다. 그 외의 모든 IP는 요청이 허용됩니다.
@@ -534,7 +536,7 @@ $ curl -i -X POST \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Service-Gateway-Control: rw' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 설정된 IP 기반 접근 정책과 관계없이 서비스 게이트웨이 요청은 모두 허용합니다.
@@ -556,7 +558,7 @@ $ curl -i -X POST \
   -H 'X-Container-Ip-Acl-Allowed-List;' \
   -H 'X-Container-Ip-Acl-Denied-List;' \
   -H 'X-Container-Ip-Acl-Service-Gateway-Control;' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 <br><br>

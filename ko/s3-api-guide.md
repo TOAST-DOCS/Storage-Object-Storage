@@ -1,3 +1,5 @@
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=acedf0f45de3 -->
 
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
@@ -39,12 +41,12 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 
 <a id="obtain-s3-api-credentials"></a>
 ### S3 API 자격 증명 발급 { #obtain-s3-api-credentials }
-Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide/#s3-api-credentials) 항목을 참고합니다.
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide$[ file_suffix ]$/#s3-api-credentials) 항목을 참고합니다.
 
-API를 사용하여 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide/#auth)를 참고합니다.
+API를 사용하여 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide$[ file_suffix ]$/#auth)를 참고합니다.
 
 ```
-POST https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
+POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -61,7 +63,7 @@ X-Auth-Token: {token-id}
 
 !!! tip "알아두기"
     `{api-user-id}`는 콘솔의 API 엔드포인트 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
-    인증 토큰 발급 API를 사용하려면 API 가이드의 [인증 및 권한](api-guide/#auth) 항목을 참고합니다.
+    인증 토큰 발급 API를 사용하려면 API 가이드의 [인증 및 권한](api-guide$[ file_suffix ]$/#auth) 항목을 참고합니다.
 
     S3 API 자격 증명은 유효 기간이 없으며, 사용자별로 프로젝트당 최대 3개까지 발급받을 수 있습니다.
 
@@ -120,7 +122,7 @@ X-Auth-Token: {token-id}
 **[Method, URL]**
 
 ```
-GET https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
+GET $[ identity_url ]$/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -173,7 +175,7 @@ X-Auth-Token: {token-id}
 **[Method, URL]**
 
 ```
-DELETE https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE $[ identity_url ]$/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
@@ -203,7 +205,7 @@ S3 API를 사용하려면 자격 증명을 사용하여 서명을 생성해야 �
 | 알고리즘 | AWS4-HMAC-SHA256 |
 | 서명 시각 | YYYYMMDDThhmmssZ 형태 |
 | 서비스 이름 | s3 |
-| 리전 이름 | KR1 - 한국(판교) 리전<br>KR2 - 한국(평촌) 리전<br>KR3 - 한국(광주) 리전<br>JP1 - 일본(도쿄) 리전 |
+| 리전 이름 | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 | 비밀 키 | S3 API 자격 증명 비밀 키 |
 
 AWS signature V4 서명 생성 시 `x-amz-content-sha256` 헤더가 필요합니다. 이 헤더는 정규 요청(Canonical Request)에 포함되어 서명 계산에 사용되며, 헤더 값에 따라 페이로드 처리 방식이 결정됩니다. 사용 가능한 값은 다음과 같습니다.
@@ -685,7 +687,7 @@ GET /{bucket}/{obj}
 요청이 올바르면 상태 코드 200을 반환합니다.
 
 !!! tip "알아두기"
-    Swift TempURL 방식과 언어별 직접 서명 예시 등 자세한 내용은 [서명된 URL 가이드](presigned-url-guide/)를 참고합니다.
+    Swift TempURL 방식과 언어별 직접 서명 예시 등 자세한 내용은 [서명된 URL 가이드](presigned-url-guide$[ file_suffix ]$/)를 참고합니다.
 
 <a id="aws-command-line-interface"></a>
 ## AWS 명령줄 인터페이스(CLI) { #aws-command-line-interface }
@@ -714,7 +716,7 @@ Default output format [None]: json
 |---|---|
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교) 리전<br>KR2 - 한국(평촌) 리전<br>KR3 - 한국(광주) 리전<br>JP1 - 일본(도쿄) 리전 |
+| region name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="how-to-use-the-s3-commands"></a>
 ### S3 명령 사용 방법 { #how-to-use-the-s3-commands }
@@ -725,7 +727,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | 이름 | 설명 |
 |---|---|
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - 한국(판교) 리전<br>https://kr2-api-object-storage.nhncloudservice.com - 한국(평촌) 리전<br>https://kr3-api-object-storage.nhncloudservice.com - 한국(광주) 리전<br>https://jp1-api-object-storage.nhncloudservice.com - 일본(도쿄) 리전 |
+| endpoint | {% for region in regions %}$[ region.endpoint ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 | command | AWS 명령줄 인터페이스 명령 |
 | bucket | 버킷 이름 |
 
@@ -737,7 +739,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 <summary>버킷 생성</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 mb s3://example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
 
@@ -747,7 +749,7 @@ make_bucket: example-bucket
 <summary>버킷 목록 조회</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
 
@@ -757,7 +759,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls
 <summary>버킷 조회</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3://example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -768,7 +770,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3
 <summary>버킷 삭제</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 rb s3://example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 rb s3://example-bucket
 remove_bucket: example-bucket
 ```
 
@@ -782,7 +784,7 @@ remove_bucket: example-bucket
 <code>create-bucket</code> 명령에 <code>--object-lock-enabled-for-bucket</code> 옵션을 사용하면 오브젝트 잠금이 활성화된 버킷을 생성합니다. 기본 보관 기간은 0일로 설정됩니다.
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api create-bucket \
+$ aws --endpoint-url=$[ object_storage_url ]$ s3api create-bucket \
   --bucket example-bucket \
   --object-lock-enabled-for-bucket
 ```
@@ -790,7 +792,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api cr
 기본 보관 기간을 설정하려면 <code>put-object-lock-configuration</code> 명령을 사용합니다.
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api put-object-lock-configuration \
+$ aws --endpoint-url=$[ object_storage_url ]$ s3api put-object-lock-configuration \
     --bucket example-bucket \
     --object-lock-configuration '{
         "ObjectLockEnabled": "Enabled",
@@ -806,7 +808,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api pu
 잠금 설정을 조회하려면 <code>get-object-lock-configuration</code> 명령을 사용합니다.
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api get-object-lock-configuration --bucket example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3api get-object-lock-configuration --bucket example-bucket
 {
     "ObjectLockConfiguration": {
         "ObjectLockEnabled": "Enabled",
@@ -826,7 +828,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api ge
 <summary>오브젝트 업로드</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -846,7 +848,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 <summary>오브젝트 다운로드</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
 
@@ -856,7 +858,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <summary>오브젝트 삭제</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -866,8 +868,8 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 <summary>서명된 URL 생성</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
-https://kr1-api-object-storage.nhncloudservice.com/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=...
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
+$[ object_storage_url ]$/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=...
 ```
 
 </details>
@@ -917,8 +919,8 @@ AWS SDK를 사용하기 위해 필요한 주요 파라미터는 다음과 같습
 |---|---|
 | access | S3 API 자격 증명 접근 키 |
 | secret | S3 API 자격 증명 비밀 키 |
-| region name | KR1 - 한국(판교) 리전<br>KR2 - 한국(평촌) 리전<br>KR3 - 한국(광주) 리전<br>JP1 - 일본(도쿄) 리전 |
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - 한국(판교) 리전<br>https://kr2-api-object-storage.nhncloudservice.com - 한국(평촌) 리전<br>https://kr3-api-object-storage.nhncloudservice.com - 한국(광주) 리전<br>https://jp1-api-object-storage.nhncloudservice.com - 일본(도쿄) 리전 |
+| region name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
+| endpoint | {% for region in regions %}$[ region.endpoint ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="aws-sdk-boto3-python"></a>
 ### Boto3 - Python SDK { #aws-sdk-boto3-python }

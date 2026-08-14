@@ -1,3 +1,5 @@
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=b6b8b52c0876 -->
 
 <a id="storage-object-storage-console-guide"></a>
@@ -10,7 +12,8 @@
 
 <a id="create-container"></a>
 ### 컨테이너 생성 { #create-container }
-컨테이너를 만듭니다. 오브젝트 스토리지에 오브젝트를 업로드하려면 반드시 하나 이상의 컨테이너가 필요합니다. 암호화를 설정하면 업로드한 오브젝트를 자동으로 암호화해 저장합니다.
+컨테이너를 만듭니다. 오브젝트 스토리지에 오브젝트를 업로드하려면 반드시 하나 이상의 컨테이너가 필요합니다.{% if encrypt %} 암호화를 설정하면 업로드한 오브젝트를 자동으로 암호화해 저장합니다.{% endif %}
+
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
     <th>분류</th>
@@ -18,7 +21,8 @@
     <th>설명</th>
   </tr>
   <tr>
-    <td rowspan="5">컨테이너 생성</td>
+    {# EC 존재에 따라 row가 하나 더 생길 수 있음 #}
+    <td rowspan="$[ '5' if ec else '4' ]$">컨테이너 생성</td>
     <td>이름</td>
     <td>컨테이너 이름은 최소 3자에서 최대 63자까지 허용하며, 영문 소문자, 숫자, `-`, `.`, `+`만 입력할 수 있습니다.<br>컨테이너 이름의 시작과 끝은 영문자 또는 숫자로 입력해야 합니다.<br>IP 주소 형식의 이름은 사용할 수 없습니다.</td>
   </tr>
@@ -29,6 +33,7 @@
   <tr>
     <td><b>PUBLIC</b>: 공개 URL을 통해 누구나 컨테이너 내부의 오브젝트에 접근할 수 있습니다.</td>
   </tr>
+  {% if ec %}
   <tr>
     <td rowspan="2">스토리지 클래스</td>
     <td><b>Standard</b>: 기본 클래스입니다.</td>
@@ -36,6 +41,12 @@
   <tr>
     <td><b>Economy</b>: 접근 빈도가 낮은 데이터를 장기 보관하는 데 적합한 클래스입니다.</td>
   </tr>
+  {% else %}
+  <tr>
+    <td>스토리지 클래스</td>
+    <td><b>Standard</b>: 기본 클래스입니다.</td>
+  </tr>
+  {% endif %}
   <tr>
     <td rowspan="2">오브젝트 잠금 설정</td>
     <td>오브젝트 잠금</td>
@@ -45,6 +56,7 @@
     <td>잠금 주기</td>
     <td>오브젝트 잠금 주기를 일 단위로 입력합니다.</td>
   </tr>
+  {% if encrypt %}
   <tr>
     <td rowspan="2">암호화 설정</td>
     <td>암호화</td>
@@ -54,8 +66,10 @@
     <td>대칭 키 ID</td>
     <td>Secure Key Manager에서 관리하는 대칭 키 ID를 입력합니다.</td>
   </tr>
+  {% endif %}
 </table>
 
+{% if ec %}
 <a id="storage-class"></a>
 ### 스토리지 클래스 { #storage-class }
 데이터 접근 빈도, 비용 요구 사항에 따라 스토리지 클래스를 선택할 수 있습니다. 자주 접근하는 데이터를 위한 Standard 클래스와 접근 빈도가 낮은 데이터를 저렴한 요금으로 장기 보관할 수 있는 Economy 클래스를 제공합니다.
@@ -67,10 +81,12 @@
 
     Economy 클래스 컨테이너는 API 요청 1,000건당 요금이 적용됩니다(HEAD/DELETE 요청 제외).
 
+{% endif %}
 <a id="set-object-lock-cycle"></a>
 #### 오브젝트 잠금 설정
 오브젝트 잠금 컨테이너에 업로드한 오브젝트는 WORM(Write-Once-Read-Many) 모델을 사용하여 저장됩니다. 오브젝트 잠금 컨테이너에 업로드한 오브젝트에는 잠금 만료 날짜가 설정됩니다. 각 오브젝트에 설정된 잠금 만료 날짜 이전에는 오브젝트를 덮어쓰거나 삭제할 수 없습니다.
 
+{% if encrypt %}
 <a id="set-object-encryption"></a>
 #### 암호화 설정
 암호화 컨테이너에 업로드하는 오브젝트는 NHN Cloud의 Secure Key Manager 서비스에서 관리하는 대칭 키를 사용해 암호화됩니다. 따라서 암호화 컨테이너를 만들려면 미리 Secure Key Manager 서비스에서 대칭 키를 생성해야 합니다.
@@ -86,6 +102,7 @@
 !!! danger "주의"
     Secure Key Manager 서비스에서 암호화 컨테이너에 설정한 대칭 키를 삭제하면 암호화된 오브젝트를 복호화할 수 없습니다. 대칭 키를 실수로 삭제하지 않도록 주의하여 관리해야 합니다.
 
+{% endif %}
 <a id="empty-a-container"></a>
 ### 컨테이너 비우기 { #empty-a-container }
 선택한 컨테이너 내부의 모든 오브젝트를 삭제합니다.
@@ -110,14 +127,14 @@
 
 <a id="container-basic-info"></a>
 #### 기본 정보
-컨테이너의 기본 정보와 암호화 정보를 확인하고, 접근 정책, 정적 웹사이트, 교차 출처 리소스 공유 등의 설정을 변경할 수 있습니다.
+컨테이너의 $[ "기본 정보와 암호화 정보" if encrypt else "기본 정보" ]$를 확인하고, 접근 정책, 정적 웹사이트, 교차 출처 리소스 공유 등의 설정을 변경할 수 있습니다.
 
 <br>
 
 <a id="set-container-access-policy"></a>
 ##### 컨테이너 접근 정책
 
-기본 접근 정책을 설정하고, 테넌트 또는 개별 사용자 단위로 역할 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참고합니다.
+기본 접근 정책을 설정하고, 테넌트 또는 개별 사용자 단위로 역할 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자세한 내용은 [접근 정책 설정 가이드](acl-guide$[ file_suffix ]$/)를 참고합니다.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -158,7 +175,7 @@
 <a id="set-container-ip-acl"></a>
 ##### IP ACL
 
-IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참고합니다.
+IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자세한 내용은 [접근 정책 설정 가이드](acl-guide$[ file_suffix ]$/)를 참고합니다.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -259,7 +276,7 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
 
 컨테이너에 저장되는 오브젝트의 수명 주기 규칙을 조회하고 변경할 수 있습니다.
 
-수명 주기 설정 방법에 관한 자세한 설명은 [수명 주기 규칙 적용 방법](container-policy-guide/#lifecycle-apply)을 참고합니다.
+수명 주기 설정 방법에 관한 자세한 설명은 [수명 주기 규칙 적용 방법](container-policy-guide$[ file_suffix ]$/#lifecycle-apply)을 참고합니다.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -306,9 +323,11 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
 !!! tip "알아두기"
     변경한 수명 주기 규칙은 설정 이후에 업로드한 오브젝트에만 적용됩니다.
 
-    설정할 수 있는 조건 규칙은 최대 30개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#lifecycle)으로 설정할 때도 동일하게 적용됩니다.
+    설정할 수 있는 조건 규칙은 최대 30개입니다. 이 제한은 [컨테이너 정책](container-policy-guide$[ file_suffix ]$/#lifecycle)으로 설정할 때도 동일하게 적용됩니다.
+{% if ec %}
     Standard 클래스 컨테이너에 저장된 오브젝트를 수명 주기에 따라 Economy 클래스 컨테이너로 옮겨 장기 보관에 따른 비용을 절감할 수 있습니다.
 
+{% endif %}
 
 <a id="set-object-lifecycle-batch"></a>
 ##### 규칙 일괄 적용
@@ -342,8 +361,10 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
 
 !!! danger "주의"
     아카이브 컨테이너를 원본 컨테이너보다 먼저 삭제하면, 원본 컨테이너의 오브젝트를 업데이트 또는 삭제할 때 오류가 발생합니다. 이미 삭제했다면 아카이브 컨테이너를 새로 생성하거나 원본 컨테이너의 버전 관리 정책을 해제해 해결할 수 있습니다.
+{% if encrypt %}
     암호화 컨테이너를 아카이브 컨테이너로 지정한 뒤 암호화 컨테이너의 대칭 키를 Secure Key Manager 서비스에서 삭제하면 원본 컨테이너의 오브젝트 업로드와 삭제에 실패합니다.
 
+{% endif %}
 
 <a id="change-object-lock-cycle"></a>
 #### 오브젝트 잠금
@@ -372,8 +393,9 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
 
     일반 컨테이너를 오브젝트 잠금 컨테이너로 변경하거나, 오브젝트 잠금 컨테이너를 일반 컨테이너로 변경할 수 없습니다.
 
-    오브젝트 잠금 컨테이너는 아카이브 컨테이너 또는 복제 대상 컨테이너로 지정할 수 없습니다.
+    오브젝트 잠금 컨테이너는 아카이브 컨테이너$[ " 또는 복제 대상 컨테이너로" if replication else "로" ]$ 지정할 수 없습니다.
 
+{% if replication %}
 <a id="set-container-replication"></a>
 #### 복제
 
@@ -431,9 +453,11 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
     * 수명 주기가 만료되었지만 아직 삭제되지 않은 오브젝트는 대상 컨테이너에 복제될 때 수명 주기 설정이 제거됩니다. 이후 원본 컨테이너에서 삭제되면 삭제 내역이 대상 컨테이너에 전파되어 삭제됩니다.
     * 아카이브 컨테이너의 삭제 마커 오브젝트는 복제되지 않습니다.
 
+{% if encrypt %}
 !!! danger "주의"
     암호화 컨테이너를 복제 대상 컨테이너로 지정한 뒤 암호화 컨테이너의 대칭 키를 Secure Key Manager 서비스에서 삭제하면 암호화 컨테이너 복제에 실패합니다.
 
+{% endif %}
 
 <br>
 
@@ -454,6 +478,7 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
 
 <br>
 
+{% endif %}
 <a id="task-record"></a>
 #### 작업 이력
 다수의 오브젝트를 일괄 처리하는 작업 이력을 확인할 수 있습니다. 이력을 제공하는 작업 유형은 다음과 같습니다.
@@ -590,7 +615,7 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
 모든 오브젝트는 컨테이너 안에 업로드해야 합니다. 오브젝트 하나의 최대 용량은 5GB로 제한됩니다.
 
 !!! tip "알아두기"
-    콘솔에서는 5GB를 초과하는 파일은 업로드할 수 없습니다. 업로드할 오브젝트의 용량이 5GB를 초과한다면 `split` 등의 명령줄 도구를 사용해 나누거나, 사용자 애플리케이션에서 5GB 이하의 크기로 나누어 업로드하도록 프로그래밍해야 합니다. 자세한 사용 방법은 API 가이드의 [멀티파트 업로드](api-guide/#multipart-upload)를 참고합니다.
+    콘솔에서는 5GB를 초과하는 파일은 업로드할 수 없습니다. 업로드할 오브젝트의 용량이 5GB를 초과한다면 `split` 등의 명령줄 도구를 사용해 나누거나, 사용자 애플리케이션에서 5GB 이하의 크기로 나누어 업로드하도록 프로그래밍해야 합니다. 자세한 사용 방법은 API 가이드의 [멀티파트 업로드](api-guide$[ file_suffix ]$/#multipart-upload)를 참고합니다.
 
 <a id="download-object"></a>
 ### 오브젝트 다운로드 { #download-object }
@@ -605,7 +630,7 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
 # cat > index.html
 <html>
 <body> hello world!
-<a href="https://kr1-api-object-storage.nhncloudservice.com/v1/{account}/{container}/{object}">Download</a>
+<a href="$[ object_storage_url ]$/v1/{account}/{container}/{object}">Download</a>
 </body>
 </html>
 ```
@@ -641,7 +666,7 @@ Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 
 <a id="create-signed-url"></a>
 ### 서명된 URL 생성 { #create-signed-url }
-역할 기반 접근 정책에 관계없이 설정한 시간 동안 지정한 오브젝트에 자유롭게 접근할 수 있는 서명된 URL을 생성합니다. 자세한 사용 방법은 [서명된 URL 가이드](presigned-url-guide/)를 참고합니다.
+역할 기반 접근 정책에 관계없이 설정한 시간 동안 지정한 오브젝트에 자유롭게 접근할 수 있는 서명된 URL을 생성합니다. 자세한 사용 방법은 [서명된 URL 가이드](presigned-url-guide$[ file_suffix ]$/)를 참고합니다.
 
 !!! tip "알아두기"
     단일 오브젝트만 선택할 수 있으며, 폴더 오브젝트는 선택할 수 없습니다.
