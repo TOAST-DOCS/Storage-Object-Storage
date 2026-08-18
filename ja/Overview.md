@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=5c3f66a53167 -->
 
 <a id="storage-object-storage-overview"></a>
@@ -19,8 +21,8 @@
 コンテナごとにアクセス権限を制御できます。誰でも照会できるようにパブリックに設定することもできますし、ロールベースのアクセス制御(RBAC)を利用してNHN Cloudのプロジェクトまたは個別ユーザー単位で読み書き権限を付与できます。
 
 <a id="convenient-web-console"></a>
-### 便利なWebコンソール { #convenient-web-console }
-ユーザーの利便性のため、使い慣れた階層的なディレクトリ構造でデータを管理できるウェブコンソールを提供します。コンテナ内に仮想フォルダを作成し、オブジェクトをグループ化して管理できます。
+### 便利なコンソール { #convenient-web-console }
+ユーザーの利便性のため、使い慣れた階層的なディレクトリ構造でデータを管理できるコンソールを提供します。コンテナ内に仮想フォルダを作成し、オブジェクトをグループ化して管理できます。
 
 <a id="rest-api"></a>
 ### REST API { #rest-api }
@@ -28,7 +30,7 @@
 
 <a id="amazon-s3-compatible-api"></a>
 ### Amazon S3互換API { #amazon-s3-compatible-api }
-Amazon S3と互換性のあるAPIを提供します。S3互換APIを利用して、Amazon Web Serviceソフトウェア開発キット(SDK)ベースのアプリケーションとさまざまなサードパーティのツールを使用できます。
+Amazon S3と互換性のあるAPIを提供します。S3互換APIを利用して、Amazon Web Servicesソフトウェア開発キット(SDK)ベースのアプリケーションとさまざまなサードパーティのツールを使用できます。
 
 <a id="life-cycle-control"></a>
 ### ライフサイクル制御 { #life-cycle-control }
@@ -36,11 +38,11 @@ Amazon S3と互換性のあるAPIを提供します。S3互換APIを利用して
 
 <a id="object-lock"></a>
 ### オブジェクトロック { #object-lock }
-ユーザーの不注意による上書き、削除リクエストからデータを保護するためのオブジェクトロック機能(Write Once Read Many、WORM)を提供します。
+ユーザーの不注意による上書きまたは削除リクエストからデータを保護するためのオブジェクトロック機能(Write Once Read Many、WORM)を提供します。
 
 <a id="version-management"></a>
 ### バージョン管理 { #version-management }
-バージョン管理機能を利用して、オブジェクトを更新、削除した履歴を管理し、以前のバージョンに復元できます。
+バージョン管理機能を利用して、オブジェクトを更新または削除した履歴を管理し、以前のバージョンに復元できます。
 
 <a id="disaster-recovery"></a>
 ### 災害復旧(disaster recovery) { #disaster-recovery }
@@ -48,11 +50,11 @@ Amazon S3と互換性のあるAPIを提供します。S3互換APIを利用して
 
 <a id="data-encryption-for-improved-security"></a>
 ### セキュリティ強化のためのデータ暗号化 { #data-encryption-for-improved-security }
-サーバー側暗号化機能を利用して、重要なデータを暗号化してセキュリティを強化できます。暗号化に使用される対称キーは、NHN CloudのSecure Key Managerサービスで安全に管理されます。
+サーバー側暗号化機能で、重要なデータを保護してセキュリティを強化できます。暗号化に使用される対称キーは、NHN CloudのSecure Key Managerサービスで安全に管理されます。
 
 <a id="convenient-cloud-accessibility"></a>
 ### 便利なクラウドアクセシビリティ { #convenient-cloud-accessibility }
-NHN CloudのService Gatewayサービスを利用して、外部ネットワークと隔離されたユーザーVPC内のインスタンスからプライベートネットワークを通じてオブジェクトストレージにアクセスできます。
+NHN CloudのService Gatewayを通じて、外部ネットワークと隔離されたユーザーVPC内のインスタンスからプライベートネットワークを通じてオブジェクトストレージにアクセスできます。
 
 <a id="access-history"></a>
 ### アクセス記録 { #access-history }
@@ -77,5 +79,5 @@ NHN CloudのCloudTrailサービスによりオブジェクトストレージに�
 オブジェクトストレージのユーザーアカウントです。NHN Cloudのオブジェクトストレージはアカウント単位で隔離されます。
 
 <a id="api-endpoint"></a>
-### API Endpoint { #api-endpoint }
+### APIエンドポイント { #api-endpoint }
 オブジェクトストレージにREST APIでアクセスするために提供されるHTTP URLです。
