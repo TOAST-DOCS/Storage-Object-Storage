@@ -17,21 +17,18 @@ NHN Cloud オブジェクトストレージのコンテナに、ロールベー�
 コンソールでは[コンテナ作成](console-guide/#create-container)ダイアログボックスまたは[コンテナ管理](console-guide/#manage-container)ウィンドウのコンテナアクセスポリシー設定ダイアログボックスでコンテナアクセスポリシーを選択できます。選択できるポリシーは`PRIVATE`と`PUBLIC`の2つに制限されます。
 
 <a id="role-based-access-private"></a>
-
 #### PRIVATE
 
 `PRIVATE` は、コンテナが属するプロジェクトのユーザーにのみアクセス許可を付与するデフォルトのアクセスポリシーです。コンソールを使用するか、認証トークンを発行して API でコンテナにアクセスできます。API セクションの `コンテナが属するプロジェクトのユーザーにのみ読み取り/書き込みを許可` 項目と同じポリシーです。
 <br>
 
 <a id="role-based-access-public"></a>
-
 #### PUBLIC
 
 `PUBLIC` はすべてのユーザーに読み取りとオブジェクトのリスト照会を許可するポリシーです。コンテナを `PUBLIC` に設定すると、コンソールで URL を取得できます。この URL を使用して、誰でもコンテナにアクセスできます。API セクションの `すべてのユーザーへの読み取り/リスト照会の許可` 項目と同じポリシーです。
 <br>
 
 <a id="role-based-access-api"></a>
-
 ### API { #role-based-access-api }
 
 APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、`X-Container-View` 属性にロールベースのアクセスポリシー要素を設定すると、さまざまな状況に応じてアクセスポリシーを設定できます。各属性は次のとおりです。
@@ -49,7 +46,6 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
 <br>
 
 <a id="role-based-access-elements"></a>
-
 #### ロールベースのアクセスポリシー要素
 
 設定できるロールベースのアクセスポリシー要素は次のとおりです。すべてのポリシー要素は、カンマ（`,`）で区切って組み合わせることができます。
@@ -69,7 +65,6 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
     `{tenant-id}:` や `:{api-user-id}` のようにコロンの片側が空の値、`.` で始まる値は使用することはできません。
 
 <a id="common-access-elements"></a>
-
 #### その他のアクセスポリシー要素
 
 `X-Container-Read` 属性には、ロールベースのアクセスポリシー要素以外に、次のポリシー要素も入力できます。
@@ -88,7 +83,6 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
 <br>
 
 <a id="role-based-access-allow-rw-to-project-users"></a>
-
 #### コンテナが属するプロジェクトのユーザーにのみ書き込み/読み取りを許可
 
 ロールベースのアクセスポリシー要素を設定していない場合に適用される、デフォルトのアクセスポリシーです。APIを使用してコンテナにアクセスするには、有効な認証トークンが必要です。
@@ -133,7 +127,6 @@ $ curl -X GET \
 <br>
 
 <a id="role-based-access-allow-read-and-list-for-all-users"></a>
-
 #### すべてのユーザーに読み取り/リスト照会を許可
 
 コンテナの `X-Container-Read` 属性を `.r:*, .rlistings` に設定すると、すべてのユーザーにオブジェクトの読み取りと一覧の照会を許可します。認証トークンは必要ありません。コンソールセクションの `PUBLIC` 項目と同じポリシーです。
@@ -188,7 +181,6 @@ $ curl -X GET \
 <br>
 
 <a id="role-based-access-allow-or-deny-by-referer"></a>
-
 #### 特定HTTPリファラーのリクエストに読み取り許可/拒否
 
 HTTP リファラー (HTTP Referer) は、ハイパーリンクでリクエストされたウェブページのアドレス情報であり、リクエストヘッダーに含まれます。
@@ -357,7 +349,6 @@ $ curl -X GET \
 <br>
 
 <a id="role-based-access-allow-rw-project-or-user"></a>
-
 #### 特定プロジェクトまたは特定ユーザーに書き込み/読み取りを許可
 
 コンテナの `X-Container-Read` と `X-Container-Write` 属性に `{tenant-id}:{api-user-id}` 形式のロールベースのアクセスポリシー要素を設定すると、特定のプロジェクトまたは特定のユーザーに読み取り/書き込みアクセス許可をそれぞれ付与できます。テナントIDまたはAPIユーザーIDの代わりにワイルドカード文字 `*` を入力すると、すべてのプロジェクトまたはすべてのユーザーにアクセス許可を付与します。アクセスをリクエストする際は、必ず有効な認証トークンが必要です。
@@ -440,7 +431,6 @@ $ curl -i -X POST \
 <br>
 
 <a id="role-based-access-delete-access-policies"></a>
-
 #### アクセスポリシーの削除
 
 空のヘッダーを入力すると、設定されているロールベースのアクセスポリシー要素をすべて削除できます。ロールベースのアクセスポリシー要素がないコンテナは、許可されたユーザーのみがアクセスできる **PRIVATE** コンテナになります。`컨테이너가 속한 프로젝트의 사용자에게만 읽기/쓰기 허용` の項目を参照してください。
@@ -450,7 +440,6 @@ $ curl -i -X POST \
 Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/overview_acl.html](https://docs.openstack.org/swift/latest/overview_acl.html)
 
 <a id="ip-based-access-policies"></a>
-
 ## IPベースのアクセスポリシー { #ip-based-access-policies }
 
 コンソールまたは API を使用してホワイトリストとブラックリストを指定し、特定の IP からコンテナの読み取り/書き込みアクセス権限を制限できます。ホワイトリストとブラックリストを同時に設定できますが、この場合はホワイトリストのみが適用され、ブラックリストは無視されます。IP ベースのアクセスポリシーは IPv4 のみをサポートします。サービスゲートウェイリクエストには、別途例外を指定できます。
@@ -460,7 +449,6 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
     誤った設定によりアクセス権限のないコンテナになった場合、ポリシーを変更することはできません。このような問題が発生した場合は、カスタマーセンターにお問い合わせください。
 
 <a id="ip-based-access-console"></a>
-
 ### コンソール { #ip-based-access-console }
 
 **[コンテナ管理]** ウィンドウの **[コンテナアクセスポリシー設定]** ダイアログボックスで、**[IPベースのコンテナアクセスポリシー]** を選択します。
@@ -469,25 +457,21 @@ Swift Access Control Lists(ACLs) - [https://docs.openstack.org/swift/latest/over
     読み取り権限がない場合は、コンソールでコンテナを操作することはできません。
 
 <a id="ip-based-access-whitelist"></a>
-
 #### ホワイトリスト
 
 許可された IP またはネットワーク帯域を除くすべてのリクエストを拒否します。リクエストを許可する読み取り、書き込みのアクセス許可を指定できます。
 
 <a id="ip-based-access-blacklist"></a>
-
 #### ブラックリスト
 
 指定された IP またはネットワーク帯域のリクエストを拒否します。それ以外のすべてのリクエストは許可されます。ホワイトリストと併せて設定した場合、ブラックリストは無視されます。拒否するリクエストの読み取り、書き込み権限を指定できます。
 
 <a id="ip-based-access-service-gateway-ip"></a>
-
 #### サービスゲートウェイ IP
 
 サービスゲートウェイを経由するリクエストを制御します。設定しない場合、ホワイトリストとブラックリストの設定に従ってリクエストが拒否される場合があります。
 
 <a id="ip-based-access-api"></a>
-
 ### API { #ip-based-access-api }
 
 API を使用してコンテナの `X-Container-Ip-Acl-Allowed-List`、`X-Container-Ip-Acl-Denied-List` 属性に IP ベースのアクセスポリシー要素を入力すると、IP ベースのアクセスポリシーを有効にできます。`X-Container-Ip-Acl-Allowed-List` はホワイトリスト、`X-Container-Ip-Acl-Denied-List` はブラックリストを意味します。
@@ -562,7 +546,6 @@ $ curl -i -X POST \
 </details>
 
 <a id="ip-based-access-delete-access-policies"></a>
-
 #### アクセスポリシーの削除
 
 空のヘッダーを入力すると、設定されたIPベースのアクセスポリシー要素をすべて削除できます。ポリシー要素がないコンテナは、IPによるアクセス制限を受けません。
