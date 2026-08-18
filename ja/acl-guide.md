@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=57f0cee284f8 -->
+<!-- pre-align:aligned sig=13e8165cba5c -->
 
 <a id="storage-object-storage-acl-configuration-guide"></a>
 ## Storage > Object Storage > アクセスポリシー設定ガイド { #storage-object-storage-acl-configuration-guide }
