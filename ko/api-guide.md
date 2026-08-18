@@ -635,7 +635,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | Y | 토큰 ID |
 | Account | URL | String | Y | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL | String | Y | 생성할 컨테이너 이름 |
-{% if ec -%}
+{%- if ec %}
 | X-Storage-Policy | Header | String | N | 컨테이너의 스토리지 클래스<br>**Standard**: 자주 접근하는 데이터를 위한 기본 클래스<br>**Economy**: 접근 빈도가 낮은 데이터를 장기 보관하는 데 적합한 클래스 |
 {%- endif %}
 | X-Container-Worm-Retention-Day | Header | Integer | N | 컨테이너의 기본 오브젝트 잠금 주기를 일 단위로 설정 |

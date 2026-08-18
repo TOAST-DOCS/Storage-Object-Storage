@@ -313,8 +313,8 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 <a id="reference"></a>
 ## 참고 사이트 { #reference }
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
-{% if terraform_support %}
+{%- if terraform_support %}
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
-{% endif %}
+{%- endif %}
 
