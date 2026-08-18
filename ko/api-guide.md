@@ -24,7 +24,7 @@ API를 사용하려면 API 엔드포인트와 토큰이 필요합니다. [IaaS �
 ### 인증 및 권한 { #auth }
 
 오브젝트 스토리지는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
-IaaS 토큰 발급 및 사용 방법에 대한 자세한 내용은 [IaaS 토큰]($[ identity_guide_url ]$)을 참고합니다.
+IaaS 토큰 발급 및 사용 방법은 [IaaS 토큰]($[ identity_guide_url ]$)을 참고합니다.
 
 !!! danger "주의"
     오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다.
