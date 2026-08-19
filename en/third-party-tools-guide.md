@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=3eabcf443966 -->
 
 <a id="third-party-tools-usage-guide"></a>
@@ -35,7 +37,7 @@ To connect to object storage, you must create a bookmark that stores connection 
   </tr>
   <tr>
     <td rowspan="2">Tenant ID: Access Key</td>
-    <td><b>Tenant ID</b>: It is the project ID of the user. You can check it in <b>Project Management > Project Basic information</b> from the web console.</td>
+    <td><b>Tenant ID</b>: It is the project ID of the user. You can check it in <b>Project Management > Project Basic information</b> from the console.</td>
   </tr>
   <tr>
     <td><b>Access ID</b>: Enter either NHN Cloud account ID (email format) or IAM account ID.</td>
@@ -189,7 +191,7 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 | region | String | | Region to manage NHN Cloud resources |
 | name | String | Y | Container name |
 | container_read | String | | Sets the role-based access rules for container read |
-| container_write | String | | Role-based access rules for container writes |
+| container_write | String | | Sets the role-based access rules for container writes |
 | force_destroy | Boolean | | Whether to force container deletion, `true` or `false`<br>You can't recover objects that were deleted together. |
 | versioning_legacy | Object | | Object Version Control Settings |
 | versioning_legacy.type | String | | Specify as `history` |
@@ -301,7 +303,7 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 			<td>detect_content_type</td>
 			<td>Boolean</td>
 			<td></td>
-			<td>Whether to infer content type<br/>The <code>content_type</code> is ignored when setting.</td>
+			<td>Whether to infer content type<br>The <code>content_type</code> is ignored when setting.</td>
 		</tr>
 	</tbody>
 </table>
