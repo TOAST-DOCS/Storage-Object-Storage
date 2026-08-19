@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=acedf0f45de3 -->
 
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
@@ -39,12 +41,12 @@ NHN Cloud オブジェクトストレージは、AWS のオブジェクトスト
 
 <a id="obtain-s3-api-credentials"></a>
 ### S3 API認証情報の発行 { #obtain-s3-api-credentials }
-Amazon S3互換APIを使用するには、まず AWS EC2 形式の S3 API認証情報を発行する必要があります。認証情報はウェブコンソールまたは API を使用して発行できます。ウェブコンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide/#s3-api-credentials) を参照してください。
+Amazon S3互換APIを使用するには、まず AWS EC2 形式の S3 API認証情報を発行する必要があります。認証情報はコンソールまたは API を使用して発行できます。コンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide/#s3-api-credentials) を参照してください。
 
 API を使用して認証情報を発行するには、認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージ API ガイド](api-guide/#auth) を参照してください。
 
 ```
-POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
+POST https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -62,6 +64,7 @@ X-Auth-Token: {token-id}
 !!! tip "ヒント"
     `{api-user-id}` は、コンソールの API エンドポイント設定ダイアログボックスで **[API ユーザー ID]** 項目を参照するか、認証トークン発行 API レスポンス本文の **access.user.id** フィールドで確認できます。
     認証トークン発行 API を使用するには、API ガイドの[認証と権限](api-guide/#auth) を参照してください。
+
 
     S3 API認証情報には有効期限がなく、ユーザーごとにプロジェクトあたり最大 3 つまで発行できます。
 
@@ -120,7 +123,7 @@ X-Auth-Token: {token-id}
 **[Method, URL]**
 
 ```
-GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
+GET https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -173,7 +176,7 @@ X-Auth-Token: {token-id}
 **[Method, URL]**
 
 ```
-DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
@@ -196,6 +199,7 @@ X-Auth-Token: {token-id}
 ## 署名(signature)の生成 { #create-signature }
 S3 API を使用するには、認証情報を使用して署名を生成する必要があります。署名の生成方法については、[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) のドキュメントを参照してください。
 
+
 署名の生成に必要な情報は次のとおりです。
 
 | 名前 | 値 |
@@ -217,7 +221,7 @@ AWS signature V4 の署名生成時に `x-amz-content-sha256` ヘッダーが必
 | `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload 方式(各チャンクに署名を含む + トレーラーヘッダーを使用) |
 
 !!! tip "ヒント"
-    詳細については、[Authenticating Requests: Using the Authorization Header (AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) のドキュメントを参照してください。
+    詳細については、[Authenticating Requests: Using the Authorization Header(AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) のドキュメントを参照してください。
 
 x-amz-content-sha256 の値が `STREAMING-UNSIGNED-PAYLOAD-TRAILER` または `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` の場合、`x-amz-trailer` リクエストヘッダーでトレーラーに送信するチェックサムアルゴリズムを宣言する必要があります。サポートしているアルゴリズムは次のとおりです。
 
@@ -230,7 +234,7 @@ x-amz-content-sha256 の値が `STREAMING-UNSIGNED-PAYLOAD-TRAILER` または `S
 | `x-amz-checksum-sha256` | SHA-256 |
 
 !!! tip "ヒント"
-    トレーラーヘッダーを使用した署名計算の詳細については、[Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) のドキュメントを参照してください。
+    トレーラーヘッダーを使用した署名計算方法の詳細については、[Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) のドキュメントを参照してください。
 
 <a id="bucket"></a>
 ## Bucket { #bucket }
@@ -247,6 +251,7 @@ x-amz-content-sha256 の値が `STREAMING-UNSIGNED-PAYLOAD-TRAILER` または `S
 
 詳細については、[Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html) ドキュメントを参照してください。
 
+
 ```
 PUT /{bucket}
 
@@ -255,7 +260,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 !!! tip "ヒント"
-    Webコンソールまたはオブジェクトストレージ API を使用して作成したコンテナの名前がバケットの命名規則に違反している場合、S3互換API ではアクセスできません。
+    コンソールまたはオブジェクトストレージ API で作成したコンテナの名前がバケットの命名規則に違反している場合、S3互換API ではアクセスできません。
 
 <a id="create-bucket-request"></a>
 #### リクエスト
@@ -337,7 +342,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 !!! tip "ヒント"
-    Webコンソールまたはオブジェクトストレージ API を使用して作成したバケットの名前がバケットの命名規則に違反している場合、S3互換API ではアクセスできません。
+    コンソールまたはオブジェクトストレージ API を使用して作成したコンテナの名前がバケットの命名規則に違反している場合、S3互換API ではアクセスできません。
 
 <a id="get-bucket-request"></a>
 #### リクエスト
@@ -687,6 +692,7 @@ GET /{bucket}/{obj}
 !!! tip "ヒント"
     Swift TempURL 方式や言語別の直接署名の例など、詳細については「[署名付き URL ガイド](presigned-url-guide/)」を参照してください。
 
+
 <a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
 S3互換APIを使用して、[AWS Command Line Interface](https://aws.amazon.com/ko/cli/)でNHN Cloudオブジェクトストレージを使用できます。
@@ -730,7 +736,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 | bucket | バケット名 |
 
 !!! tip "注記"
-    AWS Command Line InterfaceはAWSを使用するために提供されるツールであるため、AWSドメインを使用するように設定されています。そのため、NHN Cloudオブジェクトストレージを使用するには、すべてのコマンドでエンドポイントを必ず指定する必要があります。
+    AWS Command Line Interfaceは、デフォルトで AWS ドメインを使用するように設定されたツールです。そのため、NHN Cloudオブジェクトストレージを使用するには、すべてのコマンドでエンドポイントを必ず指定する必要があります。
     AWS Command Line Interfaceコマンドについては、[AWS CLIでの上位レベル(s3)コマンドの使用](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) ドキュメントを参照してください。
 
 <details>
@@ -779,7 +785,8 @@ remove_bucket: example-bucket
 
 ロックバケットは <code>aws s3api</code> サブコマンドで管理します。
 <br>
-<code>create-bucket</code> コマンドに <code>--object-lock-enabled-for-bucket</code> オプションを使用すると、オブジェクトロックが有効なバケットを作成します。デフォルトの保持期間は0日に設定されます。
+<code>create-bucket</code> コマンドに <code>--object-lock-enabled-for-bucket</code> オプションを使用すると、オブジェクトロックが有効なバケットを作成します。
+デフォルトの保持期間は0日に設定されます。
 
 ```shell
 $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api create-bucket \
@@ -910,6 +917,7 @@ AWSは複数のプログラミング言語向けのSDKを提供しています�
 
 !!! tip "注記"
     詳細については、[AWS SDK](https://aws.amazon.com/ko/tools) ドキュメントを参照してください。
+
 
 AWS SDKを使用するために必要な主なパラメータは次のとおりです。
 
