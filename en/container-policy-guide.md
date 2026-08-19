@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=90b39f34080f -->
+<!-- pre-align:aligned sig=5dd7d08822ff -->
 
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > Container Policy Configuration Guide { #storage-object-storage-container-policy-configuration-guide }
