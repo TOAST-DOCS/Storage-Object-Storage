@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ba6b9ac2ecbb -->
 
 <a id="storage-object-storage-presigned-url-guide"></a>
@@ -13,9 +15,10 @@
 <br>
 
 <a id="swift-tempurl"></a>
+
 ### Swift TempURL { #swift-tempurl }
 
-Swift の Temporary URL は、オブジェクトの URL にクエリパラメータを追加した形式です。
+Swift TempURL(Temporary URL)は、オブジェクトの URL にクエリパラメータが追加された形式です。
 
 ```bash
 https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/object
@@ -26,15 +29,16 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/objec
 
 | 構成要素 | 必須 | 説明 |
 | --- | --- | --- |
-| Object URL | Y        | オブジェクトのフルパス URL |
-| temp_url_sig | Y        | 許可された HTTP メソッド、有効期限、オブジェクトのフルパスを秘密鍵で署名した HMAC 値 |
-| temp_url_expires | Y        | 有効期限。UNIX Epoch タイムスタンプまたは ISO 8601 UTC タイムスタンプで表現。<br>例: `1390852007` または `2014-01-27T19:46:47Z` |
-| filename | N        | デフォルトのファイル名を上書きします |
-| temp_url_prefix | N        | プレフィックス単位で署名する場合に必要 |
+| Object URL | Y | オブジェクトの完全なパス URL |
+| temp_url_sig | Y | 許可された HTTP メソッド、有効期限、オブジェクトのフルパスを秘密鍵で署名した HMAC 値 |
+| temp_url_expires | Y | 有効期限。UNIX Epoch タイムスタンプまたは ISO 8601 UTC タイムスタンプで表現します。<br>例: `1390852007` または `2014-01-27T19:46:47Z` |
+| filename | N | デフォルトのファイル名を上書きします |
+| temp_url_prefix | N | 接頭辞単位で署名する際に必要 |
 
 <br>
 
 <a id="s3-presigned-url"></a>
+
 ### S3互換APIの署名付き URL { #s3-presigned-url }
 
 NHN Cloud オブジェクトストレージは S3互換API を提供しており、この場合に生成される署名付き URL は次のような形式です。
@@ -49,15 +53,15 @@ https://{endpoint}/my-container/cat.jpg
 &X-Amz-Signature={signature-value}
 ```
 
-| 構成要素 | 必須 | 説明                                                                                                                       |
-| --- | --- |--------------------------------------------------------------------------------------------------------------------------|
-| Object URL | Y        | オブジェクトのフルパス URL（path-style: `https://{endpoint}/{bucket}/{object}`）                                                      |
-| X-Amz-Algorithm | Y        | AWS Signature のバージョンとアルゴリズムを識別します。SigV4 では AWS4-HMAC-SHA256 に設定します |
-| X-Amz-Credential | Y        | Access Key ID と署名が有効なスコープ（リージョン・サービス）を指定します。形式: `{access-key-id}/{date}/{region}/{service}/aws4_request`（サービスは `s3`、リージョンは `kr1` など）。URL 内の `/` は `%2F` にエンコードします |
-| X-Amz-Date | Y        | リクエスト日時。ISO 8601 `yyyyMMddTHHmmssZ` 形式（UTC）で表現します。<br>例: `20260601T223241Z`                                                 |
-| X-Amz-Expires | Y        | 署名付き URL が有効な期間（秒）。最小 `1`、最大 `604800`（7 日）                                                                              |
-| X-Amz-SignedHeaders | Y        | 署名の計算に使用したヘッダーの一覧。最低限 HTTP `host` ヘッダーを含み、リクエストに追加するすべての `x-amz-*` ヘッダーも含めます |
-| X-Amz-Signature | Y        | リクエストを認証する HMAC 署名値。サーバーが計算した値と一致する必要があり、一致しない場合はリクエストが拒否されます |
+| 構成要素 | 必須 | 説明 |
+| --- | --- | --- |
+| Object URL | Y | オブジェクトの完全パス URL (path-style: `https://{endpoint}/{bucket}/{object}`) |
+| X-Amz-Algorithm | Y | AWS Signature のバージョンとアルゴリズムを識別します。SigV4 では `AWS4-HMAC-SHA256` に設定します |
+| X-Amz-Credential | Y | Access Key ID と署名が有効な scope (リージョン・サービス) を指定します。形式: `{access-key-id}/{date}/{region}/{service}/aws4_request` (サービスは `s3`、リージョンは `kr1` など)。URL 内の `/` は `%2F` にエンコードします |
+| X-Amz-Date | Y | リクエストの日時。ISO 8601 `yyyyMMddTHHmmssZ` 形式 (UTC) で表現<br>例: `20260601T223241Z` |
+| X-Amz-Expires | Y | 署名付き URL が有効な期間（秒）。最小 `1`、最大 `604800`（7 日間） |
+| X-Amz-SignedHeaders | Y | 署名の計算に使用したヘッダーのリスト。最低限 HTTP `host` ヘッダーを含み、リクエストに追加するすべての `x-amz-*` ヘッダーも含みます |
+| X-Amz-Signature | Y | リクエストを認証する HMAC 署名値。サーバーが計算した値と一致する必要があり、一致しない場合はリクエストが拒否されます |
 
 !!! tip "ヒント"
     S3 署名付き URL では、プレフィックス単位の署名はサポートされていません。常に単一のオブジェクトと単一の操作（GET/PUT など）単位で署名します。
@@ -77,6 +81,7 @@ Swift API と S3 API ではオブジェクトパスの形式が異なるため�
 <br>
 
 <a id="set-tempurl-key"></a>
+
 ### Swift TempURL 秘密鍵の設定 { #set-tempurl-key }
 
 TempURL は、ストレージアカウントまたはコンテナにあらかじめ登録した秘密鍵 (Secret Key) で署名します。
@@ -105,7 +110,7 @@ X-Container-Meta-Temp-URL-Key: {key}
 !!! tip "ヒント"
     オブジェクトストレージは、ストレージアカウントあたり 2 個、コンテナあたり 2 個の秘密鍵を保存できます。
 
-    リクエストを検証する際、オブジェクトストレージはすべてのキーの署名を確認します。各レベルで 2 つのキーを使用することで、既存の Temporary URL を無効化することなくキーをローテーション (rotation) できます。
+リクエストを検証する際、Object Storageはすべてのキーの署名を確認します。各レベルで2つのキーを使用することで、既存のTempURLを維持したままキーをローテーションできます。
 
 Swift CLI を使用すると、次のように秘密鍵を設定できます。
 
@@ -115,14 +120,15 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # コンテナ単位の設定
 ```
 
 !!! tip "ヒント"
-    Swift CLI を使用するには、先に認証が必要です。詳細については、[Swift CLI 環境設定](cli-guide/#configuration)を参照してください。
+    Swift CLI を使用するには、まず認証が必要です。詳細については、[Swift CLI 環境設定](cli-guide/#configuration)を参照してください。
 
 <br>
 
 <a id="obtain-s3-credentials"></a>
+
 ### S3 API 認証情報の発行 { #obtain-s3-credentials }
 
-S3互換API を使用するには、まず AWS EC2 形式の S3 API 認証情報 (Access Key ID + Secret Access Key) を発行する必要があります。認証情報は、Web コンソールまたは API を使用して発行できます。Web コンソールを使用した認証情報の発行については、[S3 API 認証情報](console-guide/#s3-api-credentials)を参照してください。
+S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報(Access Key ID + Secret Access Key)を発行する必要があります。認証情報はコンソールまたはAPIを使用して発行できます。コンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide/#s3-api-credentials)を参照してください。
 
 ```http
 POST https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -163,9 +169,10 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="create-manual-signature"></a>
+
 ### 手動署名 { #create-manual-signature }
 
-以下は、オブジェクトベースの Temporary URL 用 HMAC-SHA256 署名の例です。
+以下は、オブジェクトベースの TempURL 用 HMAC-SHA256 署名の例です。
 
 ```python
 import hmac
@@ -182,7 +189,7 @@ hmac_body = '%s\n%s\n%s' % (method, expires, path)
 signature = hmac.new(key.encode(), hmac_body.encode(), sha256).hexdigest()
 ```
 
-Temporary URL はプレフィックスベースでも生成できます。プレフィックスで始まるすべてのオブジェクトに有効な署名を作成できます。以下は、プレフィックスベースの Temporary URL 用 HMAC-SHA512 署名の例です。
+TempURL はプレフィックスベースでも生成できます。プレフィックスで始まるすべてのオブジェクトに有効な署名を作成できます。以下は、プレフィックスベースの TempURL 用 HMAC-SHA512 署名の例です。
 
 ```python
 import hmac
@@ -300,6 +307,7 @@ echo $signature . "\n";
 <br>
 
 <a id="create-swift-tempurl-cli"></a>
+
 ### Swift CLI の使用 { #create-swift-tempurl-cli }
 
 Swift CLI の `tempurl` コマンドは、`temp_url_sig` と `temp_url_expires` クエリパラメータを自動的に生成します。
@@ -314,7 +322,7 @@ $ swift tempurl PUT 3600 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/
 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=b1c4e9f2a8d7035641c2e9d8f4b1a7d063c5e8f9a2b1d4e70f3a8c1d9e2b5f40&temp_url_expires=1772755199
 ```
 
-Temporary URL を生成するには、このパスの前にオブジェクトストレージのホスト名を付加します。次のとおりです。
+TempURL を作成するには、このパスの前にオブジェクトストレージのホスト名を付加します。
 
 ```bash
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e4790a1b2c3d4e5f60718293a4b5&temp_url_expires=1772755199
@@ -323,9 +331,10 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4c
 <br>
 
 <a id="create-aws-cli"></a>
+
 ### AWS CLI の使用 { #create-aws-cli }
 
-`aws` CLI で署名を生成するには、[S3 API認証情報の発行](#obtain-s3-credentials) で発行した access/secret をローカルに設定する必要があります。
+`aws` CLI で署名を生成するには、[S3 API 認証情報の発行](#obtain-s3-credentials)で発行した Access Key と Secret Key をローカルに設定する必要があります。
 
 ```bash
 aws s3 presign s3://my-container/cat.jpg \
