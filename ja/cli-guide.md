@@ -3,13 +3,11 @@
 <!-- pre-align:aligned sig=4d6c14c57aab -->
 
 <a id="storage-object-storage-cli-guide"></a>
-
 ## Storage > Object Storage > CLIガイド { #storage-object-storage-cli-guide }
 
 OpenStack Swift コマンドラインインターフェース(CLI)でNHN CloudのObject Storageサービスを使用する方法を説明します。
 
 <a id="python-swiftclient"></a>
-
 ## python-swiftclient { #python-swiftclient }
 
 <a id="install"></a>
@@ -100,7 +98,6 @@ $ swift stat
 <br>
 
 <a id="basic-usage"></a>
-
 ## 基本的な使用方法 { #basic-usage }
 
 基本的な使用方法は次のとおりです。
@@ -173,7 +170,6 @@ $ eval $(swift auth)
 <br>
 
 <a id="stat"></a>
-
 ## 情報照会 { #stat }
 
 ストレージアカウント、コンテナ、オブジェクトの情報を照会します。
@@ -251,7 +247,6 @@ $ swift stat media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br>
 
 <a id="list"></a>
-
 ## 一覧照会 { #list }
 
 コンテナまたはオブジェクト一覧を照会します。
@@ -300,7 +295,6 @@ $ swift list media
 <br>
 
 <a id="create-container"></a>
-
 ## コンテナ作成 { #create-container }
 
 新規コンテナを作成します。
@@ -319,7 +313,6 @@ media
 <br>
 
 <a id="upload"></a>
-
 ## オブジェクトのアップロード { #upload }
 
 オブジェクトをアップロードまたは上書き(overwrite)します。複数のオブジェクトを一括でアップロードできます。
@@ -393,7 +386,6 @@ test.mp4/slo/1635487628.192050/20971520/10485760/00000001
 <br>
 
 <a id="download"></a>
-
 ## オブジェクトのダウンロード { #download }
 
 オブジェクトを現在のパスにダウンロードします。複数のオブジェクトをダウンロードできます。
@@ -439,7 +431,6 @@ $ swift download media
 <br>
 
 <a id="copy"></a>
-
 ## オブジェクトのコピー { #copy }
 
 オブジェクトを指定したパスにコピーします。コピー時にメタデータを追加または変更できます。
@@ -500,7 +491,6 @@ created container media
 <br>
 
 <a id="post"></a>
-
 ## 設定変更 { #post }
 
 コンテナまたはオブジェクトの設定を変更します。
@@ -568,7 +558,6 @@ $ swift post --header "Content-Type:image/png" media 797619b171a455e9eec8a87f94e
 <br>
 
 <a id="delete"></a>
-
 ## 削除 { #delete }
 
 コンテナまたはオブジェクトを削除します。
@@ -629,7 +618,6 @@ $ swift delete media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br>
 
 <a id="tempurl"></a>
-
 ## 署名付きURLの作成 { #tempurl }
 
 トークンなしでコンテナまたはオブジェクトにアクセスできる署名付きURLを作成します。
@@ -692,7 +680,6 @@ $ swift stat media
 ```
 
 <a id="reference"></a>
-
 ## References { #reference }
 
 Object Storage service (swift) command-line client - [https://docs.openstack.org/ocata/cli-reference/swift.html](https://docs.openstack.org/ocata/cli-reference/swift.html)
