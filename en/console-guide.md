@@ -3,17 +3,14 @@
 <!-- pre-align:aligned sig=b6b8b52c0876 -->
 
 <a id="storage-object-storage-console-guide"></a>
-
 ## Storage > Object Storage > Console Guide { #storage-object-storage-console-guide }
 
 This document describes how to manage containers and objects in Object Storage from the NHN Cloud console.
 
 <a id="container"></a>
-
 ## Container { #container }
 
 <a id="create-container"></a>
-
 ### Create Container { #create-container }
 Creates containers. Uploading objects in an object storage requires one or more containers. If you set encryption, the uploaded object is automatically encrypted and saved.
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
@@ -62,7 +59,6 @@ Creates containers. Uploading objects in an object storage requires one or more 
 </table>
 
 <a id="storage-class"></a>
-
 ### Storage class { #storage-class }
 You can choose a storage class based on how often you access your data and your cost requirements. We offer Standard class for frequently accessed data and Economy class for long-term storage of less frequently accessed data at a lower cost.
 
@@ -93,7 +89,6 @@ The policies for encryption container are as follows.
     If you delete the symmetric key configured in an encryption container from Secure Key Manager, the encrypted object cannot be decrypted. You must carefully manage the symmetric key not to delete it accidentally.
 
 <a id="empty-a-container"></a>
-
 ### Empty a Container { #empty-a-container }
 Deletes all objects inside the selected container.
 
@@ -108,17 +103,14 @@ Deletes all objects inside the selected container.
     If you upload objects to a container that is undergoing a container emptying operation, they might be deleted.
 
 <a id="delete-container"></a>
-
 ### Delete Container { #delete-container }
 Deletes selected containers. Check if the containers are empty before deleting them. If any objects are left inside a container, you cannot delete the relevant container.
 
 <a id="manage-container"></a>
-
 ### Manage Container { #manage-container }
 Checks basic information of the selected containers and manage the settings.
 
 <a id="container-basic-info"></a>
-
 #### Basic Information
 You can view the container's basic and encryption information, and change settings such as access policies, static websites, and cross-origin resource sharing.
 <br>
@@ -263,7 +255,6 @@ For blacklist, setting `exe`, `jpg` as blacklist will prevent all objects with `
 <br>
 
 <a id="set-object-lifecycle"></a>
-
 #### Lifecycle
 
 You can view and change the lifecycle rules for objects stored in a container.
@@ -322,7 +313,6 @@ Clicking the **Bulk Apply Rules** button resets the lifecycle of all objects in 
 Rules are applied in order of priority, and the lifecycle is recalculated based on the time of bulk application.
 
 <a id="set-object-versioning"></a>
-
 #### Object Version
 
 Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated or deleted. If you set the lifecycle for previous versions, versions that exceed the set lifecycle are automatically deleted.
@@ -351,7 +341,6 @@ Object version control settings allow you to keep previous versions of objects. 
 
 
 <a id="change-object-lock-cycle"></a>
-
 #### Object Lock
 
 You can check and change the object lock cycle of object lock containers. The object lock cycle can be entered in days, and cannot be turned off.
@@ -379,7 +368,6 @@ You can check and change the object lock cycle of object lock containers. The ob
     You cannot specify an object lock container as an archive container or replication target container.
 
 <a id="set-container-replication"></a>
-
 #### Replication
 
 Replication settings allow you to replicate objects in a container to another container in a different region. Replication settings are for disaster recovery, and objects in the source region are replicated to the target region and managed. Replication proceed in the background at regular intervals.
@@ -460,7 +448,6 @@ Suspends container replication. While replication is suspended, any deletions or
 <br>
 
 <a id="task-record"></a>
-
 #### Task History
 You can view the history of tasks that batch-process multiple objects. The task types for which history is provided are as follows:
 
@@ -577,7 +564,6 @@ The following additional information is displayed for object copy/move tasks:
 <br>
 
 <a id="object"></a>
-
 ## Object { #object }
 
 <a id="create-folder"></a>
@@ -676,12 +662,10 @@ You can change the expiration date for selected objects.
 You can change the lock expiration date for selected objects. It cannot be changed prior to the previously set expiration date.
 
 <a id="prefix-search"></a>
-
 ## Prefix Search { #prefix-search }
 If you enter a prefix in the search bar and click the **Search** button, you can search for containers, folders, and objects that begin with the prefix you entered. You can search for containers in the container list, and search for folders and objects in the object list.
 
 <a id="s3-api-credentials"></a>
-
 ## S3 API Credentials { #s3-api-credentials }
 You can obtain credentials required to use Amazon S3 compatible API. S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
 
