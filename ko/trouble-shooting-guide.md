@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=a08a3e30075c -->
+<!-- pre-align:aligned sig=eba0aa9ce90d -->
 
 <a id="storage-object-storage-troubleshooting-guide"></a>
 ## Storage > Object Storage > 문제 해결 가이드 { #storage-object-storage-troubleshooting-guide }
