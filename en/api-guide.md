@@ -1,11 +1,15 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=288abf1f2a5c -->
 
 <a id="storage-object-storage-api-guide"></a>
+
 ## Storage > Object Storage > API Guide { #storage-object-storage-api-guide }
 
 This document describes how to manage storage accounts, containers, and objects using the APIs provided by NHN Cloud Object Storage.
 
 <a id="common"></a>
+
 ## Object Storage API Common Information { #common }
 
 <a id="endpoint"></a>
@@ -40,7 +44,7 @@ For more information on IaaS token issuance and usage, see [IaaS token](/nhnclou
 <summary>cURL</summary>
 
 ```
-$ curl -X POST -H 'Content-Type:application/json' \
+$ curl -X POST -H 'Content-Type: application/json' \
 https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens \
 -d '{"auth": {"tenantId": "6dbc368b94894416bec4cdfc65b5e067", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
@@ -240,15 +244,16 @@ printf("%s\n", $token);
 </details>
 
 <a id="storage-account"></a>
+
 ## Storage Account { #storage-account }
-A storage account is a character string in the `AUTH_*****` format, included in the Object-Store API endpoint.
+A storage account is a character string in the `AUTH_*****` format, included in the `object-store` API endpoint.
 
 <a id="query-the-storage-account"></a>
 ### Query the Storage Account { #query-the-storage-account }
 Retrieves usage status of a storage account.
 
 ```
-HEAD  /v1/{Account}
+HEAD /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
@@ -315,7 +320,7 @@ public class AccountService {
         // Call API
         HashMap<String, String> status = new HashMap<String, String>();
         ResponseEntity<String> response
-            = this.restTemplate.exchange(this.getStorageUrl(), HttpMethod.GET, requestHttpEntity, String.class);
+            = this.restTemplate.exchange(url, HttpMethod.HEAD, requestHttpEntity, String.class);
         if (response.getStatusCode() == HttpStatus.OK) {
             HttpHeaders responseHeaders = response.getHeaders();
             status.put("ContainerCount", responseHeaders.getFirst("X-Account-Container-Count"));
@@ -437,14 +442,14 @@ printf("Bytes-Used: %d\n", $status["X-Account-Bytes-Used"]);
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="list-containers"></a>
 ### List Containers { #list-containers }
 Lists containers of a storage account.
 
 ```
-GET  /v1/{Account}
+GET /v1/{Account}
 X-Auth-Token: {token-id}
 ```
 
@@ -588,33 +593,39 @@ foreach($container_list as $container) {
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="container"></a>
+
 ## Container { #container }
 
 <a id="create-a-container"></a>
+
 ### Create a Container { #create-a-container }
 Creates a container. To upload files to object storage, a container must be created.
 
 !!! tip "Note"
     A container name cannot include the special characters ``' " ` < > ;``, spaces, and relative path characters (`. ..`).
+
     Names in IP address format cannot be used.
+
     If a container or object name contains the special characters `! * ' ( ) ; : @ & = + $ , / ? # [ ]`, you must apply URL encoding (percent encoding) when using the API. These characters are reserved characters that are used in URLs. If you send an API request without URL-encoding a path that contains these characters, you will not receive the expected response.
 
 When you create a container, you can use the `X-Storage-Policy` header to specify the storage class of the container. You can choose the Standard class for frequently accessed data and the Economy class for long-term storage of less frequently accessed data at a lower cost. If you don't specify a storage class, the Standard class is applied.
 
 !!! tip "Note"
     You cannot change the storage class of an already-created container.
+
     Objects uploaded to Economy class containers are subject to a minimum storage period of 30 days. Objects deleted before 30 days are also charged for the remaining storage period.
+
     Economy class containers are charged per 1,000 API requests (excluding HEAD/DELETE requests).
 
 You can create an object lock container by setting the object lock interval using the `X-Container-Worm-Retention-Day` header when creating the container. Objects uploaded to the object lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
 
-<br/>
+<br>
 
 ```
-PUT  /v1/{Account}/{Container}
+PUT /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
@@ -627,9 +638,8 @@ No request body is required.
 | X-Auth-Token | Header | String | Y | Token ID |
 | Account | URL | String | Y | Storage account, available in the API endpoint configuration dialog box |
 | Container | URL | String | Y | Name of the container to create |
-| X-Storage-Policy | Header | String | N | Storage class of the container<br/><b>Standard</b>: Default class for frequently accessed data<br/><b>Economy</b>: Class ideal for long-term storage of infrequently accessed data |
+| X-Storage-Policy | Header | String | N | Storage class of the container<br>**Standard**: Default class for frequently accessed data<br>**Economy**: Class ideal for long-term storage of infrequently accessed data |
 | X-Container-Worm-Retention-Day | Header | Integer | N | Sets the default object lock interval for the container, in days |
-
 
 <a id="create-a-container-response"></a>
 #### Response
@@ -797,14 +807,15 @@ $container->create($CONTAINER_NAME);
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="get-a-container"></a>
+
 ### Get a Container { #get-a-container }
 Retrieves information about the specified container and the list of objects stored in it. The container's information can be viewed in the response header.
 
 ```
-GET   /v1/{Account}/{Container}
+GET /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
@@ -826,28 +837,28 @@ This API does not require a request body.
     Get Container API provides a number of queries. Each query can be concatenated using `&`.
 
 <a id="list-objects-over-10k"></a>
-#### Retrieve a List of More Than 10,000 Objects
+##### Retrieve a List of More Than 10,000 Objects
 The number of objects that can be retrieved using Get Container API is limited to 10,000. If you want to retrieve more than 10,000 objects, you need to use the `marker` query. The marker query returns up to 10,000 additional objects, starting from the next object of the specified object.
 
-<br/>
+<br>
 
 <a id="list-objects-with-a-prefix"></a>
-#### Retrieve a List of Objects Starting with a Prefix
+##### Retrieve a List of Objects Starting with a Prefix
 Using the `prefix` query returns the list of objects that start with the specified prefix. The prefix query can be used to retrieve the list of objects in subfolders.
 
-<br/>
+<br>
 
 <a id="list-objects-with-limit"></a>
-#### Specify the Maximum Number of Objects in the List
+##### Specify the Maximum Number of Objects in the List
 Using the `limit` query allows you to specify the maximum number of objects in the list of objects to be returned.
 
-<br/>
+<br>
 
 <a id="list-objects-with-format"></a>
-#### Specify the Response Format
+##### Specify the Response Format
 Using the `format` query allows you to specify a `json` or `xml` response format. If the response format is specified, the response body includes metadata for each object (size, content type, last modified time, ETag).
 
-<br/>
+<br>
 
 <a id="get-a-container-response"></a>
 #### Response
@@ -999,21 +1010,23 @@ foreach ($object_list as $obj) {
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="change-container-settings"></a>
+
 ### Change Container Settings { #change-container-settings }
 
 Changes the container settings. The container settings can be found in the response header when retrieving the container.
 
 ```
-POST  /v1/{Account}/{Container}
+POST /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 X-Container-Read: {Role-based access rules for container read}
 X-Container-Write: {Role-based access rules for container write}
 X-Container-View: {Role-based access rules for container view}
 X-Container-Ip-Acl-Allowed-List: {IP-based access rules for container access}
 X-Container-Ip-Acl-Denied-List: {IP-based access rules for container access}
+X-Container-Ip-Acl-Service-Gateway-Control: {Access permission for requests through the service gateway}
 X-Container-Object-Lifecycle: {Object lifecycle for the container}
 X-Container-Object-Transfer-To: {Containers to move when an object's lifecycle expires}
 X-History-Location: {Container to store previous versions of objects}
@@ -1030,39 +1043,42 @@ X-Container-Object-Allow-Keyword-Policy: {Whitelist for object upload policy fil
 ```
 
 <a id="change-container-settings-request"></a>
+
 #### Request
 A request body is not required.
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | Y | Token ID |
-| X-Container-Read | Header | String | N | Sets role-based access rules for container read |
-| X-Container-Write | Header | String | N | Sets role-based access rules for container write |
-| X-Container-View | Header | String | N | Sets role-based access rules for container view |
-| X-Container-Ip-Acl-Allowed-List | Header | String | N | Sets IP-based access rules for container access |
-| X-Container-Ip-Acl-Denied-List | Header | String | N | Sets IP-based access rules for container access |
+| X-Container-Read | Header | String | N | Sets the role-based access rules for container read |
+| X-Container-Write | Header | String | N | Sets the role-based access rules for container write |
+| X-Container-View | Header | String | N | Sets the role-based access rules for container view |
+| X-Container-Ip-Acl-Allowed-List | Header | String | N | Sets the IP-based access rules for container access |
+| X-Container-Ip-Acl-Denied-List | Header | String | N | Sets the IP-based access rules for container access |
+| X-Container-Ip-Acl-Service-Gateway-Control | Header | String | N | Sets the access permission for service gateway requests: `read`, `write`, `rw`, `deny` |
 | X-Container-Object-Lifecycle | Header | Integer | N | Sets the default object lifecycle for the container, in days |
 | X-Container-Object-Transfer-To | Header | String | N | Container to move objects to when their lifecycle expires |
 | X-History-Location | Header | String | N | Sets the container for storing previous versions of objects |
-| X-Versions-Retention | Header | Integer | N | Sets the lifecycle of previous versions of objects, in days |
-| X-Container-Meta-Web-Index | Header | String | N | Sets the static website index document object<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
-| X-Container-Meta-Web-Error | Header | String | N | Sets the static website error document object suffix<br/>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
+| X-Versions-Retention | Header | Integer | N | Sets the life cycle of the object's previous version in days |
+| X-Container-Meta-Web-Index | Header | String | N | Sets the static website index document object<br>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
+| X-Container-Meta-Web-Error | Header | String | N | Sets the static website error document object suffix<br>Only alphanumeric characters and some special characters (`-`, `_`, `.`, `/`) are allowed |
 | X-Container-Meta-Access-Control-Allow-Origin | Header | String | N | List of hosts allowed for CORS. You can allow all hosts by entering `*`, or enter a list of hosts separated by spaces. |
 | X-Container-Rfc-Compliant-Etags | Header | String | N | Sets whether to use RFC-compliant ETag format; true or false |
-| X-Container-Worm-Retention-Day | Header | Integer | N | Sets the default object lock cycle for the container, in days<br/>Can only be changed in an object lock container |
+| X-Container-Worm-Retention-Day | Header | Integer | N | Sets the default object lock cycle for the container, in days<br>Can only be changed in an object lock container |
 | X-Container-Object-Deny-Extension-Policy | Header | String | N | Extension blacklist for the object upload policy |
 | X-Container-Object-Deny-Keyword-Policy | Header | String | N | Filename blacklist for the object upload policy |
 | X-Container-Object-Allow-Extension-Policy | Header | String | N | Extension whitelist for the object upload policy |
 | X-Container-Object-Allow-Keyword-Policy | Header | String | N | Filename whitelist for the object upload policy |
-| Account | URL | String | Y | Storage account, available in the API endpoint configuration dialog box |
+| Account | URL | String | Y | Storage account, which can be found in the API Endpoint Settings popup |
 | Container | URL | String | Y | Name of the container to modify |
-<br/>
+
+<br>
 
 <a id="set-container-rbac-policy"></a>
 ##### Access Policy Configuration
 You can configure container access policies using the `X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` headers. For more information, see the [Access Policy Configuration Guide](acl-guide/).
 
-<br/>
+<br>
 
 <a id="set-container-object-lifecycle"></a>
 ##### Set Object Lifecycle
@@ -1078,7 +1094,7 @@ You can use the `X-Container-Object-Transfer-To` header to move objects whose li
 !!! tip "Note"
     You can move objects stored in a Standard class container to an Economy class container according to their lifecycle to reduce costs associated with long-term storage.
 
-<br/>
+<br>
 
 <a id="set-container-object-version-policy"></a>
 ##### Set Version Control Policy
@@ -1101,7 +1117,7 @@ It is recommended that you avoid using Unicode characters in container names for
 
 If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
-<br/>
+<br>
 
 <a id="set-container-static-website"></a>
 ##### Configure a Static Website
@@ -1109,7 +1125,7 @@ If you allow the container read access to all users and set the static website's
 
 The name for an object to be used as an index document or error document for a static website must consist of one or more alphanumeric characters, or some special characters (`-`, `_`, `.`, `/`), and the file extension must be `.html` in hypertext format. If the conditions are not satisfied, you cannot configure the settings or the static website may not work.
 The name for an error document of a static website has the form of `{response code}{suffix}`. For example, if you configure the error document as `error.html`, the name for an error document to display when a 404 error occurs is `404error.html`. You can upload and use error documents for each error situation. If error documents are not defined or error objects that match the response code do not exist, the default error document of a web browser will be displayed.
-<br/>
+<br>
 
 <a id="set-container-cors-policy"></a>
 ##### Cross-Origin Resource Sharing (CORS)
@@ -1133,8 +1149,8 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4c
 <br>
 After navigating to the site for which CORS is allowed in the browser, run the script below. The script can be run in the console of the developer tools provided by the browser.
 
-<br/>
-ex) https://example.com/
+<br>
+ex) `https://example.com/`
 
 ```
 var token = "****";
@@ -1177,13 +1193,13 @@ Status: 0
 
 </details>
 
-<br/>
+<br>
 
 <a id="set-container-rfc-compliant-etag"></a>
 ##### Configure RFC-Compliant ETag Format
 Some applications require ETag values enclosed in double quotes in accordance with the [RFC7232](https://www.rfc-editor.org/rfc/rfc7232#section-2.3) specification. You can use the `X-Container-Rfc-Compliant-Etags` header to configure the container to return ETag values enclosed in double quotes when retrieving objects stored in the container.
 
-<br/>
+<br>
 
 <a id="set-container-object-lock-cycle"></a>
 ##### Change Object Lock Period
@@ -1191,9 +1207,10 @@ Use the `X-Container-Worm-Retention-Day` header to change the object lock cycle 
 
 !!! tip "Note"
     You cannot change a general container to an object lock container or an object lock container to a general container.
-    You cannot specify an object lock container as an archive container or replication target container.
 
-<br/>
+You cannot specify an object lock container as an archive container or replication target container.
+
+<br>
 
 <a id="set-container-upload-policy"></a>
 ##### Change Upload Policy Configuration
@@ -1302,14 +1319,16 @@ The object name must not contain the following keywords: example
 <a id="unset-container-settings"></a>
 ##### Unset Container Settings
 If you use a header without a value, the setting will be removed. For example, if the life cycle of an object is set to 3 days and you request to edit the container using `'X-Container-Object-Lifecycle: '`, the object life cycle will be removed, and the objects that are stored in the container afterwards will not have their life cycle automatically set.
-<br/>
+<br>
 
 <a id="change-container-settings-response"></a>
+
 #### Response
 This API does not return a response body. When the request is appropriate, return status code 204.
-<br/>
+<br>
 
 <a id="change-container-settings-code-example"></a>
+
 #### Code Example
 This is an example in which the user requests changing the setting so that all users may read from and write to containers. You can select the headers you need to change the settings and request in the same way.
 
@@ -1367,8 +1386,8 @@ public class ContainerService {
 
         try {
             containerService.setContainerReadACL(containerName, true);
-            System.out.println("Container " + containerName + " became to public.");
-        }catch (Exception e) {
+            System.out.println("Container " + containerName + " became public.");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1442,15 +1461,16 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="delete-a-container"></a>
+
 ### Delete a Container { #delete-a-container }
 
 Deletes the specified container. The container to be deleted must be empty.
 
 ```
-DELETE   /v1/{Account}/{Container}
+DELETE /v1/{Account}/{Container}
 X-Auth-Token: {token-id}
 ```
 
@@ -1466,9 +1486,9 @@ A request body is not required.
 
 <a id="delete-a-container-response"></a>
 #### Response
-This request does not return a response body. For a valid request, return status code 204.
+This API does not return a response body. For a valid request, return status code 204.
 
-<br/>
+<br>
 
 <a id="delete-a-container-code-example"></a>
 #### Code Example
@@ -1518,7 +1538,7 @@ public class ContainerService {
         try {
             containerService.deleteContainer(containerName);
             System.out.println("Container " + containerName + " deleted.");
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1584,17 +1604,19 @@ $container->delete($CONTAINER_NAME);
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="object"></a>
+
 ## Object { #object }
 
 <a id="upload-an-object"></a>
+
 ### Upload an Object { #upload-an-object }
 Uploads a new object to the specified container.
 
 ```
-PUT   /v1/{Account}/{Container}/{Object}
+PUT /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
@@ -1605,7 +1627,7 @@ Content-Type: {content-type}
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | Y | Token ID |
-| Content-type | Header | String | Y | Content type of the object |
+| Content-Type | Header | String | Y | Content type of the object |
 | X-Delete-At | Header | Timestamp | N | Object expiration date, Unix time (seconds) |
 | X-Delete-After | Header | Timestamp | N | Object validity period, Unix time (seconds) |
 | Account | URL | String | Y | Storage account, which can be found in the API Endpoint Settings popup |
@@ -1616,7 +1638,7 @@ Content-Type: {content-type}
 <a id="set-object-lifecycle"></a>
 ##### Set Object Lifecycle
 You can set the lifecycle of an object in seconds by using the `X-Delete-At` or `X-Delete-After` header.
-<br/>
+<br>
 
 !!! danger "Caution"
     If an object name starts with `./` or `../`, the browser regards it as path character and access is unavailable on web console.
@@ -1817,46 +1839,49 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="multipart-upload"></a>
+
 ### Multipart Upload { #multipart-upload }
 An object whose size exceeds 5GB needs to be divided into segments of 5GB or smaller before uploading. If you upload segment objects and create a manifest object, you can use them as if they are a single object.
 
-<br/>
+<br>
 
 <a id="upload-segment-object"></a>
+
 #### Upload Segment Objects
 Upload each segment object that the original object has been divided into.
 
 ```
-PUT   /v1/{Account}/{Container}/{Object}/{Count}
+PUT /v1/{Account}/{Container}/{Object}/{Count}
 X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
 
-<br/>
+<br>
 
 ##### Request
 
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | Y | Token ID |
-| Content-type | Header | String | Y | Content type of the object |
+| Content-Type | Header | String | Y | Content type of the object |
 | Account | URL | String | Y | Storage account, which can be found in the API Endpoint Settings popup |
 | Container | URL | String | Y | Container name |
 | Object | URL | String | Y | Name of the object to create |
-| Count | URL | Integer | Y | Sequence number of the divided object, e.g. 001, 002 |
+| Count | URL | String | Y | Sequence number of the divided object, e.g. 001, 002 |
 | - | Body | Binary | Y | Content of the divided object |
 
-<br/>
+<br>
 
 ##### Response
 This API does not return a response body. For a valid request, return status code 201.
 
-<br/>
+<br>
 
 <a id="upload-manifest-object"></a>
+
 #### Create Manifest Object
 A manifest object can be created in two ways: either using **DLO** (Dynamic Large Object) or **SLO** (Static Large Object).
 
@@ -1864,15 +1889,16 @@ A manifest object can be created in two ways: either using **DLO** (Dynamic Larg
     Because a manifest object has path information for segment objects, there is no need to upload segment objects and the manifest object in the same container. If segment objects and manifest objects are in a single container and it is difficult to manage them, it is recommended to upload segment objects to a separate container and create only the manifest object in the container where you originally intended to upload the objects.
 
 **DLO**
+
 The DLO manifest object uses the path to the segment objects specified in the `X-Object-Manifest` header to automatically locate and connect to segment objects.
 
 ```
-PUT   /v1/{Account}/{Container}/{Object}
+PUT /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 X-Object-Manifest: {Segment-Container}/{Segment-Object}/
 ```
 
-<br/>
+<br>
 
 ##### Request
 | Name | Type | Format | Required | Description |
@@ -1884,14 +1910,15 @@ X-Object-Manifest: {Segment-Container}/{Segment-Object}/
 | Object | URL | String | Y | Name of the manifest object to create |
 | - | Body | Binary | Y | Empty data |
 
-<br/>
+<br>
 
 **SLO**
+
 To create an SLO manifest object, you must enter the list of segment objects in order in the request body. Up to 10,000 segment objects can be entered.
-If you request the creation of an SLO manifest object, the system checks whether each segment object is in the specified path and whether the etag value matches the object's size. If the information does not match, the manifest object is not created.
+If you request the creation of an SLO manifest object, the system checks whether each segment object is in the specified path and whether the ETag value matches the object's size. If the information does not match, the manifest object is not created.
 
 ```
-PUT   /v1/{Account}/{Container}/{Object}?multipart-manifest=put
+PUT /v1/{Account}/{Container}/{Object}?multipart-manifest=put
 X-Auth-Token: {token-id}
 ```
 
@@ -1910,7 +1937,7 @@ X-Auth-Token: {token-id}
     ...
 ]
 ```
-<br/>
+<br>
 
 ##### Request
 | Name | Type | Format | Required | Description |
@@ -1921,22 +1948,23 @@ X-Auth-Token: {token-id}
 | Object | URL | String | Y | Name of the manifest object to create |
 | multipart-manifest | Query | String | Y | Set to `put` when creating a manifest |
 | path | Body | String | Y | Path of the segment object |
-| etag | Body | String | Y | etag of the segment object |
+| etag | Body | String | Y | ETag of the segment object |
 | size_bytes | Body | Integer | Y | Size of the segment object (in bytes) |
 
 !!! tip "Note"
     To retrieve the segment information held by SLO manifest file, you must use the `multipart-manifest=get` query.
 
-<br/>
+<br>
 
 ##### Response
 This API does not return a response body. For a valid request, return status code 201.
 
-<br/>
+<br>
 
 <a id="multipart-upload-code-example"></a>
+
 #### Code Examples
-Example of multipart upload using the DLO method
+DLO method multipart upload example
 
 <details>
 <summary>cURL</summary>
@@ -2062,7 +2090,7 @@ class ObjectService:
     def _create_manifest(self, container, object):
         req_url = self._get_url(container, object)
         req_header = self._get_request_header()
-        req_header['X-Object-Manifest'] = '/'.join([container, object])
+        req_header['X-Object-Manifest'] = '/'.join([container, object]) + '/'
         return requests.put(req_url, headers=req_header)
 
     def upload_large_object(self, container, object, object_path):
@@ -2195,14 +2223,15 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="update-an-object"></a>
+
 ### Update an Object { #update-an-object }
 Same as the Upload an Object API, but if the object is already located in the container, the content of the object is updated.
 
 ```
-PUT   /v1/{Account}/{Container}/{Object}
+PUT /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 Content-Type: {content-type}
 ```
@@ -2213,7 +2242,7 @@ Content-Type: {content-type}
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | Y | Token ID |
-| Content-type | Header | String | Y | Content type of the object |
+| Content-Type | Header | String | Y | Content type of the object |
 | X-Delete-At | Header | Timestamp | N | Object expiration date, Unix time in seconds |
 | X-Delete-After | Header | Timestamp | N | Object validity period, Unix time in seconds |
 | Account | URL | String | Y | Storage account, which can be found in the API Endpoint Settings popup |
@@ -2225,14 +2254,15 @@ Content-Type: {content-type}
 #### Response
 This API does not return a response body. For a valid request, return status code 201.
 
-<br/>
+<br>
 
 <a id="query-object-information"></a>
+
 ### Query Object Information { #query-object-information }
 Retrieves the information about the specified object. The object information can be found in the response header.
 
 ```
-HEAD   /v1/{Account}/{Container}/{Object}
+HEAD /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
@@ -2249,13 +2279,13 @@ A request body is not required.
 
 <a id="query-object-information-response"></a>
 #### Response
-This request does not return a response body. For a valid request, return status code 200.
+This API does not return a response body. For a valid request, return status code 200.
 
 | Name | Type | Format | Description |
 |---|---|---|---|
 | Content-Type | Header | String | Content type of the object |
 | Content-Length | Header | Integer | Size of the object |
-| Etag | Header | String | ETag value of the object<br/>MD5 hash value of the object.<br/>Can be used to verify the integrity of the object. |
+| Etag | Header | String | ETag value of the object<br>MD5 hash value of the object.<br>Can be used to verify the integrity of the object. |
 | Last-Modified | Header | String | Last modified time of the object |
 | X-Timestamp | Header | Timestamp | Last modified time of the object, in Unix time (seconds) |
 | X-Delete-At | Header | Timestamp | Expiration date of the object, in Unix time (seconds) |
@@ -2264,14 +2294,13 @@ This request does not return a response body. For a valid request, return status
 | X-Static-Large-Object | Header | Boolean | Whether the object is an SLO-style multipart object |
 | X-Manifest-Etag | Header | String | Manifest ETag values (MD5) for SLO-style multipart objects |
 
-
 <a id="query-object-information-code-example"></a>
 #### Code Example
 <details>
 <summary>cURL</summary>
 
 ```
-$ curl -O -X HEAD -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
+$ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 
 HTTP/1.1 200 OK
@@ -2287,14 +2316,15 @@ date: Wed, 16 Oct 2024 23:43:36 GMT
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="download-an-object"></a>
+
 ### Download an Object { #download-an-object }
 Downloads an object.
 
 ```
-GET   /v1/{Account}/{Container}/{Object}
+GET /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
@@ -2314,7 +2344,7 @@ This API does not require a request body.
 Data content of the object is returned to stream. For a valid request, return status code 200.
 
 <a id="download-an-object-code-example"></a>
-#### Code Example
+#### Code Examples
 <details>
 <summary>cURL</summary>
 
@@ -2344,21 +2374,21 @@ public class ObjectService {
 
     public File downloadObject(String containerName, String objectName, String downloadPath) {
         String url = this.getUrl(containerName, objectName);
-        
+
         // RequestCallback that adds a token to the request header
         RequestCallback callback = (request) -> {
             HttpHeaders headers = request.getHeaders();
             headers.add("X-Auth-Token", tokenId);
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
         };
-        
+
         // Extractor that receives the response and saves it
         ResponseExtractor<File> extractor = (clientHttpResponse) -> {
             File ret = new File(downloadPath + "/" + objectName);
             StreamUtils.copy(clientHttpResponse.getBody(), Files.newOutputStream(ret.toPath()));
             return ret;
         };
-        
+
         return this.restTemplate.execute(url, HttpMethod.GET, callback, extractor);
     }
 
@@ -2458,20 +2488,21 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="copy-an-object"></a>
+
 ### Copy an Object { #copy-an-object }
 Copies an object to another container. All properties of the source object are copied along with it.
 
 ```
-COPY   /v1/{Account}/{SourceContainer}/{SourceObject}
+COPY /v1/{Account}/{SourceContainer}/{SourceObject}
 X-Auth-Token: {token-id}
 Destination: {TargetContainer}/{TargetObject}
 ```
 
 ```
-PUT   /v1/{Account}/{TargetContainer}/{TargetObject}
+PUT /v1/{Account}/{TargetContainer}/{TargetObject}
 X-Auth-Token: {token-id}
 X-Copy-From: {SourceContainer}/{SourceObject}
 ```
@@ -2483,16 +2514,16 @@ A request body is not required.
 | Name | Type | Format | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | Y | Token ID |
-| Destination | Header | String | N | Target object path, `{target container}/{target object}`<br/>Required when using the COPY method |
-| X-Copy-From | Header | String | N | Source object path, `{source container}/{source object}`<br/>Required when using the PUT method |
-| X-Fresh-Metadata | Header | Boolean | N | Whether to reset the object's properties<br/>If set to true, the source object's properties are not copied.<br/>The default value is false. |
+| Destination | Header | String | Conditional | Target object path, `{target container}/{target object}`<br>Required when using the COPY method |
+| X-Copy-From | Header | String | Conditional | Source object path, `{source container}/{source object}`<br>Required when using the PUT method |
+| X-Fresh-Metadata | Header | Boolean | N | Whether to reset the object's properties<br>If set to true, the source object's properties are not copied.<br>The default value is false. |
 | X-Object-Meta-{Key} | Header | String | N | Metadata of the target object |
 | X-Delete-At | Header | Timestamp | N | Expiration date of the target object, in Unix time (seconds) |
 | X-Delete-After | Header | Timestamp | N | Validity period of the target object, in Unix time (seconds) |
 | Account | URL | String | Y | Storage account, which can be found in the API Endpoint Settings popup |
-| Container | URL | String | Y | Container name<br/>COPY method: source container<br/>PUT method: target container |
-| Object | URL | String | Y | Object name<br/>COPY method: source object<br/>PUT method: target object |
-| multipart-manifest | Query | String | N | If the value is get, only the manifest object is copied<br/>If omitted, segments are merged and copied as a single object.<br/>COPY method: add as a query parameter<br/>PUT method: add to the `X-Copy-From` header value |
+| Container | URL | String | Y | Container name<br>COPY method: source container<br>PUT method: target container |
+| Object | URL | String | Y | Object name<br>COPY method: source object<br>PUT method: target object |
+| multipart-manifest | Query | String | N | If the value is get, only the manifest object is copied<br>If omitted, segments are merged and copied as a single object.<br>COPY method: add as a query parameter<br>PUT method: add to the `X-Copy-From` header value |
 
 <a id="preserve-object-properties"></a>
 ##### Preserve Object Properties
@@ -2502,7 +2533,7 @@ When you copy an object, the source object's properties are copied along with it
 |---|---|
 | X-Delete-At | Object expiration date |
 | X-Object-Worm-Retain-Until | Object lock expiration date |
-| X-Object-Meta-{key} | User-defined metadata |
+| X-Object-Meta-{Key} | User-defined metadata |
 
 !!! tip "Note"
     When copying an object, you can set the copied object's properties to new values by adding the `X-Delete-At` or `X-Object-Meta-{key}` header.
@@ -2513,13 +2544,13 @@ When you copy an object, the source object's properties are copied along with it
 When you copy a multipart object, the segments referenced by the manifest are merged into a single object and copied. Therefore, multipart objects larger than 5 GB cannot be copied using the standard method. To copy a multipart object larger than 5 GB, you must copy only the manifest object. You can specify the manifest as the source by adding the `multipart-manifest=get` parameter to the request.
 
 ```
-COPY   /v1/{Account}/{SourceContainer}/{SourceObject}?multipart-manifest=get
+COPY /v1/{Account}/{SourceContainer}/{SourceObject}?multipart-manifest=get
 X-Auth-Token: {token-id}
 Destination: {TargetContainer}/{TargetObject}
 ```
 
 ```
-PUT   /v1/{Account}/{TargetContainer}/{TargetObject}
+PUT /v1/{Account}/{TargetContainer}/{TargetObject}
 X-Auth-Token: {token-id}
 X-Copy-From: {SourceContainer}/{SourceObject}; multipart-manifest=get
 ```
@@ -2551,12 +2582,12 @@ This request does not return a response body. For a valid request, return status
 
 **Copy a Single Object**
 ```
-// COPY method
+# COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/3a45e9.jpg' \
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/3a45e9.jpg
 
-// PUT method
+# PUT method
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/3a45e9.jpg' \
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/copy_con/3a45e9.jpg
@@ -2564,12 +2595,12 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4c
 
 **Copy a Multipart Manifest Object**
 ```
-// COPY method
+# COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/419da6e.mp4' \
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/419da6e.mp4?multipart-manifest=get
 
-// PUT method
+# PUT method
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/419da6e.mp4; multipart-manifest=get' \
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/copy_con/419da6e.mp4
@@ -2690,14 +2721,15 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="modify-object-metadata"></a>
+
 ### Modify Object Metadata { #modify-object-metadata }
 Modifies the metadata of the specified object.
 
 ```
-POST   /v1/{Account}/{Container}/{Object}
+POST /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 X-Object-Meta-{Key}: {Value}
 ```
@@ -2712,14 +2744,16 @@ A request body is not required.
 | X-Object-Meta-{Key} | Header | String | N | Metadata to change |
 | X-Delete-At | Header | Timestamp | N | Object expiration date, Unix time in seconds |
 | X-Delete-After | Header | Timestamp | N | Object validity period, Unix time in seconds |
-| X-Object-Worm-Retain-Until | Header | Timestamp | N | Object lock expiration date, Unix time in seconds<br/>Can only be changed to a time after the configured time, and only modifiable in an object lock container |
+| X-Object-Worm-Retain-Until | Header | Timestamp | N | Object lock expiration date, Unix time in seconds<br>Can only be changed to a time after the configured time, and only modifiable in an object lock container |
 | Account | URL | String | Y | Storage account, which can be found in the API Endpoint Settings popup |
 | Container | URL | String | Y | Container name |
 | Object | URL | String | Y | Name of the object whose metadata is to be modified |
 
 !!! tip "Note"
     Objects uploaded to the Object Lock container are automatically assigned a lock expiration date.
+
     Objects whose lock expiration date has not yet passed cannot be overwritten or deleted.
+
     The metadata of an object can be changed even before the lock expiration date.
 
 <a id="modify-object-metadata-response"></a>
@@ -2732,12 +2766,12 @@ This request does not return a response body. For a valid request, return status
 <summary>cURL</summary>
 
 ```
-// Add metadata to an object
+# Add metadata to an object
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo" \
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 
-// Verify the added metadata in the object header
+# Verify the added metadata in the object header
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
@@ -2865,9 +2899,10 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="delete-an-object"></a>
+
 ### Delete an Object { #delete-an-object }
 Deletes the specified object.
 
@@ -2875,7 +2910,7 @@ Deletes the specified object.
     When deleting a multipart-uploaded object, you need to delete all segment data. If you delete only the manifest object, the segment objects might be kept intact and you might be charged for them.
 
 ```
-DELETE   /v1/{Account}/{Container}/{Object}
+DELETE /v1/{Account}/{Container}/{Object}
 X-Auth-Token: {token-id}
 ```
 
@@ -2887,14 +2922,14 @@ This API does not require a request body.
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | Y | Token ID |
 | Account | URL | String | Y | Storage account, which can be found in the API Endpoint Settings popup |
-| Container | URL| String | Y  | Container name |
-| Object | URL| String | Y  | Name of the object to delete |
+| Container | URL | String | Y | Container name |
+| Object | URL | String | Y | Name of the object to delete |
 
 <a id="delete-an-object-response"></a>
 #### Response
-This request does not return a response body. For a valid request, return status code 204.
+This API does not return a response body. For a valid request, return status code 204.
 
-<br/>
+<br>
 
 <a id="delete-an-object-code-example"></a>
 #### Code Example
@@ -3013,63 +3048,35 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 ```
 </details>
 
-<br/>
+<br>
 
 <a id="limiting-policy"></a>
+
 ## Limiting Policy { #limiting-policy }
 
 <a id="request-rate-limit"></a>
 ### Request Rate Limit { #request-rate-limit }
 Object Storage applies a write request rate limit per storage account to ensure system stability.
 
-<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
-  <tr>
-    <th>Category</th>
-    <th>Item</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>Limit condition</td>
-    <td>Request rate limit</td>
-    <td>500 requests/second</td>
-  </tr>
-  <tr>
-    <td rowspan="5">Applies to</td>
-    <td>Unit</td>
-    <td>Per storage account</td>
-  </tr>
-  <tr>
-    <td rowspan="4">Applied methods</td>
-    <td>POST: Change container settings, modify object properties/metadata</td>
-  </tr>
-  <tr>
-    <td>PUT: Create container, upload object</td>
-  </tr>
-  <tr>
-    <td>DELETE: Delete container/object</td>
-  </tr>
-  <tr>
-    <td>COPY: Copy object</td>
-  </tr>
-  <tr>
-    <td>Behavior</td>
-    <td>When limit is exceeded</td>
-    <td>Requests are delayed; if the delay exceeds 60 seconds, a 429 response is returned</td>
-  </tr>
-</table>
+| Category | Item | Description |
+|---|---|---|
+| Limit condition | Request rate limit | 500 requests/second |
+| Applies to | Unit | Per storage account |
+| Applies to | Applied methods | `POST`: Change container settings, modify object properties/metadata<br>`PUT`: Create container, upload object<br>`DELETE`: Delete container/object<br>`COPY`: Copy object |
+| Behavior | When limit is exceeded | Requests are delayed; if the delay exceeds 60 seconds, a 429 response is returned |
 
 The following policy applies to write requests that exceed the rate limit:
 
 * Write requests that exceed the limit are not immediately rejected but are delayed.
 * The delay increases progressively depending on the volume of excess requests, and can be extended up to 60 seconds.
-* If the delay exceeds 60 seconds, the request fails and a 429 Too Many Requests response is returned.
+* If the delay exceeds 60 seconds, the request fails and a `429 Too Many Requests` response is returned.
 
 To prevent response delays or failures, adjust your write requests so that they do not exceed the rate limit.
 
-
-<br/>
+<br>
 
 <a id="references"></a>
+
 ## References { #references }
 
-Swift API v1 - [http://developer.openstack.org/api-ref-objectstorage-v1.html](http://developer.openstack.org/api-ref-objectstorage-v1.html)
+Swift API v1 - [https://docs.openstack.org/api-ref/object-store/](https://docs.openstack.org/api-ref/object-store/)
