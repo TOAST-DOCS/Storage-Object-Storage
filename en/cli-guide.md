@@ -1,9 +1,11 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=4d6c14c57aab -->
 
 <a id="storage-object-storage-cli-guide"></a>
 ## Storage > Object Storage > CLI Guide { #storage-object-storage-cli-guide }
 
-This guide explains how to use the NHN Cloud Object Storage service with the OpenStack Swift command-line interface (CLI).
+This document explains how to use NHN Cloud Object Storage with the OpenStack Swift command-line interface (CLI).
 
 <a id="python-swiftclient"></a>
 ## python-swiftclient { #python-swiftclient }
@@ -18,7 +20,7 @@ pip install python-swiftclient python-keystoneclient
 ```
 
 !!! tip "Note"
-    Python 3.6 or later is required. If Python is not installed, refer to the [Python download page](https://www.python.org/downloads/) for installation instructions.
+    Python 3.7 or later is required. If Python is not installed, refer to the [Python download page](https://www.python.org/downloads/) for installation instructions.
 
 Once the installation is complete, you can verify it with the following command.
 
@@ -113,7 +115,7 @@ The main subcommands are as follows.
 | --- | --- |
 | stat | Retrieves information about accounts, containers, or objects. |
 | list | Retrieves a list of containers or objects. |
-| post | Creates a container or configures metadata. |
+| post | Creates a container or changes the settings of containers and objects. |
 | upload | Uploads objects. |
 | download | Downloads objects. |
 | copy | Copies objects. |
@@ -126,13 +128,13 @@ The main subcommands are as follows.
 <a id="options"></a>
 ### Common options { #options }
 
-These options can be used with all subcommands.
+These are the main options that can be used with all subcommands.
 
 | Option | Description |
 | --- | --- |
 | --help | Displays usage instructions for each subcommand. |
 | --debug | Displays the actual API call details. |
-| --quiet | Suppresses status output. |
+| --quiet | Does not output the progress status. |
 | --retries &lt;num&gt; | Specifies the number of retries when a request fails. |
 
 <br/>
@@ -243,7 +245,7 @@ $ swift stat media 797619b171a455e9eec8a87f94ee77f4.jpg
 Retrieves a list of containers or objects.
 
 ```
-swift list [container] [options]
+swift list [<options>] [<container>]
 ```
 
 <br/>
@@ -348,7 +350,7 @@ swift upload --segment-size <size> [--segment-container <segment-container>] <co
 
 <br/>
 
-If `--segment-container` is not specified, a container named `{container}_segments` is created and the segment objects are uploaded to it.
+If `--segment-container` is not specified, a container named `<container>_segments` is created and the segment objects are uploaded to it.
 
 ```
 $ swift upload --segment-size 10m media test.mp4
@@ -426,9 +428,9 @@ swift copy [--destination </container/object>] [--fresh-metadata] [--meta <name:
 
 | Option | Description |
 | --- | --- |
-| --destination &lt;/container/object&gt; | Specifies the destination container and object name to copy to.<br/>If the object name is omitted, it is copied with the same name as the source. |
+| --destination &lt;/container/object&gt; | Specifies the destination container and object name to copy to.<br>If the object name is omitted, it is copied with the same name as the source. |
 | --meta &lt;name:value&gt; | Configures metadata. Can be used multiple times. |
-| --fresh-metadata | Does not copy the metadata from the source.<br/>When used with `--meta`, only the newly specified metadata is set. |
+| --fresh-metadata | Does not copy the metadata from the source.<br>When used with `--meta`, only the newly specified metadata is set. |
 
 <br/>
 
@@ -478,7 +480,7 @@ Changes the settings of a container or object.
 
 <a id="post-container"></a>
 ### Change container settings { #post-container }
-Changes the settings of a container. Container settings can be verified with the [view container information command](cli-guide/#stat-container).
+Changes the settings of a container. Container settings can be verified with the [view container information command](#stat-container).
 
 ```
 swift post [<options>] <container>
@@ -491,7 +493,7 @@ swift post [<options>] <container>
 | --meta &lt;key:value&gt; | Configures container metadata. Can be used multiple times. |
 | --read-acl &lt;acl&gt; | Sets the read ACL for the container. |
 | --write-acl &lt;acl&gt; | Sets the write ACL for the container. |
-| --header &lt;key:value&gt; | Adds a custom HTTP header. Settings not provided as options by the Swift CLI can also be specified directly with this option. |
+| --header &lt;key:value&gt; | Adds a user-defined HTTP header. Settings not provided as options by the Swift CLI can also be specified directly with this option. |
 
 <br/>
 
@@ -512,7 +514,7 @@ $ swift post --read-acl ".r:*" media
 
 <a id="post-object"></a>
 ### Change object metadata { #post-object }
-Changes the metadata of an object. Object metadata can be verified with the [view object information command](cli-guide/#stat-object).
+Changes the metadata of an object. Object metadata can be verified with the [view object information command](#stat-object).
 
 ```
 swift post [<options>] <container> <object>
@@ -523,7 +525,7 @@ swift post [<options>] <container> <object>
 | Option | Description |
 | --- | --- |
 | --meta &lt;key:value&gt; | Configures object metadata. Can be used multiple times. |
-| --header &lt;key:value&gt; | Adds a custom HTTP header. Object properties such as Content-Type can be changed. |
+| --header &lt;key:value&gt; | Adds a user-defined HTTP header. Object properties such as `Content-Type` can be changed. |
 
 <br/>
 
@@ -542,7 +544,7 @@ Deletes containers or objects.
 
 <a id="delete-container"></a>
 ### Delete container { #delete-container }
-Deletes all objects inside the specified container, then deletes the container.
+Deletes all objects in the specified container, then deletes the container.
 
 ```
 swift delete <container>
@@ -632,14 +634,14 @@ $ curl https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b948944
 
 <a id="tempurl-key"></a>
 ### Register Temp-URL-Key { #tempurl-key }
-To generate a signed URL, a Temp-URL-Key must be registered in the container in advance. The configured key can be verified with the [view container information command](cli-guide/#stat-container).
+To generate a signed URL, a Temp-URL-Key must be registered in the container in advance. The configured key can be verified with the [view container information command](#stat-container).
 
 ```
-swift post --meta "Temp-URL-Key: <key>" <container>
+swift post --meta "Temp-URL-Key:<key>" <container>
 ```
 
 ```
-$ swift post --meta "Temp-URL-Key: 398dded8-b1be" media
+$ swift post --meta "Temp-URL-Key:398dded8-b1be" media
 $ swift stat media
                Account: AUTH_6dbc368b94894416bec4cdfc65b5e067
              Container: media
