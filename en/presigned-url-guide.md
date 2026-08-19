@@ -15,7 +15,6 @@ A presigned URL is a temporary access link that is pre-signed with a secret key.
 <br>
 
 <a id="swift-tempurl"></a>
-
 ### Swift TempURL { #swift-tempurl }
 
 Swift TempURL (Temporary URL) is a URL for an object with query parameters appended to it.
@@ -38,7 +37,6 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/objec
 <br>
 
 <a id="s3-presigned-url"></a>
-
 ### S3-compatible Presigned URL { #s3-presigned-url }
 
 NHN Cloud Object Storage provides an S3-compatible API, and presigned URLs generated with this API have the following format.
@@ -81,7 +79,6 @@ Swift API and S3 API use different object path formats, so you must use the path
 <br>
 
 <a id="set-tempurl-key"></a>
-
 ### Set Swift TempURL Secret Key { #set-tempurl-key }
 
 TempURL signs requests using a secret key that is pre-registered on the storage account or container.
@@ -125,7 +122,6 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # Container Settings
 <br>
 
 <a id="obtain-s3-credentials"></a>
-
 ### Obtain S3 API Credentials { #obtain-s3-credentials }
 
 To use the S3-compatible API, you must first obtain S3 API credentials (Access Key ID + Secret Access Key) in the AWS EC2 format. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
@@ -169,7 +165,6 @@ After completing the prerequisites, this section describes how to create a presi
 <br>
 
 <a id="create-manual-signature"></a>
-
 ### Create a Signature Manually { #create-manual-signature }
 
 The following is an example of an HMAC-SHA256 signature for an object-based TempURL.
@@ -306,7 +301,6 @@ echo $signature . "\n";
 <br>
 
 <a id="create-swift-tempurl-cli"></a>
-
 ### Use the Swift CLI { #create-swift-tempurl-cli }
 
 The `tempurl` command of the Swift CLI automatically generates the `temp_url_sig` and `temp_url_expires` query parameters.
@@ -330,7 +324,6 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4c
 <br>
 
 <a id="create-aws-cli"></a>
-
 ### Use the AWS CLI { #create-aws-cli }
 
 To generate a signature with the `aws` CLI, you must configure the Access Key and Secret Key obtained in [Obtain S3 API Credentials](#obtain-s3-credentials) locally.
