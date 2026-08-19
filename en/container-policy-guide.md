@@ -1,12 +1,14 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=90b39f34080f -->
 
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > Container Policy Configuration Guide { #storage-object-storage-container-policy-configuration-guide }
 
-This document describes how to manage container-related settings in NHN Cloud Object Storage as a container policy guide.
+This document describes how to manage container-related settings in NHN Cloud Object Storage using container policies.
 
 <a id="container-policy"></a>
-### Container Policy { #container-policy }
+## Container Policy { #container-policy }
 
 Container policies allow you to manage container settings in an integrated manner using a JSON-format policy document.
 
@@ -96,7 +98,7 @@ X-Auth-Token: {token-id}
   "cors": {
     "allow_origins": [ "https://example.com" ],
     "max_age": 3600,
-    "expose_headers": [ "Etag" ]
+    "expose_headers": [ "ETag" ]
   },
   "lock": { "days": 30 }
 }
@@ -153,7 +155,7 @@ Content-Type: application/json
 | Name | In | Type | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | Y | Token ID |
-| Content-Type | Header | String | Y | `application/json`|
+| Content-Type | Header | String | Y | `application/json` |
 | Account | URL | String | Y | Storage Account |
 | Container | URL | String | Y | Container name |
 | - | Body | JSON | Y | Policy document to set |
@@ -303,7 +305,7 @@ Use the `acl` key of the container policy document to configure container access
 | Read | `read` | Allows querying container information and object information, and downloading objects. |
 | Write | `write` | Allows change requests such as uploading and deleting objects. |
 | View | `view` | Allows listing objects in the container. |
-The `read`, `write`, and `view` fields in the policy document correspond to the `X-Container-Read`, `X-Container-Write`, and `X-Container-View` properties of a container, respectively. For more details on each permission, refer to the [Access Policy Configuration Guide](acl-guide/#role-based-access-api).
+The `read`, `write`, and `view` fields in the policy document correspond to the `X-Container-Read`, `X-Container-Write`, and `X-Container-View` properties of a container, respectively. For more details on each permission, see the [Access Policy Configuration Guide](acl-guide/#role-based-access-api).
 
 <br>
 
@@ -484,7 +486,7 @@ The structure of the CORS policy document is as follows.
   "cors": {
     "allow_origins": [ "https://example.com", "https://app.example.com" ],
     "max_age": 3600,
-    "expose_headers": [ "Etag", "X-Timestamp" ]
+    "expose_headers": [ "ETag", "X-Timestamp" ]
   }
 }
 ```
@@ -492,16 +494,16 @@ The structure of the CORS policy document is as follows.
 <br>
 
 <a id="lock"></a>
-## Object lock { #lock }
+## Object Lock { #lock }
 
-Use the `lock` key in the container policy document to set the Object Lock (WORM, Write-Once-Read-Many) lock interval. For the concepts and constraints of Object Lock, see [Change Object Lock Date](api-guide/#set-container-object-lock-cycle) in the API guide.
+Use the `lock` key in the container policy document to set the Object Lock (WORM, Write-Once-Read-Many) lock cycle. For the concepts and constraints of Object Lock, see [Change Object Lock Cycle](api-guide/#set-container-object-lock-cycle) in the API guide.
 
 <br>
 
 <a id="lock-schema"></a>
 ### JSON Policy Document Schema { #lock-schema }
 
-The structure of the object lock policy document is as follows.
+The structure of the Object Lock policy document is as follows.
 
 ```json
 {
@@ -520,10 +522,10 @@ The structure of the object lock policy document is as follows.
 <a id="lock-schema-application-rules"></a>
 #### Application Rules
 
-When configuring object lock, note the following:
+When configuring Object Lock, note the following:
 
-* Object lock can only be enabled when creating a container. Requests to set `lock` on an existing container that does not have object lock configured will be rejected.
-* Object lock cannot be disabled. Setting `days` to `0` only sets the default lock period to 0 days; object lock remains active.
+* Object Lock can only be enabled when creating a container. Requests to set `lock` on an existing container that does not have Object Lock configured will be rejected.
+* Object Lock cannot be disabled. Setting `days` to `0` only sets the default lock period to 0 days; Object Lock remains active.
 
 <a id="lock-schema-application-example"></a>
 #### Application Example
