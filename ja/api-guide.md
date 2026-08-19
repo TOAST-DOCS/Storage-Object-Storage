@@ -3,13 +3,11 @@
 <!-- pre-align:aligned sig=288abf1f2a5c -->
 
 <a id="storage-object-storage-api-guide"></a>
-
 ## Storage > Object Storage > APIガイド { #storage-object-storage-api-guide }
 
 このドキュメントでは、NHN Cloud オブジェクトストレージが提供する API を使用してストレージアカウント、コンテナ、オブジェクトを管理する方法について説明します。
 
 <a id="common"></a>
-
 ## オブジェクトストレージ API 共通情報 { #common }
 
 <a id="endpoint"></a>
@@ -244,7 +242,6 @@ printf("%s\n", $token);
 </details>
 
 <a id="storage-account"></a>
-
 ## ストレージアカウント { #storage-account }
 ストレージアカウント (account) は `AUTH_*****` 形式の文字列です。`object-store` API エンドポイントに含まれています。
 
@@ -596,11 +593,9 @@ foreach($container_list as $container) {
 <br>
 
 <a id="container"></a>
-
 ## コンテナ { #container }
 
 <a id="create-a-container"></a>
-
 ### コンテナの作成 { #create-a-container }
 コンテナを作成します。Object Storage にファイルをアップロードするには、必ずコンテナを作成する必要があります。
 
@@ -806,7 +801,6 @@ $container->create($CONTAINER_NAME);
 <br>
 
 <a id="get-a-container"></a>
-
 ### コンテナの照会 { #get-a-container }
 指定したコンテナの情報と、その中に保存されているオブジェクトのリストを照会します。コンテナの情報は応答ヘッダーで確認できます。
 
@@ -1009,7 +1003,6 @@ foreach ($object_list as $obj) {
 <br>
 
 <a id="change-container-settings"></a>
-
 ### コンテナ設定の変更 { #change-container-settings }
 
 コンテナの設定を変更します。コンテナの設定は、コンテナ照会時の応答ヘッダーで確認できます。
@@ -1039,7 +1032,6 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 ```
 
 <a id="change-container-settings-request"></a>
-
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -1318,13 +1310,11 @@ The object name must not contain the following keywords: example
 <br>
 
 <a id="change-container-settings-response"></a>
-
 #### レスポンス
 レスポンス本文は返しません。リクエストが正しい場合は、ステータスコード 204 を返します。
 <br>
 
 <a id="change-container-settings-code-example"></a>
-
 #### コード例
 すべてのユーザーにコンテナの読み取りおよび書き込みアクセスを許可する設定変更リクエストの例です。同じ方法で他の設定も必要なヘッダーを選択してリクエストできます。
 
@@ -1460,7 +1450,6 @@ $container->set_acl($CONTAINER_NAME, TRUE);
 <br>
 
 <a id="delete-a-container"></a>
-
 ### コンテナの削除 { #delete-a-container }
 
 指定したコンテナを削除します。削除するコンテナは必ず空である必要があります。
@@ -1603,11 +1592,9 @@ $container->delete($CONTAINER_NAME);
 <br>
 
 <a id="object"></a>
-
 ## オブジェクト { #object }
 
 <a id="upload-an-object"></a>
-
 ### オブジェクトのアップロード { #upload-an-object }
 指定したコンテナに新しいオブジェクトをアップロードします。
 
@@ -1838,14 +1825,12 @@ $object->upload($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br>
 
 <a id="multipart-upload"></a>
-
 ### マルチパートアップロード { #multipart-upload }
 5 GB を超えるサイズのオブジェクトは、5 GB 以下のセグメントに分割してアップロードする必要があります。セグメントオブジェクトをアップロードした後、マニフェストオブジェクトを作成すると、1 つのオブジェクトとして使用できます。
 
 <br>
 
 <a id="upload-segment-object"></a>
-
 #### セグメントオブジェクトのアップロード
 オブジェクトを分割したセグメントオブジェクトをそれぞれアップロードします。
 
@@ -1877,7 +1862,6 @@ Content-Type: {content-type}
 <br>
 
 <a id="upload-manifest-object"></a>
-
 #### マニフェストオブジェクトの作成
 マニフェストオブジェクトは **DLO**(Dynamic Large Object) と **SLO**(Static Large Object) の 2 種類の方法で作成できます。
 
@@ -1958,7 +1942,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="multipart-upload-code-example"></a>
-
 #### コード例
 DLO 方式を使用したマルチパートアップロードの例
 
@@ -2222,7 +2205,6 @@ $object->upload_large_object($CONTAINER_NAME, $LARGE_OBJECT, $filename);
 <br>
 
 <a id="update-an-object"></a>
-
 ### オブジェクトの内容の変更 { #update-an-object }
 オブジェクトアップロード API と同じですが、オブジェクトがすでにコンテナに存在する場合、そのオブジェクトの内容が変更されます。
 
@@ -2253,7 +2235,6 @@ Content-Type: {content-type}
 <br>
 
 <a id="query-object-information"></a>
-
 ### オブジェクト情報の照会 { #query-object-information }
 指定したオブジェクトの情報を照会します。オブジェクト情報は応答ヘッダーで確認できます。
 
@@ -2315,7 +2296,6 @@ date: Wed, 16 Oct 2024 23:43:36 GMT
 <br>
 
 <a id="download-an-object"></a>
-
 ### オブジェクトのダウンロード { #download-an-object }
 オブジェクトをダウンロードします。
 
@@ -2487,7 +2467,6 @@ $object->download($CONTAINER_NAME, $OBJECT_NAME, $filename);
 <br>
 
 <a id="copy-an-object"></a>
-
 ### オブジェクトのコピー { #copy-an-object }
 オブジェクトを別のコンテナにコピーします。元のオブジェクトのすべての属性が一緒にコピーされます。
 
@@ -2720,7 +2699,6 @@ $object->copy($CONTAINER_NAME, $OBJECT_NAME, $DEST_CONTAINER);
 <br>
 
 <a id="modify-object-metadata"></a>
-
 ### オブジェクトメタデータの修正 { #modify-object-metadata }
 指定したオブジェクトのメタデータを修正します。
 
@@ -2898,7 +2876,6 @@ $object->set_metadata($CONTAINER_NAME, $OBJECT_NAME, $META_KEY, $META_VALUE);
 <br>
 
 <a id="delete-an-object"></a>
-
 ### オブジェクトの削除 { #delete-an-object }
 指定したオブジェクトを削除します。
 
@@ -3047,7 +3024,6 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 <br>
 
 <a id="limiting-policy"></a>
-
 ## 制限ポリシー { #limiting-policy }
 
 <a id="request-rate-limit"></a>
@@ -3072,7 +3048,6 @@ Object Storage は、システムの安定性を確保するため、ストレ�
 <br>
 
 <a id="references"></a>
-
 ## References { #references }
 
 Swift API v1 - [https://docs.openstack.org/api-ref/object-store/](https://docs.openstack.org/api-ref/object-store/)
