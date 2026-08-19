@@ -1,4 +1,4 @@
-<!-- pre-align:aligned sig=90b39f34080f -->
+<!-- pre-align:aligned sig=5dd7d08822ff -->
 
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > 컨테이너 정책 설정 가이드 { #storage-object-storage-container-policy-configuration-guide }
