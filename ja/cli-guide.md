@@ -5,7 +5,7 @@
 <a id="storage-object-storage-cli-guide"></a>
 ## Storage > Object Storage > CLIガイド { #storage-object-storage-cli-guide }
 
-OpenStack Swift コマンドラインインターフェース(CLI)でNHN CloudのObject Storageサービスを使用する方法を説明します。
+このドキュメントでは、OpenStack Swift コマンドラインインターフェース(CLI)でNHN Cloud Object Storageを使用する方法を説明します。
 
 <a id="python-swiftclient"></a>
 ## python-swiftclient { #python-swiftclient }
@@ -136,7 +136,7 @@ swift <subcommand> [<options>] [<container> [<object>]]
 | --- | --- |
 | --help | 各サブコマンドの使用方法を確認します。 |
 | --debug | 実際のAPI呼び出し履歴を確認します。 |
-| --quiet | ステータス出力を抑制します。 |
+| --quiet | 進行状況を出力しません。 |
 | --retries &lt;num&gt; | リクエスト失敗時の再試行回数を指定します。 |
 
 <br>
@@ -362,7 +362,7 @@ swift upload --segment-size <size> [--segment-container <segment-container>] <co
 
 <br>
 
-`--segment-container`を指定しないと、`{container}_segments`という名前のコンテナを作成し、セグメントオブジェクトをアップロードします。
+`--segment-container`を指定しないと、`<container>_segments`という名前のコンテナを作成し、セグメントオブジェクトをアップロードします。
 
 ```bash
 $ swift upload --segment-size 10m media test.mp4
@@ -513,7 +513,7 @@ swift post [<options>] <container>
 | --meta &lt;key:value&gt; | コンテナメタデータを設定します。複数回使用できます。 |
 | --read-acl &lt;acl&gt; | コンテナの読み取りACLを設定します。 |
 | --write-acl &lt;acl&gt; | コンテナの書き込みACLを設定します。 |
-| --header &lt;key:value&gt; | カスタムHTTPヘッダを追加します。Swift CLIがオプションとして提供していない設定も、このオプションで直接指定できます。 |
+| --header &lt;key:value&gt; | ユーザー定義HTTPヘッダを追加します。Swift CLIがオプションとして提供していない設定も、このオプションで直接指定できます。 |
 
 <br>
 
@@ -546,7 +546,7 @@ swift post [<options>] <container> <object>
 | オプション | 説明 |
 | --- | --- |
 | --meta &lt;key:value&gt; | オブジェクトメタデータを設定します。複数回使用できます。 |
-| --header &lt;key:value&gt; | カスタムHTTPヘッダを追加します。Content-Typeなどのオブジェクトプロパティを変更できます。 |
+| --header &lt;key:value&gt; | ユーザー定義HTTPヘッダを追加します。`Content-Type`などのオブジェクトプロパティを変更できます。 |
 
 <br>
 
