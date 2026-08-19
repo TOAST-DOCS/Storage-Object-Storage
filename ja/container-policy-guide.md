@@ -1,12 +1,14 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=90b39f34080f -->
 
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > コンテナポリシー設定ガイド { #storage-object-storage-container-policy-configuration-guide }
 
-この文書はコンテナポリシー文書であり、NHN Cloud Object Storage のコンテナに関連する設定を管理する方法について説明します。
+この文書はコンテナポリシーを使用して、NHN Cloud Object Storage のコンテナに関連する設定を管理する方法について説明します。
 
 <a id="container-policy"></a>
-### コンテナポリシー { #container-policy }
+## コンテナポリシー { #container-policy }
 
 コンテナポリシーを使用すると、コンテナ設定をJSON形式のポリシードキュメントとして統合して管理できます。
 
@@ -96,7 +98,7 @@ X-Auth-Token: {token-id}
   "cors": {
     "allow_origins": [ "https://example.com" ],
     "max_age": 3600,
-    "expose_headers": [ "Etag" ]
+    "expose_headers": [ "ETag" ]
   },
   "lock": { "days": 30 }
 }
@@ -153,7 +155,7 @@ Content-Type: application/json
 | 名前 | 種類 | 形式 | 必須 | 説明 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | Y | トークンID |
-| Content-Type | Header | String | Y | `application/json`|
+| Content-Type | Header | String | Y | `application/json` |
 | Account | URL | String | Y | ストレージアカウント |
 | Container | URL | String | Y | コンテナ名 |
 | - | Body | JSON | Y | 設定するポリシードキュメント |
@@ -485,7 +487,7 @@ CORS ポリシードキュメントの構造は次のとおりです。
   "cors": {
     "allow_origins": [ "https://example.com", "https://app.example.com" ],
     "max_age": 3600,
-    "expose_headers": [ "Etag", "X-Timestamp" ]
+    "expose_headers": [ "ETag", "X-Timestamp" ]
   }
 }
 ```
