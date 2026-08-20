@@ -13,7 +13,6 @@ This document describes how to manage storage accounts, containers, and objects 
 ## Object Storage API Common Information { #common }
 
 <a id="endpoint"></a>
-
 ### API Endpoint { #endpoint }
 
 To use the API, you need an API endpoint and a token. Refer to [IaaS Token]($[ identity_guide_url ]$) to prepare the information required to use the API.
@@ -24,7 +23,6 @@ Object Storage API uses the `object-store` type endpoint. Refer to the `serviceC
 | $[ regions | map(attribute='name') | join('<br>') ]$ | {% for region in regions %}$[ region.endpoint ]$/v1/AUTH_\*\*\*\*\*{% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="auth"></a>
-
 ### Authentication and Authorization { #auth }
 
 Object Storage uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
@@ -40,7 +38,6 @@ For more information about issuing and using IaaS tokens, see [IaaS token]($[ id
     You can also set the API password by clicking the **Set API Endpoint** button on the Object Storage service page.
 
 <a id="auth-token-issuance-code-example"></a>
-
 #### Token Issuance Code Examples
 
 <details>
@@ -279,7 +276,6 @@ This API does not return a response body. Usage status is included in the header
 | X-Account-Bytes-Used | Header | String | Amount of stored data (bytes) |
 
 <a id="query-the-storage-account-code-example"></a>
-
 #### Code Examples
 
 <details>
@@ -472,7 +468,6 @@ This request does not require a request body.
 ```
 
 <a id="list-containers-code-example"></a>
-
 #### Code Examples
 
 <details>
@@ -603,7 +598,6 @@ foreach($container_list as $container) {
 ## Container { #container }
 
 <a id="create-a-container"></a>
-
 ### Create a Container { #create-a-container }
 Creates a container. To upload files to object storage, a container must be created.
 
@@ -635,7 +629,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="create-a-container-request"></a>
-
 #### Request
 No request body is required.
 
@@ -654,7 +647,6 @@ No request body is required.
 No response body is returned. If the container is created successfully, status code 201 is returned.
 
 <a id="create-a-container-code-example"></a>
-
 #### Code Examples
 <details>
 <summary>cURL</summary>
@@ -876,7 +868,6 @@ Using the `format` query allows you to specify a `json` or `xml` response format
 ```
 
 <a id="get-a-container-code-example"></a>
-
 #### Code Examples
 <details>
 <summary>cURL</summary>
@@ -1051,7 +1042,6 @@ X-Container-Object-Allow-Keyword-Policy: {Whitelist for object upload policy fil
 ```
 
 <a id="change-container-settings-request"></a>
-
 #### Request
 A request body is not required.
 
@@ -1340,7 +1330,6 @@ This API does not return a response body. When the request is appropriate, retur
 <br>
 
 <a id="change-container-settings-code-example"></a>
-
 #### Code Example
 This is an example in which the user requests changing the setting so that all users may read from and write to containers. You can select the headers you need to change the settings and request in the same way.
 
@@ -1502,7 +1491,6 @@ This API does not return a response body. For a valid request, return status cod
 <br>
 
 <a id="delete-a-container-code-example"></a>
-
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -1659,7 +1647,6 @@ You can set the lifecycle of an object in seconds by using the `X-Delete-At` or 
 This API does not return a response body. For a valid request, return status code 201.
 
 <a id="upload-an-object-code-example"></a>
-
 #### Code Examples
 <details>
 <summary>cURL</summary>
@@ -1970,7 +1957,6 @@ This API does not return a response body. For a valid request, return status cod
 <br>
 
 <a id="multipart-upload-code-example"></a>
-
 #### Code Examples
 DLO method multipart upload example
 
@@ -2301,7 +2287,6 @@ This API does not return a response body. For a valid request, return status cod
 | X-Manifest-Etag | Header | String | Manifest ETag values (MD5) for SLO-style multipart objects |
 
 <a id="query-object-information-code-example"></a>
-
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -2350,7 +2335,6 @@ This API does not require a request body.
 Data content of the object is returned to stream. For a valid request, return status code 200.
 
 <a id="download-an-object-code-example"></a>
-
 #### Code Examples
 <details>
 <summary>cURL</summary>
@@ -2582,7 +2566,6 @@ When copying a manifest, its properties are copied along with it.
 This request does not return a response body. For a valid request, return status code 201.
 
 <a id="copy-an-object-code-example"></a>
-
 #### Code Examples
 <details>
 <summary>cURL</summary>
@@ -2767,7 +2750,6 @@ A request body is not required.
 This request does not return a response body. For a valid request, return status code 202.
 
 <a id="modify-object-metadata-code-example"></a>
-
 #### Code Examples
 <details>
 <summary>cURL</summary>
@@ -2938,7 +2920,6 @@ This API does not return a response body. For a valid request, return status cod
 <br>
 
 <a id="delete-an-object-code-example"></a>
-
 #### Code Example
 <details>
 <summary>cURL</summary>
@@ -3062,7 +3043,6 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 ## Limiting Policy { #limiting-policy }
 
 <a id="request-rate-limit"></a>
-
 ### Request Rate Limit { #request-rate-limit }
 Object Storage applies a write request rate limit per storage account to ensure system stability.
 
@@ -3084,6 +3064,7 @@ To prevent response delays or failures, adjust your write requests so that they 
 <br>
 
 {% endif %}
+<a id="references"></a>
 ## References { #references }
 
 Swift API v1 - [https://docs.openstack.org/api-ref/object-store/](https://docs.openstack.org/api-ref/object-store/)
