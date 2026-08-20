@@ -20,7 +20,6 @@ Cyberduck is an open-source cloud storage browser.
 Download and install the installation file for user’s operating system from the [Cyberduck download page ](https://cyberduck.io/download/).
 
 <a id="cyberduck-object-storage-connection-settings"></a>
-
 ### Object Storage Connection Settings { #cyberduck-object-storage-connection-settings }
 
 To connect to object storage, you must create a bookmark that stores connection information. By clicking **New Connection** button at the top of browser, you can create a new bookmark. Select **OpenStack Swift (Keystone 2.0)** from the drop-down menu, enter the required information, and click the **Connect** button to create a bookmark.
@@ -123,7 +122,6 @@ Download objects that are changed or added in object storage to your local.
 Upload files that are changed or added in your local to object storage.
 
 <a id="cyberduck-synchronize-mirror"></a>
-
 #### Mirror
 
 Compare local and object storage to upload or download changed or missing files or objects.
@@ -133,7 +131,6 @@ Compare local and object storage to upload or download changed or missing files 
 
 {% if terraform_support %}
 <a id="terraform"></a>
-
 ## Terraform { #terraform }
 
 Terraform is an open-source tool that enables you to build infrastructure easily, make changes safely, and manage configurations efficiently. For basic usage, see [User Guide > NHN Cloud > Terraform User Guide]($[ terraform_guide_url ]$).
@@ -204,7 +201,6 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 | versioning_legacy.location | String | | Container name to store the previous version of the object |
 
 <a id="terraform-resources-create-object"></a>
-
 #### Create an Object
 
 ```hcl
@@ -317,7 +313,6 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 
 {% endif %}
 <a id="reference"></a>
-
 ## Reference { #reference }
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
 {%- if terraform_support %}
