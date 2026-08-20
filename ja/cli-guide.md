@@ -34,7 +34,6 @@ python-swiftclient x.x.x
 <br>
 
 <a id="configuration"></a>
-
 ### 環境設定 { #configuration }
 
 Swift CLIを使用するには、認証に必要な環境変数を設定する必要があります。Object Storageサービスページの**APIエンドポイント設定**ボタンをクリックして必要な情報を確認できます。
@@ -145,7 +144,6 @@ swift <subcommand> [<options>] [<container> [<object>]]
 <br>
 
 <a id="auth-info"></a>
-
 ### 動作方式と認証情報の活用 { #auth-info }
 
 Swift CLIは基本的にコマンドを実行するたびにIdentity APIを呼び出してトークンとサービスカタログを取得した後、サブコマンドに該当するSwift APIを呼び出します。
@@ -502,7 +500,6 @@ created container media
 <br>
 
 <a id="post-container"></a>
-
 ### コンテナ設定の変更 { #post-container }
 
 コンテナの設定を変更します。コンテナ設定は[コンテナ情報照会コマンド](#stat-container)で確認できます。
@@ -623,7 +620,6 @@ $ swift delete media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br>
 
 <a id="tempurl"></a>
-
 ## 署名付きURLの作成 { #tempurl }
 
 トークンなしでコンテナまたはオブジェクトにアクセスできる署名付きURLを作成します。
