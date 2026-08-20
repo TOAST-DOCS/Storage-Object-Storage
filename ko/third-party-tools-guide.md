@@ -1,3 +1,5 @@
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=3eabcf443966 -->
 
 <a id="third-party-tools-usage-guide"></a>
@@ -47,7 +49,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 </table>
 
 !!! tip "알아두기"
-    API 비밀번호 설정 방법은 API 가이드의 [인증 및 권한](api-guide/#auth) 항목을 참고합니다.
+    API 비밀번호 설정 방법은 API 가이드의 [인증 및 권한](api-guide$[ file_suffix ]$/#auth) 항목을 참고합니다.
 
 <a id="cyberduck-connect-object-storage"></a>
 ### 오브젝트 스토리지 연결 { #cyberduck-connect-object-storage }
@@ -125,10 +127,11 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 !!! tip "알아두기"
     동기화 방법에 관한 더 자세한 내용은 [Cyberduck의 Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders) 문서를 참고합니다.
 
+{% if terraform_support %}
 <a id="terraform"></a>
 ## Terraform { #terraform }
 
-Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > NHN Cloud > Terraform 사용 가이드](/nhncloud/ko/terraform-guide/)를 참고합니다.
+Terraform은 인프라를 손쉽게 구축하고 안전하게 변경하며, 효율적으로 형상을 관리할 수 있는 오픈 소스 도구입니다. 기본적인 사용법은 [사용자 가이드 > NHN Cloud > Terraform 사용 가이드]($[ terraform_guide_url ]$)를 참고합니다.
 
 <a id="terraform-resource-dependency"></a>
 ### 리소스 의존성 { #terraform-resource-dependency }
@@ -306,9 +309,12 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 	</tbody>
 </table>
 
+{% endif %}
 <a id="reference"></a>
 ## 참고 사이트 { #reference }
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
+{%- if terraform_support %}
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
+{%- endif %}
 

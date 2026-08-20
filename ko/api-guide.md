@@ -1,3 +1,5 @@
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=1c730003c3a0 -->
 
 <a id="storage-object-storage-api-guide"></a>
@@ -11,18 +13,18 @@
 <a id="endpoint"></a>
 ### API 엔드포인트 { #endpoint }
 
-API를 사용하려면 API 엔드포인트와 토큰이 필요합니다. [IaaS 토큰](/nhncloud/ko/public-api/iaas-token/)을 참고하여 API 사용에 필요한 정보를 준비합니다.
+API를 사용하려면 API 엔드포인트와 토큰이 필요합니다. [IaaS 토큰]($[ identity_guide_url ]$)을 참고하여 API 사용에 필요한 정보를 준비합니다.
 오브젝트 스토리지 API는 `object-store` 타입 엔드포인트를 사용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
 | 리전 | 엔드포인트 |
 |---|---|
-| 한국(판교) 리전<br>한국(평촌) 리전<br>한국(광주) 리전<br>일본(도쿄) 리전 | https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr2-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://kr3-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\*<br>https://jp1-api-object-storage.nhncloudservice.com/v1/AUTH_\*\*\*\*\* |
+| $[ regions | map(attribute='name') | join('<br>') ]$ | {% for region in regions %}$[ region.endpoint ]$/v1/AUTH_\*\*\*\*\*{% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="auth"></a>
 ### 인증 및 권한 { #auth }
 
 오브젝트 스토리지는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
-IaaS 토큰 발급 및 사용 방법에 대한 자세한 내용은 [IaaS 토큰](/nhncloud/ko/public-api/iaas-token/)을 참고합니다.
+IaaS 토큰 발급 및 사용 방법은 [IaaS 토큰]($[ identity_guide_url ]$)을 참고합니다.
 
 !!! danger "주의"
     오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다.
@@ -41,7 +43,7 @@ IaaS 토큰 발급 및 사용 방법에 대한 자세한 내용은 [IaaS 토큰]
 
 ```
 $ curl -X POST -H 'Content-Type: application/json' \
-https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens \
+$[ identity_url ]$/v2.0/tokens \
 -d '{"auth": {"tenantId": "6dbc368b94894416bec4cdfc65b5e067", "passwordCredentials": {"username": "*****", "password": "*****"}}}'
 
 {
@@ -64,8 +66,8 @@ https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens \
       {
         "endpoints": [
           {
-            "region": "KR1",
-            "publicURL": "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067"
+            "region": "$[ base_region ]$",
+            "publicURL": "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067"
           }
         ],
         "type": "object-store",
@@ -143,7 +145,7 @@ public class AuthService {
     }
 
     public static void main(String[] args) {
-        final String authUrl = "https://api-identity-infrastructure.nhncloudservice.com/v2.0";
+        final String authUrl = "$[ identity_url ]$/v2.0";
         final String tenantId = "{Tenant ID}";
         final String username = "{NHN Cloud Account}";
         final String password = "{API Password}";
@@ -184,7 +186,7 @@ def get_token(auth_url, tenant_id, username, password):
 
 
 if __name__ == '__main__':
-    AUTH_URL = 'https://api-identity-infrastructure.nhncloudservice.com/v2.0'
+    AUTH_URL = '$[ identity_url ]$/v2.0'
     TENANT_ID = '{Tenant ID}'
     USERNAME = '{NHN Cloud Account}'
     PASSWORD = '{API Password}'
@@ -228,7 +230,7 @@ function get_token($auth_url, $tenant_id, $username, $password) {
   return $response;
 }
 
-$AUTH_URL = 'https://api-identity-infrastructure.nhncloudservice.com/v2.0';
+$AUTH_URL = '$[ identity_url ]$/v2.0';
 $TENANT_ID = '{Tenant ID}';
 $USERNAME = '{NHN Cloud Account}';
 $PASSWORD = '{API Password}';
@@ -279,7 +281,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
 ```
 </details>
 
@@ -326,7 +328,7 @@ public class AccountService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
 
         AccountService accountService = new AccountService(storageUrl, tokenId);
@@ -368,7 +370,7 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
 
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
@@ -424,7 +426,7 @@ class Account {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
@@ -471,7 +473,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
 ```
 </details>
 
@@ -508,7 +510,7 @@ public class AccountService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         AccountService accountService = new AccountService(storageUrl, tokenId);
         try {
@@ -540,7 +542,7 @@ class AccountService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     acc_service = AccountService(STORAGE_URL, TOKEN_ID)
 
@@ -576,7 +578,7 @@ class Account {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 
 $account = new Account($STORAGE_URL, $TOKEN_ID);
@@ -604,6 +606,7 @@ foreach($container_list as $container) {
 
     컨테이너 또는 오브젝트 이름에 특수 문자 `! * ' ( ) ; : @ & = + $ , / ? # [ ]`가 포함되어 있다면 API를 사용할 때 반드시 URL 인코딩(퍼센트 인코딩)을 해야 합니다. 이 문자들은 URL에서 중요하게 사용되는 예약 문자입니다. 이 문자들이 포함된 경로를 URL 인코딩하지 않고 API 요청을 보낸다면 원하는 응답을 받을 수 없습니다.
 
+{% if ec %}
 컨테이너를 만들 때 `X-Storage-Policy` 헤더를 사용하여 컨테이너의 스토리지 클래스를 지정할 수 있습니다. 자주 접근하는 데이터를 위한 Standard 클래스와 접근 빈도가 낮은 데이터를 저렴한 요금으로 장기 보관할 수 있는 Economy 클래스를 선택할 수 있습니다. 스토리지 클래스를 지정하지 않으면 Standard 클래스가 적용됩니다.
 
 !!! tip "알아두기"
@@ -613,6 +616,7 @@ foreach($container_list as $container) {
 
     Economy 클래스 컨테이너는 API 요청 1,000건당 요금을 부과합니다(HEAD/DELETE 요청 제외).
 
+{% endif %}
 컨테이너를 만들 때 `X-Container-Worm-Retention-Day` 헤더를 사용하여 오브젝트 잠금 주기를 설정하면 오브젝트 잠금 컨테이너를 만들 수 있습니다. 오브젝트 잠금 컨테이너에 업로드한 오브젝트는 **WORM(Write-Once-Read-Many)** 모델을 사용하여 저장됩니다. 오브젝트 잠금 컨테이너에 업로드한 오브젝트에는 잠금 만료 날짜가 설정됩니다. 각 오브젝트에 설정된 잠금 만료 날짜 이전에는 오브젝트를 덮어쓰거나 삭제할 수 없습니다.
 
 <br>
@@ -631,7 +635,9 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | Y | 토큰 ID |
 | Account | URL | String | Y | 스토리지 계정, API 엔드포인트 설정 대화 상자에서 확인 |
 | Container | URL | String | Y | 생성할 컨테이너 이름 |
+{%- if ec %}
 | X-Storage-Policy | Header | String | N | 컨테이너의 스토리지 클래스<br>**Standard**: 자주 접근하는 데이터를 위한 기본 클래스<br>**Economy**: 접근 빈도가 낮은 데이터를 장기 보관하는 데 적합한 클래스 |
+{%- endif %}
 | X-Container-Worm-Retention-Day | Header | Integer | N | 컨테이너의 기본 오브젝트 잠금 주기를 일 단위로 설정 |
 
 <a id="create-a-container-response"></a>
@@ -645,7 +651,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
 ```
 </details>
 
@@ -690,7 +696,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
 
@@ -733,7 +739,7 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
 
     con_service = ContainerService(STORAGE_URL, TOKEN_ID)
@@ -789,7 +795,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 
@@ -866,7 +872,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
 ba6610.jpg
 20d33f.jpg
 31466f.jpg
@@ -910,7 +916,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
 
@@ -947,7 +953,7 @@ class ContainerService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
 
@@ -988,7 +994,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 
@@ -1066,7 +1072,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 <a id="set-container-rbac-policy"></a>
 ##### 접근 정책 설정
-`X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참고합니다.
+`X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide$[ file_suffix ]$/)를 참고합니다.
 
 <br>
 
@@ -1077,18 +1083,20 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 !!! tip "알아두기"
     컨테이너 정책을 통해 세밀한 수명 주기 규칙을 설정할 수 있습니다.
-    자세한 설명은 [컨테이너 정책 설정 가이드](container-policy-guide/#lifecycle)를 참고합니다.
+    자세한 설명은 [컨테이너 정책 설정 가이드](container-policy-guide$[ file_suffix ]$/#lifecycle)를 참고합니다.
 
 <!-- 개행을 위한 주석 -->
 
+{% if ec %}
 !!! tip "알아두기"
     Standard 클래스 컨테이너에 저장된 오브젝트를 수명 주기에 따라 Economy 클래스 컨테이너로 옮겨 장기 보관에 따른 비용을 절감할 수 있습니다.
 
+{% endif %}
 <br>
 
 <a id="set-container-object-version-policy"></a>
 ##### 버전 관리 정책 설정
-[오브젝트 내용 수정](api-guide/#update-an-object) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
+[오브젝트 내용 수정](api-guide$[ file_suffix ]$/#update-an-object) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
 
 이전 버전 오브젝트는 아카이브 컨테이너에 다음과 같은 형태로 보관됩니다.
 ```
@@ -1105,8 +1113,10 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
     아카이브 컨테이너로 사용할 컨테이너 이름에는 유니코드 문자를 사용하지 않기를 권장합니다. 아카이브 컨테이너로 지정할 컨테이너 이름에 유니코드 문자가 포함되어 있다면 반드시 URL 인코딩 후 요청 헤더에 입력해야 합니다.
 
+{% if encrypt %}
     암호화 컨테이너를 아카이브 컨테이너로 지정한 뒤 암호화 컨테이너의 대칭 키를 Secure Key Manager 서비스에서 삭제하면 원본 컨테이너의 오브젝트 업로드와 삭제에 실패합니다.
 
+{% endif %}
 
 <br>
 
@@ -1124,7 +1134,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 브라우저에서 오브젝트 스토리지 API를 직접 호출하려면 교차 출처 리소스 공유(CORS) 설정이 필요합니다. `X-Container-Meta-Access-Control-Allow-Origin` 헤더를 사용하여 허용할 출처 목록을 설정합니다. 공백(` `)으로 구분된 하나 이상의 출처를 입력하거나 `*`를 입력하여 모든 출처를 허용할 수 있습니다.
 
 !!! tip "알아두기"
-    `X-Container-Meta-Access-Control-Allow-Origin`에 설정할 수 있는 허용 출처는 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#cors)으로 설정할 때도 동일하게 적용됩니다.
+    `X-Container-Meta-Access-Control-Allow-Origin`에 설정할 수 있는 허용 출처는 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide$[ file_suffix ]$/#cors)으로 설정할 때도 동일하게 적용됩니다.
 
 <details>
 <summary>CORS 설정 예시</summary>
@@ -1135,7 +1145,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Meta-Access-Control-Allow-Origin: https://example.com' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 ```
 <br>
 브라우저에서 CORS를 허용한 사이트로 이동한 뒤 다음 스크립트를 실행합니다. 스크립트는 브라우저가 제공하는 개발자 도구의 콘솔에서 실행할 수 있습니다.
@@ -1145,7 +1155,7 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4c
 
 ```
 var token = "****";
-var url = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/object";
+var url = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/object";
 var request = new XMLHttpRequest();
 request.onreadystatechange = function (oEvent) {
   if (request.readyState == 4) {
@@ -1177,7 +1187,7 @@ x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 CORS 설정을 하지 않았거나 허용되지 않은 사이트에서 API를 호출하면 다음과 같은 오류 응답을 반환합니다.
 
 ```
-Access to XMLHttpRequest at 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Access to XMLHttpRequest at '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 Status: 0
 ```
@@ -1199,7 +1209,7 @@ Status: 0
 !!! tip "알아두기"
     일반 컨테이너를 오브젝트 잠금 컨테이너로 변경하거나, 오브젝트 잠금 컨테이너를 일반 컨테이너로 변경할 수 없습니다.
 
-    오브젝트 잠금 컨테이너는 아카이브 컨테이너 또는 복제 대상 컨테이너로 지정할 수 없습니다.
+    오브젝트 잠금 컨테이너는 아카이브 컨테이너$[ " 또는 복제 대상 컨테이너로" if replication else "로" ]$ 지정할 수 없습니다.
 
 <br>
 
@@ -1222,11 +1232,11 @@ Status: 0
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Object-Allow-Extension-Policy: exe, jpg' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 
 $ curl -X PUT \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/test.jpg -i
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/test.jpg -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 72
@@ -1242,11 +1252,11 @@ Only the objects with the following extensions can be uploaded: exe, jpg
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Object-Allow-Keyword-Policy: example' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 
 $ curl -X PUT \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/upload.txt -i
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/upload.txt -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 60
@@ -1269,11 +1279,11 @@ The object name must contain the following keywords: example
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Object-Deny-Extension-Policy: exe, jpg' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 
 $ curl -X PUT \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/test.jpg -i
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/test.jpg -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 70
@@ -1289,11 +1299,11 @@ The objects with the following extensions cannot be uploaded: exe, jpg
 $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Object-Deny-Keyword-Policy: example' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 
 $ curl -X PUT \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/upload_example.txt -i
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/upload_example.txt -i
 
 HTTP/1.1 409 Conflict
 Content-Length: 64
@@ -1329,7 +1339,7 @@ $ curl -X POST \
 -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Container-Read: .r:*' \
 -H 'X-Container-Write: *:*' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
 ```
 </details>
 
@@ -1367,7 +1377,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
 
@@ -1398,7 +1408,7 @@ class ContainerService:
         return requests.post(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
 
@@ -1439,7 +1449,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 
@@ -1485,7 +1495,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example
 ```
 </details>
 
@@ -1517,7 +1527,7 @@ public class ContainerService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
 
@@ -1547,7 +1557,7 @@ class ContainerService:
         return requests.delete(req_url, headers=req_header)
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
 
@@ -1581,7 +1591,7 @@ class Container {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 
@@ -1641,7 +1651,7 @@ Content-Type: {content-type}
 
 ```
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg \
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg \
 -T ./ba6610.jpg
 ```
 </details>
@@ -1697,7 +1707,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
         final String objectPath = "/home/example/";
@@ -1752,7 +1762,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'd03bda22ffb649a97958d4a5bf4b6eaf.jpg'
@@ -1811,7 +1821,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -1958,21 +1968,21 @@ $ split -d -b 209715200 large_obj.img large_obj.img.
 
 # 분할된 오브젝트 업로드
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img/001 \
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img/001 \
 -T large_obj.img.00
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img/002 \
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img/002 \
 -T large_obj.img.01
 
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img/003 \
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img/003 \
 -T large_obj.img.02
 
 # 매니페스트 오브젝트 업로드
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Object-Manifest: curl_example/large_obj.img/' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img \
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/large_obj.img \
 -d ''
 ```
 </details>
@@ -2008,7 +2018,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
         final String objectPath = "/home/example/";
@@ -2103,7 +2113,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     LARGE_OBJECT = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2192,7 +2202,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $LARGE_OBJECT = '8cb0d624f8c14c69b52f2cd89e5e59b7.jpg';
@@ -2282,7 +2292,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -I -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 
 HTTP/1.1 200 OK
 content-type: image/jpeg
@@ -2330,7 +2340,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -O -X GET -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -2373,7 +2383,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2413,7 +2423,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2454,7 +2464,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2564,12 +2574,12 @@ X-Copy-From: {SourceContainer}/{SourceObject}; multipart-manifest=get
 # COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/3a45e9.jpg' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/3a45e9.jpg
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/3a45e9.jpg
 
 # PUT method
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/3a45e9.jpg' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/copy_con/3a45e9.jpg
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/copy_con/3a45e9.jpg
 ```
 
 **멀티파트 매니페스트 오브젝트 복사**
@@ -2577,12 +2587,12 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4c
 # COPY method
 $ curl -X COPY -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'Destination: copy_con/419da6e.mp4' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/419da6e.mp4?multipart-manifest=get
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/419da6e.mp4?multipart-manifest=get
 
 # PUT method
 $ curl -X PUT -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H 'X-Copy-From: curl_example/419da6e.mp4; multipart-manifest=get' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/copy_con/419da6e.mp4
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/copy_con/419da6e.mp4
 ```
 </details>
 
@@ -2615,7 +2625,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String srcContainerName = "test";
         final String destContainerName = "test2";
@@ -2649,7 +2659,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2687,7 +2697,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $DEST_CONTAINER = 'dest';
@@ -2747,11 +2757,11 @@ X-Object-Meta-{Key}: {Value}
 # 오브젝트에 메타데이터 추가
 $ curl -X POST -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
 -H "X-Object-Meta-Type: photo" \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 
 # 오브젝트 헤더에서 추가한 메타데이터 확인
 $ curl -I -H "X-Auth-Token: b587ae461278419da6ecd21a2344c8aa" \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 HTTP/1.1 200 OK
 ...
 X-Object-Meta-Type: photo
@@ -2791,7 +2801,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2826,7 +2836,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -2863,7 +2873,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -2915,7 +2925,7 @@ X-Auth-Token: {token-id}
 
 ```
 $ curl -X DELETE -H 'X-Auth-Token: b587ae461278419da6ecd21a2344c8aa' \
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/curl_example/ba6610.jpg
 ```
 </details>
 
@@ -2946,7 +2956,7 @@ public class ObjectService {
     }
 
     public static void main(String[] args) {
-        final String storageUrl = "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
+        final String storageUrl = "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067";
         final String tokenId = "b587ae461278419da6ecd21a2344c8aa";
         final String containerName = "test";
         final String objectName = "46432aa503ab715f288c4922911d2035.jpg";
@@ -2978,7 +2988,7 @@ class ObjectService:
 
 
 if __name__ == '__main__':
-    STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
+    STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067'
     TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa'
     CONTAINER_NAME = 'test'
     OBJECT_NAME = 'dfa10eec828f4a228a34fb4da1d037ff.jpg'
@@ -3013,7 +3023,7 @@ class ObjectService {
 }
 
 // main
-$STORAGE_URL = 'https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
+$STORAGE_URL = '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067';
 $TOKEN_ID = 'b587ae461278419da6ecd21a2344c8aa';
 $CONTAINER_NAME = 'test';
 $OBJECT_NAME = '0428b9e3e419d4fb7aedffde984ba5b3.jpg';
@@ -3027,6 +3037,7 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 <br>
 
+{% if ratelimit %}
 <a id="limiting-policy"></a>
 ## 제한 정책 { #limiting-policy }
 
@@ -3051,6 +3062,7 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 
 <br>
 
+{% endif %}
 <a id="references"></a>
 ## References { #references }
 

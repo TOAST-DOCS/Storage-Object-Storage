@@ -1,3 +1,5 @@
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=4d6c14c57aab -->
 
 <a id="storage-object-storage-cli-guide"></a>
@@ -35,7 +37,7 @@ python-swiftclient x.x.x
 Swift CLI를 사용하려면 인증에 필요한 환경 변수를 설정해야 합니다. 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정** 버튼을 클릭해 필요한 정보를 확인할 수 있습니다.
 
 ```bash
-export OS_AUTH_URL=https://api-identity-infrastructure.nhncloudservice.com/v2.0
+export OS_AUTH_URL=$[ identity_url ]$/v2.0
 export OS_TENANT_ID=<테넌트 ID>
 export OS_USERNAME=<NHN Cloud 계정 ID>
 export OS_PASSWORD=<API 비밀번호>
@@ -46,11 +48,11 @@ export OS_REGION_NAME=<리전 이름>
 
 | 환경 변수 | 설명 |
 | --- | --- |
-| OS_AUTH_URL | Identity API URL<br>https://api-identity-infrastructure.nhncloudservice.com/v2.0 |
+| OS_AUTH_URL | Identity API URL<br>$[ identity_url ]$/v2.0 |
 | OS_TENANT_ID | 오브젝트 스토리지 서비스 페이지의 **API 엔드포인트 설정**에서 확인할 수 있는 테넌트 ID |
 | OS_USERNAME | NHN Cloud 계정 ID(이메일 형식) 또는 IAM 계정 ID |
 | OS_PASSWORD | **API 엔드포인트 설정**에서 설정한 API 비밀번호 |
-| OS_REGION_NAME | 리전 이름<br>KR1 - 한국(판교) 리전<br>KR2 - 한국(평촌) 리전<br>KR3 - 한국(광주) 리전<br>JP1 - 일본(도쿄) 리전 |
+| OS_REGION_NAME | 리전 이름<br>{% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <br>
 
@@ -68,7 +70,7 @@ export OS_REGION_NAME=<리전 이름>
 
 ```bash
 $ cat ~/swiftrc
-export OS_AUTH_URL=https://api-identity-infrastructure.nhncloudservice.com/v2.0
+export OS_AUTH_URL=$[ identity_url ]$/v2.0
 export OS_TENANT_ID=<테넌트 ID>
 export OS_USERNAME=<NHN Cloud 계정 ID>
 export OS_PASSWORD=<API 비밀번호>
@@ -150,7 +152,7 @@ Swift CLI는 기본적으로 명령을 실행할 때마다 Identity API를 호�
 
 ```bash
 $ swift auth
-export OS_STORAGE_URL=https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
+export OS_STORAGE_URL=$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
 export OS_AUTH_TOKEN=gAAAAABi...
 ```
 
@@ -516,9 +518,9 @@ swift post [<options>] <container>
 <br>
 
 !!! tip "알아두기"
-    ACL 설정 값은 [접근 정책 설정 가이드](acl-guide/)를 참고합니다.
+    ACL 설정 값은 [접근 정책 설정 가이드](acl-guide$[ file_suffix ]$/)를 참고합니다.
 
-    `--header` 옵션으로 설정할 수 있는 헤더 목록은 API 가이드의 [컨테이너 설정 변경](api-guide/#change-container-settings) 섹션을 참고합니다.
+    `--header` 옵션으로 설정할 수 있는 헤더 목록은 API 가이드의 [컨테이너 설정 변경](api-guide$[ file_suffix ]$/#change-container-settings) 섹션을 참고합니다.
 
 <br>
 
@@ -649,7 +651,7 @@ swift tempurl <method> <time> <path> <key>
 $ swift tempurl GET 2026-03-05T23:59:59 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg 398dded8-b1be
 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e479&temp_url_expires=1772755199
 
-$ curl https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg\?temp_url_sig\=8244bff5037316dbe8aebcda9cd679c1b331e479\&temp_url_expires\=1772755199 --output 797619b171a455e9eec8a87f94ee77f4.jpg
+$ curl $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg\?temp_url_sig\=8244bff5037316dbe8aebcda9cd679c1b331e479\&temp_url_expires\=1772755199 --output 797619b171a455e9eec8a87f94ee77f4.jpg
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100 31661  100 31661    0     0  1043k      0 --:--:-- --:--:-- --:--:-- 1058k
