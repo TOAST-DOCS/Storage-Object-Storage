@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=13e8165cba5c -->
 
 <a id="storage-object-storage-acl-configuration-guide"></a>
@@ -13,8 +15,11 @@ This document describes how to set role-based access policies and IP-based acces
 You can use the console or API to grant read/write access to the container to other users.
 
 <a id="role-based-access-console"></a>
+
 ### Console { #role-based-access-console }
 In the console, you can select a container access policy from the [Create Container](console-guide/#create-container) dialog box or the container access policy settings dialog box within [Manage Container](console-guide/#manage-container) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
+
+In the console, you can select a container access policy from the [Create Container](console-guide$[ file_suffix ]$/#create-container) dialog box or the container access policy setting dialog box in the [Manage Container](console-guide$[ file_suffix ]$/#manage-container) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
 
 <a id="role-based-access-private"></a>
 #### PRIVATE
@@ -29,6 +34,7 @@ In the console, you can select a container access policy from the [Create Contai
 <br>
 
 <a id="role-based-access-api"></a>
+
 ### API { #role-based-access-api }
 
 You can use the API to set access policies for different situations by entering role-based access policy elements in the `X-Container-Read`, `X-Container-Write`, and `X-Container-View` properties of a container. The properties are as follows.
@@ -41,11 +47,12 @@ You can use the API to set access policies for different situations by entering 
 
 
 !!! tip "Tip"
-    The maximum number of access policy elements that can be set for `X-Container-Read`, `X-Container-Write`, and `X-Container-View` is 100 per property. This limit also applies when configuring via [container policy](container-policy-guide/#acl).
+    The maximum number of access policy elements that can be set for `X-Container-Read`, `X-Container-Write`, and `X-Container-View` is 100 per property. This limit also applies when setting policies via [container policy](container-policy-guide$[ file_suffix ]$/#acl).
 
 <br>
 
 <a id="role-based-access-elements"></a>
+
 #### Role-based access policy elements
 
 The role-based access policy elements that can be set are as follows. All policy elements can be combined by separating them with commas (`,`).
@@ -57,9 +64,9 @@ The role-based access policy elements that can be set are as follows. All policy
 | `*:{api-user-id}` | The object can be accessed using an authentication token issued to a specific user, regardless of the project.<br>Both read and write permissions can be granted. |
 | `*:*` | Regardless of the project, any user who can obtain an authentication token can access the object.<br>Both read and write permissions can be granted. |
 
-!!! tip "Tip"
-    You can find `{api-user-id}` in the **API User ID** field of the API Endpoint setting dialog on the console, or in the **access.user.id** field of the authentication token issuance API response body.
-    To use the authentication token issuance API, refer to [Authentication and Authorization](api-guide/#auth) in the API guide.
+!!! tip "Tips"
+    You can find `{api-user-id}` in the **API User ID** field of the API endpoint settings dialog on the console, or in the **access.user.id** field of the authentication token issuance API response body.
+    To use the authentication token issuance API, refer to the [Authentication and Authorization](api-guide$[ file_suffix ]$/#auth) section in the API guide.
 
 !!! tip "Note"
     You cannot use values where one side of the colon is empty (such as `{tenant-id}:` or `:{api-user-id}`) or values that start with `.`.
@@ -83,6 +90,7 @@ In addition to role-based access policy elements, you can also enter the followi
 <br>
 
 <a id="role-based-access-allow-rw-to-project-users"></a>
+
 #### Allow read/write only to users in the project to which the container belongs
 
 This is the default access policy used when no role-based access policy elements are set. A valid authentication token is required to access the container using the API.
@@ -98,7 +106,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read;' \
   -H 'X-Container-Write;' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 !!! tip "Notice"
@@ -108,7 +116,7 @@ If a request is made without a valid authentication token, an error message is r
 
 ```
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -118,7 +126,7 @@ You must have a valid authentication token in the request header to get the desi
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 [The list of object in the container]
 ```
@@ -126,6 +134,7 @@ $ curl -X GET \
 <br>
 
 <a id="role-based-access-allow-read-and-list-for-all-users"></a>
+
 #### Allow read/list query for all users
 
 Setting the container's `X-Container-Read` property to `.r:*, .rlistings` allows all users to read objects and query an object list. No authentication token is required. It is the same policy as the `PUBLIC` entry in the console section.
@@ -138,20 +147,20 @@ Setting the container's `X-Container-Read` property to `.r:*, .rlistings` allows
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .rlistings' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
-[Object download]
+[Download Object]
 
 
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
-[List of objects in the container]
+[The list of object in the container]
 ```
 
 If you set only `.r:*`, users can access the object in the container, but they cannot query the object list.
@@ -160,18 +169,18 @@ If you set only `.r:*`, users can access the object in the container, but they c
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
-[Object download]
+[Download Object]
 
 
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -180,6 +189,7 @@ $ curl -X GET \
 <br>
 
 <a id="role-based-access-allow-or-deny-by-referer"></a>
+
 #### Allow/deny read for requests from a specific HTTP referer
 
 HTTP referer is the address information of a web page that is requested through a hyperlink. It is included in the request header.
@@ -197,7 +207,7 @@ The HTTP referer allow/block access policy applies the block policy first, regar
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 Objects can be accessed by specifying the allowed HTTP referer addresses in the API request header.
@@ -205,37 +215,37 @@ Objects can be accessed by specifying the allowed HTTP referer addresses in the 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
-[Object download]
+[Download Object]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com/some/path' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
-[Object download]
+[Download Object]
 ```
 
 If there is no allowed referer address in the API request header or the protocol is not included in the referer address, access is blocked.
 
 ```
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: https://example.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -246,22 +256,22 @@ As shown below, entering a domain name starting with `.` in your HTTP referer se
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
-[Object download]
+[Download Object]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://qux.baz.foo.com/some/path' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
-[Object download]
+[Download Object]
 ```
 
 Requests that do not contain subdomains are blocked.
@@ -269,7 +279,7 @@ Requests that do not contain subdomains are blocked.
 ```
 $ curl -X GET \
   -H 'Referer: https://foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -280,24 +290,23 @@ To allow access requests from all referers with a specific domain name, use a co
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:foo.com, .r:.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
-[Object download]
+[Download Object]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://baz.foo.com/some/path' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
-[Object download]
+[Download Object]
 ```
-</details>
 
 <details>
 <summary>Example of blocking read requests from a specific HTTP referer</summary>
@@ -306,7 +315,7 @@ $ curl -O -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:-bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 If you set the HTTP referer domain name with a minus sign in front of it, requests from the HTTP referer are blocked.
@@ -314,7 +323,7 @@ If you set the HTTP referer domain name with a minus sign in front of it, reques
 ```
 $ curl -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -328,19 +337,19 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .r:-bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
-[Object Download]
+[Download Object]
 
 
 $ curl -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -348,6 +357,7 @@ $ curl -X GET \
 <br>
 
 <a id="role-based-access-allow-rw-project-or-user"></a>
+
 #### Allow read/write to specific projects or specific users
 
 If you set a role-based access policy element in the form of `{tenant-id}:{api-user-id}` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API User ID grants access to all projects or all users. A valid authentication token is required when making an access request.
@@ -363,7 +373,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:{api-user-id}' \
   -H 'X-Container-Write: {tenant-id}:{api-user-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 When requesting access to an object, a valid authentication token issued by an authorized Tenant ID and API User ID is required.
@@ -371,18 +381,17 @@ When requesting access to an object, a valid authentication token issued by an a
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
-[List of objects in the container]
+[The list of object in the container]
 
 
 $ curl -O -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [Object download]
 ```
-</details>
 
 <details>
 <summary>Example of granting read/write permission to all users in a specific project</summary>
@@ -392,7 +401,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:*' \
   -H 'X-Container-Write: {tenant-id}:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 When requesting access to an object, a valid authentication token issued by an authorized Tenant ID and API User ID is required.
@@ -407,7 +416,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:{api-user-id}' \
   -H 'X-Container-Write: *:{api-user-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 When requesting access to an object, a valid authentication token issued by an authorized API User ID is required, regardless of the project.
@@ -422,7 +431,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:*' \
   -H 'X-Container-Write: *:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 A valid authentication token is required when making an access request to an object.
@@ -471,6 +480,7 @@ Denies requests from the specified IP addresses or network ranges. All other req
 Controls requests through the service gateway. If not configured, requests may be rejected depending on the whitelist and blacklist settings.
 
 <a id="ip-based-access-api"></a>
+
 ### API { #ip-based-access-api }
 
 You can use the API to enable IP-based access policies by entering IP-based access policy elements in the `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties of a container. `X-Container-Ip-Acl-Allowed-List` is the allowlist, and `X-Container-Ip-Acl-Denied-List` is the denylist.
@@ -478,7 +488,7 @@ You can use the API to enable IP-based access policies by entering IP-based acce
 To modify the properties of a container with an IP-based access policy configured, a valid authentication token issued by an authorized tenant ID and API User ID is required, and the request must be made from an allowed IP address.
 
 !!! tip "Note"
-    The maximum number of policy elements that can be set in `X-Container-Ip-Acl-Allowed-List` (whitelist) and `X-Container-Ip-Acl-Denied-List` (blacklist) is 100 each. The same limit applies when setting via [container policy](container-policy-guide/#ip-acl).
+    The maximum number of policy elements that can be set for `X-Container-Ip-Acl-Allowed-List` (whitelist) and `X-Container-Ip-Acl-Denied-List` (blacklist) is 100 each. This limit also applies when setting via [container policy](container-policy-guide$[ file_suffix ]$/#ip-acl).
 
 <br>
 
@@ -507,7 +517,7 @@ To control service gateway requests, set the permissions in the X-Container-Ip-A
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Allowed-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 192.168.0.1 can make read requests only, 192.168.0.2 can make write requests only, and all IPs in the 172.16.0.0/24 range can make both read and write requests. All other IPs have their requests denied.
@@ -522,7 +532,7 @@ $ curl -i -X POST \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Denied-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 Read requests from 192.168.0.1 are denied, write requests from 192.168.0.2 are denied, and all IP addresses in the 172.16.0.0/24 range cannot make either read or write requests. All other IP addresses are allowed to make requests.
@@ -537,7 +547,7 @@ Read requests from 192.168.0.1 are denied, write requests from 192.168.0.2 are d
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Service-Gateway-Control: rw' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 All Service Gateway requests are allowed regardless of the configured IP-based access policy.
@@ -546,6 +556,7 @@ All Service Gateway requests are allowed regardless of the configured IP-based a
 </details>
 
 <a id="ip-based-access-delete-access-policies"></a>
+
 #### Delete access policies
 
 By entering an empty header, you can delete all set IP-based access policy elements. A container with no policy elements is not subject to IP-based access restrictions.
@@ -559,7 +570,7 @@ $ curl -i -X POST \
   -H 'X-Container-Ip-Acl-Allowed-List;' \
   -H 'X-Container-Ip-Acl-Denied-List;' \
   -H 'X-Container-Ip-Acl-Service-Gateway-Control;' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 <br><br>
