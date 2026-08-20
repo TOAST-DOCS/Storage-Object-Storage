@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=4d6c14c57aab -->
 
 <a id="storage-object-storage-cli-guide"></a>
@@ -37,9 +39,9 @@ python-swiftclient x.x.x
 Swift CLIを使用するには、認証に必要な環境変数を設定する必要があります。Object Storageサービスページの**APIエンドポイント設定**ボタンをクリックして必要な情報を確認できます。
 
 ```bash
-export OS_AUTH_URL=https://api-identity-infrastructure.nhncloudservice.com/v2.0
+export OS_AUTH_URL=$[ identity_url ]$/v2.0
 export OS_TENANT_ID=<テナントID>
-export OS_USERNAME=<NHN CloudアカウントID>
+export OS_USERNAME=<NHN Cloud アカウントID>
 export OS_PASSWORD=<APIパスワード>
 export OS_REGION_NAME=<リージョン名>
 ```
@@ -48,11 +50,11 @@ export OS_REGION_NAME=<リージョン名>
 
 | 環境変数 | 説明 |
 | --- | --- |
-| OS_AUTH_URL | Identity API URL<br>https://api-identity-infrastructure.nhncloudservice.com/v2.0 |
+| OS_AUTH_URL | Identity API URL<br>$[ identity_url ]$/v2.0 |
 | OS_TENANT_ID | Object Storageサービスページの**APIエンドポイント設定**で確認できるテナントID |
 | OS_USERNAME | NHN CloudアカウントID(メール形式)またはIAMアカウントID |
 | OS_PASSWORD | **APIエンドポイント設定**で設定したAPIパスワード |
-| OS_REGION_NAME | リージョン名<br>KR1 - 韓国(パンギョ)リージョン<br>KR2 - 韓国(ピョンチョン)リージョン<br>KR3 - 韓国(光州)リージョン<br>JP1 - 日本(東京)リージョン |
+| OS_REGION_NAME | リージョン名<br>{% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <br>
 
@@ -70,10 +72,10 @@ export OS_REGION_NAME=<リージョン名>
 
 ```bash
 $ cat ~/swiftrc
-export OS_AUTH_URL=https://api-identity-infrastructure.nhncloudservice.com/v2.0
+export OS_AUTH_URL=$[ identity_url ]$/v2.0
 export OS_TENANT_ID=<テナントID>
-export OS_USERNAME=<NHN CloudアカウントID>
-export OS_PASSWORD=<APIパスワード>
+export OS_USERNAME=<NHN Cloud アカウント ID>
+export OS_PASSWORD=<API パスワード>
 export OS_REGION_NAME=<リージョン名>
 ```
 
@@ -152,7 +154,7 @@ Swift CLIは基本的にコマンドを実行するたびにIdentity APIを呼�
 
 ```bash
 $ swift auth
-export OS_STORAGE_URL=https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
+export OS_STORAGE_URL=$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
 export OS_AUTH_TOKEN=gAAAAABi...
 ```
 
@@ -518,9 +520,9 @@ swift post [<options>] <container>
 <br>
 
 !!! tip "ヒント"
-    ACL の設定値については、[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
+    ACL 設定値については、[アクセスポリシー設定ガイド](acl-guide$[ file_suffix ]$/)を参照してください。
 
-    `--header` オプションで設定できるヘッダーの一覧については、API ガイドの [コンテナ設定の変更](api-guide/#change-container-settings) セクションを参照してください。
+`--header` オプションで設定できるヘッダーの一覧については、API ガイドの [コンテナ設定の変更](api-guide$[ file_suffix ]$/#change-container-settings) セクションを参照してください。
 
 <br>
 
@@ -651,7 +653,7 @@ swift tempurl <method> <time> <path> <key>
 $ swift tempurl GET 2026-03-05T23:59:59 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg 398dded8-b1be
 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e479&temp_url_expires=1772755199
 
-$ curl https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg\?temp_url_sig\=8244bff5037316dbe8aebcda9cd679c1b331e479\&temp_url_expires\=1772755199 --output 797619b171a455e9eec8a87f94ee77f4.jpg
+$ curl $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg\?temp_url_sig\=8244bff5037316dbe8aebcda9cd679c1b331e479\&temp_url_expires\=1772755199 --output 797619b171a455e9eec8a87f94ee77f4.jpg
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100 31661  100 31661    0     0  1043k      0 --:--:-- --:--:-- --:--:-- 1058k

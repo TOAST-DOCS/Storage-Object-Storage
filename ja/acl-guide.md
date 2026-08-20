@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=13e8165cba5c -->
 
 <a id="storage-object-storage-acl-configuration-guide"></a>
@@ -15,6 +17,8 @@ NHN Cloud オブジェクトストレージのコンテナに、ロールベー�
 <a id="role-based-access-console"></a>
 ### コンソール { #role-based-access-console }
 コンソールでは[コンテナ作成](console-guide/#create-container)ダイアログボックスまたは[コンテナ管理](console-guide/#manage-container)ウィンドウのコンテナアクセスポリシー設定ダイアログボックスでコンテナアクセスポリシーを選択できます。選択できるポリシーは`PRIVATE`と`PUBLIC`の2つに制限されます。
+
+コンソールでは、[コンテナの作成](console-guide$[ file_suffix ]$/#create-container)ダイアログボックス、または[コンテナ管理](console-guide$[ file_suffix ]$/#manage-container)ウィンドウのコンテナアクセスポリシー設定ダイアログボックスから、コンテナアクセスポリシーを選択できます。選択可能なポリシーは `PRIVATE` と `PUBLIC` の2種類に限られます。
 
 <a id="role-based-access-private"></a>
 #### PRIVATE
@@ -41,7 +45,7 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
 
 
 !!! tip "ヒント"
-    `X-Container-Read`、`X-Container-Write`、`X-Container-View` に設定できるアクセスポリシー要素は、各属性につき最大 100 個です。この制限は [コンテナポリシー](container-policy-guide/#acl) で設定する場合にも同様に適用されます。
+    `X-Container-Read`、`X-Container-Write`、`X-Container-View` に設定できるアクセスポリシー要素は、各属性につき最大 100 個です。この制限は[コンテナポリシー](container-policy-guide$[ file_suffix ]$/#acl)で設定する場合にも同様に適用されます。
 
 <br>
 
@@ -59,7 +63,7 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
 
 !!! tip "ヒント"
     `{api-user-id}` は、コンソールの API エンドポイント設定ダイアログの **[APIユーザーID]** 項目、または認証トークン発行 API のレスポンスボディの **access.user.id** フィールドで確認できます。
-    認証トークン発行 API を使用するには、API ガイドの[認証および権限](api-guide/#auth)を参照してください。
+    認証トークン発行 API を使用するには、API ガイドの [認証および権限](api-guide$[ file_suffix ]$/#auth) を参照してください。
 
 !!! tip "覚えておくこと"
     `{tenant-id}:` や `:{api-user-id}` のようにコロンの片側が空の値、`.` で始まる値は使用することはできません。
@@ -85,8 +89,6 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
 <a id="role-based-access-allow-rw-to-project-users"></a>
 #### コンテナが属するプロジェクトのユーザーにのみ書き込み/読み取りを許可
 
-ロールベースのアクセスポリシー要素を設定していない場合に適用される、デフォルトのアクセスポリシーです。APIを使用してコンテナにアクセスするには、有効な認証トークンが必要です。
-
 コンテナの `X-Container-Read`、`X-Container-Write` 属性値をすべて削除すると、コンテナが属するプロジェクトのユーザーのみアクセスを許可する `PRIVATE` コンテナになります。
 
 <br>
@@ -99,7 +101,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read;' \
   -H 'X-Container-Write;' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 !!! tip "ヒント"
@@ -109,7 +111,7 @@ $ curl -i -X POST \
 
 ```
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -119,7 +121,7 @@ $ curl -X GET \
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 [コンテナのオブジェクトリスト]
 ```
@@ -139,20 +141,20 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .rlistings' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
-[コンテナのオブジェクトリスト]
+[コンテナのオブジェクト一覧]
 ```
 
 `.r:*` のみを設定した場合、コンテナのオブジェクトにはアクセスできますが、オブジェクトの一覧は照会することはできません。
@@ -161,18 +163,18 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -198,7 +200,7 @@ HTTP リファラーのアクセス許可/拒否ポリシーは、入力順序�
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 APIリクエストヘッダに、許可されたHTTPリファラーアドレスを明示してリクエストすると、オブジェクトにアクセスできます。
@@ -206,14 +208,14 @@ APIリクエストヘッダに、許可されたHTTPリファラーアドレス�
 ```
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com/some/path' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 ```
@@ -222,21 +224,21 @@ API リクエストヘッダーに許可されたリファラーアドレスが�
 
 ```
 $ curl -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: https://example.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 
 
 $ curl -X GET \
   -H 'Referer: bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -247,20 +249,20 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://qux.baz.foo.com/some/path' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 ```
@@ -270,7 +272,7 @@ $ curl -O -X GET \
 ```
 $ curl -X GET \
   -H 'Referer: https://foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -281,20 +283,20 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:foo.com, .r:.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
   -H 'Referer: https://foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -O -X GET \
   -H 'Referer: https://baz.foo.com/some/path' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 ```
@@ -307,7 +309,7 @@ $ curl -O -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:-bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 HTTP リファラーのドメイン名の前にマイナス記号を付けて設定すると、該当する HTTP リファラーのリクエストをブロックします。
@@ -315,7 +317,7 @@ HTTP リファラーのドメイン名の前にマイナス記号を付けて設
 ```
 $ curl -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -329,19 +331,19 @@ $ curl -X GET \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: .r:*, .r:-bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 ```
 $ curl -O -X GET \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 
 
 $ curl -X GET \
   -H 'Referer: https://bar.foo.com' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
@@ -364,7 +366,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:{api-user-id}' \
   -H 'X-Container-Write: {tenant-id}:{api-user-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 オブジェクトへのアクセスをリクエストする際は、許可されたテナントIDおよびAPIユーザーIDで発行された有効な認証トークンが必要です。
@@ -372,14 +374,14 @@ $ curl -i -X POST \
 ```
 $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 
-[コンテナのオブジェクトリスト]
+[コンテナのオブジェクト一覧]
 
 
 $ curl -O -X GET \
   -H 'X-Auth-Token: ${token-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
 
 [オブジェクトのダウンロード]
 ```
@@ -393,7 +395,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: {tenant-id}:*' \
   -H 'X-Container-Write: {tenant-id}:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 オブジェクトへのアクセスをリクエストする際は、許可されたテナントIDとAPIユーザーIDで発行した有効な認証トークンが必要です。
@@ -408,7 +410,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:{api-user-id}' \
   -H 'X-Container-Write: *:{api-user-id}' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 オブジェクトへのアクセスをリクエストする際は、プロジェクトに関係なく、許可されたAPIユーザーIDで発行した有効な認証トークンが必要です。
@@ -423,7 +425,7 @@ $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Read: *:*' \
   -H 'X-Container-Write: *:*' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 オブジェクトへのアクセスをリクエストする際は、有効な認証トークンが必要です。
@@ -479,7 +481,7 @@ API を使用してコンテナの `X-Container-Ip-Acl-Allowed-List`、`X-Contai
 IPベースのアクセスポリシーが設定されたコンテナの属性を変更するには、許可されたテナントIDとAPIユーザーIDで発行した有効な認証トークンが必要であり、許可されたIPからリクエストする必要があります。
 
 !!! tip "ヒント"
-    `X-Container-Ip-Acl-Allowed-List`(ホワイトリスト)と`X-Container-Ip-Acl-Denied-List`(ブラックリスト)に設定できるポリシー要素はそれぞれ最大100個です。この制限は[コンテナポリシー](container-policy-guide/#ip-acl)で設定する場合にも同様に適用されます。
+    `X-Container-Ip-Acl-Allowed-List`（ホワイトリスト）と `X-Container-Ip-Acl-Denied-List`（ブラックリスト）に設定できるポリシー要素は、それぞれ最大 100 個です。この制限は、[コンテナポリシー](container-policy-guide$[ file_suffix ]$/#ip-acl)で設定する場合にも同様に適用されます。
 
 <br>
 
@@ -507,7 +509,7 @@ IPベースのアクセスポリシー要素は、アクセス権限とIPまた�
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Allowed-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 192.168.0.1 は読み取りリクエストのみ、192.168.0.2 は書き込みリクエストのみ実行でき、172.16.0.0/24 帯域のすべての IP は読み取りと書き込みリクエストの両方を実行できます。それ以外のすべての IP はリクエストが拒否されます。
@@ -522,7 +524,7 @@ $ curl -i -X POST \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Denied-List: r192.168.0.1,w192.168.0.2,a172.16.0.0/24' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 192.168.0.1は読み取りリクエストが、192.168.0.2は書き込みリクエストが拒否され、172.16.0.0/24帯域のすべてのIPは読み取りと書き込みリクエストをいずれも実行することはできません。その他のすべてのIPはリクエストが許可されます。
@@ -537,7 +539,7 @@ $ curl -i -X POST \
 $ curl -i -X POST \
   -H 'X-Auth-Token: ${token-id}' \
   -H 'X-Container-Ip-Acl-Service-Gateway-Control: rw' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 設定された IP ベースのアクセスポリシーに関係なく、サービスゲートウェイからのリクエストはすべて許可されます。
@@ -559,7 +561,7 @@ $ curl -i -X POST \
   -H 'X-Container-Ip-Acl-Allowed-List;' \
   -H 'X-Container-Ip-Acl-Denied-List;' \
   -H 'X-Container-Ip-Acl-Service-Gateway-Control;' \
-  https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
+  $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
 <br><br>

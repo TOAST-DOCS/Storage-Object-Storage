@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=3eabcf443966 -->
 
 <a id="third-party-tools-usage-guide"></a>
@@ -49,7 +51,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 </table>
 
 !!! tip "ヒント"
-    APIパスワードの設定方法は、APIガイドの[認証および権限](api-guide/#auth)項目を参照してください。
+    API パスワードの設定方法については、API ガイドの [認証および権限](api-guide$[ file_suffix ]$/#auth) を参照してください。
 
 <a id="cyberduck-connect-object-storage"></a>
 ### オブジェクトストレージの接続 { #cyberduck-connect-object-storage }
@@ -127,10 +129,11 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
 !!! tip "ヒント"
     同期の詳細は、[CyberduckのSynchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders)ドキュメントを参照してください。
 
+{% if terraform_support %}
 <a id="terraform"></a>
 ## Terraform { #terraform }
 
-Terraformはインフラを簡単に構築し、安全に変更して効率的に構成を管理できるオープンソースツールです。基本的な使用方法は、[ユーザーガイド > NHN Cloud > Terraform使用ガイド](/nhncloud/ja/terraform-guide/)を参照してください。
+Terraform は、インフラを簡単に構築し、安全に変更し、効率的に構成を管理できるオープンソースツールです。基本的な使用方法については、[ユーザーガイド > NHN Cloud > Terraform 使用ガイド]($[ terraform_guide_url ]$)を参照してください。
 
 <a id="terraform-resource-dependency"></a>
 ### リソースの依存関係 { #terraform-resource-dependency }
@@ -308,8 +311,11 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 	</tbody>
 </table>
 
+{% endif %}
 <a id="reference"></a>
 ## 参考サイト { #reference }
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
+{%- if terraform_support %}
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
+{%- endif %}
