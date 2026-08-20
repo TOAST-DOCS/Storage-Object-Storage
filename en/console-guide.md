@@ -13,7 +13,6 @@ This document describes how to manage containers and objects in Object Storage f
 ## Container { #container }
 
 <a id="create-container"></a>
-
 ### Create Container { #create-container }
 Creates containers. Uploading objects in an object storage requires one or more containers.{% if encrypt %} If you set encryption, the uploaded object is automatically encrypted and saved.{% endif %}
 
@@ -74,7 +73,6 @@ Creates containers. Uploading objects in an object storage requires one or more 
 
 {% if ec %}
 <a id="storage-class"></a>
-
 ### Storage class { #storage-class }
 You can choose a storage class based on how often you access your data and your cost requirements. We offer Standard class for frequently accessed data and Economy class for long-term storage of less frequently accessed data at a lower cost.
 
@@ -87,13 +85,11 @@ You can choose a storage class based on how often you access your data and your 
 
 {% endif %}
 <a id="set-object-lock-cycle"></a>
-
 #### Object Lock Settings
 Objects uploaded to the Object Lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
 
 {% if encrypt %}
 <a id="set-object-encryption"></a>
-
 #### Encryption Settings
 Objects uploaded to encryption containers are encrypted using a symmetric key managed by the NHN Cloud's Secure Key Manager service. Therefore, in order to create an encryption container, you must create a symmetric key in the Secure Key Manager service in advance.
 
@@ -132,7 +128,6 @@ Deletes selected containers. Check if the containers are empty before deleting t
 Checks basic information of the selected containers and manage the settings.
 
 <a id="container-basic-info"></a>
-
 #### Basic Information
 You can view the container's $[ "basic and encryption information" if encrypt else "basic information" ]$, and change settings such as access policies, static websites, and cross-origin resource sharing.
 
@@ -282,7 +277,6 @@ For blacklist, setting `exe`, `jpg` as blacklist will prevent all objects with `
 <br>
 
 <a id="set-object-lifecycle"></a>
-
 #### Lifecycle
 
 Views and modifies the lifecycle rules of objects stored in containers.
@@ -388,7 +382,6 @@ Clicking the **Bulk Apply Rules** button resets the lifecycle of all objects in 
 Rules are applied in order of priority, and the lifecycle is recalculated based on the time of bulk application.
 
 <a id="set-object-versioning"></a>
-
 #### Object Version
 
 Object version control settings allow you to keep previous versions of objects. Previous versions are kept in the archive container when the object is updated or deleted. If you set the lifecycle for previous versions, versions that exceed the set lifecycle are automatically deleted.
@@ -424,7 +417,6 @@ Object version control settings allow you to keep previous versions of objects. 
 {% endif %}
 
 <a id="change-object-lock-cycle"></a>
-
 #### Object Lock
 
 You can check and change the object lock cycle of object lock containers. The object lock cycle can be entered in days, and cannot be turned off.
@@ -457,7 +449,6 @@ Object lock containers cannot be designated as archive containers$[ " or replica
 
 {% if replication %}
 <a id="set-container-replication"></a>
-
 #### Replication
 
 Replication settings allow you to replicate objects in a container to another container in a different region. Replication settings are for disaster recovery, and objects in the source region are replicated to the target region and managed. Replication proceed in the background at regular intervals.
@@ -672,7 +663,6 @@ Deletes a folder. Deletes all objects in the folder and the folder object.
 For multipart objects inside a folder, only the manifest object is deleted; segment objects that are not included in the selection are not deleted.
 
 <a id="upload-object"></a>
-
 ### Upload Object { #upload-object }
 All objects must be uploaded to containers. One object cannot be larger than 5GB.
 
@@ -680,7 +670,6 @@ All objects must be uploaded to containers. One object cannot be larger than 5GB
     Files exceeding 5 GB cannot be uploaded to the console. If the size of the object to be uploaded exceeds 5 GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5 GB before uploading. For more details, refer to [Multipart Upload](api-guide$[ file_suffix ]$/#multipart-upload) of the API guide.
 
 <a id="download-object"></a>
-
 ### Download Object { #download-object }
 Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the **Copy URL** button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
 
@@ -728,7 +717,6 @@ Deletes the selected objects. You can select and delete multiple objects at the 
     When you delete a multipart object, only the selected manifest object is deleted. Unselected segment objects are not deleted.
 
 <a id="create-signed-url"></a>
-
 ### Create Signed URL { #create-signed-url }
 Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies. For more information on how to use it, see the [Signed URL Guide](presigned-url-guide$[ file_suffix ]$/).
 
