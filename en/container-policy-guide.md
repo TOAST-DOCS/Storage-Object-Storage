@@ -298,7 +298,6 @@ Assume the following lifecycle rules are configured.
     * Expiration action: move to `archive-container`.<br>
 
 <a id="acl"></a>
-
 ## Access control (ACLs) { #acl }
 
 Use the `acl` key of the container policy document to configure container access permissions. Access control consists of three types of permissions: read, write, and get.
@@ -346,7 +345,6 @@ The structure of the access control policy document is as follows.
 ```
 
 <a id="acl-schema-field-descriptions"></a>
-
 #### Field Description
 
 | Field | Format | Required | Description | Note |
@@ -389,7 +387,6 @@ Since `view` was not included, the view permission will be revoked.
 <br>
 
 <a id="ip-acl"></a>
-
 ## IP Access Control (IP ACL) { #ip-acl }
 
 Use the `ip_acl` key in the container policy document to configure IP-based access control. A whitelist and a blacklist cannot be used at the same time; if both are set, only the whitelist is applied. For other details on how this works, see [IP-based access policies](acl-guide$[ file_suffix ]$/#ip-based-access-policies) in the Access Policy Configuration Guide.
@@ -454,7 +451,6 @@ The structure of the IP access control policy document is as follows.
 <br>
 
 <a id="cors"></a>
-
 ## Cross-Origin Resource Sharing (CORS) { #cors }
 
 Set Cross-Origin Resource Sharing (CORS) using the `cors` key in the container policy document. For more information about CORS settings and allowed origin formats, see [Cross-Origin Resource Sharing (CORS)](api-guide$[ file_suffix ]$/#set-container-cors-policy) in the API guide.
@@ -500,7 +496,6 @@ The structure of the CORS policy document is as follows.
 <br>
 
 <a id="lock"></a>
-
 ## Object Lock { #lock }
 
 Use the `lock` key in the container policy document to set the lock cycle for object lock (WORM, Write-Once-Read-Many). For concepts and constraints related to object lock, see [Change Object Lock Cycle](api-guide$[ file_suffix ]$/#set-container-object-lock-cycle) in the API guide.
