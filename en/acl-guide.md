@@ -15,7 +15,6 @@ This document describes how to set role-based access policies and IP-based acces
 You can use the console or API to grant read/write access to the container to other users.
 
 <a id="role-based-access-console"></a>
-
 ### Console { #role-based-access-console }
 In the console, you can select a container access policy from the [Create Container](console-guide/#create-container) dialog box or the container access policy settings dialog box within [Manage Container](console-guide/#manage-container) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
 
@@ -34,7 +33,6 @@ In the console, you can select a container access policy from the [Create Contai
 <br>
 
 <a id="role-based-access-api"></a>
-
 ### API { #role-based-access-api }
 
 You can use the API to set access policies for different situations by entering role-based access policy elements in the `X-Container-Read`, `X-Container-Write`, and `X-Container-View` properties of a container. The properties are as follows.
@@ -52,7 +50,6 @@ You can use the API to set access policies for different situations by entering 
 <br>
 
 <a id="role-based-access-elements"></a>
-
 #### Role-based access policy elements
 
 The role-based access policy elements that can be set are as follows. All policy elements can be combined by separating them with commas (`,`).
@@ -90,7 +87,6 @@ In addition to role-based access policy elements, you can also enter the followi
 <br>
 
 <a id="role-based-access-allow-rw-to-project-users"></a>
-
 #### Allow read/write only to users in the project to which the container belongs
 
 This is the default access policy used when no role-based access policy elements are set. A valid authentication token is required to access the container using the API.
@@ -134,7 +130,6 @@ $ curl -X GET \
 <br>
 
 <a id="role-based-access-allow-read-and-list-for-all-users"></a>
-
 #### Allow read/list query for all users
 
 Setting the container's `X-Container-Read` property to `.r:*, .rlistings` allows all users to read objects and query an object list. No authentication token is required. It is the same policy as the `PUBLIC` entry in the console section.
@@ -189,7 +184,6 @@ $ curl -X GET \
 <br>
 
 <a id="role-based-access-allow-or-deny-by-referer"></a>
-
 #### Allow/deny read for requests from a specific HTTP referer
 
 HTTP referer is the address information of a web page that is requested through a hyperlink. It is included in the request header.
@@ -357,7 +351,6 @@ $ curl -X GET \
 <br>
 
 <a id="role-based-access-allow-rw-project-or-user"></a>
-
 #### Allow read/write to specific projects or specific users
 
 If you set a role-based access policy element in the form of `{tenant-id}:{api-user-id}` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API User ID grants access to all projects or all users. A valid authentication token is required when making an access request.
@@ -480,7 +473,6 @@ Denies requests from the specified IP addresses or network ranges. All other req
 Controls requests through the service gateway. If not configured, requests may be rejected depending on the whitelist and blacklist settings.
 
 <a id="ip-based-access-api"></a>
-
 ### API { #ip-based-access-api }
 
 You can use the API to enable IP-based access policies by entering IP-based access policy elements in the `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties of a container. `X-Container-Ip-Acl-Allowed-List` is the allowlist, and `X-Container-Ip-Acl-Denied-List` is the denylist.
@@ -556,7 +548,6 @@ All Service Gateway requests are allowed regardless of the configured IP-based a
 </details>
 
 <a id="ip-based-access-delete-access-policies"></a>
-
 #### Delete access policies
 
 By entering an empty header, you can delete all set IP-based access policy elements. A container with no policy elements is not subject to IP-based access restrictions.
