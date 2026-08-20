@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=ba6b9ac2ecbb -->
 
 <a id="storage-object-storage-presigned-url-guide"></a>
@@ -15,7 +17,7 @@ A presigned URL is a temporary access link that is pre-signed with a secret key.
 <a id="swift-tempurl"></a>
 ### Swift TempURL { #swift-tempurl }
 
-A Swift Temporary URL is a standard object URL with query parameters appended to it.
+Swift TempURL (Temporary URL) is a URL for an object with query parameters appended to it.
 
 ```bash
 https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/object
@@ -24,13 +26,13 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/objec
 &filename=My+Test+File.pdf
 ```
 
-| Component | Required | Description |
+| Components | Required | Description |
 | --- | --- | --- |
-| Object URL | Y        | The full path URL of the object |
-| temp_url_sig | Y        | An HMAC value created by signing the allowed HTTP method, expiration time, and full path of the object with a secret key |
-| temp_url_expires | Y        | Expiration time. Expressed as a UNIX Epoch timestamp or an ISO 8601 UTC timestamp.<br>Example: `1390852007` or `2014-01-27T19:46:47Z` |
-| filename | N        | Overrides the default filename |
-| temp_url_prefix | N        | Required when signing by prefix |
+| Object URL | Y | Full path URL of the object |
+| temp_url_sig | Y | HMAC value signed with a secret key, containing the allowed HTTP method, expiration date, and full path of the object |
+| temp_url_expires | Y | Expiration time. Expressed as a UNIX Epoch timestamp or an ISO 8601 UTC timestamp.<br>Example: `1390852007` or `2014-01-27T19:46:47Z` |
+| filename | N | Overrides the default filename |
+| temp_url_prefix | N | Required when signing by prefix |
 
 <br>
 
@@ -49,15 +51,15 @@ https://{endpoint}/my-container/cat.jpg
 &X-Amz-Signature={signature-value}
 ```
 
-| Component | Required | Description                                                                                                                       |
-| --- | --- |--------------------------------------------------------------------------------------------------------------------------|
-| Object URL | Y        | The full path URL of the object (path-style: `https://{endpoint}/{bucket}/{object}`)                                                      |
-| X-Amz-Algorithm | Y        | Identifies the AWS Signature version and algorithm. Set to AWS4-HMAC-SHA256 for SigV4 |
-| X-Amz-Credential | Y        | Provides the Access Key ID and the scope (region and service) in which the signature is valid. Format: `{access-key-id}/{date}/{region}/{service}/aws4_request` (service is `s3`, region is `kr1`, etc.). In URLs, `/` is encoded as `%2F` |
-| X-Amz-Date | Y        | Request date and time. Expressed in ISO 8601 `yyyyMMddTHHmmssZ` format (UTC).<br>Example: `20260601T223241Z`                                                 |
-| X-Amz-Expires | Y        | The duration (in seconds) for which the presigned URL is valid. Minimum `1`, maximum `604800` (7 days)                                                              |
-| X-Amz-SignedHeaders | Y        | List of headers used in the signature calculation. Must include at least the HTTP `host` header, as well as all `x-amz-*` headers added to the request |
-| X-Amz-Signature | Y        | The HMAC signature value that authenticates the request. Must match the value calculated by the server; otherwise, the request is rejected |
+| Components | Required | Description |
+| --- | --- | --- |
+| Object URL | Y | The full path URL of the object (path-style: `https://{endpoint}/{bucket}/{object}`) |
+| X-Amz-Algorithm | Y | Identifies the AWS Signature version and algorithm. Set to `AWS4-HMAC-SHA256` for SigV4 |
+| X-Amz-Credential | Y | Provides the Access Key ID and the scope (region and service) in which the signature is valid. Format: `{access-key-id}/{date}/{region}/{service}/aws4_request` (service is `s3`, region is `kr1`, etc.). In URLs, `/` is encoded as `%2F` |
+| X-Amz-Date | Y | Request time in ISO 8601 `yyyyMMddTHHmmssZ` format (UTC)<br>Example: `20260601T223241Z` |
+| X-Amz-Expires | Y | Duration (in seconds) for which the signed URL is valid. Min. `1`, Max. `604800` (7 days) |
+| X-Amz-SignedHeaders | Y | List of headers used to calculate the signature. Must include at least the HTTP `host` header, and all `x-amz-*` headers added to the request. |
+| X-Amz-Signature | Y | HMAC signature value for authenticating the request. Must match the value calculated by the server; otherwise, the request is rejected |
 
 !!! tip "Note"
     S3 presigned URLs do not support prefix-based signing. They always sign for a single object and a single operation (GET/PUT, etc.).
@@ -105,7 +107,7 @@ X-Container-Meta-Temp-URL-Key: {key}
 !!! tip "Note"
     Object Storage can store up to 2 secret key values per storage account and 2 per container.
 
-    When validating a request, Object Storage checks the signatures of all keys. Using 2 keys at each level allows you to rotate keys without invalidating existing temporary URLs.
+When validating a request, Object Storage verifies the signatures of all keys. By using 2 keys at each level, you can rotate keys while keeping existing TempURLs intact.
 
 You can set a secret key using the Swift CLI as follows:
 
@@ -122,7 +124,7 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # Container Settings
 <a id="obtain-s3-credentials"></a>
 ### Obtain S3 API Credentials { #obtain-s3-credentials }
 
-To use the S3-compatible API, you must first obtain S3 API credentials in the AWS EC2 format (Access Key ID + Secret Access Key). Credentials can be issued using the web console or API. To obtain credentials using the web console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
+To use the S3-compatible API, you must first obtain S3 API credentials (Access Key ID + Secret Access Key) in the AWS EC2 format. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
 
 ```http
 POST https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -151,7 +153,7 @@ The `Access Key ID` is exposed in the URL as `X-Amz-Credential`, while the `Secr
 
 </details>
 
-To generate a signature using the `aws` CLI or SDK, you must configure the issued credentials locally. For more information, see the configuration section of the [Amazon S3-compatible API Guide](s3-api-guide/#aws-command-line-interface-configuration).
+To generate a signature using the `aws` CLI or SDK, you must configure the issued credentials locally. For more information, refer to the configuration section in the [Amazon S3-compatible API Guide](s3-api-guide/#aws-command-line-interface-configuration).
 
 <br>
 
@@ -165,7 +167,7 @@ After completing the prerequisites, this section describes how to create a presi
 <a id="create-manual-signature"></a>
 ### Create a Signature Manually { #create-manual-signature }
 
-The following is an example of an HMAC-SHA256 signature for an object-based Temporary URL.
+The following is an example of an HMAC-SHA256 signature for an object-based TempURL.
 
 ```python
 import hmac
@@ -182,7 +184,7 @@ hmac_body = '%s\n%s\n%s' % (method, expires, path)
 signature = hmac.new(key.encode(), hmac_body.encode(), sha256).hexdigest()
 ```
 
-You can also create a Temporary URL based on a prefix. This allows you to create a signature that is valid for all objects that start with the prefix. The following is an example of an HMAC-SHA512 signature for a prefix-based Temporary URL.
+TempURL can also be created based on a prefix. You can create a signature that is valid for all objects starting with that prefix. The following is an example of an HMAC-SHA512 signature for a prefix-based TempURL.
 
 ```python
 import hmac
@@ -313,7 +315,7 @@ $ swift tempurl PUT 3600 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/
 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=b1c4e9f2a8d7035641c2e9d8f4b1a7d063c5e8f9a2b1d4e70f3a8c1d9e2b5f40&temp_url_expires=1772755199
 ```
 
-To create a Temporary URL, prepend the Object Storage hostname to this path, as follows.
+To create a TempURL, prepend the Object Storage hostname to this path.
 
 ```bash
 https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e4790a1b2c3d4e5f60718293a4b5&temp_url_expires=1772755199
@@ -324,7 +326,7 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4c
 <a id="create-aws-cli"></a>
 ### Use the AWS CLI { #create-aws-cli }
 
-To generate a signature with the `aws` CLI, you must configure the access key and secret key issued in [Obtain S3 API Credentials](#obtain-s3-credentials) on your local environment.
+To generate a signature with the `aws` CLI, you must configure the Access Key and Secret Key obtained in [Obtain S3 API Credentials](#obtain-s3-credentials) locally.
 
 ```bash
 aws s3 presign s3://my-container/cat.jpg \

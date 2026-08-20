@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=acedf0f45de3 -->
 
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
@@ -39,12 +41,12 @@ This document describes only the basic usage of API. To use advanced features, i
 
 <a id="obtain-s3-api-credentials"></a>
 ### Obtain S3 API Credentials { #obtain-s3-api-credentials }
-To use the Amazon S3-compatible API, you must first obtain S3 API credentials in the form of AWS EC2. Credentials can be issued using the web console or API. To obtain credentials using the web console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
+To use the Amazon S3-compatible API, you must first obtain S3 API credentials in the form of AWS EC2. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
 
 To obtain credentials using the API, you need an authentication token. For information on issuing an authentication token, refer to the [Object Storage API Guide](api-guide/#auth).
 
 ```
-POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
+POST https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -120,7 +122,7 @@ Retrieves the issued S3 API credentials.
 **[Method, URL]**
 
 ```
-GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
+GET https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -173,7 +175,7 @@ Deletes the issued S3 API credentials.
 **[Method, URL]**
 
 ```
-DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
@@ -255,7 +257,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 !!! tip "Note"
-    If a container name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
+    If a container name created via the console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
 
 <a id="create-bucket-request"></a>
 #### Request
@@ -337,7 +339,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 !!! tip "Note"
-    If a bucket name made via web console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
+    If a container name created using the console or object storage API violates any bucket naming rules, it cannot be accessed with S3 compatible API.
 
 <a id="get-bucket-request"></a>
 #### Request
@@ -730,7 +732,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 | bucket | Bucket name |
 
 !!! tip "Note"
-    Since the AWS CLI is provided for use with AWS, it is configured to use the AWS domain. Therefore, to use NHN Cloud Object Storage, you must specify an endpoint for every command.
+    The AWS CLI is a tool that is configured to use the AWS domain by default. Therefore, to use NHN Cloud Object Storage, you must specify an endpoint for every command.
     For AWS CLI commands, see [Using high-level (s3) commands with the AWS CLI](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html).
 
 <details>
@@ -779,7 +781,7 @@ remove_bucket: example-bucket
 
 Locked buckets are managed using the <code>aws s3api</code> subcommand.
 <br>
-Using the <code>--object-lock-enabled-for-bucket</code> option with the <code>create-bucket</code> command creates a bucket with object lock enabled. The default retention period is set to 0 days.
+Using the <code>--object-lock-enabled-for-bucket</code> option with the <code>create-bucket</code> command creates a bucket with object lock (오브젝트 잠금) enabled. The default retention period is set to 0 days.
 
 ```shell
 $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api create-bucket \
