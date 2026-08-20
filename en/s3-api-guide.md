@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=acedf0f45de3 -->
 
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
@@ -40,19 +42,21 @@ This document describes only the basic usage of API. To use advanced features, i
 ## S3 API Credentials { #s3-api-credential }
 
 <a id="obtain-s3-api-credentials"></a>
-### Obtain S3 API Credentials { #obtain-s3-api-credentials }
-To use the Amazon S3-compatible API, you must first obtain S3 API credentials in the form of AWS EC2. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
 
-To obtain credentials using the API, you need an authentication token. For information on issuing an authentication token, refer to the [Object Storage API Guide](api-guide/#auth).
+### Obtain S3 API Credentials { #obtain-s3-api-credentials }
+To use the Amazon S3-compatible API, you must first issue S3 API credentials in the AWS EC2 format. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide$[ file_suffix ]$/#s3-api-credentials).
+
+To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to the [Object Storage API Guide](api-guide$[ file_suffix ]$/#auth).
 
 ```
-POST https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
+POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
 ```
 
 <a id="obtain-s3-api-credentials-request"></a>
+
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -62,8 +66,8 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | Y | Tenant ID; can be found in the API endpoint configuration dialog box |
 
 !!! tip "Note"
-    `{api-user-id}` can be found in the **API User ID** field in the API endpoint configuration dialog box in the console, or in the **access.user.id** field in the response body of the authentication token issuance API.
-    To use the authentication token issuance API, refer to the [Authentication and Authorization](api-guide/#auth) section of the API guide.
+    You can find `{api-user-id}` by referring to the **API User ID** field in the API Endpoint setting dialog on the console, or by checking the **access.user.id** field in the response body of the authentication token issuance API.
+    To use the authentication token issuance API, refer to [Authentication and Authorization](api-guide$[ file_suffix ]$/#auth) in the API guide.
 
     S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
 
@@ -116,13 +120,14 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="get-s3-api-credentials"></a>
+
 ### Get S3 API Credentials { #get-s3-api-credentials }
 Retrieves the issued S3 API credentials.
 
 **[Method, URL]**
 
 ```
-GET https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
+GET $[ identity_url ]$/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -169,13 +174,14 @@ This API does not require a request body.
 </details>
 
 <a id="delete-s3-api-credentials"></a>
+
 ### Delete S3 API Credentials { #delete-s3-api-credentials }
 Deletes the issued S3 API credentials.
 
 **[Method, URL]**
 
 ```
-DELETE https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE $[ identity_url ]$/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
@@ -195,6 +201,7 @@ This API does not require a request body.
 This API does not return a response body. When the request is appropriate, it returns status code 204.
 
 <a id="create-signature"></a>
+
 ## Create Signature { #create-signature }
 To use S3 API, you must create a signature using credentials. For information on how to create a signature, refer to the [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) documentation.
 
@@ -205,7 +212,7 @@ The information required to create a signature is as follows:
 | Algorithm | AWS4-HMAC-SHA256 |
 | Signature time | YYYYMMDDThhmmssZ format |
 | Service name | s3 |
-| Region name | KR1 - Korea (Pangyo) region<br>KR2 - Korea (Pyeongchon) region<br>KR3 - Korea (Gwangju) region<br>JP1 - Japan (Tokyo) region |
+| Region Name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 | Secret key | S3 API credentials secret key |
 
 The `x-amz-content-sha256` header is required when generating an AWS signature V4 signature. This header is included in the Canonical Request and used in the signature calculation, and the payload processing method is determined by the header value. The available values are as follows:
@@ -683,11 +690,12 @@ This API does not require a request body.
 | X-Amz-Signature | Query | String | Y | HMAC signature value that authenticates the request |
 
 <a id="presigned-url-format-response"></a>
+
 #### Response
 For a valid request, return status code 200.
 
 !!! tip "Note"
-    For more information, including the Swift TempURL method and language-specific direct signing examples, see the [Signed URL Guide](presigned-url-guide/).
+    For more information about Swift TempURL and language-specific direct signing examples, see the [Presigned URL Guide](presigned-url-guide$[ file_suffix ]$/).
 
 <a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
@@ -701,6 +709,7 @@ See [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.
     NHN Cloud Object Storage supports AWS CLI up to version 2.34.38.
 
 <a id="aws-command-line-interface-configuration"></a>
+
 ### Configuration { #aws-command-line-interface-configuration }
 To use the AWS Command Line Interface, you must first configure the S3 API credentials and environment.
 
@@ -716,9 +725,10 @@ Default output format [None]: json
 |---|---|
 | access | S3 API Credentials access key |
 | secret | S3 API Credentials secret key |
-| region name | KR1 - Korea (Pangyo) region<br>KR2 - Korea (Pyeongchon) region<br>KR3 - Korea (Gwangju) region<br>JP1 - Japan (Tokyo) region |
+| region name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="how-to-use-the-s3-commands"></a>
+
 ### How to Use S3 Commands { #how-to-use-the-s3-commands }
 
 ```shell
@@ -727,7 +737,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | Name | Description |
 |---|---|
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) region<br>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region |
+| endpoint | {% for region in regions %}$[ region.endpoint ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 | command | AWS Command Line Interface command |
 | bucket | Bucket name |
 
@@ -739,7 +749,7 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 <summary>Create a bucket</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 mb s3://example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
 
@@ -749,7 +759,7 @@ make_bucket: example-bucket
 <summary>List buckets</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
 
@@ -759,7 +769,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls
 <summary>View a bucket</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3://example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -770,7 +780,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3
 <summary>Delete a bucket</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 rb s3://example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 rb s3://example-bucket
 remove_bucket: example-bucket
 ```
 
@@ -784,7 +794,7 @@ Locked buckets are managed using the <code>aws s3api</code> subcommand.
 Using the <code>--object-lock-enabled-for-bucket</code> option with the <code>create-bucket</code> command creates a bucket with object lock (오브젝트 잠금) enabled. The default retention period is set to 0 days.
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api create-bucket \
+$ aws --endpoint-url=$[ object_storage_url ]$ s3api create-bucket \
   --bucket example-bucket \
   --object-lock-enabled-for-bucket
 ```
@@ -792,7 +802,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api cr
 To set the default retention period, use the <code>put-object-lock-configuration</code> command.
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api put-object-lock-configuration \
+$ aws --endpoint-url=$[ object_storage_url ]$ s3api put-object-lock-configuration \
     --bucket example-bucket \
     --object-lock-configuration '{
         "ObjectLockEnabled": "Enabled",
@@ -808,7 +818,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api pu
 To view the lock configuration, use the <code>get-object-lock-configuration</code> command.
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api get-object-lock-configuration --bucket example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3api get-object-lock-configuration --bucket example-bucket
 {
     "ObjectLockConfiguration": {
         "ObjectLockEnabled": "Enabled",
@@ -828,7 +838,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api ge
 <summary>Upload an object</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -848,7 +858,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 <summary>Download an object</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
 
@@ -858,7 +868,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <summary>Delete an object</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -868,8 +878,8 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 <summary>Create a presigned URL</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
-https://kr1-api-object-storage.nhncloudservice.com/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=...
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
+$[ object_storage_url ]$/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=...
 ```
 
 </details>
@@ -907,6 +917,7 @@ s3 =
     If the bucket name contains a period (`.`), using Virtual Hosted-style may result in certificate validation failure because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style instead.
 
 <a id="aws-sdk"></a>
+
 ## AWS SDK { #aws-sdk }
 AWS provides SDKs for many types of programming languages. By using the S3 compatible API, you can use NHN Cloud Object Storage with AWS SDK.
 
@@ -919,8 +930,8 @@ The key parameters required to use the AWS SDK are as follows:
 |---|---|
 | access | S3 API Credentials access key |
 | secret | S3 API Credentials secret key |
-| region name | KR1 - Korea (Pangyo) region<br>KR2 - Korea (Pyeongchon) region<br>KR3 - Korea (Gwangju) region<br>JP1 - Japan (Tokyo) region |
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - Korea (Pangyo) region<br>https://kr2-api-object-storage.nhncloudservice.com - Korea (Pyeongchon) region<br>https://kr3-api-object-storage.nhncloudservice.com - Korea (Gwangju) region<br>https://jp1-api-object-storage.nhncloudservice.com - Japan (Tokyo) region |
+| region name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
+| endpoint | {% for region in regions %}$[ region.endpoint ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="aws-sdk-boto3-python"></a>
 ### Boto3 - Python SDK { #aws-sdk-boto3-python }
