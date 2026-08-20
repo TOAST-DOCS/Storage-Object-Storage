@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=5dd7d08822ff -->
 
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
@@ -297,6 +299,7 @@ Content-Type: application/json
 <br>
 
 <a id="acl"></a>
+
 ## アクセス制御 (ACL) { #acl }
 
 コンテナポリシードキュメントの `acl` キーを使用して、コンテナのアクセス権限を設定します。アクセス制御は、読み取り、書き込み、照会の 3 つの権限で構成されます。
@@ -306,7 +309,7 @@ Content-Type: application/json
 | 読み取り | `read` | コンテナ情報とオブジェクト情報の照会およびダウンロードを許可します。 |
 | 書き込み | `write` | オブジェクトのアップロード、削除などの変更リクエストを許可します。 |
 | 照会 | `view` | コンテナのオブジェクト一覧の照会を許可します。 |
-ポリシードキュメントの `read`、`write`、`view` は、それぞれコンテナの `X-Container-Read`、`X-Container-Write`、`X-Container-View` 属性に対応します。各権限の詳細については、[アクセスポリシー設定ガイド](acl-guide/#role-based-access-api)を参照してください。
+ポリシードキュメントの `read`、`write`、`view` は、それぞれコンテナの `X-Container-Read`、`X-Container-Write`、`X-Container-View` 属性に対応します。各権限の詳細については、[アクセスポリシー設定ガイド](acl-guide$[ file_suffix ]$/#role-based-access-api)を参照してください。
 
 <br>
 
@@ -344,6 +347,7 @@ Content-Type: application/json
 ```
 
 <a id="acl-schema-field-descriptions"></a>
+
 #### フィールドの説明
 
 | フィールド | 形式 | 必須 | 説明 | 備考 |
@@ -361,7 +365,7 @@ Content-Type: application/json
 | `view` | Object | N | 閲覧権限 | `grantees` 最大100個 |
 | `view.grantees` | Array | N | 閲覧権限を付与するユーザーのリスト | `grantees` の形式は `read.grantees` と同じです。 |
 !!! tip "ヒント"
-    `public`、`listing`、`referrers` に対応する要素についてはアクセスポリシー設定ガイドの [その他のアクセスポリシー要素](acl-guide/#common-access-elements) を、`grantees` に対応する要素については [ロールベースのアクセスポリシー要素](acl-guide/#role-based-access-elements) を参照してください。
+    `public`、`listing`、`referrers` に対応する要素については、アクセスポリシー設定ガイドの[その他のアクセスポリシー要素](acl-guide$[ file_suffix ]$/#common-access-elements)を、`grantees` に対応する要素については[ロールベースのアクセスポリシー要素](acl-guide$[ file_suffix ]$/#role-based-access-elements)を参照してください。
 
 <a id="acl-schema-application-example"></a>
 #### 適用例
@@ -386,9 +390,10 @@ Content-Type: application/json
 <br>
 
 <a id="ip-acl"></a>
+
 ## IP アクセス制御 (IP ACL) { #ip-acl }
 
-コンテナポリシードキュメントの `ip_acl` キーを使用して、IP ベースのアクセス制御を設定します。ホワイトリストとブラックリストは同時に使用できません。両方設定した場合は、ホワイトリストのみが適用されます。その他の動作については、アクセスポリシー設定ガイドの [IP ベースのアクセスポリシー](acl-guide/#ip-based-access-policies) を参照してください。
+コンテナポリシードキュメントの `ip_acl` キーを使用して、IP ベースのアクセス制御を設定します。ホワイトリストとブラックリストは同時に使用できません。両方設定した場合は、ホワイトリストのみが適用されます。その他の動作については、アクセスポリシー設定ガイドの [IP ベースのアクセスポリシー](acl-guide$[ file_suffix ]$/#ip-based-access-policies) を参照してください。
 
 <br>
 
@@ -450,9 +455,10 @@ IP アクセス制御ポリシードキュメントの構造は次のとおり�
 <br>
 
 <a id="cors"></a>
+
 ## Cross-Origin Resource Sharing (CORS) { #cors }
 
-コンテナポリシードキュメントの `cors` キーを使用して、クロスオリジンリソース共有 (CORS) を設定します。CORS 設定と許可オリジン形式の詳細については、API ガイドの「[クロスオリジンリソース共有 (CORS)](api-guide/#set-container-cors-policy)」を参照してください。
+コンテナポリシードキュメントの `cors` キーを使用して、クロスオリジンリソース共有 (CORS) を設定します。CORS 設定および許可オリジンの形式の詳細については、API ガイドの[クロスオリジンリソース共有 (CORS)](api-guide$[ file_suffix ]$/#set-container-cors-policy) を参照してください。
 
 <br>
 
@@ -495,9 +501,10 @@ CORS ポリシードキュメントの構造は次のとおりです。
 <br>
 
 <a id="lock"></a>
+
 ## オブジェクトロック { #lock }
 
-コンテナポリシードキュメントの `lock` キーを使用して、オブジェクトロック (WORM、Write-Once-Read-Many) のロック周期を設定します。オブジェクトロックの概念と制約については、APIガイドの[オブジェクトロック期間の変更](api-guide/#set-container-object-lock-cycle)を参照してください。
+コンテナポリシードキュメントの `lock` キーを使用して、オブジェクトロック (WORM、Write-Once-Read-Many) のロック周期を設定します。オブジェクトロックの概念と制約については、APIガイドの[オブジェクトロック期間の変更](api-guide$[ file_suffix ]$/#set-container-object-lock-cycle)を参照してください。
 
 <br>
 
