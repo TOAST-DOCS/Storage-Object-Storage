@@ -1,4 +1,6 @@
-<!-- pre-align:aligned sig=57f0cee284f8 -->
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=13e8165cba5c -->
 
 <a id="storage-object-storage-acl-configuration-guide"></a>
 ## Storage > Object Storage > ACL Configuration Guide { #storage-object-storage-acl-configuration-guide }
@@ -16,29 +18,32 @@ In the console, you can select a container access policy from the [Create Contai
 
 <a id="role-based-access-private"></a>
 #### PRIVATE
-`PRIVATE` is the default access policy that grants access only to users of the project to which the container belongs. Users can access the container through the console or through the API by getting an authentication token. It's the same policy as the `Allow read/write only to users in the project to which the container belongs` in the API section.
-<br/>
+
+`PRIVATE` is the default access policy that grants access only to users of the project to which the container belongs. Users can access the container via the console or the API by obtaining an authentication token. It's the same policy as the `Allow read/write only to users in the project to which the container belongs` in the API section.
+<br>
 
 <a id="role-based-access-public"></a>
 #### PUBLIC
-`PUBLIC` is a policy that allows anyone to read and query the object list. If you set the container to PUBLIC, you can get the URL from the console. Anyone can access the container using this URL. It's the same policy as the `Allow read for all users` in the API section.
-<br/>
+
+`PUBLIC` is a policy that allows anyone to read and query the object list. If you set the container to PUBLIC, you can get the URL from the console. Anyone can access the container using this URL. It's the same policy as the `Allow read/list query for all users` entry in the API section.
+<br>
 
 <a id="role-based-access-api"></a>
 ### API { #role-based-access-api }
-You can use the API to set access policies for different situations by entering role-based access policy elements in the `X-Container-Read`, `X-Container-Write`, `X-Container-View` properties of a container. Each property is as below:
 
-| Property | Description |
-| --- | --- |
-| X-Container-Read | Allow viewing container information and viewing and downloading information about objects within a container. Viewing information for some containers is restricted. It includes GET and HEAD requests for containers and objects. |
-| X-Container-Write | Allow modifying objects within a container. This includes PUT, POST, DELETE, and COPY requests for objects. |
+You can use the API to set access policies for different situations by entering role-based access policy elements in the `X-Container-Read`, `X-Container-Write`, and `X-Container-View` properties of a container. The properties are as follows.
+
+| Property | Description                                                                                       |
+| --- |------------------------------------------------------------------------------------------|
+| X-Container-Read | Allows querying container information and querying and downloading object information within the container. This applies to GET and HEAD requests for containers and objects.           |
+| X-Container-Write | Allows object change requests within a container. This includes PUT, POST, DELETE, and COPY requests for objects.                    |
 | X-Container-View | Allow viewing a list of objects within a container and viewing information about them. This includes GET and HEAD requests for containers and HEAD requests for objects. |
 
 
 !!! tip "Tip"
     The maximum number of access policy elements that can be set for `X-Container-Read`, `X-Container-Write`, and `X-Container-View` is 100 per property. This limit also applies when configuring via [container policy](container-policy-guide/#acl).
 
-<br/>
+<br>
 
 <a id="role-based-access-elements"></a>
 #### Role-based access policy elements
@@ -47,42 +52,43 @@ The role-based access policy elements that can be set are as follows. All policy
 
 | Policy Element | Description |
 | --- | --- |
-| `<tenant-id>:<api-user-id>` | The object can be accessed with an authentication token issued to a specific user belonging to a specific project.<br/>Both read and write permissions can be granted. |
-| `<tenant-id>:*` | The object can be accessed with an authentication token issued to all users belonging to a specific project.<br/>Both read and write permissions can be granted. |
-| `*:<api-user-id>` | The object can be accessed with an authentication token issued to a specific user, regardless of the project.<br/>Both read and write permissions can be granted. |
-| `*:*` | Regardless of the project, any user who can obtain an authentication token can access the object.<br/>Both read and write permissions can be granted. |
+| `{tenant-id}:{api-user-id}` | The object can be accessed using an authentication token issued to a specific user in a specific project.<br>Both read and write permissions can be granted. |
+| `{tenant-id}:*` | The object can be accessed using an authentication token issued to all users in a specific project.<br>Both read and write permissions can be granted. |
+| `*:{api-user-id}` | The object can be accessed using an authentication token issued to a specific user, regardless of the project.<br>Both read and write permissions can be granted. |
+| `*:*` | Regardless of the project, any user who can obtain an authentication token can access the object.<br>Both read and write permissions can be granted. |
 
 !!! tip "Tip"
-    You can find `<api-user-id>` by referring to the **API User ID** field in the API Endpoint setting dialog on the console, or in the **access.user.id** field of the authentication token issuance API response body.
+    You can find `{api-user-id}` in the **API User ID** field of the API Endpoint setting dialog on the console, or in the **access.user.id** field of the authentication token issuance API response body.
     To use the authentication token issuance API, refer to [Authentication and Authorization](api-guide/#auth) in the API guide.
 
 !!! tip "Note"
-    Values with one side of the colon empty, such as `<tenant-id>:` or `:<api-user-id>`, and values that start with `.` cannot be used.
+    You cannot use values where one side of the colon is empty (such as `{tenant-id}:` or `:{api-user-id}`) or values that start with `.`.
 
 <a id="common-access-elements"></a>
 #### Other Access Policy Elements
 
-The `X-Container-Read` property accepts the following additional policy elements in addition to the role-based access policy element:
+In addition to role-based access policy elements, you can also enter the following policy elements in the `X-Container-Read` property.
 
 | Policy Element | Description |
 | --- | --- |
 | `.r:*` | Allow anyone to access the object without an authentication token. |
-| `.r:<referrer>` | Allow access to the HTTP referrer specified by the request header.<br/>No authentication token is required. |
-| `.r:-<referrer>` | Restrict access to the HTTP referrer specified by the request header.<br/>Set the referrer by prefixing it with a minus sign (-). |
-| `.rlistings` | Allow users with read permission to retrieve containers (GET or HEAD requests).<br/>If this policy element is not present, object listings cannot be retrieved.<br/>This policy element cannot be set alone. |
+| `.r:{referrer}` | Allows access to the HTTP referer set by referring to the request header.<br>No authentication token is required. |
+| `.r:-{referrer}` | Restricts the access of the HTTP referer set by referring to the request header.<br>It is set by adding a minus sign (-) in front of the referer. |
+| `.rlistings` | Allows a container query (GET or HEAD request) to users who are allowed to read without an authentication token.<br>Without this policy element, the list of objects cannot be queried.<br>This policy element cannot be set alone. |
 
 
 !!! tip "Note"
     In referrers, `*` can only be used as `.r:*`, which means full public access. Values that combine `*` with other characters, `.r:-*` for blocking all access, and empty values cannot be used.
 
-<br/>
+<br>
 
 <a id="role-based-access-allow-rw-to-project-users"></a>
 #### Allow read/write only to users in the project to which the container belongs
+
 This is the default access policy used when no role-based access policy elements are set. A valid authentication token is required to access the container using the API.
 If you delete all the `X-Container-Read` and `X-Container-Write` property values of a container, it becomes a `PRIVATE` container that allows access only to users in the project to which the container belongs.
 
-<br/>
+<br>
 
 <details>
 <summary>Example of removing all role-based access policy elements</summary>
@@ -114,18 +120,19 @@ $ curl -X GET \
   -H 'X-Auth-Token: ${token-id}' \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 
-[List of objects in the container]
+[The list of object in the container]
 ```
 </details>
-<br/>
+<br>
 
 <a id="role-based-access-allow-read-and-list-for-all-users"></a>
 #### Allow read/list query for all users
+
 Setting the container's `X-Container-Read` property to `.r:*, .rlistings` allows all users to read objects and query an object list. No authentication token is required. It is the same policy as the `PUBLIC` entry in the console section.
-<br/>
+<br>
 
 <details>
-<summary>Example of setting to allow object read and list query for all users</summary>
+<summary>Example configuration for allowing object read and list query for all users</summary>
 
 ```
 $ curl -i -X POST \
@@ -147,7 +154,7 @@ $ curl -X GET \
 [List of objects in the container]
 ```
 
-If you set only <code>.r:*</code>, users can access the object in the container, but they cannot query the object list.
+If you set only `.r:*`, users can access the object in the container, but they cannot query the object list.
 
 ```
 $ curl -i -X POST \
@@ -170,18 +177,18 @@ $ curl -X GET \
 ```
 
 </details>
-<br/>
-
+<br>
 
 <a id="role-based-access-allow-or-deny-by-referer"></a>
 #### Allow/deny read for requests from a specific HTTP referer
-HTTP referer is the address information of a web page that is requested through a hyperlink. It is included in the request header.
-If you set an role-based access policy element in the form of `.r:<referrer>` or `.r:-<referrer>` in the `X-Container-Read` property of the container, you can allow or block access requests from specific referers. When setting the HTTP referer with an role-based access policy element, you must enter the domain name without the protocol and sub-path.
 
-The HTTP referer access allow/block policy applies the block policy first, regardless of the order in which it is entered. Therefore, access requests from an HTTP referer designated as a block target are denied even if you also enter the `.r:*` policy element that allows all access.
+HTTP referer is the address information of a web page that is requested through a hyperlink. It is included in the request header.
+If you set a role-based access policy element in the form of `.r:{referrer}` or `.r:-{referrer}` in the `X-Container-Read` property of the container, you can allow or block access requests from specific referers. When setting the HTTP referer with a role-based access policy element, you must enter the domain name without the protocol and sub-path.
+
+The HTTP referer allow/block access policy applies the block policy first, regardless of the input order. Therefore, access requests from an HTTP referer designated as a block target are denied even if the `.r:*` policy element that allows all access is also entered.
 
 !!! danger "Caution"
-    The HTTP referer can be changed at any time by the user through header tampering. Access policies using the HTTP referer are not recommended because they are vulnerable to security attacks.
+    The HTTP referer header can be forged or tampered with and is therefore not recommended as an access control measure.
 
 <details>
 <summary>Example of allowing read requests from specific HTTP referer</summary>
@@ -210,7 +217,7 @@ $ curl -O -X GET \
 [Object download]
 ```
 
-If there is no authorized referer address in the API request header or the protocol is not included in the referer address, access is blocked.
+If there is no allowed referer address in the API request header or the protocol is not included in the referer address, access is blocked.
 
 ```
 $ curl -X GET \
@@ -233,7 +240,7 @@ $ curl -X GET \
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 
-As shown below, entering a domain name starting with <code>.</code> in your HTTP referer settings allows read to referers including all subdomain addresses of the configured domain.
+As shown below, entering a domain name starting with `.` in your HTTP referer settings allows read to referers including all subdomain addresses of the configured domain.
 
 ```
 $ curl -i -X POST \
@@ -302,10 +309,11 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-If you set the HTTP referer domain name with a minus sign in front of it, requests from the set HTTP referer is blocked.
+If you set the HTTP referer domain name with a minus sign in front of it, requests from the HTTP referer are blocked.
 
 ```
-$ curl -X GET -H 'Referer: https://bar.foo.com' \
+$ curl -X GET \
+  -H 'Referer: https://bar.foo.com' \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
@@ -314,7 +322,7 @@ $ curl -X GET -H 'Referer: https://bar.foo.com' \
 </details>
 
 <details>
-<summary>Example of policy setting that allows all access requests except for access requests from a specific HTTP referer</summary>
+<summary>Example of configuration that allows all access requests except from a specific HTTP referer</summary>
 
 ```
 $ curl -i -X POST \
@@ -327,23 +335,25 @@ $ curl -i -X POST \
 $ curl -O -X GET \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
-[Object download]
+[Object Download]
 
 
-$ curl -X GET -H 'Referer: https://bar.foo.com' \
+$ curl -X GET \
+  -H 'Referer: https://bar.foo.com' \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container/object
 
 <html><h1>Unauthorized</h1><p>This server could not verify that you are authorized to access the document you requested.</p></html>
 ```
 </details>
-<br/>
+<br>
 
 <a id="role-based-access-allow-rw-project-or-user"></a>
 #### Allow read/write to specific projects or specific users
-If you set an role-based access policy element in the form of `<tenant-id>:<api-user-id>` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API User ID grants access to all projects or all users. A valid authentication token is required when making an access request.
 
-!!! tip "Tip"
-    The read permission granted by the ACL policy that requires an authentication token includes the object list query permission.
+If you set a role-based access policy element in the form of `{tenant-id}:{api-user-id}` in the `X-Container-Read` and `X-Container-Write` properties of the container, you can grant read/write permission to a specific project or specific user, respectively. Entering the wildcard character `*` instead of the tenant ID or API User ID grants access to all projects or all users. A valid authentication token is required when making an access request.
+
+!!! tip "Notice"
+    The read permission granted by the access policy that requires an authentication token includes the object list query permission.
 
 <details>
 <summary>Example of granting read/write permission to a specific user in a specific project</summary>
@@ -356,7 +366,7 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-When requesting access to an object, a valid authentication token issued by an authorized tenant ID and NHN Cloud user ID is required.
+When requesting access to an object, a valid authentication token issued by an authorized Tenant ID and API User ID is required.
 
 ```
 $ curl -X GET \
@@ -385,8 +395,8 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-When requesting access to an object, a valid authentication token issued by an authorized tenant ID and NHN Cloud user ID belonging to the corresponding project is required.
-<br/><br/>
+When requesting access to an object, a valid authentication token issued by an authorized Tenant ID and API User ID is required.
+<br><br>
 </details>
 
 <details>
@@ -400,8 +410,8 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-When requesting access to an object, a valid authentication token issued by an authorized NHN Cloud user ID is required.
-<br/><br/>
+When requesting access to an object, a valid authentication token issued by an authorized API User ID is required, regardless of the project.
+<br><br>
 </details>
 
 <details>
@@ -417,12 +427,12 @@ $ curl -i -X POST \
 
 A valid authentication token is required when making an access request to an object.
 </details>
-<br/>
+<br>
 
 <a id="role-based-access-delete-access-policies"></a>
 #### Delete Access Policies
-By entering an empty header, you can delete all set role-based access policy elements. A container with no role-based access policy element becomes a **PRIVATE** container, accessible only by authorized users. See `Allow read/write only to users in the project to which the container belongs`.
 
+By entering an empty header, you can delete all set role-based access policy elements. A container with no role-based access policy element becomes a **PRIVATE** container, accessible only by authorized users. See `Allow read/write only to users in the project to which the container belongs`.
 
 <a id="role-based-access-references"></a>
 ### References { #role-based-access-references }
@@ -431,8 +441,7 @@ Swift Access Control Lists (ACLs) - [https://docs.openstack.org/swift/latest/ove
 <a id="ip-based-access-policies"></a>
 ## IP-based Access Policies { #ip-based-access-policies }
 
-You can use the console or API to specify whitelists and blacklists to restrict read/write access to containers from specific IPs. You can't use whitelists and blacklists at the same time. If you enter both a whitelist and a blacklist, only the whitelist is used. IP-based access policies support IPv4 only. For requests through the service gateway, you can specify a separate exception.
-
+You can use the console or API to restrict read/write access to the container from specific IPs by specifying a whitelist and a blacklist. You can configure both a whitelist and a blacklist simultaneously, but in this case, only the whitelist is applied and the blacklist is ignored. IP-based access policies support only IPv4. You can specify separate exceptions for service gateway requests.
 
 !!! danger "Caution"
     IP-based access policies are intended to control access through public IPs. If you register only private IPs in the whitelist, you could end up with an inaccessible container.
@@ -441,53 +450,58 @@ You can use the console or API to specify whitelists and blacklists to restrict 
 <a id="ip-based-access-console"></a>
 ### Console { #ip-based-access-console }
 
-Select IP-based container access policy from the container access policy setting dialog box in the container management windows.
+In the container management window, select an IP-based container access policy from the Set the Access Policy dialog box.
 
 !!! danger "Caution"
-    If you do not have read permission, you can no longer manage the container from the console.
+    If you don't have read permission, you cannot manage containers in the console.
 
 <a id="ip-based-access-whitelist"></a>
 #### Whitelist
-Denies all requests except from allowed IPs or network bands. You can specify read and write permissions to allow requests.
+
+All requests are denied except those from allowed IPs or network ranges. You can specify read and write permissions for the requests to allow.
 
 <a id="ip-based-access-blacklist"></a>
 #### Blacklist
-Denies requests from the specified IP or network band. All other requests are permitted. When used with an allow policy, the deny policy is ignored. You can specify read and write permissions to deny requests.
+
+Denies requests from the specified IP addresses or network ranges. All other requests are allowed. If configured together with a whitelist, the blacklist is ignored. You can specify the read and write permissions to deny for requests.
 
 <a id="ip-based-access-service-gateway-ip"></a>
 #### Service Gateway IP
-Controls requests through the service gateway. If not set, requests can be denied based on the whitelist and blacklist settings.
+
+Controls requests through the service gateway. If not configured, requests may be rejected depending on the whitelist and blacklist settings.
 
 <a id="ip-based-access-api"></a>
 ### API { #ip-based-access-api }
 
-You can use the API to enable IP-based ACL by entering IP-based access policy elements in the `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties of a container. `X-Container-Ip-Acl-Allowed-List` represents a whitelist, and `X-Container-Ip-Acl-Denied-List` represents a blacklist.
+You can use the API to enable IP-based access policies by entering IP-based access policy elements in the `X-Container-Ip-Acl-Allowed-List` and `X-Container-Ip-Acl-Denied-List` properties of a container. `X-Container-Ip-Acl-Allowed-List` is the allowlist, and `X-Container-Ip-Acl-Denied-List` is the denylist.
+
+To modify the properties of a container with an IP-based access policy configured, a valid authentication token issued by an authorized tenant ID and API User ID is required, and the request must be made from an allowed IP address.
 
 !!! tip "Note"
     The maximum number of policy elements that can be set in `X-Container-Ip-Acl-Allowed-List` (whitelist) and `X-Container-Ip-Acl-Denied-List` (blacklist) is 100 each. The same limit applies when setting via [container policy](container-policy-guide/#ip-acl).
 
 <br>
 
-An IP-based access policy element consists of access permission and an IP or network band, and you can enter multiple values separated by commas (`, `). The access permissions are shown in the table below.
+The IP-based access policy elements consist of access permissions and IP addresses or network ranges, and you can enter multiple values by separating them with commas (`,`). The access permissions are as follows.
 
 | Access Permission | Description |
 | --- | --- |
-| `r` | Includes read permission, GET, and HEAD requests. |
-| `w` | Includes Write permission, PUT, POST, DELETE, and COPY requests.|
+| `r` | Read permission. Applies to GET and HEAD requests. |
+| `w` | Write permission. Applies to PUT, POST, DELETE, and COPY requests. |
 | `a` | Indicates both read and write permissions. This includes GET, HEAD, PUT, POST, DELETE, and COPY requests. |
 
-To control requests through the service gateway, you can set permissions in the X-Container-Ip-Acl-Service-Gateway-Control property of the container. The following permissions can be set
+To control service gateway requests, set the permissions in the X-Container-Ip-Acl-Service-Gateway-Control property of the container. The permissions that can be set are as follows.
 
 | Permission | Description |
 | --- | --- |
 | `read` | Allows read permission. This includes GET and HEAD requests. |
-| `write` | Allows write requests. This includes PUT, POST, DELETE, and COPY requests.|
+| `write` | Allows write requests. This includes PUT, POST, DELETE, and COPY requests. |
 | `rw` | Allows all read and write requests. This includes GET, HEAD, PUT, POST, DELETE, COPY requests. |
-| `deny` | Denies all read and write requests.|
+| `deny` | Does not allow any read or write requests. |
 
 
 <details>
-<summary>Whitelist Setting</summary>
+<summary>Example of whitelist setup</summary>
 
 ```
 $ curl -i -X POST \
@@ -496,15 +510,13 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-The IP of 192.168.0.1 can only make read requests, the IP of 192.168.0.2 can only make write requests, and all IPs in the 172.16.0.0/24 band can make all requests. All other IPs will have their requests denied.<br><br>
+192.168.0.1 can make read requests only, 192.168.0.2 can make write requests only, and all IPs in the 172.16.0.0/24 range can make both read and write requests. All other IPs have their requests denied.
 
-Changes to a container require a valid authentication token issued with an authorized tenant ID and NHN Cloud user ID belonging to the project, and must be requested from an allowed IP.
-
-<br/><br/>
+<br><br>
 </details>
 
 <details>
-<summary>Blacklist Setting</summary>
+<summary>Example of Blacklist Settings</summary>
 
 ```
 $ curl -i -X POST \
@@ -513,15 +525,13 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-Read requests are denied from the IP of 192.168.0.1, write requests are denied from the IP of 192.168.0.2, and all IPs in the 172.16.0.0/24 band are denied all requests. All other IPs are allowed requests.<br><br>
+Read requests from 192.168.0.1 are denied, write requests from 192.168.0.2 are denied, and all IP addresses in the 172.16.0.0/24 range cannot make either read or write requests. All other IP addresses are allowed to make requests.
 
-Changes to a container require a valid authentication token issued with an authorized tenant ID and NHN Cloud user ID belonging to the project, and must be requested from an allowed IP.
-
-<br/><br/>
+<br><br>
 </details>
 
 <details>
-<summary>Control Service Gateway Requests</summary>
+<summary>Service Gateway Request Control Examples</summary>
 
 ```
 $ curl -i -X POST \
@@ -529,17 +539,19 @@ $ curl -i -X POST \
   -H 'X-Container-Ip-Acl-Service-Gateway-Control: rw' \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
-All requests through the service gateway are allowed regardless of the IP ACLs set.<br><br> 
-To make changes to a container, you need a valid authentication token issued with an authorized tenant ID and NHN Cloud user ID belonging to the project, and the request must be made from an allowed IP.
 
-<br/><br/>
+All Service Gateway requests are allowed regardless of the configured IP-based access policy.
+
+<br><br>
 </details>
 
+<a id="ip-based-access-delete-access-policies"></a>
+#### Delete access policies
 
-
+By entering an empty header, you can delete all set IP-based access policy elements. A container with no policy elements is not subject to IP-based access restrictions.
 
 <details>
-<summary>Remove ACL Setting</summary>
+<summary>Example of removing IP-based access policy elements</summary>
 
 ```
 $ curl -i -X POST \
@@ -550,7 +562,5 @@ $ curl -i -X POST \
   https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_*****/container
 ```
 
-Changes to a container require a valid authentication token issued with an authorized tenant ID and NHN Cloud user ID belonging to the project, and must be requested from an allowed IP.
-
-<br/><br/>
+<br><br>
 </details>
