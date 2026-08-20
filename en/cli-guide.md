@@ -34,7 +34,6 @@ python-swiftclient x.x.x
 <br/>
 
 <a id="configuration"></a>
-
 ### Configuration { #configuration }
 
 To use the Swift CLI, you must configure the environment variables required for authentication. Click the **API Endpoint Settings** button on the Object Storage service page to find the required information.
@@ -143,7 +142,6 @@ These are the main options that can be used with all subcommands.
 <br/>
 
 <a id="auth-info"></a>
-
 ### How it works and using authentication information { #auth-info }
 
 By default, the Swift CLI calls the Identity API each time a command is executed to obtain a token and service catalog, then calls the Swift API corresponding to the subcommand.
@@ -483,7 +481,6 @@ Changes the settings of a container or object.
 <br/>
 
 <a id="post-container"></a>
-
 ### Change container settings { #post-container }
 Changes the settings of a container. Container settings can be verified with the [view container information command](#stat-container).
 
@@ -599,7 +596,6 @@ $ swift delete media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br/>
 
 <a id="tempurl"></a>
-
 ## Create signed URL { #tempurl }
 Generates a signed URL that allows access to a container or object without a token.
 
