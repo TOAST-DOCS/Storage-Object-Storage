@@ -1,3 +1,5 @@
+<!-- machine_translated: true -->
+
 <!-- pre-align:aligned sig=3eabcf443966 -->
 
 <a id="third-party-tools-usage-guide"></a>
@@ -35,7 +37,7 @@ Cyberduckはオープンソースのクラウドストレージブラウザで�
   </tr>
   <tr>
     <td rowspan="2">Tenant ID:Access Key</td>
-    <td><b>Tenant ID</b>：ユーザーのプロジェクトIDです。Webコンソールの <b>プロジェクト管理 > プロジェクト基本情報</b>で確認できます。</td>
+    <td><b>Tenant ID</b>：ユーザーのプロジェクトIDです。コンソールの <b>プロジェクト管理 > プロジェクト基本情報</b>で確認できます。</td>
   </tr>
   <tr>
     <td><b>Access ID</b>：NHN CloudアカウントID(メール形式)またはIAMアカウントIDを入力します。</td>
@@ -189,7 +191,7 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 | region | String | | NHN Cloudリソースを管理するリージョン |
 | name | String | Y | コンテナ名 |
 | container_read | String | | コンテナの読み取りに対する役割ベースのアクセスルールを設定 |
-| container_write | String | | コンテナの書き込みに対するロールベースアクセスルール |
+| container_write | String | | コンテナの書き込みに対するロールベースアクセスルールを設定 |
 | force_destroy | Boolean | | コンテナを強制的に削除するかどうか、 `true`または`false`<br> 一緒に削除されたオブジェクトは復元できません。 |
 | versioning_legacy | Object | | オブジェクトバージョン管理設定 |
 | versioning_legacy.type | String | | `history`に指定 |
