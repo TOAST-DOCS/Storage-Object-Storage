@@ -1,5 +1,9 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_object-storage-vars.md' %}
+
+<!-- pre-align:aligned sig=b6b8b52c0876 -->
+
 <a id="storage-object-storage-console-guide"></a>
 ## Storage > Object Storage > Console Guide { #storage-object-storage-console-guide }
 
@@ -10,66 +14,81 @@ This document describes how to manage containers and objects in Object Storage f
 
 <a id="create-container"></a>
 ### Create Container { #create-container }
-Creates containers. Uploading objects in an object storage requires one or more containers. If you set encryption, the uploaded object is automatically encrypted and saved.
+Creates containers. Uploading objects in an object storage requires one or more containers.{% if encrypt %} If you set encryption, the uploaded object is automatically encrypted and saved.{% endif %}
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
     <th>Category</th>
-    <th>Option</th>
+    <th>Item</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan="5">Create Container</td>
+    {# An additional row may appear depending on whether EC exists #}
+    <td rowspan="$[ '5' if ec else '4' ]$">Create Container</td>
     <td>Name</td>
-    <td>Container names can have a minimum of 3 characters and a maximum of 63 characters, and can only contain lowercase English letters, numbers, ' - ', ' . ', and ' + '.<br/>The container name must begin and end with a letter or number.<br/>IP address format is not allowed.</td>
+    <td>A container name must be between 3 and 63 characters long, and can only contain lowercase letters, numbers, `-`, `.`, and `+`.<br>The container name must begin and end with a letter or number.<br>Names in IP address format cannot be used.</td>
   </tr>
   <tr>
-    <td rowspan="2">Container access policy</td>
+    <td rowspan="2">Container Access Policy</td>
     <td><b>PRIVATE</b>: Only permitted users can access objects within a container.</td>
   </tr>
   <tr>
     <td><b>PUBLIC</b>: Anyone with a public URL can access objects within a container.</td>
   </tr>
+  {%- if ec %}
   <tr>
-    <td rowspan="2">Storage class</td>
-    <td><b>Standard</b>: This is the default class.</td>
+    <td rowspan="2">Storage Class</td>
+    <td><b>Standard</b>: The default class.</td>
   </tr>
   <tr>
     <td><b>Economy</b>: Class ideal for long-term storage of infrequently accessed data.</td>
   </tr>
-   <tr>
-    <td rowspan="2">Object lock settings</td>
-    <td>Object lock</td>
-    <td>Select whether to use the object lock.</td>
+  {% else %}
+  <tr>
+    <td>Storage Class</td>
+    <td><b>Standard</b>: The default class.</td>
+  </tr>
+  {%- endif %}
+  <tr>
+    <td rowspan="2">Object Lock Settings</td>
+    <td>Object Lock</td>
+    <td>Select whether to enable object lock.</td>
   </tr>
   <tr>
-    <td>Lock cycle</td>
-    <td>Enter the object lock cycle in days.</td>
+    <td>Lock Period</td>
+    <td>Enter the object lock period in days.</td>
   </tr>
+  {%- if encrypt %}
   <tr>
-    <td rowspan="2">Encryption settings</td>
+    <td rowspan="2">Encryption Settings</td>
     <td>Encryption</td>
-    <td>Select whether to use object encryption.</td>
+    <td>Select whether to enable object encryption.</td>
   </tr>
   <tr>
-    <td>Symmetric key ID </td>
+    <td>Symmetric Key ID</td>
     <td>Enter the symmetric key ID managed by the Secure Key Manager service.</td>
   </tr>
+  {%- endif %}
 </table>
 
+{% if ec %}
 <a id="storage-class"></a>
 ### Storage class { #storage-class }
 You can choose a storage class based on how often you access your data and your cost requirements. We offer Standard class for frequently accessed data and Economy class for long-term storage of less frequently accessed data at a lower cost.
 
 !!! tip "Note"
     You cannot change the storage class of an already created container.
+
     Objects uploaded to Economy class containers are subject to a minimum storage period of 30 days. Objects deleted before 30 days are also charged for the remaining storage period.
+
     Economy class containers are charged per 1,000 API requests (excluding HEAD/DELETE requests).
 
+{% endif %}
 <a id="set-object-lock-cycle"></a>
 #### Object Lock Settings
 Objects uploaded to the Object Lock container are stored using the **WORM (Write-Once-Read-Many)** model. For objects uploaded to the object lock container, the lock expiration date is configured. You cannot overwrite or delete objects before the lock expiration date set on each object.
 
+{% if encrypt %}
 <a id="set-object-encryption"></a>
 #### Encryption Settings
 Objects uploaded to encryption containers are encrypted using a symmetric key managed by the NHN Cloud's Secure Key Manager service. Therefore, in order to create an encryption container, you must create a symmetric key in the Secure Key Manager service in advance.
@@ -80,21 +99,24 @@ The policies for encryption container are as follows.
 * If you download the encrypted object, it is sent after being decrypted. 
 * If you copy an object of the encryption container or copy it to another container through the inter-region container replication, the object is stored re-encrypted or decrypted according to the encryption settings for the container.
 * You cannot change the symmetric key ID that is registered when creating an encryption container. To change the symmetric key, you must use the key rotation feature of Secure Key Manager.
-* If you rotate the symmetric key configured in an encryption container from Secure Key Manager and then upload a new object, the object encrypted with the previous version key is re-encrypted with the rotated key. This process may take a long time depending on the amount of data. Make sure not to delete the previous version key before re-encryption is complete.
+* If you rotate the symmetric key configured in an encryption container in Secure Key Manager and upload the key to a new object, the object encrypted with the previous version of the key is re-encrypted with the rotated key. This task can take a long time, depending on usage. Be cautious not to delete the previous version key before re-encryption is complete.
 
 !!! danger "Caution"
     If you delete the symmetric key configured in an encryption container from Secure Key Manager, the encrypted object cannot be decrypted. You must carefully manage the symmetric key not to delete it accidentally.
 
+{% endif %}
 <a id="empty-a-container"></a>
 ### Empty a Container { #empty-a-container }
-Deletes all objects inside the selected container. 
+Deletes all objects inside the selected container.
 
 !!! tip "Note"
     Objects whose lock expiration date has not passed are not deleted.
+
     For multipart objects inside the selected container, only the manifest object is deleted. Segment objects located in other containers are not deleted.
 
 !!! danger "Caution"
     If you are using the replication setting, objects in the target container might also be deleted.
+
     If you upload objects to a container that is undergoing a container emptying operation, they might be deleted.
 
 <a id="delete-container"></a>
@@ -107,13 +129,14 @@ Checks basic information of the selected containers and manage the settings.
 
 <a id="container-basic-info"></a>
 #### Basic Information
-You can view the container's basic and encryption information, and change settings such as access policies, static websites, and cross-origin resource sharing.
-<br/>
+You can view the container's $[ "basic and encryption information" if encrypt else "basic information" ]$, and change settings such as access policies, static websites, and cross-origin resource sharing.
+
+<br>
 
 <a id="set-container-access-policy"></a>
 ##### Container Access Policy
 
-Sets the basic access policy and manages role-based access policies for each tenant or user. For more details, refer to [ACL Configuration Guide](acl-guide/).
+Sets the basic access policy and manages role-based access policies for each tenant or user. For more details, refer to [ACL Configuration Guide](acl-guide$[ file_suffix ]$/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -155,7 +178,7 @@ Sets the basic access policy and manages role-based access policies for each ten
 <a id="set-container-ip-acl"></a>
 ##### IP ACL
 
-Manages IP-based access policies. For more details, refer to [ACL Configuration Guide](acl-guide/).
+Manages IP-based access policies. For more details on configuring access policies, refer to [ACL Configuration Guide](acl-guide$[ file_suffix ]$/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -204,7 +227,6 @@ Manages IP-based access policies. For more details, refer to [ACL Configuration 
   </tr>
 </table>
 
-
 <a id="set-container-static-website"></a>
 ##### Static Website Settings
 
@@ -217,11 +239,11 @@ Manages IP-based access policies. For more details, refer to [ACL Configuration 
   <tr>
     <td rowspan="2">Static Website Settings</td>
     <td>Index document</td>
-    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br/>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+    <td>Enter index document objects of a static website. If the object is within a folder, the folder path must be included.<br>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
   </tr>
   <tr>
     <td>Error document</td>
-    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br/>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>, <code>/</code>) are allowed.</td>
+    <td>Enter the suffix of an error document of a static website. A folder path cannot be included in the suffix of the error document.<br>Up to 256 bytes, only alphanumeric characters and some special characters (<code>-</code>, <code>_</code>, <code>.</code>) are allowed.</td>
   </tr>
 </table>
 
@@ -230,29 +252,78 @@ If you set the access policy of a container to **PUBLIC** and enter the index do
 The name for an object to be used as an index document or error document for a static website must consist of one or more alphanumeric characters, or some special characters(`-`, `_`, `.`, `/`), and the file extension must be `html` in hypertext format. If the conditions are not satisfied, you cannot configure the settings or the static website may not work.
 
 The name for an error document of a static website has the form of `{error code}{suffix}`. For example, if you configure the error document as `error.html`, the name for an error document to display when a 404 error occurs is `404error.html`. You can upload and use error documents for each error situation. If error documents are not defined or error objects that matches error codes do not exist, a default error document of a web browser will be displayed.
-<br/>
+<br>
+
+<br>
 
 <a id="set-container-cors"></a>
 ##### Change Cross-Origin Resource Sharing (CORS)
 
 To call the Object Storage API directly from the browser, you need to set Cross-Origin Resource Sharing (CORS). You can register the source URLs to allow by clicking the Change button of the cross-origin resource sharing item. The URL must include the protocols (`https://` or `http://`). You can allow all source URLs by entering `*`.
 
-<br/>
+<br>
 
 <a id="set-container-upload-policy"></a>
 ##### Change Upload Policy Settings
 Set an upload policy based on object names in the container. Upload policy settings allow you to restrict or prevent uploads of objects with certain extensions or keywords in their names.
 
-Upload policies can set up `whitelist` or `blacklist`, but not both at the same time. You can set the extension of files to be uploaded, or keywords to be included in the filename. However, for objects that include a path, the policy reflects the object name without the path. The upload policy is applied to newly uploaded objects from the time it is set. 
+Upload policies can set up `whitelist` or `blacklist`, but not both at the same time. You can set the extension of files to be uploaded, or keywords to be included in the filename. However, for objects that include a path, the policy reflects the object name without the path. The upload policy is applied to newly uploaded objects from the time it is set.
 
 If you set `exe` and `jpg` as whitelist, only objects with the extensions can be uploaded. Adding the filename `example` will allow only objects with both the set filename and extension to be uploaded, such as `exe_example.exe`, `image_example.jpg`.
 
+For blacklist, setting `exe`, `jpg` as blacklist will prevent all objects with `.exe`, `.jpg` extensions from being uploaded. Setting the additional filename `example` will prevent both files with restricted extensions, such as `test.exe`, `image.jpg`, and files with restricted keywords, such as `text_example.txt`, from being uploaded.
+<br>
 
-For blacklist, setting `exe`, `jpg`as blacklist will prevent all objects with `.exe`, `.jpg` extensions from being uploaded. Setting the additional filename `example` will prevent both files with restricted extensions, such as `test.exe`, `image.jpg`, and files with restricted keywords, such as `text_example.txt`, from being uploaded.
-<br/>
+<br>
 
 <a id="set-object-lifecycle"></a>
 #### Lifecycle
+
+Views and modifies the lifecycle rules of objects stored in containers.
+
+For detailed information on how to configure lifecycle settings, see [How to Apply Lifecycle Rules](container-policy-guide$[ file_suffix ]$/#lifecycle-apply).
+
+<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
+  <tr>
+    <th>Type</th>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="3">Basic Rules</td>
+    <td>Object Lifecycle</td>
+    <td>Enter the object lifecycle in days.</td>
+  </tr>
+  <tr>
+    <td>Lifecycle Expiration Action</td>
+    <td>Select how to handle objects whose lifecycle has expired.</td>
+  </tr>
+  <tr>
+    <td>Destination Container</td>
+    <td>When you select <b>Move Container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Conditional Rules</td>
+    <td>Rule Name</td>
+    <td>Enter the name of the lifecycle rule.</td>
+  </tr>
+  <tr>
+    <td>Condition</td>
+    <td>Specify the condition to which the rule applies.</td>
+  </tr>
+  <tr>
+    <td>Object Lifecycle</td>
+    <td>Enter the object lifecycle in days.</td>
+  </tr>
+  <tr>
+    <td>Lifecycle Expiration Action</td>
+    <td>Select how to handle objects whose lifecycle has expired.</td>
+  </tr>
+  <tr>
+    <td>Destination Container</td>
+    <td>When you select <b>Move Container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
+  </tr>
+</table>
 
 You can view and change the lifecycle rules for objects stored in a container.
 For more information on lifecycle settings, see [How to apply lifecycle rules](container-policy-guide/#lifecycle-apply).
@@ -298,10 +369,11 @@ For more information on lifecycle settings, see [How to apply lifecycle rules](c
   </tr>
 </table>
 
-!!! tip "Note"
-    It is applied only to objects uploaded after the object lifecycle is set.
-    The maximum number of conditional rules that can be configured is 30. This limit also applies when configuring via [Container Policy](container-policy-guide/#lifecycle).
+Up to 30 condition rules can be configured. This limit also applies when configuring via [container policy](container-policy-guide$[ file_suffix ]$/#lifecycle).
+{%- if ec %}
     Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
+
+{% endif %}
 
 <a id="set-object-lifecycle-batch"></a>
 ##### Bulk Apply Rules
@@ -337,6 +409,13 @@ Object version control settings allow you to keep previous versions of objects. 
     If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
 
 
+!!! danger "Caution"
+    If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
+{%- if encrypt %}
+    If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
+
+{% endif %}
+
 <a id="change-object-lock-cycle"></a>
 #### Object Lock
 
@@ -364,6 +443,11 @@ You can check and change the object lock cycle of object lock containers. The ob
     You cannot change a general container to an object lock container and vice versa.
     You cannot specify an object lock container as an archive container or replication target container.
 
+You cannot change a general container to an object lock container and vice versa.
+
+Object lock containers cannot be designated as archive containers$[ " or replication target containers" if replication else "" ]$.
+
+{% if replication %}
 <a id="set-container-replication"></a>
 #### Replication
 
@@ -421,15 +505,20 @@ The replication policies are as follows:
     * When objects whose lifecycle has expired but have not yet been deleted are replicated to the target container, the lifecycle setting is removed. When subsequently deleted from the source container, the deletion is propagated to the target container and the object is deleted.
     * Delete marker objects in the archive container are not replicated.
 
+{% if encrypt %}
 !!! danger "Caution"
     If you specify an encryption container as the replication target container and then delete the symmetric key from Secure Key Manager, the encryption container fails to be replicated.
-<br/>
+
+{% endif %}
+
+<br>
 
 <a id="resume-container-replication"></a>
 ##### Resume Replication
 
 Resumes the replication of a suspended container from the point it was suspended.
-<br/>
+
+<br>
 
 <a id="suspend-container-replication"></a>
 ##### Suspend Replication
@@ -438,10 +527,11 @@ Suspends container replication. While replication is suspended, any deletions or
 
 !!! danger "Caution"
     Objects in the source container that are deleted during the replication suspend period might not be reflected in the target container.
-<br/>
 
+<br>
+
+{% endif %}
 <a id="task-record"></a>
-
 #### Task History
 You can view the history of tasks that batch-process multiple objects. The task types for which history is provided are as follows:
 
@@ -558,7 +648,6 @@ The following additional information is displayed for object copy/move tasks:
 <br>
 
 <a id="object"></a>
-
 ## Object { #object }
 
 <a id="create-folder"></a>
@@ -578,42 +667,44 @@ For multipart objects inside a folder, only the manifest object is deleted; segm
 All objects must be uploaded to containers. One object cannot be larger than 5GB.
 
 !!! tip "Note"
-    Files exceeding 5GB cannot be uploaded in a web console. If the size of the object to be uploaded exceeds 5GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5GB before uploading. For more details, refer to [Multipart Upload](api-guide/#multipart-upload) of the API guide.
+    Files exceeding 5 GB cannot be uploaded to the console. If the size of the object to be uploaded exceeds 5 GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5 GB before uploading. For more details, refer to [Multipart Upload](api-guide$[ file_suffix ]$/#multipart-upload) of the API guide.
 
 <a id="download-object"></a>
 ### Download Object { #download-object }
-Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the `Copy URL` button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
+Download selected objects. If you have set up the container access policy as **PRIVATE** at the time of creation, only permitted users can access the objects. If the access policy was set up as **PUBLIC**, click the **Copy URL** button on the list to check the public URL of the object. With this URL, it is possible to create a hyperlink of the object or directly download it.
 
 <details style="padding-top: 15px; padding-bottom: 10px;">
 <summary>Hyperlink Example</summary>
-<ul style="padding-left: 10px; padding-top: 10px;">
-<li>Write Web Page</li>
+
+Write a web page.
 
 ```
 # cat > index.html
 <html>
 <body> hello world!
-<a href="https://kr1-api-object-storage.nhncloudservice.com/v1/{account}/{container}/{object}">Download</a>
+<a href="$[ object_storage_url ]$/v1/{account}/{container}/{object}">Download</a>
 </body>
 </html>
 ```
 
-<li>Run web server using http module of Python3</li>
+Run a web server using the http module of Python3.
+
 ```
 # python -m http.server
 Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 ```
 
-<li>After accessing <b>http://localhost:8000</b> through a web browser click <b>Download</b> to confirm file is being downloaded properly</li>
+After accessing **http://localhost:8000** through a web browser, click **Download** to confirm the file is being downloaded properly.
 
 </details>
 
 <a id="copy-or-move-object"></a>
 ### Copy/Move Object { #copy-or-move-object }
-Copy or move objects to the specified container. You can select multiple objects to copy or move to a different container or to a new path in the same container. 
+Copy or move objects to the specified container. You can select multiple objects to copy or move to a different container or to a new path in the same container.
 
 !!! tip "Note"
     The maximum length of the path that can be entered depends on the length of the object name. The length of the path to copy plus the object name must be 1024 bytes or less.
+
     `{Maximum length of the path} = 1024 - {Length of the object name} - 1`
 
     For multipart objects, only manifest objects can be copied or moved.
@@ -627,10 +718,11 @@ Deletes the selected objects. You can select and delete multiple objects at the 
 
 <a id="create-signed-url"></a>
 ### Create Signed URL { #create-signed-url }
-Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies.
+Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies. For more information on how to use it, see the [Signed URL Guide](presigned-url-guide$[ file_suffix ]$/).
 
 !!! tip "Note"
     Only single objects can be selected, not folder objects.
+
     The validity period can be set in minutes, up to 720 minutes.
 
 !!! danger "Caution"
@@ -663,4 +755,3 @@ You can obtain credentials required to use Amazon S3 compatible API. S3 API cred
 
 !!! danger "Caution"
     If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, it is recommended to delete the leaked credentials and obtain a new one.
-

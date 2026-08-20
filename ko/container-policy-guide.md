@@ -1,10 +1,14 @@
+{% include-markdown '../_object-storage-vars.md' %}
+
+<!-- pre-align:aligned sig=5dd7d08822ff -->
+
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > 컨테이너 정책 설정 가이드 { #storage-object-storage-container-policy-configuration-guide }
 
-이 문서는 컨테이너 정책 문서로 NHN Cloud 오브젝트 스토리지의 컨테이너 관련 설정을 관리하는 방법을 설명합니다.
+이 문서는 컨테이너 정책을 사용해 NHN Cloud 오브젝트 스토리지의 컨테이너 관련 설정을 관리하는 방법을 설명합니다.
 
 <a id="container-policy"></a>
-### 컨테이너 정책 { #container-policy }
+## 컨테이너 정책 { #container-policy }
 
 컨테이너 정책을 사용하면 컨테이너 설정을 JSON 형식의 정책 문서로 통합하여 관리할 수 있습니다.
 
@@ -28,7 +32,7 @@
 | `acl` | 접근 제어(ACL) | 컨테이너의 읽기, 쓰기, 조회 접근 권한을 설정합니다. |
 | `ip_acl` | IP 접근 제어(IP ACL) | IP 기반 접근 제어를 설정합니다. |
 | `cors` | 교차 출처 리소스 공유(CORS) | 허용 출처 등 CORS 설정을 관리합니다. |
-| `lock` | 객체 잠금 | 객체 잠금(WORM) 잠금 주기를 설정합니다. |
+| `lock` | 오브젝트 잠금 | 오브젝트 잠금(WORM)의 잠금 주기를 설정합니다. |
 
 <a id="container-policy-api"></a>
 ## 컨테이너 정책 API { #container-policy-api }
@@ -96,7 +100,7 @@ X-Auth-Token: {token-id}
   "cors": {
     "allow_origins": [ "https://example.com" ],
     "max_age": 3600,
-    "expose_headers": [ "Etag" ]
+    "expose_headers": [ "ETag" ]
   },
   "lock": { "days": 30 }
 }
@@ -153,7 +157,7 @@ Content-Type: application/json
 | 이름 | 종류 | 형식 | 필수 | 설명 |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | Y | 토큰 ID |
-| Content-Type | Header | String | Y | `application/json`|
+| Content-Type | Header | String | Y | `application/json` |
 | Account | URL | String | Y | 스토리지 계정 |
 | Container | URL | String | Y | 컨테이너 이름 |
 | - | Body | JSON | Y | 설정할 정책 문서 |
@@ -308,7 +312,7 @@ Content-Type: application/json
 | 쓰기 | `write` | 오브젝트 업로드, 삭제 등 변경 요청을 허용합니다. |
 | 조회 | `view` | 컨테이너의 오브젝트 목록 조회를 허용합니다. |
 
-정책 문서의 `read`, `write`, `view`는 각각 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Container-View` 속성에 대응합니다. 각 권한의 자세한 내용은 [접근 정책 설정 가이드](acl-guide/#role-based-access-api)를 참고하세요.
+정책 문서의 `read`, `write`, `view`는 각각 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Container-View` 속성에 대응합니다. 각 권한의 자세한 내용은 [접근 정책 설정 가이드](acl-guide$[ file_suffix ]$/#role-based-access-api)를 참고합니다.
 
 <br>
 
@@ -364,7 +368,7 @@ Content-Type: application/json
 | `view.grantees` | Array | N | 조회 권한을 부여할 사용자 목록 | `grantees` 형식은 `read.grantees`와 동일합니다. |
 
 !!! tip "알아두기"
-    `public`, `listing`, `referrers`에 대응하는 요소는 접근 정책 설정 가이드의 [기타 접근 정책 요소](acl-guide/#common-access-elements)를, `grantees`에 대응하는 요소는 [역할 기반 접근 정책 요소](acl-guide/#role-based-access-elements)를 참고하세요.
+    `public`, `listing`, `referrers`에 대응하는 요소는 접근 정책 설정 가이드의 [기타 접근 정책 요소](acl-guide$[ file_suffix ]$/#common-access-elements)를, `grantees`에 대응하는 요소는 [역할 기반 접근 정책 요소](acl-guide$[ file_suffix ]$/#role-based-access-elements)를 참고합니다.
 
 <a id="acl-schema-application-example"></a>
 #### 적용 예시
@@ -391,7 +395,7 @@ Content-Type: application/json
 <a id="ip-acl"></a>
 ## IP 접근 제어(IP ACL) { #ip-acl }
 
-컨테이너 정책 문서의 `ip_acl` 키를 사용해 IP 기반 접근 제어를 설정합니다. 화이트리스트와 블랙리스트는 동시에 사용할 수 없으며, 둘 다 설정하면 화이트리스트만 적용됩니다. 그 외 동작 방식은 접근 정책 설정 가이드의 [IP 기반 접근 정책](acl-guide/#ip-based-access-policies)을 참고하세요.
+컨테이너 정책 문서의 `ip_acl` 키를 사용해 IP 기반 접근 제어를 설정합니다. 화이트리스트와 블랙리스트는 동시에 사용할 수 없으며, 둘 다 설정하면 화이트리스트만 적용됩니다. 그 외 동작 방식은 접근 정책 설정 가이드의 [IP 기반 접근 정책](acl-guide$[ file_suffix ]$/#ip-based-access-policies)을 참고합니다.
 
 <br>
 
@@ -456,7 +460,7 @@ IP 접근 제어 정책 문서의 구조는 다음과 같습니다.
 <a id="cors"></a>
 ## 교차 출처 리소스 공유(CORS) { #cors }
 
-컨테이너 정책 문서의 `cors` 키를 사용해 교차 출처 리소스 공유(CORS)를 설정합니다. CORS 설정과 허용 출처 형식의 자세한 내용은 API 가이드의 [교차 출처 리소스 공유(CORS)](api-guide/#set-container-cors-policy)를 참고하세요.
+컨테이너 정책 문서의 `cors` 키를 사용해 교차 출처 리소스 공유(CORS)를 설정합니다. CORS 설정과 허용 출처 형식의 자세한 내용은 API 가이드의 [교차 출처 리소스 공유(CORS)](api-guide$[ file_suffix ]$/#set-container-cors-policy)를 참고합니다.
 
 <br>
 
@@ -492,7 +496,7 @@ CORS 정책 문서의 구조는 다음과 같습니다.
   "cors": {
     "allow_origins": [ "https://example.com", "https://app.example.com" ],
     "max_age": 3600,
-    "expose_headers": [ "Etag", "X-Timestamp" ]
+    "expose_headers": [ "ETag", "X-Timestamp" ]
   }
 }
 ```
@@ -500,16 +504,16 @@ CORS 정책 문서의 구조는 다음과 같습니다.
 <br>
 
 <a id="lock"></a>
-## 객체 잠금 { #lock }
+## 오브젝트 잠금 { #lock }
 
-컨테이너 정책 문서의 `lock` 키를 사용해 객체 잠금(WORM, Write-Once-Read-Many) 잠금 주기를 설정합니다. 객체 잠금의 개념과 제약은 API 가이드의 [객체 잠금 기간 변경](api-guide/#set-container-object-lock-cycle)을 참고하세요.
+컨테이너 정책 문서의 `lock` 키를 사용해 오브젝트 잠금(WORM, Write-Once-Read-Many)의 잠금 주기를 설정합니다. 오브젝트 잠금의 개념과 제약은 API 가이드의 [오브젝트 잠금 기간 변경](api-guide$[ file_suffix ]$/#set-container-object-lock-cycle)을 참고합니다.
 
 <br>
 
 <a id="lock-schema"></a>
 ### JSON 정책 문서 스키마 { #lock-schema }
 
-객체 잠금 정책 문서의 구조는 다음과 같습니다.
+오브젝트 잠금 정책 문서의 구조는 다음과 같습니다.
 
 ```json
 {
@@ -529,10 +533,10 @@ CORS 정책 문서의 구조는 다음과 같습니다.
 <a id="lock-schema-application-rules"></a>
 #### 적용 규칙
 
-객체 잠금은 설정할 때 다음 사항에 유의해야 합니다.
+오브젝트 잠금은 설정할 때 다음 사항에 유의해야 합니다.
 
-* 객체 잠금은 컨테이너를 생성할 때만 활성화할 수 있습니다. 객체 잠금이 설정되지 않은 기존 컨테이너에 `lock`을 설정하는 요청은 거부됩니다.
-* 객체 잠금은 해제할 수 없습니다. `days`를 `0`으로 설정하면 기본 잠금 주기가 0일이 될 뿐, 객체 잠금은 활성 상태로 유지됩니다.
+* 오브젝트 잠금은 컨테이너를 생성할 때만 활성화할 수 있습니다. 오브젝트 잠금이 설정되지 않은 기존 컨테이너에 `lock`을 설정하는 요청은 거부됩니다.
+* 오브젝트 잠금은 해제할 수 없습니다. `days`를 `0`으로 설정하면 기본 잠금 주기가 0일이 될 뿐, 오브젝트 잠금은 활성 상태로 유지됩니다.
 
 <a id="lock-schema-application-example"></a>
 #### 적용 예시

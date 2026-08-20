@@ -1,3 +1,7 @@
+<!-- machine_translated: true -->
+
+<!-- pre-align:aligned sig=5c3f66a53167 -->
+
 <a id="storage-object-storage-overview"></a>
 ## Storage > Object Storage > Overview { #storage-object-storage-overview }
 Object storage is an object storage service that allows you to store various types of data as much as you want and import them whenever needed.
@@ -17,8 +21,8 @@ Stores objects redundantly on different hardware to safely store data. Even if s
 You can control access rights per container. You can set containers to public for anyone to view, and Role-based access control (RBAC) enables you to grant differential read/write permissions to a project or individual user.
 
 <a id="convenient-web-console"></a>
-### Convenient Web Console { #convenient-web-console }
-Provides a web console that allows you to manage data in a familiar hierarchical directory structure for user convenience. Allows you to create virtual folders within a container to group and manage objects.
+### Convenient Console { #convenient-web-console }
+Provides a console that allows you to manage data in a familiar hierarchical directory structure for user convenience. Allows you to create virtual folders within a container to group and manage objects.
 
 <a id="rest-api"></a>
 ### REST API { #rest-api }
@@ -26,7 +30,7 @@ Provides HTTP-based REST APIs to control containers and objects. REST APIs allow
 
 <a id="amazon-s3-compatible-api"></a>
 ### Amazon S3-compatible API { #amazon-s3-compatible-api }
-Provides an API compatible with Amazon S3. S3-compatible API allows you to use Amazon Web Service Software Development Kit (SDK)-based applications and various third-party tools.
+Provides an API compatible with Amazon S3. S3-compatible API allows you to use Amazon Web Services Software Development Kit (SDK)-based applications and various third-party tools.
 
 <a id="life-cycle-control"></a>
 ### Lifecycle Control { #life-cycle-control }
@@ -34,7 +38,7 @@ Provides a lifecycle control feature on a container or individual object basis. 
 
 <a id="object-lock"></a>
 ### Object Lock { #object-lock }
-Provides an WORM (Write Once Read Many) feature to protect data from inadvertent overwriting and deletion requests by users.
+Provides an WORM (Write Once Read Many) feature to protect data from inadvertent overwriting or deletion requests by users.
 
 <a id="version-management"></a>
 ### Version Management { #version-management }
@@ -46,7 +50,7 @@ The container replication feature allows you to replicate objects in a container
 
 <a id="data-encryption-for-improved-security"></a>
 ### Data Encryption for Improved Security { #data-encryption-for-improved-security }
-The encryption feature from server-side can improve security by encrypting sensitive data. Symmetric keys used for encryption are managed securely by Secure Key Manager service of NHN Cloud.
+The server-side encryption feature can improve security by protecting sensitive data. Symmetric keys used for encryption are managed securely by Secure Key Manager service of NHN Cloud.
 
 <a id="convenient-cloud-accessibility"></a>
 ### Convenient Cloud Accessibility { #convenient-cloud-accessibility }

@@ -1,10 +1,16 @@
+<!-- machine_translated: true -->
+
+{% include-markdown '../_object-storage-vars.md' %}
+
+<!-- pre-align:aligned sig=5dd7d08822ff -->
+
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > Container Policy Configuration Guide { #storage-object-storage-container-policy-configuration-guide }
 
-This document describes how to manage container-related settings in NHN Cloud Object Storage as a container policy guide.
+This document describes how to manage container-related settings in NHN Cloud Object Storage using container policies.
 
 <a id="container-policy"></a>
-### Container Policy { #container-policy }
+## Container Policy { #container-policy }
 
 Container policies allow you to manage container settings in an integrated manner using a JSON-format policy document.
 
@@ -94,7 +100,7 @@ X-Auth-Token: {token-id}
   "cors": {
     "allow_origins": [ "https://example.com" ],
     "max_age": 3600,
-    "expose_headers": [ "Etag" ]
+    "expose_headers": [ "ETag" ]
   },
   "lock": { "days": 30 }
 }
@@ -151,7 +157,7 @@ Content-Type: application/json
 | Name | In | Type | Required | Description |
 |---|---|---|---|---|
 | X-Auth-Token | Header | String | Y | Token ID |
-| Content-Type | Header | String | Y | `application/json`|
+| Content-Type | Header | String | Y | `application/json` |
 | Account | URL | String | Y | Storage Account |
 | Container | URL | String | Y | Container name |
 | - | Body | JSON | Y | Policy document to set |
@@ -301,7 +307,7 @@ Use the `acl` key of the container policy document to configure container access
 | Read | `read` | Allows querying container information and object information, and downloading objects. |
 | Write | `write` | Allows change requests such as uploading and deleting objects. |
 | View | `view` | Allows listing objects in the container. |
-The `read`, `write`, and `view` fields in the policy document correspond to the `X-Container-Read`, `X-Container-Write`, and `X-Container-View` properties of a container, respectively. For more details on each permission, refer to the [Access Policy Configuration Guide](acl-guide/#role-based-access-api).
+The `read`, `write`, and `view` fields in the policy document correspond to the `X-Container-Read`, `X-Container-Write`, and `X-Container-View` properties of the container, respectively. For more details on each permission, refer to the [Access Policy Configuration Guide](acl-guide$[ file_suffix ]$/#role-based-access-api).
 
 <br>
 
@@ -355,8 +361,8 @@ The structure of the access control policy document is as follows.
 | `write.grantees` | Array | N | List of users to grant write permission to | The format of `grantees` is the same as `read.grantees`. |
 | `view` | Object | N | View permission | Max. 100 items for `grantees` |
 | `view.grantees` | Array | N | List of users to grant view permission to | The format of `grantees` is the same as `read.grantees`. |
-!!! tip "Note"
-    For elements corresponding to `public`, `listing`, and `referrers`, see [Other Access Policy Elements](acl-guide/#common-access-elements) in the Access Policy Configuration Guide. For elements corresponding to `grantees`, see [Role-Based Access Policy Elements](acl-guide/#role-based-access-elements).
+!!! tip "Tip"
+    For elements corresponding to `public`, `listing`, and `referrers`, see [Other Access Policy Elements](acl-guide$[ file_suffix ]$/#common-access-elements) in the Access Policy Configuration Guide. For elements corresponding to `grantees`, see [Role-Based Access Policy Elements](acl-guide$[ file_suffix ]$/#role-based-access-elements).
 
 <a id="acl-schema-application-example"></a>
 #### Application Example
@@ -383,12 +389,11 @@ Since `view` was not included, the view permission will be revoked.
 <a id="ip-acl"></a>
 ## IP Access Control (IP ACL) { #ip-acl }
 
-Use the `ip_acl` key in the container policy document to configure IP-based access control. Whitelists and blacklists cannot be used simultaneously; if both are set, only the whitelist is applied. For more information about other behaviors, see [IP-based access policies](acl-guide/#ip-based-access-policies) in the Access Policy Configuration Guide.
+Use the `ip_acl` key in the container policy document to configure IP-based access control. A whitelist and a blacklist cannot be used at the same time; if both are set, only the whitelist is applied. For other details on how this works, see [IP-based access policies](acl-guide$[ file_suffix ]$/#ip-based-access-policies) in the Access Policy Configuration Guide.
 
 <br>
 
 <a id="ip-acl-schema"></a>
-
 ### JSON Policy Document Schema { #ip-acl-schema }
 
 The structure of the IP access control policy document is as follows.
@@ -448,7 +453,7 @@ The structure of the IP access control policy document is as follows.
 <a id="cors"></a>
 ## Cross-Origin Resource Sharing (CORS) { #cors }
 
-Use the `cors` key in the container policy document to configure Cross-Origin Resource Sharing (CORS). For more details on CORS settings and the allowed origin format, see [Cross-Origin Resource Sharing (CORS)](api-guide/#set-container-cors-policy) in the API guide.
+Set Cross-Origin Resource Sharing (CORS) using the `cors` key in the container policy document. For more information about CORS settings and allowed origin formats, see [Cross-Origin Resource Sharing (CORS)](api-guide$[ file_suffix ]$/#set-container-cors-policy) in the API guide.
 
 <br>
 
@@ -483,7 +488,7 @@ The structure of the CORS policy document is as follows.
   "cors": {
     "allow_origins": [ "https://example.com", "https://app.example.com" ],
     "max_age": 3600,
-    "expose_headers": [ "Etag", "X-Timestamp" ]
+    "expose_headers": [ "ETag", "X-Timestamp" ]
   }
 }
 ```
@@ -491,16 +496,16 @@ The structure of the CORS policy document is as follows.
 <br>
 
 <a id="lock"></a>
-## Object lock { #lock }
+## Object Lock { #lock }
 
-Use the `lock` key in the container policy document to set the Object Lock (WORM, Write-Once-Read-Many) lock interval. For the concepts and constraints of Object Lock, see [Change Object Lock Date](api-guide/#set-container-object-lock-cycle) in the API guide.
+Use the `lock` key in the container policy document to set the lock cycle for object lock (WORM, Write-Once-Read-Many). For concepts and constraints related to object lock, see [Change Object Lock Cycle](api-guide$[ file_suffix ]$/#set-container-object-lock-cycle) in the API guide.
 
 <br>
 
 <a id="lock-schema"></a>
 ### JSON Policy Document Schema { #lock-schema }
 
-The structure of the object lock policy document is as follows.
+The structure of the Object Lock policy document is as follows.
 
 ```json
 {
@@ -519,10 +524,10 @@ The structure of the object lock policy document is as follows.
 <a id="lock-schema-application-rules"></a>
 #### Application Rules
 
-When configuring object lock, note the following:
+When configuring Object Lock, note the following:
 
-* Object lock can only be enabled when creating a container. Requests to set `lock` on an existing container that does not have object lock configured will be rejected.
-* Object lock cannot be disabled. Setting `days` to `0` only sets the default lock period to 0 days; object lock remains active.
+* Object Lock can only be enabled when creating a container. Requests to set `lock` on an existing container that does not have Object Lock configured will be rejected.
+* Object Lock cannot be disabled. Setting `days` to `0` only sets the default lock period to 0 days; Object Lock remains active.
 
 <a id="lock-schema-application-example"></a>
 #### Application Example

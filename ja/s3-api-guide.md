@@ -1,3 +1,7 @@
+<!-- machine_translated: true -->
+
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=acedf0f45de3 -->
 
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
@@ -39,12 +43,12 @@ NHN Cloud オブジェクトストレージは、AWS のオブジェクトスト
 
 <a id="obtain-s3-api-credentials"></a>
 ### S3 API認証情報の発行 { #obtain-s3-api-credentials }
-Amazon S3互換APIを使用するには、まず AWS EC2 形式の S3 API認証情報を発行する必要があります。認証情報はウェブコンソールまたは API を使用して発行できます。ウェブコンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide/#s3-api-credentials) を参照してください。
+Amazon S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報を発行する必要があります。認証情報はコンソールまたはAPIを使用して発行できます。コンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide$[ file_suffix ]$/#s3-api-credentials)を参照してください。
 
-API を使用して認証情報を発行するには、認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージ API ガイド](api-guide/#auth) を参照してください。
+APIを使用して認証情報を発行するには、認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](api-guide$[ file_suffix ]$/#auth)を参照してください。
 
 ```
-POST    https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
+POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -60,8 +64,8 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | Y | テナントID。API エンドポイント設定ダイアログボックスで確認可能 |
 
 !!! tip "ヒント"
-    `{api-user-id}` は、コンソールの API エンドポイント設定ダイアログボックスで **[API ユーザー ID]** 項目を参照するか、認証トークン発行 API レスポンス本文の **access.user.id** フィールドで確認できます。
-    認証トークン発行 API を使用するには、API ガイドの[認証と権限](api-guide/#auth) を参照してください。
+    `{api-user-id}` は、コンソールの API エンドポイント設定ダイアログボックスで **[API ユーザー ID]** 項目を参照するか、認証トークン発行 API のレスポンス本文の **access.user.id** フィールドで確認できます。
+    認証トークン発行 API を使用するには、API ガイドの [認証および権限](api-guide$[ file_suffix ]$/#auth) を参照してください。
 
     S3 API認証情報には有効期限がなく、ユーザーごとにプロジェクトあたり最大 3 つまで発行できます。
 
@@ -120,7 +124,7 @@ X-Auth-Token: {token-id}
 **[Method, URL]**
 
 ```
-GET   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2
+GET $[ identity_url ]$/v2.0/users/{user-id}/credentials/OS-EC2
 
 X-Auth-Token: {token-id}
 ```
@@ -173,7 +177,7 @@ X-Auth-Token: {token-id}
 **[Method, URL]**
 
 ```
-DELETE   https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{user-id}/credentials/OS-EC2/{access}
+DELETE $[ identity_url ]$/v2.0/users/{user-id}/credentials/OS-EC2/{access}
 
 X-Auth-Token: {token-id}
 ```
@@ -196,6 +200,7 @@ X-Auth-Token: {token-id}
 ## 署名(signature)の生成 { #create-signature }
 S3 API を使用するには、認証情報を使用して署名を生成する必要があります。署名の生成方法については、[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) のドキュメントを参照してください。
 
+
 署名の生成に必要な情報は次のとおりです。
 
 | 名前 | 値 |
@@ -203,7 +208,7 @@ S3 API を使用するには、認証情報を使用して署名を生成する�
 | アルゴリズム | AWS4-HMAC-SHA256 |
 | 署名日時 | YYYYMMDDThhmmssZ 形式 |
 | サービス名 | s3 |
-| リージョン名 | KR1 - 韓国(板橋)リージョン<br>KR2 - 韓国(平村)リージョン<br>KR3 - 韓国(光州)リージョン<br>JP1 - 日本(東京)リージョン |
+| リージョン名 | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 | シークレットキー | S3 API認証情報シークレットキー |
 
 AWS signature V4 の署名生成時に `x-amz-content-sha256` ヘッダーが必要です。このヘッダーは正規リクエスト(Canonical Request)に含まれて署名の計算に使用され、ヘッダーの値によってペイロードの処理方式が決まります。使用可能な値は次のとおりです。
@@ -217,7 +222,7 @@ AWS signature V4 の署名生成時に `x-amz-content-sha256` ヘッダーが必
 | `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload 方式(各チャンクに署名を含む + トレーラーヘッダーを使用) |
 
 !!! tip "ヒント"
-    詳細については、[Authenticating Requests: Using the Authorization Header (AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) のドキュメントを参照してください。
+    詳細については、[Authenticating Requests: Using the Authorization Header(AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) のドキュメントを参照してください。
 
 x-amz-content-sha256 の値が `STREAMING-UNSIGNED-PAYLOAD-TRAILER` または `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` の場合、`x-amz-trailer` リクエストヘッダーでトレーラーに送信するチェックサムアルゴリズムを宣言する必要があります。サポートしているアルゴリズムは次のとおりです。
 
@@ -230,7 +235,7 @@ x-amz-content-sha256 の値が `STREAMING-UNSIGNED-PAYLOAD-TRAILER` または `S
 | `x-amz-checksum-sha256` | SHA-256 |
 
 !!! tip "ヒント"
-    トレーラーヘッダーを使用した署名計算の詳細については、[Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) のドキュメントを参照してください。
+    トレーラーヘッダーを使用した署名計算方法の詳細については、[Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) のドキュメントを参照してください。
 
 <a id="bucket"></a>
 ## Bucket { #bucket }
@@ -247,6 +252,7 @@ x-amz-content-sha256 の値が `STREAMING-UNSIGNED-PAYLOAD-TRAILER` または `S
 
 詳細については、[Bucket restrictions and limitations](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html) ドキュメントを参照してください。
 
+
 ```
 PUT /{bucket}
 
@@ -255,7 +261,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 !!! tip "ヒント"
-    Webコンソールまたはオブジェクトストレージ API を使用して作成したコンテナの名前がバケットの命名規則に違反している場合、S3互換API ではアクセスできません。
+    コンソールまたはオブジェクトストレージ API で作成したコンテナの名前がバケットの命名規則に違反している場合、S3互換API ではアクセスできません。
 
 <a id="create-bucket-request"></a>
 #### リクエスト
@@ -337,7 +343,7 @@ Authorization: AWS {access}:{signature}
 ```
 
 !!! tip "ヒント"
-    Webコンソールまたはオブジェクトストレージ API を使用して作成したバケットの名前がバケットの命名規則に違反している場合、S3互換API ではアクセスできません。
+    コンソールまたはオブジェクトストレージ API を使用して作成したコンテナの名前がバケットの命名規則に違反している場合、S3互換API ではアクセスできません。
 
 <a id="get-bucket-request"></a>
 #### リクエスト
@@ -685,7 +691,7 @@ GET /{bucket}/{obj}
 リクエストが正しい場合、ステータスコード 200 を返します。
 
 !!! tip "ヒント"
-    Swift TempURL 方式や言語別の直接署名の例など、詳細については「[署名付き URL ガイド](presigned-url-guide/)」を参照してください。
+    Swift TempURL 方式や言語別の直接署名の例など、詳細については、[署名付き URL ガイド](presigned-url-guide$[ file_suffix ]$/)を参照してください。
 
 <a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
@@ -714,7 +720,7 @@ Default output format [None]: json
 |---|---|
 | access | S3 API認証情報のアクセスキー |
 | secret | S3 API認証情報のシークレットキー |
-| region name | KR1 - 韓国(板橋)リージョン<br>KR2 - 韓国(坪村)リージョン<br>KR3 - 韓国(光州)リージョン<br>JP1 - 日本(東京)リージョン |
+| region name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="how-to-use-the-s3-commands"></a>
 ### S3コマンドの使用方法 { #how-to-use-the-s3-commands }
@@ -725,19 +731,19 @@ aws --endpoint-url={endpoint} s3 {command} s3://{bucket}
 
 | 名前 | 説明 |
 |---|---|
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - 韓国(板橋)リージョン<br>https://kr2-api-object-storage.nhncloudservice.com - 韓国(坪村)リージョン<br>https://kr3-api-object-storage.nhncloudservice.com - 韓国(光州)リージョン<br>https://jp1-api-object-storage.nhncloudservice.com - 日本(東京)リージョン |
+| endpoint | {% for region in regions %}$[ region.endpoint ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 | command | AWS Command Line Interfaceコマンド |
 | bucket | バケット名 |
 
 !!! tip "注記"
-    AWS Command Line InterfaceはAWSを使用するために提供されるツールであるため、AWSドメインを使用するように設定されています。そのため、NHN Cloudオブジェクトストレージを使用するには、すべてのコマンドでエンドポイントを必ず指定する必要があります。
+    AWS Command Line Interfaceは、デフォルトで AWS ドメインを使用するように設定されたツールです。そのため、NHN Cloudオブジェクトストレージを使用するには、すべてのコマンドでエンドポイントを必ず指定する必要があります。
     AWS Command Line Interfaceコマンドについては、[AWS CLIでの上位レベル(s3)コマンドの使用](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html) ドキュメントを参照してください。
 
 <details>
 <summary>バケットの作成</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 mb s3://example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 mb s3://example-bucket
 make_bucket: example-bucket
 ```
 
@@ -747,7 +753,7 @@ make_bucket: example-bucket
 <summary>バケット一覧の照会</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 ls
 2020-07-13 10:07:13 example-bucket
 ```
 
@@ -757,7 +763,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls
 <summary>バケットの照会</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3://example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 ls s3://example-bucket
 2020-07-13 10:08:49     104389 0428b9e3e419d4fb7aedffde984ba5b3.jpg
 2020-07-13 10:09:09      74448 6dd6d48eef889a5dab5495267944bdc6.jpg
 ```
@@ -768,7 +774,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 ls s3
 <summary>バケットの削除</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 rb s3://example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 rb s3://example-bucket
 remove_bucket: example-bucket
 ```
 
@@ -779,10 +785,11 @@ remove_bucket: example-bucket
 
 ロックバケットは <code>aws s3api</code> サブコマンドで管理します。
 <br>
-<code>create-bucket</code> コマンドに <code>--object-lock-enabled-for-bucket</code> オプションを使用すると、オブジェクトロックが有効なバケットを作成します。デフォルトの保持期間は0日に設定されます。
+<code>create-bucket</code> コマンドに <code>--object-lock-enabled-for-bucket</code> オプションを使用すると、オブジェクトロックが有効なバケットを作成します。
+デフォルトの保持期間は0日に設定されます。
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api create-bucket \
+$ aws --endpoint-url=$[ object_storage_url ]$ s3api create-bucket \
   --bucket example-bucket \
   --object-lock-enabled-for-bucket
 ```
@@ -790,7 +797,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api cr
 デフォルトの保持期間を設定するには、<code>put-object-lock-configuration</code> コマンドを使用します。
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api put-object-lock-configuration \
+$ aws --endpoint-url=$[ object_storage_url ]$ s3api put-object-lock-configuration \
     --bucket example-bucket \
     --object-lock-configuration '{
         "ObjectLockEnabled": "Enabled",
@@ -806,7 +813,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api pu
 ロック設定を照会するには、<code>get-object-lock-configuration</code> コマンドを使用します。
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api get-object-lock-configuration --bucket example-bucket
+$ aws --endpoint-url=$[ object_storage_url ]$ s3api get-object-lock-configuration --bucket example-bucket
 {
     "ObjectLockConfiguration": {
         "ObjectLockEnabled": "Enabled",
@@ -826,7 +833,7 @@ $ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3api ge
 <summary>オブジェクトのアップロード</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 cp ./3b5ab489edffdea7bf4d914e3e9b8240.jpg s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -846,7 +853,7 @@ upload: ./3b5ab489edffdea7bf4d914e3e9b8240.jpg to s3://example-bucket/3b5ab489ed
 <summary>オブジェクトのダウンロード</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 cp s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg ./3b5ab489edffdea7bf4d914e3e9b8240.jpg
 download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3e419d4fb7aedffde984ba5b3.jpg
 ```
 
@@ -856,7 +863,7 @@ download: s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg to ./0428b9e3
 <summary>オブジェクトの削除</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 rm s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 ```
 
@@ -866,8 +873,8 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 <summary>署名付きURLの生成</summary>
 
 ```shell
-$ aws --endpoint-url=https://kr1-api-object-storage.nhncloudservice.com s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
-https://kr1-api-object-storage.nhncloudservice.com/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=...
+$ aws --endpoint-url=$[ object_storage_url ]$ s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
+$[ object_storage_url ]$/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=...
 ```
 
 </details>
@@ -911,14 +918,15 @@ AWSは複数のプログラミング言語向けのSDKを提供しています�
 !!! tip "注記"
     詳細については、[AWS SDK](https://aws.amazon.com/ko/tools) ドキュメントを参照してください。
 
+
 AWS SDKを使用するために必要な主なパラメータは次のとおりです。
 
 | 名前 | 説明 |
 |---|---|
 | access | S3 API認証情報のアクセスキー |
 | secret | S3 API認証情報のシークレットキー |
-| region name | KR1 - 韓国(板橋)リージョン<br>KR2 - 韓国(坪村)リージョン<br>KR3 - 韓国(光州)リージョン<br>JP1 - 日本(東京)リージョン |
-| endpoint | https://kr1-api-object-storage.nhncloudservice.com - 韓国(板橋)リージョン<br>https://kr2-api-object-storage.nhncloudservice.com - 韓国(坪村)リージョン<br>https://kr3-api-object-storage.nhncloudservice.com - 韓国(光州)リージョン<br>https://jp1-api-object-storage.nhncloudservice.com - 日本(東京)リージョン |
+| region name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
+| endpoint | {% for region in regions %}$[ region.endpoint ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="aws-sdk-boto3-python"></a>
 ### Boto3 - Python SDK { #aws-sdk-boto3-python }

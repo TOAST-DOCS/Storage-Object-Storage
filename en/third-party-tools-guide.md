@@ -1,3 +1,9 @@
+<!-- machine_translated: true -->
+
+{% include-markdown '../_object-storage-vars.md' %}
+
+<!-- pre-align:aligned sig=3eabcf443966 -->
+
 <a id="third-party-tools-usage-guide"></a>
 ## Third-Party Tools Usage Guide { #third-party-tools-usage-guide }
 
@@ -33,7 +39,7 @@ To connect to object storage, you must create a bookmark that stores connection 
   </tr>
   <tr>
     <td rowspan="2">Tenant ID: Access Key</td>
-    <td><b>Tenant ID</b>: It is the project ID of the user. You can check it in <b>Project Management > Project Basic information</b> from the web console.</td>
+    <td><b>Tenant ID</b>: It is the project ID of the user. You can check it in <b>Project Management > Project Basic information</b> from the console.</td>
   </tr>
   <tr>
     <td><b>Access ID</b>: Enter either NHN Cloud account ID (email format) or IAM account ID.</td>
@@ -44,8 +50,8 @@ To connect to object storage, you must create a bookmark that stores connection 
   </tr>
 </table>
 
-!!! tip "Note"
-    See [Authentication and Authorization](api-guide/#auth) in the API guide for information on how to set API passwords.
+!!! tip "Tip"
+    For information on how to set the API password, see [Authentication and Authorization](api-guide$[ file_suffix ]$/#auth) in the API Guide.
 
 <a id="cyberduck-connect-object-storage"></a>
 ### Connect Object Storage { #cyberduck-connect-object-storage }
@@ -123,10 +129,11 @@ Compare local and object storage to upload or download changed or missing files 
 !!! tip "Note"
     For more information on synchronization, see [Cyberduck Synchronize Folders](https://docs.cyberduck.io/cyberduck/sync/#synchronize-folders).
 
+{% if terraform_support %}
 <a id="terraform"></a>
 ## Terraform { #terraform }
 
-Terraform is an open-source tool that enables you to build infrastructure easily, make changes safely, and manage configurations efficiently. For basic usage, see [User Guide > NHN Cloud > Terraform User Guide](/nhncloud/en/terraform-guide/).
+Terraform is an open-source tool that enables you to build infrastructure easily, make changes safely, and manage configurations efficiently. For basic usage, see [User Guide > NHN Cloud > Terraform User Guide]($[ terraform_guide_url ]$).
 
 <a id="terraform-resource-dependency"></a>
 ### Resource Dependency { #terraform-resource-dependency }
@@ -187,7 +194,7 @@ resource "nhncloud_objectstorage_container_v1" "container_3" {
 | region | String | | Region to manage NHN Cloud resources |
 | name | String | Y | Container name |
 | container_read | String | | Sets the role-based access rules for container read |
-| container_write | String | | Role-based access rules for container writes |
+| container_write | String | | Sets the role-based access rules for container writes |
 | force_destroy | Boolean | | Whether to force container deletion, `true` or `false`<br>You can't recover objects that were deleted together. |
 | versioning_legacy | Object | | Object Version Control Settings |
 | versioning_legacy.type | String | | Specify as `history` |
@@ -299,14 +306,17 @@ resource "nhncloud_objectstorage_object_v1" "object_2" {
 			<td>detect_content_type</td>
 			<td>Boolean</td>
 			<td></td>
-			<td>Whether to infer content type<br/>The <code>content_type</code> is ignored when setting.</td>
+			<td>Whether to infer content type<br>The <code>content_type</code> is ignored when setting.</td>
 		</tr>
 	</tbody>
 </table>
 
+{% endif %}
 <a id="reference"></a>
 ## Reference { #reference }
 Cyberduck - [https://docs.cyberduck.io/cyberduck/](https://docs.cyberduck.io/cyberduck/)
+{%- if terraform_support %}
 Terraform - [https://www.terraform.io/](https://www.terraform.io/)
 Terraform Registry - [https://registry.terraform.io/](https://registry.terraform.io/)
+{%- endif %}
 

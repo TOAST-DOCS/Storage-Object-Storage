@@ -1,3 +1,5 @@
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=ba6b9ac2ecbb -->
 
 <a id="storage-object-storage-presigned-url-guide"></a>
@@ -15,22 +17,22 @@
 <a id="swift-tempurl"></a>
 ### Swift TempURL { #swift-tempurl }
 
-Swift의 Temporary URL은 오브젝트의 URL에 쿼리 파라미터가 추가된 형태입니다.
+Swift TempURL(Temporary URL)은 오브젝트의 URL에 쿼리 파라미터가 추가된 형태입니다.
 
 ```bash
-https://kr1-api-object-storage.nhncloudservice.com/v1/my_account/container/object
+$[ object_storage_url ]$/v1/my_account/container/object
 ?temp_url_sig=732fcac368abb10c78a4cbe95c3fab7f311584532bf779abd5074e13cbe8b88b
 &temp_url_expires=1323479485
 &filename=My+Test+File.pdf
 ```
 
-| 구성 요소 | 필수 여부 | 설명 |
+| 구성 요소 | 필수 | 설명 |
 | --- | --- | --- |
-| Object URL | Y        | 오브젝트의 전체 경로 URL |
-| temp_url_sig | Y        | 허용된 HTTP 메서드, 만료 일시, 오브젝트의 전체 경로를 비밀 키로 서명한 HMAC 값 |
-| temp_url_expires | Y        | 만료 일시. UNIX Epoch 타임스탬프 또는 ISO 8601 UTC 타임스탬프로 표현.<br>예: `1390852007` 또는 `2014-01-27T19:46:47Z` |
-| filename | N        | 기본 파일명을 덮어씀 |
-| temp_url_prefix | N        | 접두사 단위로 서명할 때 필요 |
+| Object URL | Y | 오브젝트의 전체 경로 URL |
+| temp_url_sig | Y | 허용된 HTTP 메서드, 만료 일시, 오브젝트의 전체 경로를 비밀 키로 서명한 HMAC 값 |
+| temp_url_expires | Y | 만료 일시. UNIX Epoch 타임스탬프 또는 ISO 8601 UTC 타임스탬프로 표현.<br>예: `1390852007` 또는 `2014-01-27T19:46:47Z` |
+| filename | N | 기본 파일명을 덮어씀 |
+| temp_url_prefix | N | 접두사 단위로 서명할 때 필요 |
 
 <br>
 
@@ -42,22 +44,22 @@ NHN Cloud 오브젝트 스토리지는 S3 호환 API를 제공하며, 이때 생
 ```bash
 https://{endpoint}/my-container/cat.jpg
 ?X-Amz-Algorithm=AWS4-HMAC-SHA256
-&X-Amz-Credential={your-access-key-id}/20260601/kr1/s3/aws4_request
+&X-Amz-Credential={your-access-key-id}/20260601/$[ base_region | lower ]$/s3/aws4_request
 &X-Amz-Date=20260601T201207Z
 &X-Amz-Expires=86400
 &X-Amz-SignedHeaders=host
 &X-Amz-Signature={signature-value}
 ```
 
-| 구성 요소 | 필수 여부 | 설명                                                                                                                       |
-| --- | --- |--------------------------------------------------------------------------------------------------------------------------|
-| Object URL | Y        | 오브젝트의 전체 경로 URL(path-style: `https://{endpoint}/{bucket}/{object}`)                                                      |
-| X-Amz-Algorithm | Y        | AWS Signature 버전과 알고리즘 식별. SigV4에서는 AWS4-HMAC-SHA256으로 설정                                                                |
-| X-Amz-Credential | Y        | Access Key ID와 서명이 유효한 scope(리전·서비스)를 제공. 형식: `{access-key-id}/{date}/{region}/{service}/aws4_request` (서비스는 `s3`, 리전은 ` kr1` 등). URL에서 `/`는 `%2F`로 인코딩 |
-| X-Amz-Date | Y        | 요청 일시. ISO 8601 `yyyyMMddTHHmmssZ` 형식(UTC)으로 표현<br>예: `20260601T223241Z`                                                 |
-| X-Amz-Expires | Y        | 서명된 URL이 유효한 기간(초). 최소 `1`, 최대 `604800`(7일)                                                                              |
-| X-Amz-SignedHeaders | Y        | 서명 계산에 사용한 헤더 목록. 최소한 HTTP `host` 헤더를 포함하며, 요청에 추가하는 모든 `x-amz-*` 헤더도 포함                                                 |
-| X-Amz-Signature | Y        | 요청을 인증하는 HMAC 서명 값. 서버가 계산한 값과 일치해야 하며, 아니면 요청 거부                                                                        |
+| 구성 요소 | 필수 | 설명 |
+| --- | --- | --- |
+| Object URL | Y | 오브젝트의 전체 경로 URL(path-style: `https://{endpoint}/{bucket}/{object}`) |
+| X-Amz-Algorithm | Y | AWS Signature 버전과 알고리즘 식별. SigV4에서는 `AWS4-HMAC-SHA256`으로 설정 |
+| X-Amz-Credential | Y | Access Key ID와 서명이 유효한 scope(리전·서비스)를 제공. 형식: `{access-key-id}/{date}/{region}/{service}/aws4_request` (서비스는 `s3`, 리전은 `$[ base_region | lower ]$` 등). URL에서 `/`는 `%2F`로 인코딩 |
+| X-Amz-Date | Y | 요청 일시. ISO 8601 `yyyyMMddTHHmmssZ` 형식(UTC)으로 표현<br>예: `20260601T223241Z` |
+| X-Amz-Expires | Y | 서명된 URL이 유효한 기간(초). 최소 `1`, 최대 `604800`(7일) |
+| X-Amz-SignedHeaders | Y | 서명 계산에 사용한 헤더 목록. 최소한 HTTP `host` 헤더를 포함하며, 요청에 추가하는 모든 `x-amz-*` 헤더도 포함 |
+| X-Amz-Signature | Y | 요청을 인증하는 HMAC 서명 값. 서버가 계산한 값과 일치해야 하며, 아니면 요청 거부 |
 
 !!! tip "알아두기"
     S3 서명된 URL에서는 접두사 단위 서명을 지원하지 않습니다. 항상 단일 오브젝트와 단일 작업(GET/PUT 등) 단위로 서명합니다.
@@ -105,7 +107,7 @@ X-Container-Meta-Temp-URL-Key: {key}
 !!! tip "알아두기"
     오브젝트 스토리지는 스토리지 계정당 2개, 컨테이너당 2개의 비밀 키 값을 저장할 수 있습니다.
 
-    요청을 검증할 때 오브젝트 스토리지는 모든 키의 서명을 확인합니다. 각 레벨에서 키를 2개 사용하면, 기존 Temporary URL을 무효화하지 않고도 키를 교체(rotation)할 수 있습니다.
+    요청을 검증할 때 오브젝트 스토리지는 모든 키의 서명을 확인합니다. 각 레벨에서 키를 2개 사용하면, 기존 TempURL을 유지한 채로 키를 교체(rotation)할 수 있습니다.
 
 Swift CLI를 사용하면 다음과 같이 비밀 키를 설정할 수 있습니다.
 
@@ -115,17 +117,17 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # 컨테이너 단위 설정
 ```
 
 !!! tip "알아두기"
-    Swift CLI를 사용하려면 먼저 인증이 필요합니다. 자세한 내용은 [Swift CLI 환경설정](cli-guide/#configuration)을 참고하세요.
+    Swift CLI를 사용하려면 먼저 인증이 필요합니다. 자세한 내용은 [Swift CLI 환경설정](cli-guide$[ file_suffix ]$/#configuration)을 참고합니다.
 
 <br>
 
 <a id="obtain-s3-credentials"></a>
 ### S3 API 자격 증명 발급 { #obtain-s3-credentials }
 
-S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명(Access Key ID + Secret Access Key)을 발급받아야 합니다. 자격 증명은 웹 콘솔 또는 API를 사용하여 발급받을 수 있습니다. 웹 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide/#s3-api-credentials) 항목을 참고하세요.
+S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명(Access Key ID + Secret Access Key)을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide$[ file_suffix ]$/#s3-api-credentials) 항목을 참고합니다.
 
 ```http
-POST https://api-identity-infrastructure.nhncloudservice.com/v2.0/users/{api-user-id}/credentials/OS-EC2
+POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
 
 Content-Type: application/json
 X-Auth-Token: {token-id}
@@ -139,9 +141,9 @@ X-Auth-Token: {token-id}
 ```json
 {
   "credential": {
-    "access": "253a3c7ca27f4731a9c757addfac29ca",
+    "access": "$[ access_key ]$",
     "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
-    "secret": "be057f235abf45ee8e2ba14edc5fb253",
+    "secret": "$[ secret_key ]$",
     "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
     "created_at": "2024-10-19T08:24:46.000000Z",
     "accessed_at": "2024-10-19T08:24:46.000000Z"
@@ -151,7 +153,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
-`aws` CLI 또는 SDK로 서명을 생성하려면, 발급받은 자격 증명을 로컬에 설정해야 합니다. 자세한 내용은 [Amazon S3 호환 API 가이드](s3-api-guide/#aws-command-line-interface-configuration) 설정 항목을 참고하세요.
+`aws` CLI 또는 SDK로 서명을 생성하려면, 발급한 자격 증명을 로컬에 설정해야 합니다. 자세한 내용은 [Amazon S3 호환 API 가이드](s3-api-guide$[ file_suffix ]$/#aws-command-line-interface-configuration) 설정 항목을 참고합니다.
 
 <br>
 
@@ -165,7 +167,7 @@ X-Auth-Token: {token-id}
 <a id="create-manual-signature"></a>
 ### 직접 서명 { #create-manual-signature }
 
-다음은 오브젝트 기반 Temporary URL용 HMAC-SHA256 서명 예시입니다.
+다음은 오브젝트 기반 TempURL용 HMAC-SHA256 서명 예시입니다.
 
 ```python
 import hmac
@@ -182,7 +184,7 @@ hmac_body = '%s\n%s\n%s' % (method, expires, path)
 signature = hmac.new(key.encode(), hmac_body.encode(), sha256).hexdigest()
 ```
 
-Temporary URL은 접두사 기반으로도 생성할 수 있습니다. 접두사로 시작하는 모든 오브젝트에 유효한 서명을 만들 수 있습니다. 다음은 접두사 기반 Temporary URL용 HMAC-SHA512 서명 예시입니다.
+TempURL은 접두사 기반으로도 생성할 수 있습니다. 접두사로 시작하는 모든 오브젝트에 유효한 서명을 만들 수 있습니다. 다음은 접두사 기반 TempURL용 HMAC-SHA512 서명 예시입니다.
 
 ```python
 import hmac
@@ -314,10 +316,10 @@ $ swift tempurl PUT 3600 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/
 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=b1c4e9f2a8d7035641c2e9d8f4b1a7d063c5e8f9a2b1d4e70f3a8c1d9e2b5f40&temp_url_expires=1772755199
 ```
 
-Temporary URL을 생성하려면 이 경로 앞에 오브젝트 스토리지 호스트 이름을 붙입니다. 다음과 같습니다.
+TempURL을 생성하려면 이 경로 앞에 오브젝트 스토리지 호스트 이름을 붙입니다.
 
 ```bash
-https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e4790a1b2c3d4e5f60718293a4b5&temp_url_expires=1772755199
+$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e4790a1b2c3d4e5f60718293a4b5&temp_url_expires=1772755199
 ```
 
 <br>
@@ -325,12 +327,12 @@ https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4c
 <a id="create-aws-cli"></a>
 ### AWS CLI 사용 { #create-aws-cli }
 
-`aws` CLI로 서명을 생성하려면, [S3 API 자격 증명 발급](#obtain-s3-credentials)에서 발급받은 access/secret을 로컬에 설정해야 합니다.
+`aws` CLI로 서명을 생성하려면, [S3 API 자격 증명 발급](#obtain-s3-credentials)에서 발급한 Access Key와 Secret Key를 로컬에 설정해야 합니다.
 
 ```bash
 aws s3 presign s3://my-container/cat.jpg \
   --expires-in 3600 \
-  --endpoint-url https://kr1-api-object-storage.nhncloudservice.com
+  --endpoint-url $[ object_storage_url ]$
 ```
 
 `aws s3 presign`은 GET 전용이므로, PUT(업로드) 서명된 URL은 SDK로 생성해야 합니다.
@@ -348,10 +350,10 @@ from botocore.client import Config
 
 s3 = boto3.client(
     's3',
-    endpoint_url='https://kr1-api-object-storage.nhncloudservice.com',
-    region_name='kr1',
-    aws_access_key_id='253a3c7ca27f4731a9c757addfac29ca',
-    aws_secret_access_key='be057f235abf45ee8e2ba14edc5fb253',
+    endpoint_url='$[ object_storage_url ]$',
+    region_name='$[ base_region | lower ]$',
+    aws_access_key_id='$[ access_key ]$',
+    aws_secret_access_key='$[ secret_key ]$',
     config=Config(signature_version='s3v4',
                   s3={'addressing_style': 'path'}),
 )
@@ -380,12 +382,12 @@ import java.time.Duration;
 public class PresignPut {
     public static void main(String[] args) {
         S3Presigner presigner = S3Presigner.builder()
-            .region(Region.of("kr1"))
-            .endpointOverride(URI.create("https://kr1-api-object-storage.nhncloudservice.com"))
+            .region(Region.of("$[ base_region | lower ]$"))
+            .endpointOverride(URI.create("$[ object_storage_url ]$"))
             .credentialsProvider(StaticCredentialsProvider.create(
                 AwsBasicCredentials.create(
-                    "253a3c7ca27f4731a9c757addfac29ca",
-                    "be057f235abf45ee8e2ba14edc5fb253")))
+                    "$[ access_key ]$",
+                    "$[ secret_key ]$")))
             .serviceConfiguration(b -> b.pathStyleAccessEnabled(true))
             .build();
 
@@ -415,12 +417,12 @@ use Aws\S3\S3Client;
 
 $s3 = new S3Client([
     'version'  => 'latest',
-    'region'   => 'kr1',
-    'endpoint' => 'https://kr1-api-object-storage.nhncloudservice.com',
+    'region'   => '$[ base_region | lower ]$',
+    'endpoint' => '$[ object_storage_url ]$',
     'use_path_style_endpoint' => true,
     'credentials' => [
-        'key'    => '253a3c7ca27f4731a9c757addfac29ca',
-        'secret' => 'be057f235abf45ee8e2ba14edc5fb253',
+        'key'    => '$[ access_key ]$',
+        'secret' => '$[ secret_key ]$',
     ],
 ]);
 
@@ -445,12 +447,12 @@ echo (string) $s3->createPresignedRequest($cmd, '+1 hour')->getUri() . "\n";
 
 ```bash
 # Swift TempURL
-curl -O "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e4790a1b2c3d4e5f60718293a4b5&temp_url_expires=1772755199"
+curl -O "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e4790a1b2c3d4e5f60718293a4b5&temp_url_expires=1772755199"
 ```
 
 ```bash
 # S3 SigV4
-curl -O "https://kr1-api-object-storage.nhncloudservice.com/my-container/cat.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=253a3c7ca27f4731a9c757addfac29ca%2F20260601%2Fkr1%2Fs3%2Faws4_request&X-Amz-Date=20260601T201207Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=8c1d9e2b5f4072a3b6c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f70819a2b3c4d"
+curl -O "$[ object_storage_url ]$/my-container/cat.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=$[ access_key ]$%2F20260601%2F$[ base_region | lower ]$%2Fs3%2Faws4_request&X-Amz-Date=20260601T201207Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=8c1d9e2b5f4072a3b6c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f70819a2b3c4d"
 ```
 
 <br>
@@ -461,11 +463,11 @@ curl -O "https://kr1-api-object-storage.nhncloudservice.com/my-container/cat.jpg
 ```bash
 # Swift TempURL
 curl -X PUT -T ./cat.jpg \
-  "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=b1c4e9f2a8d7035641c2e9d8f4b1a7d063c5e8f9a2b1d4e70f3a8c1d9e2b5f40&temp_url_expires=1772755199"
+  "$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/cat.jpg?temp_url_sig=b1c4e9f2a8d7035641c2e9d8f4b1a7d063c5e8f9a2b1d4e70f3a8c1d9e2b5f40&temp_url_expires=1772755199"
 ```
 
 ```bash
 # S3 SigV4
 curl -X PUT -T ./cat.jpg \
-  "https://kr1-api-object-storage.nhncloudservice.com/my-container/cat.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=253a3c7ca27f4731a9c757addfac29ca%2F20260601%2Fkr1%2Fs3%2Faws4_request&X-Amz-Date=20260601T201207Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=2b1d4e70f3a8c1d9e2b5f4076a3b8c1d9e2b5f40a1b2c3d4e5f60718293a4b50"
+  "$[ object_storage_url ]$/my-container/cat.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=$[ access_key ]$%2F20260601%2F$[ base_region | lower ]$%2Fs3%2Faws4_request&X-Amz-Date=20260601T201207Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=2b1d4e70f3a8c1d9e2b5f4076a3b8c1d9e2b5f40a1b2c3d4e5f60718293a4b50"
 ```
