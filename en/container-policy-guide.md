@@ -1,5 +1,7 @@
 <!-- machine_translated: true -->
 
+{% include-markdown '../_object-storage-vars.md' %}
+
 <!-- pre-align:aligned sig=5dd7d08822ff -->
 
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
@@ -296,6 +298,7 @@ Assume the following lifecycle rules are configured.
     * Expiration action: move to `archive-container`.<br>
 
 <a id="acl"></a>
+
 ## Access control (ACLs) { #acl }
 
 Use the `acl` key of the container policy document to configure container access permissions. Access control consists of three types of permissions: read, write, and get.
@@ -305,7 +308,7 @@ Use the `acl` key of the container policy document to configure container access
 | Read | `read` | Allows querying container information and object information, and downloading objects. |
 | Write | `write` | Allows change requests such as uploading and deleting objects. |
 | View | `view` | Allows listing objects in the container. |
-The `read`, `write`, and `view` fields in the policy document correspond to the `X-Container-Read`, `X-Container-Write`, and `X-Container-View` properties of a container, respectively. For more details on each permission, see the [Access Policy Configuration Guide](acl-guide/#role-based-access-api).
+The `read`, `write`, and `view` fields in the policy document correspond to the `X-Container-Read`, `X-Container-Write`, and `X-Container-View` properties of the container, respectively. For more details on each permission, refer to the [Access Policy Configuration Guide](acl-guide$[ file_suffix ]$/#role-based-access-api).
 
 <br>
 
@@ -343,6 +346,7 @@ The structure of the access control policy document is as follows.
 ```
 
 <a id="acl-schema-field-descriptions"></a>
+
 #### Field Description
 
 | Field | Format | Required | Description | Note |
@@ -359,8 +363,8 @@ The structure of the access control policy document is as follows.
 | `write.grantees` | Array | N | List of users to grant write permission to | The format of `grantees` is the same as `read.grantees`. |
 | `view` | Object | N | View permission | Max. 100 items for `grantees` |
 | `view.grantees` | Array | N | List of users to grant view permission to | The format of `grantees` is the same as `read.grantees`. |
-!!! tip "Note"
-    For elements corresponding to `public`, `listing`, and `referrers`, see [Other Access Policy Elements](acl-guide/#common-access-elements) in the Access Policy Configuration Guide. For elements corresponding to `grantees`, see [Role-Based Access Policy Elements](acl-guide/#role-based-access-elements).
+!!! tip "Tip"
+    For elements corresponding to `public`, `listing`, and `referrers`, see [Other Access Policy Elements](acl-guide$[ file_suffix ]$/#common-access-elements) in the Access Policy Configuration Guide. For elements corresponding to `grantees`, see [Role-Based Access Policy Elements](acl-guide$[ file_suffix ]$/#role-based-access-elements).
 
 <a id="acl-schema-application-example"></a>
 #### Application Example
@@ -385,9 +389,10 @@ Since `view` was not included, the view permission will be revoked.
 <br>
 
 <a id="ip-acl"></a>
+
 ## IP Access Control (IP ACL) { #ip-acl }
 
-Use the `ip_acl` key in the container policy document to configure IP-based access control. Whitelists and blacklists cannot be used simultaneously; if both are set, only the whitelist is applied. For more information about other behaviors, see [IP-based access policies](acl-guide/#ip-based-access-policies) in the Access Policy Configuration Guide.
+Use the `ip_acl` key in the container policy document to configure IP-based access control. A whitelist and a blacklist cannot be used at the same time; if both are set, only the whitelist is applied. For other details on how this works, see [IP-based access policies](acl-guide$[ file_suffix ]$/#ip-based-access-policies) in the Access Policy Configuration Guide.
 
 <br>
 
@@ -449,9 +454,10 @@ The structure of the IP access control policy document is as follows.
 <br>
 
 <a id="cors"></a>
+
 ## Cross-Origin Resource Sharing (CORS) { #cors }
 
-Use the `cors` key in the container policy document to configure Cross-Origin Resource Sharing (CORS). For more details on CORS settings and the allowed origin format, see [Cross-Origin Resource Sharing (CORS)](api-guide/#set-container-cors-policy) in the API guide.
+Set Cross-Origin Resource Sharing (CORS) using the `cors` key in the container policy document. For more information about CORS settings and allowed origin formats, see [Cross-Origin Resource Sharing (CORS)](api-guide$[ file_suffix ]$/#set-container-cors-policy) in the API guide.
 
 <br>
 
@@ -494,9 +500,10 @@ The structure of the CORS policy document is as follows.
 <br>
 
 <a id="lock"></a>
+
 ## Object Lock { #lock }
 
-Use the `lock` key in the container policy document to set the Object Lock (WORM, Write-Once-Read-Many) lock cycle. For the concepts and constraints of Object Lock, see [Change Object Lock Cycle](api-guide/#set-container-object-lock-cycle) in the API guide.
+Use the `lock` key in the container policy document to set the lock cycle for object lock (WORM, Write-Once-Read-Many). For concepts and constraints related to object lock, see [Change Object Lock Cycle](api-guide$[ file_suffix ]$/#set-container-object-lock-cycle) in the API guide.
 
 <br>
 
