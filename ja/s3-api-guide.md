@@ -42,7 +42,6 @@ NHN Cloud オブジェクトストレージは、AWS のオブジェクトスト
 ## S3 API認証情報(S3 API Credential) { #s3-api-credential }
 
 <a id="obtain-s3-api-credentials"></a>
-
 ### S3 API認証情報の発行 { #obtain-s3-api-credentials }
 Amazon S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報を発行する必要があります。認証情報はコンソールまたはAPIを使用して発行できます。コンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide$[ file_suffix ]$/#s3-api-credentials)を参照してください。
 
@@ -56,7 +55,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="obtain-s3-api-credentials-request"></a>
-
 #### 要求
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -120,7 +118,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="get-s3-api-credentials"></a>
-
 ### S3 API認証情報の照会 { #get-s3-api-credentials }
 発行済みの S3 API認証情報を照会します。
 
@@ -174,7 +171,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="delete-s3-api-credentials"></a>
-
 ### S3 API認証情報の削除 { #delete-s3-api-credentials }
 発行済みの S3 API認証情報を削除します。
 
@@ -201,7 +197,6 @@ X-Auth-Token: {token-id}
 この API はレスポンス本文を返しません。リクエストが正しい場合、ステータスコード 204 を返します。
 
 <a id="create-signature"></a>
-
 ## 署名(signature)の生成 { #create-signature }
 S3 API を使用するには、認証情報を使用して署名を生成する必要があります。署名の生成方法については、[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) のドキュメントを参照してください。
 
@@ -692,7 +687,6 @@ GET /{bucket}/{obj}
 | X-Amz-Signature | Query | String | Y | リクエストを認証する HMAC 署名値                                                             |
 
 <a id="presigned-url-format-response"></a>
-
 #### レスポンス
 リクエストが正しい場合、ステータスコード 200 を返します。
 
@@ -711,7 +705,6 @@ S3互換APIを使用して、[AWS Command Line Interface](https://aws.amazon.com
     NHN CloudオブジェクトストレージはAWS CLIバージョン2.34.38までサポートしています。
 
 <a id="aws-command-line-interface-configuration"></a>
-
 ### 設定 { #aws-command-line-interface-configuration }
 AWS Command Line Interfaceを使用するには、まずS3 API認証情報と環境を設定する必要があります。
 
@@ -730,7 +723,6 @@ Default output format [None]: json
 | region name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="how-to-use-the-s3-commands"></a>
-
 ### S3コマンドの使用方法 { #how-to-use-the-s3-commands }
 
 ```shell
@@ -920,7 +912,6 @@ s3 =
     バケット名にピリオド(`.`)が含まれている場合、ドメインスタイルを使用するとワイルドカードSSL証明書の有効範囲外となり、証明書の検証に失敗する可能性があります。この場合はパススタイルを使用してください。
 
 <a id="aws-sdk"></a>
-
 ## AWS SDK { #aws-sdk }
 AWSは複数のプログラミング言語向けのSDKを提供しています。S3互換APIを使用して、AWS SDKでNHN Cloudオブジェクトストレージを使用できます。
 
