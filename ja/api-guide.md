@@ -13,7 +13,6 @@
 ## オブジェクトストレージ API 共通情報 { #common }
 
 <a id="endpoint"></a>
-
 ### API エンドポイント { #endpoint }
 
 APIを使用するには、APIエンドポイントとトークンが必要です。[IaaS トークン]($[ identity_guide_url ]$)を参考に、API使用に必要な情報を準備します。
@@ -24,7 +23,6 @@ Object Storage APIは`object-store`タイプのエンドポイントを使用し
 | $[ regions | map(attribute='name') | join('<br>') ]$ | {% for region in regions %}$[ region.endpoint ]$/v1/AUTH_\*\*\*\*\*{% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="auth"></a>
-
 ### 認証および権限 { #auth }
 
 オブジェクトストレージは、API 呼び出し時の認証・認可に IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラサービス (IaaS) で使用する認証トークンです。
@@ -40,7 +38,6 @@ IaaS トークンの発行および使用方法については、[IaaS トーク
     API パスワードは、オブジェクトストレージサービスページの **[API エンドポイント設定]** ボタンをクリックして設定することもできます。
 
 <a id="auth-token-issuance-code-example"></a>
-
 #### トークン発行コードの例
 
 <details>
@@ -279,7 +276,6 @@ X-Auth-Token: {token-id}
 | X-Account-Bytes-Used | Header | String | 保存されているデータ容量 (バイト) |
 
 <a id="query-the-storage-account-code-example"></a>
-
 #### コード例
 
 <details>
@@ -472,7 +468,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="list-containers-code-example"></a>
-
 #### コード例
 
 <details>
@@ -603,7 +598,6 @@ foreach($container_list as $container) {
 ## コンテナ { #container }
 
 <a id="create-a-container"></a>
-
 ### コンテナの作成 { #create-a-container }
 コンテナを作成します。Object Storage にファイルをアップロードするには、必ずコンテナを作成する必要があります。
 
@@ -640,7 +634,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="create-a-container-request"></a>
-
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -659,7 +652,6 @@ X-Auth-Token: {token-id}
 レスポンス本文は返しません。コンテナが作成された場合、ステータスコード 201 を返します。
 
 <a id="create-a-container-code-example"></a>
-
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -881,7 +873,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="get-a-container-code-example"></a>
-
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -1056,7 +1047,6 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 ```
 
 <a id="change-container-settings-request"></a>
-
 #### リクエスト
 リクエスト本文は必要ありません。
 
@@ -1345,7 +1335,6 @@ The object name must not contain the following keywords: example
 <br>
 
 <a id="change-container-settings-code-example"></a>
-
 #### コード例
 すべてのユーザーにコンテナの読み取りおよび書き込みアクセスを許可する設定変更リクエストの例です。同じ方法で他の設定も必要なヘッダーを選択してリクエストできます。
 
@@ -1507,7 +1496,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="delete-a-container-code-example"></a>
-
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -1664,7 +1652,6 @@ Content-Type: {content-type}
 このリクエストはレスポンス本文を返しません。リクエストが正しければ、ステータスコード 201 を返します。
 
 <a id="upload-an-object-code-example"></a>
-
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -1975,7 +1962,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="multipart-upload-code-example"></a>
-
 #### コード例
 DLO 方式を使用したマルチパートアップロードの例
 
@@ -2306,7 +2292,6 @@ X-Auth-Token: {token-id}
 | X-Manifest-Etag | Header | String | SLO 方式マルチパートオブジェクトのマニフェスト ETag 値（MD5） |
 
 <a id="query-object-information-code-example"></a>
-
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -2355,7 +2340,6 @@ X-Auth-Token: {token-id}
 オブジェクトの内容がストリームとして返されます。リクエストが正しい場合、ステータスコード 200 を返します。
 
 <a id="download-an-object-code-example"></a>
-
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -2587,7 +2571,6 @@ X-Copy-From: {SourceContainer}/{SourceObject}; multipart-manifest=get
 このリクエストはレスポンス本文を返しません。リクエストが正しければ、ステータスコード 201 を返します。
 
 <a id="copy-an-object-code-example"></a>
-
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -2772,7 +2755,6 @@ X-Object-Meta-{Key}: {Value}
 このリクエストはレスポンス本文を返しません。リクエストが正しければ、ステータスコード 202 を返します。
 
 <a id="modify-object-metadata-code-example"></a>
-
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -2943,7 +2925,6 @@ X-Auth-Token: {token-id}
 <br>
 
 <a id="delete-an-object-code-example"></a>
-
 #### コード例
 <details>
 <summary>cURL</summary>
@@ -3067,7 +3048,6 @@ $object->delete($CONTAINER_NAME, $OBJECT_NAME);
 ## 制限ポリシー { #limiting-policy }
 
 <a id="request-rate-limit"></a>
-
 ### リクエストレート制限 { #request-rate-limit }
 Object Storage は、システムの安定性を確保するため、ストレージアカウント (account) 単位で書き込みリクエストのレート制限 (rate limit) を適用します。
 
@@ -3089,6 +3069,7 @@ Object Storage は、システムの安定性を確保するため、ストレ�
 <br>
 
 {% endif %}
+<a id="references"></a>
 ## References { #references }
 
 Swift API v1 - [https://docs.openstack.org/api-ref/object-store/](https://docs.openstack.org/api-ref/object-store/)
