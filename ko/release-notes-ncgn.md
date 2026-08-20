@@ -1,30 +1,57 @@
-## Storage > Object Storage > 릴리스 노트
+<a id="storage-object-storage-release-notes"></a>
+## Storage > Object Storage > 릴리스 노트 { #storage-object-storage-release-notes }
 
-## 2026. 06. 02.
-### 기능 추가
+<a id="september-1-2026"></a>
+## 2026. 09. 01. { #september-1-2026 }
+<a id="september-1-2026-added-features"></a>
+### 신규 기능 추가 { #september-1-2026-added-features }
+* [콘솔] 작업 이력 조회, 작업 중단 기능 추가
+    * 컨테이너 비우기, 오브젝트 복사/이동/삭제 작업 이력을 조회하고 작업을 중단하는 기능을 추가했습니다.
+* [API] 컨테이너 정책 문서를 통한 컨테이너 설정 기능 추가
+    * 접근 정책, CORS, 오브젝트 잠금 컨테이너 설정을 지원합니다.
+
+<a id="september-1-2026-feature-updates"></a>
+### 기능 개선/변경 { #september-1-2026-feature-updates }
+* [API] Amazon S3 API 호환성 개선
+    * 잠금 컨테이너 생성 및 설정을 지원합니다.
+
+<a id="june-2-2026"></a>
+## 2026. 06. 02. { #june-2-2026 }
+<a id="june-2-2026-added-features"></a>
+### 신규 기능 추가 { #june-2-2026-added-features }
 * [콘솔] 수명 주기 규칙 설정 및 일괄 적용 기능 추가
 * [API] 컨테이너 정책 문서를 통한 컨테이너 설정 기능 추가
     * 수명 주기 규칙 설정을 지원합니다.
+
+<a id="june-2-2026-feature-updates"></a>
+### 기능 개선/변경 { #june-2-2026-feature-updates }
 * [API] Amazon S3 API 호환성 개선
     * 도메인 스타일(Virtual Hosted Domain) 엔드포인트를 지원합니다.
     * Trailing Checksum을 통한 업로드 무결성 검증을 지원합니다.
     * CORS Preflight 요청을 지원합니다.
 
-## 2025. 07. 29.
-### 제한 정책
-* [API] 쓰기 요청 속도 제한(rate limit) 적용
+<a id="july-29-2025"></a>
+## 2025. 07. 29. { #july-29-2025 }
+<a id="july-29-2025-feature-updates"></a>
+### 기능 개선/변경 { #july-29-2025-feature-updates }
+* [API] 쓰기 요청 속도 제한(rate limit) 정책 추가
     * 스토리지 계정 단위로 초당 500건을 초과하는 요청에 제한 정책을 적용합니다.
 
-## 2025. 05. 29.
-### 기능 개선
+<a id="may-29-2025"></a>
+## 2025. 05. 29. { #may-29-2025 }
+<a id="may-29-2025-feature-updates"></a>
+### 기능 개선/변경 { #may-29-2025-feature-updates }
 * [API] Amazon S3 API 호환성 개선
     * 오브젝트 목록에서 각 오브젝트의 LastModified 값이 밀리초 단위까지 표시되는 문제를 수정했습니다.
 
-### 버그 수정
-* [API] Amazon S3 호환 API로 객체 잠금이 설정된 버킷에 멀티파트 업로드하면 요청이 실패하고 기존 파트 오브젝트가 삭제되는 버그 수정
+<a id="may-29-2025-bug-fixes"></a>
+### 버그 수정 { #may-29-2025-bug-fixes }
+* [API] Amazon S3 호환 API로 오브젝트 잠금이 설정된 버킷에 멀티파트 업로드하면 요청이 실패하고 기존 파트 오브젝트가 삭제되는 버그 수정
 
-## 2024. 09. 05.
-### 기능 개선
+<a id="september-5-2024"></a>
+## 2024. 09. 05. { #september-5-2024 }
+<a id="september-5-2024-feature-updates"></a>
+### 기능 개선/변경 { #september-5-2024-feature-updates }
 * [콘솔][API] 서비스 게이트웨이 IP 접근 제어 설정 추가
     * 서비스 게이트웨이를 통한 요청에 IP ACL 예외 처리가 가능합니다.
 * [API] Amazon S3 API 호환성 개선
@@ -33,12 +60,15 @@
         * 잘못된 경로의 컨테이너 요청
         * 잘못된 경로의 오브젝트 요청
 
-## 2024. 06. 04.
-### 기능 추가
+<a id="june-4-2024"></a>
+## 2024. 06. 04. { #june-4-2024 }
+<a id="june-4-2024-added-features"></a>
+### 신규 기능 추가 { #june-4-2024-added-features }
 * [콘솔][API] 수명 주기 만료 동작 추가
     * 수명 주기가 만료된 오브젝트를 다른 컨테이너로 이동할 수 있습니다.
 
-### 기능 개선
+<a id="june-4-2024-feature-updates"></a>
+### 기능 개선/변경 { #june-4-2024-feature-updates }
 * [콘솔] 오브젝트 복사 기능 개선
     * 다수의 오브젝트를 선택하여 복사/이동할 수 있습니다.
 * [콘솔] 컨테이너 이름 규칙 변경
@@ -46,98 +76,133 @@
     * 영문 소문자, 숫자, -, .을 사용할 수 있습니다.
     * IP 형식의 이름은 사용할 수 없습니다.
 
-## 2024. 03. 05.
-### 기능 추가
+<a id="march-5-2024"></a>
+## 2024. 03. 05. { #march-5-2024 }
+<a id="march-5-2024-added-features"></a>
+### 신규 기능 추가 { #march-5-2024-added-features }
 * [콘솔][API] 오브젝트 업로드 정책 설정 기능 추가
 * [콘솔] 컨테이너 비우기 기능 추가
 
-### 기능 변경
+<a id="march-5-2024-feature-updates"></a>
+### 기능 개선/변경 { #march-5-2024-feature-updates }
 * [콘솔] 오브젝트 삭제 기능 개선
 
-## 2023. 12. 05.
-### 기능 추가
+<a id="december-5-2023"></a>
+## 2023. 12. 05. { #december-5-2023 }
+<a id="december-5-2023-added-features"></a>
+### 신규 기능 추가 { #december-5-2023-added-features }
 * [API] Amazon S3 호환 API, AWS Signature V4 Chunked Upload 지원
 * [콘솔] 서명된 URL 생성 기능 추가
 
-## 2023. 09. 12.
-### 기능 추가
+<a id="september-12-2023"></a>
+## 2023. 09. 12. { #september-12-2023 }
+<a id="september-12-2023-added-features"></a>
+### 신규 기능 추가 { #september-12-2023-added-features }
 * [콘솔][API] IP ACL 기능 추가
 
-### 버그 수정
+<a id="september-12-2023-bug-fixes"></a>
+### 버그 수정 { #september-12-2023-bug-fixes }
 * [API] 퍼블릭 컨테이너에 업로드된 멀티파트 오브젝트의 세그먼트 오브젝트가 다른 컨테이너에 있을 때 토큰 없이 다운로드할 수 없는 문제 수정
-* [API] Amazon S3 호환 API를 이용하여 같은 이름의 멀티파트 오브젝트를 업데이트했을 때 이전 파트 오브젝트가 삭제되지 않는 문제 수정
+* [API] Amazon S3 호환 API를 사용하여 같은 이름의 멀티파트 오브젝트를 업데이트했을 때 이전 파트 오브젝트가 삭제되지 않는 문제 수정
 
-## 2022. 12. 06.
-### 기능 추가
-* [콘솔][API] 객체 잠금 컨테이너 설정 기능 추가
+<a id="december-6-2022"></a>
+## 2022. 12. 06. { #december-6-2022 }
+<a id="december-6-2022-added-features"></a>
+### 신규 기능 추가 { #december-6-2022-added-features }
+* [콘솔][API] 오브젝트 잠금 컨테이너 설정 기능 추가
 
-## 2022. 10. 25.
-### 기능 추가
+<a id="october-25-2022"></a>
+## 2022. 10. 25. { #october-25-2022 }
+<a id="october-25-2022-added-features"></a>
+### 신규 기능 추가 { #october-25-2022-added-features }
 * [콘솔] 컨테이너 ACL 설정 기능 추가
 
-## 2022. 10. 11.
-### 기능 추가
+<a id="october-11-2022"></a>
+## 2022. 10. 11. { #october-11-2022 }
+<a id="october-11-2022-added-features"></a>
+### 신규 기능 추가 { #october-11-2022-added-features }
 * [콘솔] 교차 출처 리소스 공유(CORS) 설정 기능 추가
 
-### 기능 개선
+<a id="october-11-2022-feature-updates"></a>
+### 기능 개선/변경 { #october-11-2022-feature-updates }
 * [콘솔] 컨테이너 정보 조회, 설정 UI 개선
 
-## 2022. 08. 23.
-### 기능 추가
+<a id="august-23-2022"></a>
+## 2022. 08. 23. { #august-23-2022 }
+<a id="august-23-2022-added-features"></a>
+### 신규 기능 추가 { #august-23-2022-added-features }
 * [API] RFC를 준수하는 ETag 형식 사용 설정 기능 추가
 
-## 2022. 04. 05.
-### 기능 추가
+<a id="april-5-2022"></a>
+## 2022. 04. 05. { #april-5-2022 }
+<a id="april-5-2022-added-features"></a>
+### 신규 기능 추가 { #april-5-2022-added-features }
 * [콘솔] S3 API 자격 증명 발급 기능 추가
 
-### 기능 개선
+<a id="april-5-2022-feature-updates"></a>
+### 기능 개선/변경 { #april-5-2022-feature-updates }
 * [콘솔] 멀티파트 오브젝트 삭제 시 세그먼트 오브젝트 일괄 삭제
 * [API] 컨테이너 이름으로 입력 가능한 문자 제한
     * 일부 특수 문자(' " < > ;)와 공백, 상대 경로 문자(. ..)를 제한합니다.
 
-## 2021. 12. 07.
-### 기능 개선
+<a id="december-7-2021"></a>
+## 2021. 12. 07. { #december-7-2021 }
+<a id="december-7-2021-feature-updates"></a>
+### 기능 개선/변경 { #december-7-2021-feature-updates }
 * [콘솔] 정적 웹사이트 설정 시 입력 가능 문자 제한 규칙 변경
     * 최대 256 바이트, 영문자, 숫자, 일부 특수 문자(-, _, ., /)만 입력할 수 있습니다.
 * [콘솔] 오브젝트 복사 시 입력 제한 규칙 변경
     * 서브 폴더를 포함하는 경로를 입력할 수 있습니다.
     * {경로 최대 길이} = 1024 - {오브젝트명 길이} - 1
 
-## 2021. 07. 02.
-### 기능 개선
+<a id="july-2-2021"></a>
+## 2021. 07. 02. { #july-2-2021 }
+<a id="july-2-2021-feature-updates"></a>
+### 기능 개선/변경 { #july-2-2021-feature-updates }
 * [콘솔] 컨테이너 설정 기능 개선
     * 컨테이너 단위로 접근 정책, 오브젝트 수명 주기, 버전 관리 정책, 정적 웹사이트 등을 설정할 수 있도록 기능을 개선했습니다.
+* [콘솔] 접두사 검색
+    * 입력한 접두사로 시작하는 컨테이너, 폴더, 오브젝트를 검색할 수 있도록 검색 기능을 개선했습니다.
 
-* [콘솔] 접두어 검색
-    * 입력한 접두어로 시작하는 컨테이너, 폴더, 오브젝트를 검색할 수 있도록 검색 기능을 개선했습니다.
-
-## 2020. 11. 03.
-### 기능 추가
+<a id="november-3-2020"></a>
+## 2020. 11. 03. { #november-3-2020 }
+<a id="november-3-2020-added-features"></a>
+### 신규 기능 추가 { #november-3-2020-added-features }
 * [API] Amazon S3 호환 API 추가
 
-## 2018. 04. 24.
-### 기능 수정
+<a id="april-24-2018"></a>
+## 2018. 04. 24. { #april-24-2018 }
+<a id="april-24-2018-feature-updates"></a>
+### 기능 개선/변경 { #april-24-2018-feature-updates }
 * [콘솔] 폴더명 특수 문자 제한
     * 컨테이너 및 폴더 이름에 일부 특수 문자(. .. & < > " ' ;)와 공백 문자는 사용할 수 없도록 수정했습니다.
 
-## 2017. 10. 26.
-### 기능 수정
+<a id="october-26-2017"></a>
+## 2017. 10. 26. { #october-26-2017 }
+<a id="october-26-2017-feature-updates"></a>
+### 기능 개선/변경 { #october-26-2017-feature-updates }
 * [콘솔] 폴더명 특수 문자 제한
     * 컨테이너 및 폴더 이름에 일부 특수 문자(., .., &, <, >, ", ', ;)와 공백 문자는 사용할 수 없도록 수정
 
-## 2017. 03. 23.
-### 기능 개선
+<a id="march-23-2017"></a>
+## 2017. 03. 23. { #march-23-2017 }
+<a id="march-23-2017-feature-updates"></a>
+### 기능 개선/변경 { #march-23-2017-feature-updates }
 * [콘솔] 업로드 가능한 파일 크기 명시
-	* 최대 5GB까지 업로드할 수 있습니다.
+    * 최대 5GB까지 업로드할 수 있습니다.
 
-## 2016. 12. 22.
-### 버그 수정
+<a id="december-22-2016"></a>
+## 2016. 12. 22. { #december-22-2016 }
+<a id="december-22-2016-bug-fixes"></a>
+### 버그 수정 { #december-22-2016-bug-fixes }
 * [콘솔] 폴더명이 "/"로 시작되는 폴더 생성 시 폴더가 노출되지 않던 문제 수정
 * [콘솔] 폴더명과 파일명이 동일할 때 파일 삭제가 불가능하던 문제 수정
 * [콘솔] “#” 문자가 제목으로 들어간 파일 다운로드 불가 문제 수정
 * [콘솔] API 엔드포인트 설정 팝업 창의 복사 버튼 미동작 문제 수정
-* [콘솔] 0바이트 파일 다운로드 불가 현상 수정
+* [콘솔] 0 바이트 파일 다운로드 불가 현상 수정
 
-## 2016. 12. 08.
-### 버그 수정
-* [콘솔] 리소스가 남아 있는 상태에서 상품 이용 종료 시 안내 문구 수정
+<a id="december-8-2016"></a>
+## 2016. 12. 08. { #december-8-2016 }
+<a id="december-8-2016-bug-fixes"></a>
+### 버그 수정 { #december-8-2016-bug-fixes }
+* [콘솔] 리소스가 남아 있는 상태에서 상품 사용 종료 시 안내 문구 수정

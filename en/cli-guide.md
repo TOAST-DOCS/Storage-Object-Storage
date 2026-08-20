@@ -1,12 +1,19 @@
-## Storage > Object Storage > CLI Guide
+<!-- machine_translated: true -->
 
-This guide explains how to use the NHN Cloud Object Storage service with the OpenStack Swift command-line interface (CLI).
+{% include-markdown '../_object-storage-vars.md' %}
+
+<!-- pre-align:aligned sig=4d6c14c57aab -->
+
+<a id="storage-object-storage-cli-guide"></a>
+## Storage > Object Storage > CLI Guide { #storage-object-storage-cli-guide }
+
+This document explains how to use NHN Cloud Object Storage with the OpenStack Swift command-line interface (CLI).
 
 <a id="python-swiftclient"></a>
-## python-swiftclient
+## python-swiftclient { #python-swiftclient }
 
 <a id="install"></a>
-### Install
+### Install { #install }
 
 python-swiftclient is provided as a Python package. Install it using pip.
 
@@ -14,8 +21,8 @@ python-swiftclient is provided as a Python package. Install it using pip.
 pip install python-swiftclient python-keystoneclient
 ```
 
-> [Note]
-> Python 3.6 or later is required. If Python is not installed, refer to the [Python download page](https://www.python.org/downloads/) for installation instructions.
+!!! tip "Note"
+    Python 3.7 or later is required. If Python is not installed, refer to the [Python download page](https://www.python.org/downloads/) for installation instructions.
 
 Once the installation is complete, you can verify it with the following command.
 
@@ -27,12 +34,12 @@ python-swiftclient x.x.x
 <br/>
 
 <a id="configuration"></a>
-### Configuration
+### Configuration { #configuration }
 
 To use the Swift CLI, you must configure the environment variables required for authentication. Click the **API Endpoint Settings** button on the Object Storage service page to find the required information.
 
-```
-export OS_AUTH_URL=https://api-identity-infrastructure.nhncloudservice.com/v2.0
+```bash
+export OS_AUTH_URL=$[ identity_url ]$/v2.0
 export OS_TENANT_ID=<Tenant ID>
 export OS_USERNAME=<NHN Cloud account ID>
 export OS_PASSWORD=<API password>
@@ -43,29 +50,29 @@ export OS_REGION_NAME=<Region name>
 
 | Environment Variable | Description |
 | --- | --- |
-| OS_AUTH_URL | Identity API URL<br/>https://api-identity-infrastructure.nhncloudservice.com/v2.0 |
+| OS_AUTH_URL | Identity API URL<br>$[ identity_url ]$/v2.0 |
 | OS_TENANT_ID | Tenant ID available in **API Endpoint Settings** on the Object Storage service page |
 | OS_USERNAME | NHN Cloud account ID (email format) or IAM account ID |
 | OS_PASSWORD | API password configured in **API Endpoint Settings** |
-| OS_REGION_NAME | Region name<br/>KR1 - Korea (Pangyo) region<br/>KR2 - Korea (Pyeongchon) region<br/>KR3 - Korea (Gwangju) region<br/>JP1 - Japan (Tokyo) region |
+| OS_REGION_NAME | Region name<br>{% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <br/>
 
-> [Caution]
-> Object Storage has a different tenant ID from the basic infrastructure service. Click the **API Endpoint Settings** button on the Object Storage service page to verify.
+!!! danger "Caution"
+    Object Storage has a different tenant ID from the basic infrastructure service. Click the **API Endpoint Settings** button on the Object Storage service page to verify.
 
 <!-- 개행을 위한 주석 -->
 
-> [Note]
-> The API password can be configured by clicking the **API Endpoint Settings** button on the Object Storage service page.
+!!! tip "Note"
+    The API password can be configured by clicking the **API Endpoint Settings** button on the Object Storage service page.
 
 <br/>
 
 Creating a configuration file allows you to use the CLI conveniently without setting environment variables each time.
 
-```
+```bash
 $ cat ~/swiftrc
-export OS_AUTH_URL=https://api-identity-infrastructure.nhncloudservice.com/v2.0
+export OS_AUTH_URL=$[ identity_url ]$/v2.0
 export OS_TENANT_ID=<Tenant ID>
 export OS_USERNAME=<NHN Cloud account ID>
 export OS_PASSWORD=<API password>
@@ -93,7 +100,7 @@ $ swift stat
 <br/>
 
 <a id="basic-usage"></a>
-## Basic usage
+## Basic usage { #basic-usage }
 The basic usage is as follows.
 
 ```
@@ -103,14 +110,14 @@ swift <subcommand> [<options>] [<container> [<object>]]
 <br/>
 
 <a id="subcommands"></a>
-### Subcommands
+### Subcommands { #subcommands }
 The main subcommands are as follows.
 
 | Subcommand | Description |
 | --- | --- |
 | stat | Retrieves information about accounts, containers, or objects. |
 | list | Retrieves a list of containers or objects. |
-| post | Creates a container or configures metadata. |
+| post | Creates a container or changes the settings of containers and objects. |
 | upload | Uploads objects. |
 | download | Downloads objects. |
 | copy | Copies objects. |
@@ -121,21 +128,21 @@ The main subcommands are as follows.
 <br/>
 
 <a id="options"></a>
-### Common options
+### Common options { #options }
 
-These options can be used with all subcommands.
+These are the main options that can be used with all subcommands.
 
 | Option | Description |
 | --- | --- |
 | --help | Displays usage instructions for each subcommand. |
 | --debug | Displays the actual API call details. |
-| --quiet | Suppresses status output. |
+| --quiet | Does not output the progress status. |
 | --retries &lt;num&gt; | Specifies the number of retries when a request fails. |
 
 <br/>
 
 <a id="auth-info"></a>
-### How it works and using authentication information
+### How it works and using authentication information { #auth-info }
 
 By default, the Swift CLI calls the Identity API each time a command is executed to obtain a token and service catalog, then calls the Swift API corresponding to the subcommand.
 
@@ -143,9 +150,9 @@ By default, the Swift CLI calls the Identity API each time a command is executed
 
 Using the `auth` subcommand, you can check the storage URL and authentication token in advance.
 
-```
+```bash
 $ swift auth
-export OS_STORAGE_URL=https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
+export OS_STORAGE_URL=$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067
 export OS_AUTH_TOKEN=gAAAAABi...
 ```
 
@@ -157,13 +164,13 @@ Applying the output environment variables to the shell allows subsequent command
 $ eval $(swift auth)
 ```
 
-> [Note]
-> Authentication tokens have an expiration time. If a request fails due to a token expiry, run `eval $(swift auth)` again to renew it.
+!!! tip "Note"
+    Authentication tokens have an expiration time. If a request fails due to a token expiry, run `eval $(swift auth)` again to renew it.
 
 <br/>
 
 <a id="stat"></a>
-## View information
+## View information { #stat }
 Retrieves information about storage accounts, containers, and objects.
 
 ```
@@ -179,7 +186,7 @@ swift stat [<options>] [<container> [<object>]]
 <br/>
 
 <a id="stat-account"></a>
-### View storage account information
+### View storage account information { #stat-account }
 Retrieves information about the storage account.
 
 ```
@@ -196,7 +203,7 @@ $ swift stat
 <br/>
 
 <a id="stat-container"></a>
-### View container information
+### View container information { #stat-container }
 Retrieves information about a container.
 
 ```
@@ -217,7 +224,7 @@ $ swift stat media
 <br/>
 
 <a id="stat-object"></a>
-### View object information
+### View object information { #stat-object }
 Retrieves information about an object.
 
 ```
@@ -236,11 +243,11 @@ $ swift stat media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br/>
 
 <a id="list"></a>
-## List
+## List { #list }
 Retrieves a list of containers or objects.
 
 ```
-swift list [container] [options]
+swift list [<options>] [<container>]
 ```
 
 <br/>
@@ -257,7 +264,7 @@ swift list [container] [options]
 <br/>
 
 <a id="list-containers"></a>
-### List containers
+### List containers { #list-containers }
 Retrieves a list of containers.
 
 ```
@@ -268,7 +275,7 @@ media
 <br/>
 
 <a id="list-objects"></a>
-### List objects
+### List objects { #list-objects }
 Retrieves a list of objects.
 
 ```
@@ -281,7 +288,7 @@ $ swift list media
 <br/>
 
 <a id="create-container"></a>
-## Create container
+## Create container { #create-container }
 Creates a new container.
 
 ```
@@ -298,7 +305,7 @@ media
 <br/>
 
 <a id="upload"></a>
-## Upload objects
+## Upload objects { #upload }
 Uploads or updates (overwrites) objects. Multiple objects can be uploaded at once.
 
 ```
@@ -336,7 +343,7 @@ $ swift list media
 <br/>
 
 <a id="multipart-upload"></a>
-### Multipart upload
+### Multipart upload { #multipart-upload }
 Specifying the segment size with the `--segment-size` option splits the file and uploads it as a multipart upload.
 
 ```
@@ -345,7 +352,7 @@ swift upload --segment-size <size> [--segment-container <segment-container>] <co
 
 <br/>
 
-If `--segment-container` is not specified, a container named `{container}_segments` is created and the segment objects are uploaded to it.
+If `--segment-container` is not specified, a container named `<container>_segments` is created and the segment objects are uploaded to it.
 
 ```
 $ swift upload --segment-size 10m media test.mp4
@@ -369,7 +376,7 @@ test.mp4/slo/1635487628.192050/20971520/10485760/00000001
 <br/>
 
 <a id="download"></a>
-## Download objects
+## Download objects { #download }
 Downloads objects to the current path. Multiple objects can be downloaded.
 
 ```
@@ -399,7 +406,7 @@ $ swift download media 153206025029118e96e38b95b78281c8.jpg
 <br/>
 
 <a id="download-all"></a>
-### Download by container
+### Download by container { #download-all }
 If the object to download is omitted, all objects in the specified container are downloaded.
 
 ```
@@ -412,7 +419,7 @@ $ swift download media
 <br/>
 
 <a id="copy"></a>
-## Copy objects
+## Copy objects { #copy }
 Copies an object to the specified path. Metadata can be added or changed during the copy.
 
 ```
@@ -423,14 +430,14 @@ swift copy [--destination </container/object>] [--fresh-metadata] [--meta <name:
 
 | Option | Description |
 | --- | --- |
-| --destination &lt;/container/object&gt; | Specifies the destination container and object name to copy to.<br/>If the object name is omitted, it is copied with the same name as the source. |
+| --destination &lt;/container/object&gt; | Specifies the destination container and object name to copy to.<br>If the object name is omitted, it is copied with the same name as the source. |
 | --meta &lt;name:value&gt; | Configures metadata. Can be used multiple times. |
-| --fresh-metadata | Does not copy the metadata from the source.<br/>When used with `--meta`, only the newly specified metadata is set. |
+| --fresh-metadata | Does not copy the metadata from the source.<br>When used with `--meta`, only the newly specified metadata is set. |
 
 <br/>
 
 <a id="copy-same-container"></a>
-### Copy within the same container
+### Copy within the same container { #copy-same-container }
 The destination object name must be different from the source.
 
 ```
@@ -442,7 +449,7 @@ created container media
 <br/>
 
 <a id="copy-other-container"></a>
-### Copy to a different container
+### Copy to a different container { #copy-other-container }
 If the destination object name is omitted, it is copied with the same name as the source.
 
 ```
@@ -454,7 +461,7 @@ created container pics
 <br/>
 
 <a id="copy-with-metadata"></a>
-### Copy with additional metadata
+### Copy with additional metadata { #copy-with-metadata }
 Metadata can be added during copying using the `--meta` option.
 
 ```
@@ -468,14 +475,16 @@ Using the `--fresh-metadata` option together removes existing metadata and sets 
 <br/>
 
 <a id="post"></a>
-## Change settings
+## Change settings { #post }
 Changes the settings of a container or object.
 
 <br/>
 
 <a id="post-container"></a>
-### Change container settings
-Changes the settings of a container. Container settings can be verified with the [view container information command](cli-guide/#stat-container).
+### Change container settings { #post-container }
+Changes the settings of a container. Container settings can be verified with the [view container information command](#stat-container).
+
+Changes the container settings. The container settings can be found by using the [retrieve container information command](#stat-container).
 
 ```
 swift post [<options>] <container>
@@ -488,14 +497,14 @@ swift post [<options>] <container>
 | --meta &lt;key:value&gt; | Configures container metadata. Can be used multiple times. |
 | --read-acl &lt;acl&gt; | Sets the read ACL for the container. |
 | --write-acl &lt;acl&gt; | Sets the write ACL for the container. |
-| --header &lt;key:value&gt; | Adds a custom HTTP header. Settings not provided as options by the Swift CLI can also be specified directly with this option. |
+| --header &lt;key:value&gt; | Adds a user-defined HTTP header. Settings not provided as options by the Swift CLI can also be specified directly with this option. |
 
 <br/>
 
-> [Note]
-> For ACL setting values, see the [Access policy configuration guide](acl-guide/).
->
-> For the list of headers that can be set with the `--header` option, see the [Change container settings](api-guide/#change-container-settings) section in the API guide.
+!!! tip "Note"
+    For ACL setting values, see the [Access Policy Configuration Guide](acl-guide$[ file_suffix ]$/).
+
+The list of headers that can be set with the `--header` option can be found in the [Change Container Settings](api-guide$[ file_suffix ]$/#change-container-settings) section of the API guide.
 
 <br/>
 
@@ -508,8 +517,8 @@ $ swift post --read-acl ".r:*" media
 <br/>
 
 <a id="post-object"></a>
-### Change object metadata
-Changes the metadata of an object. Object metadata can be verified with the [view object information command](cli-guide/#stat-object).
+### Change object metadata { #post-object }
+Changes the metadata of an object. Object metadata can be verified with the [view object information command](#stat-object).
 
 ```
 swift post [<options>] <container> <object>
@@ -520,7 +529,7 @@ swift post [<options>] <container> <object>
 | Option | Description |
 | --- | --- |
 | --meta &lt;key:value&gt; | Configures object metadata. Can be used multiple times. |
-| --header &lt;key:value&gt; | Adds a custom HTTP header. Object properties such as Content-Type can be changed. |
+| --header &lt;key:value&gt; | Adds a user-defined HTTP header. Object properties such as `Content-Type` can be changed. |
 
 <br/>
 
@@ -532,14 +541,14 @@ $ swift post --header "Content-Type:image/png" media 797619b171a455e9eec8a87f94e
 <br/>
 
 <a id="delete"></a>
-## Delete
+## Delete { #delete }
 Deletes containers or objects.
 
 <br/>
 
 <a id="delete-container"></a>
-### Delete container
-Deletes all objects inside the specified container, then deletes the container.
+### Delete container { #delete-container }
+Deletes all objects in the specified container, then deletes the container.
 
 ```
 swift delete <container>
@@ -565,7 +574,7 @@ $ swift delete media
 <br/>
 
 <a id="delete-object"></a>
-### Delete object
+### Delete object { #delete-object }
 Deletes the specified object.
 
 ```
@@ -587,8 +596,10 @@ $ swift delete media 797619b171a455e9eec8a87f94ee77f4.jpg
 <br/>
 
 <a id="tempurl"></a>
-## Create signed URL
+## Create signed URL { #tempurl }
 Generates a signed URL that allows access to a container or object without a token.
+
+Create a signed URL that allows access to a container or object without a token.
 
 ```
 swift tempurl <method> <time> <path> <key>
@@ -615,11 +626,11 @@ swift tempurl <method> <time> <path> <key>
 
 <br/>
 
-```
+```bash
 $ swift tempurl GET 2026-03-05T23:59:59 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg 398dded8-b1be
 /v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg?temp_url_sig=8244bff5037316dbe8aebcda9cd679c1b331e479&temp_url_expires=1772755199
 
-$ curl https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg\?temp_url_sig\=8244bff5037316dbe8aebcda9cd679c1b331e479\&temp_url_expires\=1772755199 --output 797619b171a455e9eec8a87f94ee77f4.jpg
+$ curl $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/media/797619b171a455e9eec8a87f94ee77f4.jpg\?temp_url_sig\=8244bff5037316dbe8aebcda9cd679c1b331e479\&temp_url_expires\=1772755199 --output 797619b171a455e9eec8a87f94ee77f4.jpg
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100 31661  100 31661    0     0  1043k      0 --:--:-- --:--:-- --:--:-- 1058k
@@ -628,15 +639,15 @@ $ curl https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_6dbc368b948944
 <br/>
 
 <a id="tempurl-key"></a>
-### Register Temp-URL-Key
-To generate a signed URL, a Temp-URL-Key must be registered in the container in advance. The configured key can be verified with the [view container information command](cli-guide/#stat-container).
+### Register Temp-URL-Key { #tempurl-key }
+To generate a signed URL, a Temp-URL-Key must be registered in the container in advance. The configured key can be verified with the [view container information command](#stat-container).
 
 ```
-swift post --meta "Temp-URL-Key: <key>" <container>
+swift post --meta "Temp-URL-Key:<key>" <container>
 ```
 
 ```
-$ swift post --meta "Temp-URL-Key: 398dded8-b1be" media
+$ swift post --meta "Temp-URL-Key:398dded8-b1be" media
 $ swift stat media
                Account: AUTH_6dbc368b94894416bec4cdfc65b5e067
              Container: media
@@ -647,5 +658,5 @@ $ swift stat media
 ```
 
 <a id="reference"></a>
-## References
+## References { #reference }
 Object Storage service (swift) command-line client - [https://docs.openstack.org/ocata/cli-reference/swift.html](https://docs.openstack.org/ocata/cli-reference/swift.html)
