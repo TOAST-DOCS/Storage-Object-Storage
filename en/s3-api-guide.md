@@ -42,7 +42,6 @@ This document describes only the basic usage of API. To use advanced features, i
 ## S3 API Credentials { #s3-api-credential }
 
 <a id="obtain-s3-api-credentials"></a>
-
 ### Obtain S3 API Credentials { #obtain-s3-api-credentials }
 To use the Amazon S3-compatible API, you must first issue S3 API credentials in the AWS EC2 format. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide$[ file_suffix ]$/#s3-api-credentials).
 
@@ -56,7 +55,6 @@ X-Auth-Token: {token-id}
 ```
 
 <a id="obtain-s3-api-credentials-request"></a>
-
 #### Request
 
 | Name | Type | Format | Required | Description |
@@ -120,7 +118,6 @@ X-Auth-Token: {token-id}
 </details>
 
 <a id="get-s3-api-credentials"></a>
-
 ### Get S3 API Credentials { #get-s3-api-credentials }
 Retrieves the issued S3 API credentials.
 
@@ -174,7 +171,6 @@ This API does not require a request body.
 </details>
 
 <a id="delete-s3-api-credentials"></a>
-
 ### Delete S3 API Credentials { #delete-s3-api-credentials }
 Deletes the issued S3 API credentials.
 
@@ -201,7 +197,6 @@ This API does not require a request body.
 This API does not return a response body. When the request is appropriate, it returns status code 204.
 
 <a id="create-signature"></a>
-
 ## Create Signature { #create-signature }
 To use S3 API, you must create a signature using credentials. For information on how to create a signature, refer to the [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) documentation.
 
@@ -690,7 +685,6 @@ This API does not require a request body.
 | X-Amz-Signature | Query | String | Y | HMAC signature value that authenticates the request |
 
 <a id="presigned-url-format-response"></a>
-
 #### Response
 For a valid request, return status code 200.
 
@@ -709,7 +703,6 @@ See [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.
     NHN Cloud Object Storage supports AWS CLI up to version 2.34.38.
 
 <a id="aws-command-line-interface-configuration"></a>
-
 ### Configuration { #aws-command-line-interface-configuration }
 To use the AWS Command Line Interface, you must first configure the S3 API credentials and environment.
 
@@ -728,7 +721,6 @@ Default output format [None]: json
 | region name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 
 <a id="how-to-use-the-s3-commands"></a>
-
 ### How to Use S3 Commands { #how-to-use-the-s3-commands }
 
 ```shell
@@ -917,7 +909,6 @@ s3 =
     If the bucket name contains a period (`.`), using Virtual Hosted-style may result in certificate validation failure because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style instead.
 
 <a id="aws-sdk"></a>
-
 ## AWS SDK { #aws-sdk }
 AWS provides SDKs for many types of programming languages. By using the S3 compatible API, you can use NHN Cloud Object Storage with AWS SDK.
 
