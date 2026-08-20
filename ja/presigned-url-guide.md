@@ -17,7 +17,6 @@
 <br>
 
 <a id="swift-tempurl"></a>
-
 ### Swift TempURL { #swift-tempurl }
 
 Swift TempURL(Temporary URL)は、オブジェクトの URL にクエリパラメータが追加された形式です。
@@ -40,7 +39,6 @@ $[ object_storage_url ]$/v1/my_account/container/object
 <br>
 
 <a id="s3-presigned-url"></a>
-
 ### S3互換APIの署名付き URL { #s3-presigned-url }
 
 NHN Cloud オブジェクトストレージは S3互換API を提供しており、この場合に生成される署名付き URL は次のような形式です。
@@ -83,7 +81,6 @@ Swift API と S3 API ではオブジェクトパスの形式が異なるため�
 <br>
 
 <a id="set-tempurl-key"></a>
-
 ### Swift TempURL 秘密鍵の設定 { #set-tempurl-key }
 
 TempURL は、ストレージアカウントまたはコンテナにあらかじめ登録した秘密鍵 (Secret Key) で署名します。
@@ -127,7 +124,6 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # コンテナ単位の設定
 <br>
 
 <a id="obtain-s3-credentials"></a>
-
 ### S3 API 認証情報の発行 { #obtain-s3-credentials }
 
 S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報（Access Key ID + Secret Access Key）を発行する必要があります。認証情報はコンソールまたはAPIを使用して発行できます。コンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide$[ file_suffix ]$/#s3-api-credentials)を参照してください。
@@ -308,7 +304,6 @@ echo $signature . "\n";
 <br>
 
 <a id="create-swift-tempurl-cli"></a>
-
 ### Swift CLI の使用 { #create-swift-tempurl-cli }
 
 Swift CLI の `tempurl` コマンドは、`temp_url_sig` と `temp_url_expires` クエリパラメータを自動的に生成します。
@@ -332,7 +327,6 @@ $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/my-container/c
 <br>
 
 <a id="create-aws-cli"></a>
-
 ### AWS CLI の使用 { #create-aws-cli }
 
 `aws` CLI で署名を生成するには、[S3 API 認証情報の発行](#obtain-s3-credentials)で発行した Access Key と Secret Key をローカルに設定する必要があります。
@@ -348,7 +342,6 @@ aws s3 presign s3://my-container/cat.jpg \
 <br>
 
 <a id="create-aws-sdk"></a>
-
 ### AWS SDK の使用 { #create-aws-sdk }
 
 SDK では、ダウンロード（GET）とアップロード（PUT）用の署名付き URL をどちらも生成できます。
@@ -452,7 +445,6 @@ echo (string) $s3->createPresignedRequest($cmd, '+1 hour')->getUri() . "\n";
 <br>
 
 <a id="usage-download"></a>
-
 ### ダウンロード { #usage-download }
 
 ```bash
@@ -468,7 +460,6 @@ curl -O "$[ object_storage_url ]$/my-container/cat.jpg?X-Amz-Algorithm=AWS4-HMAC
 <br>
 
 <a id="usage-upload"></a>
-
 ### アップロード { #usage-upload }
 
 ```bash
