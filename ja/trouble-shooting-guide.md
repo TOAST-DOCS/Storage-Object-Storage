@@ -1,7 +1,13 @@
-## Storage > Object Storage > トラブルシューティング
-NHN Cloud Object Storageを使用する際に発生する様々な問題を解決する方法を説明します。
+<!-- machine_translated: true -->
 
-<h3>JDK を使用するアプリケーションで Object Storageにアクセスすると、次のような SSLエラーが発生します。</h3>
+<!-- pre-align:aligned sig=eba0aa9ce90d -->
+
+<a id="storage-object-storage-troubleshooting-guide"></a>
+## Storage > Object Storage > トラブルシューティング { #storage-object-storage-troubleshooting-guide }
+このドキュメントは、NHN Cloud オブジェクトストレージを使用する際に発生するさまざまな問題を解決する方法を説明します。
+
+<a id="jdk-ssl-error"></a>
+### JDKを使用するアプリケーションのオブジェクトストレージアクセス時にSSLエラーが発生 { #jdk-ssl-error }
 
 ```
 peer not authenticated; nested exception is javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated
@@ -9,14 +15,16 @@ peer not authenticated; nested exception is javax.net.ssl.SSLPeerUnverifiedExcep
 
 JDK 11.0.2でTLS 1.3を使う時発生する可能性があるJDKのバグです。
 
-JDKを11.0.3以上のバージョンにアップデートするか、アプリケーションを実行する時、次のようにTLS 1.2を使うようにオプションを追加する必要があります。
+1. JDKを11.0.3以上のバージョンにアップデートします。
+2. またはアプリケーションを実行する時、次のようにTLS 1.2を使うようにオプションを追加します。
 
 ```
 java -Djdk.tls.client.protocols=TLSv1.2 -jar
 ```
 
 
-<h3>Windows環境で名前にハングルが含まれるファイルをマルチパートでアップロードすると失敗します。</h3>
+<a id="multipart-upload-korean-filename-error"></a>
+### Windows環境でハングルファイル名のマルチパートアップロード失敗 { #multipart-upload-korean-filename-error }
 
 Windows OSの基本的なハングルエンコーディング方式は、UnicodeではなくCP949形式です。ハングルが含まれている名前のファイルをマルチパートアップロードする場合、エンコーディング方式の違いにより、マニフェストオブジェクトを構成する段階でエラーが発生することがあります。特に、システムのデフォルトのエンコーディング設定に従うCyberduckなどのサードパーティツールを使用する場合に発生する可能性があります。
 
