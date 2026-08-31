@@ -43,9 +43,9 @@ NHN Cloud オブジェクトストレージは、AWS のオブジェクトスト
 
 <a id="obtain-s3-api-credentials"></a>
 ### S3 API認証情報の発行 { #obtain-s3-api-credentials }
-Amazon S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報を発行する必要があります。認証情報はコンソールまたはAPIを使用して発行できます。コンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide$[ file_suffix ]$/#s3-api-credentials)を参照してください。
+Amazon S3互換APIを使用するには、まず AWS EC2 形式の S3 API認証情報を発行する必要があります。認証情報はコンソールまたは API を使用して発行できます。コンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide/#s3-api-credentials)を参照してください。
 
-APIを使用して認証情報を発行するには、認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](api-guide$[ file_suffix ]$/#auth)を参照してください。
+APIを使用して認証情報を発行するには、認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](api-guide/#auth)を参照してください。
 
 ```
 POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -64,10 +64,10 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | Y | テナントID。API エンドポイント設定ダイアログボックスで確認可能 |
 
 !!! tip "ヒント"
-    `{api-user-id}` は、コンソールの API エンドポイント設定ダイアログボックスで **[API ユーザー ID]** 項目を参照するか、認証トークン発行 API のレスポンス本文の **access.user.id** フィールドで確認できます。
-    認証トークン発行 API を使用するには、API ガイドの [認証および権限](api-guide$[ file_suffix ]$/#auth) を参照してください。
+    `{api-user-id}` は、コンソールの API エンドポイント設定ダイアログで **[APIユーザーID]** 項目を参照するか、認証トークン発行 API レスポンス本文の **access.user.id** フィールドで確認できます。
+    認証トークン発行 API を使用するには、API ガイドの[認証および権限](api-guide/#auth)を参照してください。
 
-    S3 API認証情報には有効期限がなく、ユーザーごとにプロジェクトあたり最大 3 つまで発行できます。
+    S3 API認証情報は有効期限がなく、ユーザーごとにプロジェクトあたり最大 3 個まで発行できます。
 
 <!-- 改行のためのコメントのため、必ず含める必要があります。 -->
 
@@ -691,7 +691,7 @@ GET /{bucket}/{obj}
 リクエストが正しい場合、ステータスコード 200 を返します。
 
 !!! tip "ヒント"
-    Swift TempURL 方式や言語別の直接署名の例など、詳細については、[署名付き URL ガイド](presigned-url-guide$[ file_suffix ]$/)を参照してください。
+    Swift TempURL 方式と言語別の直接署名の例など、詳細については[署名済みURLガイド](presigned-url-guide/)を参照してください。
 
 <a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
