@@ -136,7 +136,7 @@ You can view the container's $[ "basic and encryption information" if encrypt el
 <a id="set-container-access-policy"></a>
 ##### Container Access Policy
 
-Sets the basic access policy and manages role-based access policies for each tenant or user. For more details, refer to [ACL Configuration Guide](acl-guide$[ file_suffix ]$/).
+Sets the basic access policy and manages role-based access policies for each tenant or user. For more information about access policy configuration, see [Access Policy Configuration Guide](acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -178,7 +178,7 @@ Sets the basic access policy and manages role-based access policies for each ten
 <a id="set-container-ip-acl"></a>
 ##### IP ACL
 
-Manages IP-based access policies. For more details on configuring access policies, refer to [ACL Configuration Guide](acl-guide$[ file_suffix ]$/).
+Manages IP-based access policies. For more details, refer to [ACL Configuration Guide](acl-guide/).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -281,7 +281,7 @@ For blacklist, setting `exe`, `jpg` as blacklist will prevent all objects with `
 
 Views and modifies the lifecycle rules of objects stored in containers.
 
-For detailed information on how to configure lifecycle settings, see [How to Apply Lifecycle Rules](container-policy-guide$[ file_suffix ]$/#lifecycle-apply).
+For more information about lifecycle settings, see [How to Apply Lifecycle Rules](container-policy-guide/#lifecycle-apply).
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -325,51 +325,10 @@ For detailed information on how to configure lifecycle settings, see [How to App
   </tr>
 </table>
 
-You can view and change the lifecycle rules for objects stored in a container.
-For more information on lifecycle settings, see [How to apply lifecycle rules](container-policy-guide/#lifecycle-apply).
-<table class="it" style="padding-top: 15px; padding-bottom: 10px;">
-  <tr>
-    <th>Type</th>
-    <th>Option</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td rowspan=3>Default rule</td>
-    <td>Object lifecycle</td>
-    <td>Enter the object lifecycle in days.</td>
-  </tr>
-  <tr>
-    <td>Lifecycle expiration action</td>
-    <td>Select how to handle objects whose lifecycle has expired.</td>
-  </tr>
-  <tr>
-    <td>Target container</td>
-    <td>When you select <b>Move container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
-  </tr>
-  <tr>
-    <td rowspan=5>Conditional rule</td>
-    <td>Rule name</td>
-    <td>Enter the name of the lifecycle rule.</td>
-  </tr>
-  <tr>
-    <td>Condition</td>
-    <td>Specify the conditions under which the rule is applied.</td>
-  </tr>
-  <tr>
-    <td>Object lifecycle</td>
-    <td>Enter the object lifecycle in days.</td>
-  </tr>
-  <tr>
-    <td>Lifecycle expiration action</td>
-    <td>Select how to handle objects whose lifecycle has expired.</td>
-  </tr>
-  <tr>
-    <td>Target container</td>
-    <td>When you select <b>Move container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
-  </tr>
-</table>
+!!! TIP "Note"
+    The modified lifecycle rules apply only to objects uploaded after the rules are set.
 
-Up to 30 condition rules can be configured. This limit also applies when configuring via [container policy](container-policy-guide$[ file_suffix ]$/#lifecycle).
+    Up to 30 condition rules can be configured. This limit also applies when configuring via [Container Policy](container-policy-guide/#lifecycle).
 {%- if ec %}
     Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
 
@@ -667,7 +626,7 @@ For multipart objects inside a folder, only the manifest object is deleted; segm
 All objects must be uploaded to containers. One object cannot be larger than 5GB.
 
 !!! tip "Note"
-    Files exceeding 5 GB cannot be uploaded to the console. If the size of the object to be uploaded exceeds 5 GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5 GB before uploading. For more details, refer to [Multipart Upload](api-guide$[ file_suffix ]$/#multipart-upload) of the API guide.
+    Files exceeding 5 GB cannot be uploaded to the console. If the size of the object to be uploaded exceeds 5 GB, it must be split by using a command-line tool such as `split`, or the user application must be programmed to divide the object into segments less than 5 GB before uploading. For more details, refer to [Multipart Upload](api-guide/#multipart-upload) of the API guide.
 
 <a id="download-object"></a>
 ### Download Object { #download-object }
@@ -718,7 +677,7 @@ Deletes the selected objects. You can select and delete multiple objects at the 
 
 <a id="create-signed-url"></a>
 ### Create Signed URL { #create-signed-url }
-Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies. For more information on how to use it, see the [Signed URL Guide](presigned-url-guide$[ file_suffix ]$/).
+Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies. For more information, see [Signed URL Guide](presigned-url-guide/).
 
 !!! tip "Note"
     Only single objects can be selected, not folder objects.

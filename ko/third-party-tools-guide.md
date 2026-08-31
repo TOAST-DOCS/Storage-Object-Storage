@@ -49,7 +49,7 @@ Cyberduck은 오픈소스 클라우드 스토리지 브라우저입니다.
 </table>
 
 !!! tip "알아두기"
-    API 비밀번호 설정 방법은 API 가이드의 [인증 및 권한](api-guide$[ file_suffix ]$/#auth) 항목을 참고합니다.
+    API 비밀번호 설정 방법은 API 가이드의 [인증 및 권한](api-guide/#auth) 항목을 참고합니다.
 
 <a id="cyberduck-connect-object-storage"></a>
 ### 오브젝트 스토리지 연결 { #cyberduck-connect-object-storage }
