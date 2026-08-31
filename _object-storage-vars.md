@@ -2,7 +2,6 @@
 {%- set secret_key = "be057f235abf45ee8e2ba14edc5fb253" -%}
 
 {%- if "gov" in build_flags -%}
-  {%- set file_suffix = "-gov" -%}
   {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-gov/" -%}
   {%- set base_region = "KR1" -%}
   {%- set identity_url = "https://api-identity-infrastructure.gov-nhncloudservice.com" -%}
@@ -18,8 +17,7 @@
   ] -%}
 
 {%- elif "ncgn" in build_flags -%}
-  {%- set file_suffix = "-ncgn" -%}
-  {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ncgn/" -%}
+  {%- set identity_guide_url = false -%}
   {%- set base_region = "KR1" -%}
   {%- set identity_url = "https://api-identity-infrastructure.gncloud.go.kr" -%}
   {%- set ec = false -%}
@@ -40,7 +38,6 @@
   {%- set terraform_support = false -%}
   {%- set terraform_guide_url = "/Compute/Instance/ko/terraform-guide/" -%}
   {%- if "ngcc" in build_flags -%}
-    {%- set file_suffix = "-ngcc" -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngcc/" -%}
     {%- set identity_url = "https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity" -%}
     {%- set encrypt = false -%}
@@ -48,7 +45,6 @@
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "http://ngcc-kr4-swift.kr.cloud.toastoven.net"},
     ] -%}
   {%- elif "ninc" in build_flags -%}
-    {%- set file_suffix = "-ninc" -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ninc/" -%}
     {%- set identity_url = "https://api-identity-infrastructure.ninc.go.kr" -%}
     {%- set encrypt = false -%}
@@ -56,7 +52,6 @@
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "https://kr4-api-object-storage.ninc.go.kr"},
     ] -%}
   {%- elif "ngsc" in build_flags -%}
-    {%- set file_suffix = "-ngsc" -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngsc/" -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngsc.go.kr" -%}
     {%- set encrypt = false -%}
@@ -64,7 +59,6 @@
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "https://kr4-api-object-storage.ngsc.go.kr"},
     ] -%}
   {%- elif "ngoic" in build_flags -%}
-    {%- set file_suffix = "-ngoic" -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngoic/" -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngoic.com" -%}
     {%- set encrypt = true -%}
@@ -72,7 +66,6 @@
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "https://kr4-api-object-storage.ngoic.com"},
     ] -%}
   {%- elif "ngovc" in build_flags -%}
-    {%- set file_suffix = "-ngovc" -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngovc/" -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngovc.com" -%}
     {%- set encrypt = true -%}
@@ -83,7 +76,6 @@
 
 {%- else -%}
   {#- public (기본값) -#}
-  {%- set file_suffix = "" -%}
   {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token/" -%}
   {%- set base_region = "KR1" -%}
   {%- set identity_url = "https://api-identity-infrastructure.nhncloudservice.com" -%}

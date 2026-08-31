@@ -16,9 +16,7 @@ You can use the console or API to grant read/write access to the container to ot
 
 <a id="role-based-access-console"></a>
 ### Console { #role-based-access-console }
-In the console, you can select a container access policy from the [Create Container](console-guide/#create-container) dialog box or the container access policy settings dialog box within [Manage Container](console-guide/#manage-container) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
-
-In the console, you can select a container access policy from the [Create Container](console-guide$[ file_suffix ]$/#create-container) dialog box or the container access policy setting dialog box in the [Manage Container](console-guide$[ file_suffix ]$/#manage-container) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
+In the console, you can select a container access policy from the [Create Container](console-guide/#create-container) dialog box or the container access policy settings dialog box in the [Manage Container](console-guide/#manage-container) window. There are two policies that can be selected: `PRIVATE` and `PUBLIC`.
 
 <a id="role-based-access-private"></a>
 #### PRIVATE
@@ -45,7 +43,7 @@ You can use the API to set access policies for different situations by entering 
 
 
 !!! tip "Tip"
-    The maximum number of access policy elements that can be set for `X-Container-Read`, `X-Container-Write`, and `X-Container-View` is 100 per property. This limit also applies when setting policies via [container policy](container-policy-guide$[ file_suffix ]$/#acl).
+    You can set up to 100 access policy elements per property in `X-Container-Read`, `X-Container-Write`, and `X-Container-View`. This limit also applies when configuring with the [container policy](container-policy-guide/#acl).
 
 <br>
 
@@ -63,7 +61,7 @@ The role-based access policy elements that can be set are as follows. All policy
 
 !!! tip "Tips"
     You can find `{api-user-id}` in the **API User ID** field of the API endpoint settings dialog on the console, or in the **access.user.id** field of the authentication token issuance API response body.
-    To use the authentication token issuance API, refer to the [Authentication and Authorization](api-guide$[ file_suffix ]$/#auth) section in the API guide.
+    To use the authentication token issuance API, refer to the [Authentication and Authorization](api-guide/#auth) section in the API guide.
 
 !!! tip "Note"
     You cannot use values where one side of the colon is empty (such as `{tenant-id}:` or `:{api-user-id}`) or values that start with `.`.
@@ -480,7 +478,7 @@ You can use the API to enable IP-based access policies by entering IP-based acce
 To modify the properties of a container with an IP-based access policy configured, a valid authentication token issued by an authorized tenant ID and API User ID is required, and the request must be made from an allowed IP address.
 
 !!! tip "Note"
-    The maximum number of policy elements that can be set for `X-Container-Ip-Acl-Allowed-List` (whitelist) and `X-Container-Ip-Acl-Denied-List` (blacklist) is 100 each. This limit also applies when setting via [container policy](container-policy-guide$[ file_suffix ]$/#ip-acl).
+    `X-Container-Ip-Acl-Allowed-List` (whitelist) and `X-Container-Ip-Acl-Denied-List` (blacklist) can each have a maximum of 100 policy elements. This limit also applies when setting the policy via [Container Policy](container-policy-guide/#ip-acl).
 
 <br>
 
