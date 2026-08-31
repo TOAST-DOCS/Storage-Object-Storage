@@ -107,9 +107,9 @@ X-Container-Meta-Temp-URL-Key: {key}
 ```
 
 !!! tip "ヒント"
-    オブジェクトストレージは、ストレージアカウントあたり 2 個、コンテナあたり 2 個の秘密鍵を保存できます。
+    Object Storageは、ストレージアカウントあたり2個、コンテナあたり2個のシークレットキー値を保存できます。
 
-リクエストを検証する際、Object Storageはすべてのキーの署名を確認します。各レベルで2つのキーを使用することで、既存のTempURLを維持したままキーをローテーションできます。
+    リクエストを検証する際、Object Storageはすべてのキーの署名を確認します。各レベルでキーを2個使用することで、既存のTempURLを維持したままキーをローテーション（rotation）できます。
 
 Swift CLI を使用すると、次のように秘密鍵を設定できます。
 
@@ -119,14 +119,14 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # コンテナ単位の設定
 ```
 
 !!! tip "ヒント"
-    Swift CLI を使用するには、まず認証が必要です。詳細については、[Swift CLI 環境設定](cli-guide$[ file_suffix ]$/#configuration)を参照してください。
+    Swift CLI を使用するには、まず認証が必要です。詳細については、[Swift CLI 環境設定](cli-guide/#configuration) を参照してください。
 
 <br>
 
 <a id="obtain-s3-credentials"></a>
 ### S3 API 認証情報の発行 { #obtain-s3-credentials }
 
-S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報（Access Key ID + Secret Access Key）を発行する必要があります。認証情報はコンソールまたはAPIを使用して発行できます。コンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide$[ file_suffix ]$/#s3-api-credentials)を参照してください。
+S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報（Access Key ID + Secret Access Key）を発行する必要があります。認証情報は、コンソールまたはAPIを使用して発行できます。コンソールを使用した認証情報の発行については、「[S3 API認証情報](console-guide/#s3-api-credentials)」を参照してください。
 
 ```http
 POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -155,7 +155,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
-`aws` CLI または SDK で署名を生成するには、発行した認証情報をローカルに設定する必要があります。詳細については、[Amazon S3互換APIガイド](s3-api-guide$[ file_suffix ]$/#aws-command-line-interface-configuration)の設定項目を参照してください。
+`aws` CLI または SDK で署名を生成するには、発行した認証情報をローカルに設定する必要があります。詳細については、[Amazon S3互換APIガイド](s3-api-guide/#aws-command-line-interface-configuration)の設定の項目を参照してください。
 
 <br>
 
