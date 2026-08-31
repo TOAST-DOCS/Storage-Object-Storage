@@ -15,8 +15,8 @@
 <a id="endpoint"></a>
 ### API エンドポイント { #endpoint }
 
-APIを使用するには、APIエンドポイントとトークンが必要です。[IaaS トークン]($[ identity_guide_url ]$)を参考に、API使用に必要な情報を準備します。
-Object Storage APIは`object-store`タイプのエンドポイントを使用します。正確なエンドポイントは、トークン発行レスポンスの`serviceCatalog`を参照してください。
+API を使用するには、API エンドポイントとトークンが必要です。{% if identity_guide_url %} [IaaS トークン]($[ identity_guide_url ]$) を参照して、API の使用に必要な情報を準備します。{% endif %}
+オブジェクトストレージ API は `object-store` タイプのエンドポイントを使用します。正確なエンドポイントは、トークン発行レスポンスの `serviceCatalog` を参照してください。
 
 | リージョン | エンドポイント |
 | --- | --- |
@@ -25,8 +25,8 @@ Object Storage APIは`object-store`タイプのエンドポイントを使用し
 <a id="auth"></a>
 ### 認証および権限 { #auth }
 
-オブジェクトストレージは、API 呼び出し時の認証・認可に IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラサービス (IaaS) で使用する認証トークンです。
-IaaS トークンの発行および使用方法については、[IaaS トークン]($[ identity_guide_url ]$)を参照してください。
+Object Storage は、API 呼び出し時の認証/認可に IaaS トークンを使用します。IaaS トークンは、NHN Cloud の OpenStack ベースのインフラサービス（IaaS）で使用する認証トークンです。
+{% if identity_guide_url %}IaaS トークンの発行および使用方法については、[IaaS トークン]($[ identity_guide_url ]$)を参照してください。{% endif %}
 
 !!! danger "注意"
     オブジェクトストレージは、基本インフラサービスとは異なるテナント ID を持っています。
@@ -1079,7 +1079,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 
 <a id="set-container-rbac-policy"></a>
 ##### アクセスポリシー設定
-`X-Container-Read`、`X-Container-Write`、`X-Container-View`、`X-Container-Ip-Acl-Allowed-List`、`X-Container-Ip-Acl-Denied-List`、`X-Container-Ip-Acl-Service-Gateway-Control` ヘッダーを使用して、コンテナのアクセスポリシーを設定できます。詳細については、[アクセスポリシー設定ガイド](acl-guide$[ file_suffix ]$/)を参照してください。
+`X-Container-Read`、`X-Container-Write`、`X-Container-View`、`X-Container-Ip-Acl-Allowed-List`、`X-Container-Ip-Acl-Denied-List`、`X-Container-Ip-Acl-Service-Gateway-Control` ヘッダーを使用して、コンテナのアクセスポリシーを設定できます。詳細については、[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
 
 <br>
 
@@ -1090,7 +1090,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 
 !!! tip "ヒント"
     コンテナポリシーを使用して、詳細なライフサイクルルールを設定できます。
-    詳細については、[コンテナポリシー設定ガイド](container-policy-guide$[ file_suffix ]$/#lifecycle)を参照してください。
+    詳細については、[コンテナポリシー設定ガイド](container-policy-guide/#lifecycle)を参照してください。
 
 <!-- 改行用コメント -->
 
@@ -1103,7 +1103,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 
 <a id="set-container-object-version-policy"></a>
 ##### バージョン管理ポリシー設定
-[オブジェクトの内容の変更](api-guide$[ file_suffix ]$/#update-an-object) に記載のとおり、オブジェクトをアップロードする際に同じ名前のオブジェクトがすでに存在する場合は、オブジェクトを更新します。既存のオブジェクトの内容を保管したい場合は、`X-History-Location` ヘッダーを使用して、以前のバージョンを保管する**アーカイブコンテナ**を指定できます。
+[オブジェクト内容の修正](#update-an-object) に記載されているとおり、オブジェクトをアップロードする際に同じ名前のオブジェクトがすでに存在する場合、オブジェクトが更新されます。既存のオブジェクトの内容を保管したい場合は、`X-History-Location` ヘッダーを使用して、以前のバージョンを保管する**アーカイブコンテナ**を指定できます。
 
 旧バージョンのオブジェクトはアーカイブコンテナに次の形式で保管されます。
 ```
@@ -1116,9 +1116,9 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 `X-Versions-Retention` ヘッダーを併用すると、旧バージョンのオブジェクトのライフサイクルを日単位で設定できます。1 を設定した場合、保管されたオブジェクトは 1 日後に自動的に削除されます。設定しない場合、旧バージョンのオブジェクトはユーザーが削除するまで保管されます。設定後に保管された旧バージョンのオブジェクトにのみ適用されます。
 
 !!! danger "注意"
-    アーカイブコンテナを元のコンテナより先に削除すると、元のコンテナでオブジェクトを更新または削除する際にエラーが発生します。すでに削除した場合は、アーカイブコンテナを新たに作成するか、元のコンテナのバージョン管理ポリシーを解除することで解決できます。
+    アーカイブコンテナを元のコンテナより先に削除すると、元のコンテナのオブジェクトの更新または削除時にエラーが発生します。すでに削除した場合は、アーカイブコンテナを新たに作成するか、元のコンテナのバージョン管理ポリシーを解除することで解決できます。
 
-アーカイブコンテナとして使用するコンテナ名には、できる限りUnicode文字を使用しないことをお勧めします。アーカイブコンテナとして指定するコンテナ名にUnicode文字が含まれている場合は、必ずURLエンコード後にリクエストヘッダーに入力してください。
+    アーカイブコンテナとして使用するコンテナ名にはUnicode文字を使用しないことをお勧めします。アーカイブコンテナとして指定するコンテナ名にUnicode文字が含まれている場合は、必ずURLエンコード後にリクエストヘッダーに入力する必要があります。
 
 {% if encrypt %}
     暗号化コンテナをアーカイブコンテナとして指定した後、暗号化コンテナの対称キーを Secure Key Manager サービスから削除すると、元のコンテナへのオブジェクトのアップロードと削除が失敗します。
@@ -1141,7 +1141,7 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 ブラウザから Object Storage API を直接呼び出すには、Cross-Origin Resource Sharing (CORS) の設定が必要です。`X-Container-Meta-Access-Control-Allow-Origin` ヘッダーを使用して、許可するオリジンのリストを設定します。スペース（` `）区切りで1つ以上のオリジンを入力するか、`*` を入力してすべてのオリジンを許可できます。
 
 !!! tip "ヒント"
-    `X-Container-Meta-Access-Control-Allow-Origin` に設定できる許可オリジンは最大 100 件です。この制限は、[コンテナポリシー](container-policy-guide$[ file_suffix ]$/#cors)で設定する場合にも同様に適用されます。
+    `X-Container-Meta-Access-Control-Allow-Origin` に設定できる許可オリジンは最大 100 個です。この制限は、[コンテナポリシー](container-policy-guide/#cors) で設定する場合も同様に適用されます。
 
 <details>
 <summary>CORS設定確認の例</summary>
@@ -1216,7 +1216,7 @@ Status: 0
 !!! tip "ヒント"
     通常のコンテナをオブジェクトロックコンテナに変更したり、オブジェクトロックコンテナを通常のコンテナに変更したりすることはできません。
 
-オブジェクトロックコンテナは、アーカイブコンテナ$[ " または複製対象コンテナとして" if replication else "として" ]$指定することはできません。
+    オブジェクトロックコンテナは、アーカイブコンテナ$[ " またはレプリケーション対象コンテナとして" if replication else "として" ]$指定することはできません。
 
 <br>
 
