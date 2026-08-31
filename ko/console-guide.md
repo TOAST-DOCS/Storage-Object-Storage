@@ -134,7 +134,7 @@
 <a id="set-container-access-policy"></a>
 ##### 컨테이너 접근 정책
 
-기본 접근 정책을 설정하고, 테넌트 또는 개별 사용자 단위로 역할 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자세한 내용은 [접근 정책 설정 가이드](acl-guide$[ file_suffix ]$/)를 참고합니다.
+기본 접근 정책을 설정하고, 테넌트 또는 개별 사용자 단위로 역할 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참고합니다.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -175,7 +175,7 @@
 <a id="set-container-ip-acl"></a>
 ##### IP ACL
 
-IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자세한 내용은 [접근 정책 설정 가이드](acl-guide$[ file_suffix ]$/)를 참고합니다.
+IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참고합니다.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -276,7 +276,7 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
 
 컨테이너에 저장되는 오브젝트의 수명 주기 규칙을 조회하고 변경할 수 있습니다.
 
-수명 주기 설정 방법에 관한 자세한 설명은 [수명 주기 규칙 적용 방법](container-policy-guide$[ file_suffix ]$/#lifecycle-apply)을 참고합니다.
+수명 주기 설정 방법에 관한 자세한 설명은 [수명 주기 규칙 적용 방법](container-policy-guide/#lifecycle-apply)을 참고합니다.
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
@@ -323,7 +323,7 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
 !!! tip "알아두기"
     변경한 수명 주기 규칙은 설정 이후에 업로드한 오브젝트에만 적용됩니다.
 
-    설정할 수 있는 조건 규칙은 최대 30개입니다. 이 제한은 [컨테이너 정책](container-policy-guide$[ file_suffix ]$/#lifecycle)으로 설정할 때도 동일하게 적용됩니다.
+    설정할 수 있는 조건 규칙은 최대 30개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#lifecycle)으로 설정할 때도 동일하게 적용됩니다.
 {%- if ec %}
     Standard 클래스 컨테이너에 저장된 오브젝트를 수명 주기에 따라 Economy 클래스 컨테이너로 옮겨 장기 보관에 따른 비용을 절감할 수 있습니다.
 
@@ -615,7 +615,7 @@ IP 기반 접근 정책을 관리합니다. 접근 정책 설정에 관한 자�
 모든 오브젝트는 컨테이너 안에 업로드해야 합니다. 오브젝트 하나의 최대 용량은 5GB로 제한됩니다.
 
 !!! tip "알아두기"
-    콘솔에서는 5GB를 초과하는 파일은 업로드할 수 없습니다. 업로드할 오브젝트의 용량이 5GB를 초과한다면 `split` 등의 명령줄 도구를 사용해 나누거나, 사용자 애플리케이션에서 5GB 이하의 크기로 나누어 업로드하도록 프로그래밍해야 합니다. 자세한 사용 방법은 API 가이드의 [멀티파트 업로드](api-guide$[ file_suffix ]$/#multipart-upload)를 참고합니다.
+    콘솔에서는 5GB를 초과하는 파일은 업로드할 수 없습니다. 업로드할 오브젝트의 용량이 5GB를 초과한다면 `split` 등의 명령줄 도구를 사용해 나누거나, 사용자 애플리케이션에서 5GB 이하의 크기로 나누어 업로드하도록 프로그래밍해야 합니다. 자세한 사용 방법은 API 가이드의 [멀티파트 업로드](api-guide/#multipart-upload)를 참고합니다.
 
 <a id="download-object"></a>
 ### 오브젝트 다운로드 { #download-object }
@@ -666,7 +666,7 @@ Serving HTTP on :: port 8000 (http://[::]:8000/) ...
 
 <a id="create-signed-url"></a>
 ### 서명된 URL 생성 { #create-signed-url }
-역할 기반 접근 정책에 관계없이 설정한 시간 동안 지정한 오브젝트에 자유롭게 접근할 수 있는 서명된 URL을 생성합니다. 자세한 사용 방법은 [서명된 URL 가이드](presigned-url-guide$[ file_suffix ]$/)를 참고합니다.
+역할 기반 접근 정책에 관계없이 설정한 시간 동안 지정한 오브젝트에 자유롭게 접근할 수 있는 서명된 URL을 생성합니다. 자세한 사용 방법은 [서명된 URL 가이드](presigned-url-guide/)를 참고합니다.
 
 !!! tip "알아두기"
     단일 오브젝트만 선택할 수 있으며, 폴더 오브젝트는 선택할 수 없습니다.

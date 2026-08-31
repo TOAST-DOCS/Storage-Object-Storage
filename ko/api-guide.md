@@ -1,6 +1,6 @@
 {% include-markdown '../_object-storage-vars.md' %}
 
-<!-- pre-align:aligned sig=1c730003c3a0 -->
+<!-- pre-align:aligned sig=288abf1f2a5c -->
 
 <a id="storage-object-storage-api-guide"></a>
 ## Storage > Object Storage > API 가이드 { #storage-object-storage-api-guide }
@@ -13,7 +13,7 @@
 <a id="endpoint"></a>
 ### API 엔드포인트 { #endpoint }
 
-API를 사용하려면 API 엔드포인트와 토큰이 필요합니다. [IaaS 토큰]($[ identity_guide_url ]$)을 참고하여 API 사용에 필요한 정보를 준비합니다.
+API를 사용하려면 API 엔드포인트와 토큰이 필요합니다.{% if identity_guide_url %} [IaaS 토큰]($[ identity_guide_url ]$)을 참고하여 API 사용에 필요한 정보를 준비합니다.{% endif %}
 오브젝트 스토리지 API는 `object-store` 타입 엔드포인트를 사용합니다. 정확한 엔드포인트는 토큰 발급 응답의 `serviceCatalog`를 참조합니다.
 
 | 리전 | 엔드포인트 |
@@ -24,7 +24,7 @@ API를 사용하려면 API 엔드포인트와 토큰이 필요합니다. [IaaS �
 ### 인증 및 권한 { #auth }
 
 오브젝트 스토리지는 API 호출 시 인증/인가를 위해 IaaS 토큰을 사용합니다. IaaS 토큰은 NHN Cloud의 OpenStack 기반 인프라 서비스(IaaS)에서 사용하는 인증 토큰입니다.
-IaaS 토큰 발급 및 사용 방법은 [IaaS 토큰]($[ identity_guide_url ]$)을 참고합니다.
+{% if identity_guide_url %}IaaS 토큰 발급 및 사용 방법은 [IaaS 토큰]($[ identity_guide_url ]$)을 참고합니다.{% endif %}
 
 !!! danger "주의"
     오브젝트 스토리지는 기본 인프라 서비스와는 다른 테넌트 ID를 가지고 있습니다.
@@ -1072,7 +1072,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 <a id="set-container-rbac-policy"></a>
 ##### 접근 정책 설정
-`X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide$[ file_suffix ]$/)를 참고합니다.
+`X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, `X-Container-Ip-Acl-Service-Gateway-Control` 헤더를 사용해 컨테이너 접근 정책을 설정할 수 있습니다. 자세한 내용은 [접근 정책 설정 가이드](acl-guide/)를 참고합니다.
 
 <br>
 
@@ -1083,7 +1083,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 !!! tip "알아두기"
     컨테이너 정책을 통해 세밀한 수명 주기 규칙을 설정할 수 있습니다.
-    자세한 설명은 [컨테이너 정책 설정 가이드](container-policy-guide$[ file_suffix ]$/#lifecycle)를 참고합니다.
+    자세한 설명은 [컨테이너 정책 설정 가이드](container-policy-guide/#lifecycle)를 참고합니다.
 
 <!-- 개행을 위한 주석 -->
 
@@ -1096,7 +1096,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 <a id="set-container-object-version-policy"></a>
 ##### 버전 관리 정책 설정
-[오브젝트 내용 수정](api-guide$[ file_suffix ]$/#update-an-object) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
+[오브젝트 내용 수정](#update-an-object) 항목에 서술한 대로 오브젝트를 업로드할 때 같은 이름의 오브젝트가 이미 있으면 오브젝트를 업데이트합니다. 기존 오브젝트의 내용을 보관하고 싶다면 `X-History-Location` 헤더를 사용해 이전 버전을 보관할 **아카이브 컨테이너**를 지정할 수 있습니다.
 
 이전 버전 오브젝트는 아카이브 컨테이너에 다음과 같은 형태로 보관됩니다.
 ```
@@ -1134,7 +1134,7 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 브라우저에서 오브젝트 스토리지 API를 직접 호출하려면 교차 출처 리소스 공유(CORS) 설정이 필요합니다. `X-Container-Meta-Access-Control-Allow-Origin` 헤더를 사용하여 허용할 출처 목록을 설정합니다. 공백(` `)으로 구분된 하나 이상의 출처를 입력하거나 `*`를 입력하여 모든 출처를 허용할 수 있습니다.
 
 !!! tip "알아두기"
-    `X-Container-Meta-Access-Control-Allow-Origin`에 설정할 수 있는 허용 출처는 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide$[ file_suffix ]$/#cors)으로 설정할 때도 동일하게 적용됩니다.
+    `X-Container-Meta-Access-Control-Allow-Origin`에 설정할 수 있는 허용 출처는 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#cors)으로 설정할 때도 동일하게 적용됩니다.
 
 <details>
 <summary>CORS 설정 예시</summary>
