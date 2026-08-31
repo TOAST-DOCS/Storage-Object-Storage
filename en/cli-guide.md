@@ -482,8 +482,6 @@ Changes the settings of a container or object.
 
 <a id="post-container"></a>
 ### Change container settings { #post-container }
-Changes the settings of a container. Container settings can be verified with the [view container information command](#stat-container).
-
 Changes the container settings. The container settings can be found by using the [retrieve container information command](#stat-container).
 
 ```
@@ -502,9 +500,9 @@ swift post [<options>] <container>
 <br/>
 
 !!! tip "Note"
-    For ACL setting values, see the [Access Policy Configuration Guide](acl-guide$[ file_suffix ]$/).
+    For ACL setting values, see the [Access Policy Configuration Guide](acl-guide/).
 
-The list of headers that can be set with the `--header` option can be found in the [Change Container Settings](api-guide$[ file_suffix ]$/#change-container-settings) section of the API guide.
+    For the list of headers that can be set with the `--header` option, see the [Change Container Settings](api-guide/#change-container-settings) section in the API guide.
 
 <br/>
 

@@ -107,9 +107,9 @@ X-Container-Meta-Temp-URL-Key: {key}
 ```
 
 !!! tip "Note"
-    Object Storage can store up to 2 secret key values per storage account and 2 per container.
+    Object Storage can store 2 secret key values per storage account and 2 per container.
 
-When validating a request, Object Storage verifies the signatures of all keys. By using 2 keys at each level, you can rotate keys while keeping existing TempURLs intact.
+    When validating a request, Object Storage checks the signatures of all keys. By using 2 keys at each level, you can rotate keys while keeping existing TempURLs intact.
 
 You can set a secret key using the Swift CLI as follows:
 
@@ -119,14 +119,14 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # Container Settings
 ```
 
 !!! tip "Note"
-    Authentication is required before using the Swift CLI. For more information, see [Swift CLI Configuration](cli-guide$[ file_suffix ]$/#configuration).
+    To use the Swift CLI, you must first authenticate. For more information, see [Swift CLI Configuration](cli-guide/#configuration).
 
 <br>
 
 <a id="obtain-s3-credentials"></a>
 ### Obtain S3 API Credentials { #obtain-s3-credentials }
 
-To use the S3-compatible API, you must first issue S3 API credentials (Access Key ID + Secret Access Key) in the AWS EC2 format. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide$[ file_suffix ]$/#s3-api-credentials).
+To use the S3-compatible API, you must first issue S3 API credentials in the AWS EC2 format (Access Key ID + Secret Access Key). Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
 
 ```http
 POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -155,7 +155,7 @@ The `Access Key ID` is exposed in the URL as `X-Amz-Credential`, while the `Secr
 
 </details>
 
-To generate a signature using the `aws` CLI or SDK, you must configure the issued credentials locally. For more information, refer to the configuration section in the [Amazon S3-compatible API Guide](s3-api-guide$[ file_suffix ]$/#aws-command-line-interface-configuration).
+To create a signature using the `aws` CLI or SDK, you must configure the issued credentials locally. For more information, see the configuration section in the [Amazon S3-compatible API Guide](s3-api-guide/#aws-command-line-interface-configuration).
 
 <br>
 

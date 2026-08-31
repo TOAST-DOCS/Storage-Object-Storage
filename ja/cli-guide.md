@@ -520,9 +520,9 @@ swift post [<options>] <container>
 <br>
 
 !!! tip "ヒント"
-    ACL 設定値については、[アクセスポリシー設定ガイド](acl-guide$[ file_suffix ]$/)を参照してください。
+    ACL の設定値については、[アクセスポリシー設定ガイド](acl-guide/)を参照してください。
 
-`--header` オプションで設定できるヘッダーの一覧については、API ガイドの [コンテナ設定の変更](api-guide$[ file_suffix ]$/#change-container-settings) セクションを参照してください。
+    `--header` オプションで設定できるヘッダーの一覧については、API ガイドの[コンテナ設定変更](api-guide/#change-container-settings)セクションを参照してください。
 
 <br>
 

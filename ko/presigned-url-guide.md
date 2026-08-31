@@ -117,14 +117,14 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # 컨테이너 단위 설정
 ```
 
 !!! tip "알아두기"
-    Swift CLI를 사용하려면 먼저 인증이 필요합니다. 자세한 내용은 [Swift CLI 환경설정](cli-guide$[ file_suffix ]$/#configuration)을 참고합니다.
+    Swift CLI를 사용하려면 먼저 인증이 필요합니다. 자세한 내용은 [Swift CLI 환경설정](cli-guide/#configuration)을 참고합니다.
 
 <br>
 
 <a id="obtain-s3-credentials"></a>
 ### S3 API 자격 증명 발급 { #obtain-s3-credentials }
 
-S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명(Access Key ID + Secret Access Key)을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide$[ file_suffix ]$/#s3-api-credentials) 항목을 참고합니다.
+S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명(Access Key ID + Secret Access Key)을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide/#s3-api-credentials) 항목을 참고합니다.
 
 ```http
 POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -153,7 +153,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
-`aws` CLI 또는 SDK로 서명을 생성하려면, 발급한 자격 증명을 로컬에 설정해야 합니다. 자세한 내용은 [Amazon S3 호환 API 가이드](s3-api-guide$[ file_suffix ]$/#aws-command-line-interface-configuration) 설정 항목을 참고합니다.
+`aws` CLI 또는 SDK로 서명을 생성하려면 발급한 자격 증명을 로컬에 설정해야 합니다. 자세한 내용은 [Amazon S3 호환 API 가이드](s3-api-guide/#aws-command-line-interface-configuration) 설정 항목을 참고합니다.
 
 <br>
 

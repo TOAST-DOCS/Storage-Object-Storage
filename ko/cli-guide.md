@@ -518,9 +518,9 @@ swift post [<options>] <container>
 <br>
 
 !!! tip "알아두기"
-    ACL 설정 값은 [접근 정책 설정 가이드](acl-guide$[ file_suffix ]$/)를 참고합니다.
+    ACL 설정 값은 [접근 정책 설정 가이드](acl-guide/)를 참고합니다.
 
-    `--header` 옵션으로 설정할 수 있는 헤더 목록은 API 가이드의 [컨테이너 설정 변경](api-guide$[ file_suffix ]$/#change-container-settings) 섹션을 참고합니다.
+    `--header` 옵션으로 설정할 수 있는 헤더 목록은 API 가이드의 [컨테이너 설정 변경](api-guide/#change-container-settings) 섹션을 참고합니다.
 
 <br>
 

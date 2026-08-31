@@ -41,9 +41,9 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 
 <a id="obtain-s3-api-credentials"></a>
 ### S3 API 자격 증명 발급 { #obtain-s3-api-credentials }
-Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide$[ file_suffix ]$/#s3-api-credentials) 항목을 참고합니다.
+Amazon S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide/#s3-api-credentials) 항목을 참고합니다.
 
-API를 사용하여 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide$[ file_suffix ]$/#auth)를 참고합니다.
+API를 사용하여 자격 증명을 발급받으려면 인증 토큰이 필요합니다. 인증 토큰 발급은 [오브젝트 스토리지 API 가이드](api-guide/#auth)를 참고합니다.
 
 ```
 POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -63,7 +63,7 @@ X-Auth-Token: {token-id}
 
 !!! tip "알아두기"
     `{api-user-id}`는 콘솔의 API 엔드포인트 설정 대화 상자에서 **API 사용자 ID** 항목을 참조하거나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
-    인증 토큰 발급 API를 사용하려면 API 가이드의 [인증 및 권한](api-guide$[ file_suffix ]$/#auth) 항목을 참고합니다.
+    인증 토큰 발급 API를 사용하려면 API 가이드의 [인증 및 권한](api-guide/#auth) 항목을 참고합니다.
 
     S3 API 자격 증명은 유효 기간이 없으며, 사용자별로 프로젝트당 최대 3개까지 발급받을 수 있습니다.
 
@@ -687,7 +687,7 @@ GET /{bucket}/{obj}
 요청이 올바르면 상태 코드 200을 반환합니다.
 
 !!! tip "알아두기"
-    Swift TempURL 방식과 언어별 직접 서명 예시 등 자세한 내용은 [서명된 URL 가이드](presigned-url-guide$[ file_suffix ]$/)를 참고합니다.
+    Swift TempURL 방식과 언어별 직접 서명 예시 등 자세한 내용은 [서명된 URL 가이드](presigned-url-guide/)를 참고합니다.
 
 <a id="aws-command-line-interface"></a>
 ## AWS 명령줄 인터페이스(CLI) { #aws-command-line-interface }

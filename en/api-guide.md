@@ -15,7 +15,7 @@ This document describes how to manage storage accounts, containers, and objects 
 <a id="endpoint"></a>
 ### API Endpoint { #endpoint }
 
-To use the API, you need an API endpoint and a token. Refer to [IaaS Token]($[ identity_guide_url ]$) to prepare the information required to use the API.
+To use the API, you need an API endpoint and a token.{% if identity_guide_url %} Refer to [IaaS Token]($[ identity_guide_url ]$) to prepare the information required to use the API.{% endif %}
 Object Storage API uses the `object-store` type endpoint. Refer to the `serviceCatalog` in the token issuance response for the valid endpoint.
 
 | Region | Endpoint |
@@ -26,7 +26,7 @@ Object Storage API uses the `object-store` type endpoint. Refer to the `serviceC
 ### Authentication and Authorization { #auth }
 
 Object Storage uses IaaS tokens for authentication and authorization when making API calls. The IaaS token is an authentication token used for NHN Cloud's OpenStack-based infrastructure services (IaaS).
-For more information about issuing and using IaaS tokens, see [IaaS token]($[ identity_guide_url ]$).
+{% if identity_guide_url %}For more information on issuing and using IaaS tokens, see [IaaS token]($[ identity_guide_url ]$).{% endif %}
 
 !!! danger "Caution"
     Object Storage has a different Tenant ID from the base infrastructure service.
@@ -1074,7 +1074,7 @@ A request body is not required.
 
 <a id="set-container-rbac-policy"></a>
 ##### Access Policy Configuration
-You can set container access policies by using the `X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` headers. For more information, see the [Access Policy Configuration Guide](acl-guide$[ file_suffix ]$/).
+You can set container access policies by using the `X-Container-Read`, `X-Container-Write`, `X-Container-View`, `X-Container-Ip-Acl-Allowed-List`, `X-Container-Ip-Acl-Denied-List`, and `X-Container-Ip-Acl-Service-Gateway-Control` headers. For more information, see the [Access Policy Configuration Guide](acl-guide/).
 
 <br>
 
@@ -1084,8 +1084,8 @@ You can use the `X-Container-Object-Lifecycle` header to set the lifecycle of ob
 You can use the `X-Container-Object-Transfer-To` header to move objects whose lifecycle has expired to a specified container for storage. If no container is specified, expired objects are deleted.
 
 !!! tip "Tip"
-    You can set detailed lifecycle rules through container policies.
-    For more information, see [Container Policy Configuration Guide](container-policy-guide$[ file_suffix ]$/#lifecycle).
+    You can configure detailed lifecycle rules through container policies.
+    For more information, see [Container Policy Configuration Guide](container-policy-guide/#lifecycle).
 
 <!-- Line break comment -->
 
@@ -1098,7 +1098,7 @@ You can use the `X-Container-Object-Transfer-To` header to move objects whose li
 
 <a id="set-container-object-version-policy"></a>
 ##### Set Version Control Policy
-As described in [Update an Object](api-guide$[ file_suffix ]$/#update-an-object), if an object with the same name already exists when you upload an object, the object is updated. If you want to keep the content of the existing object, you can use the `X-History-Location` header to specify an **archive container** to store previous versions.
+As described in [Update an Object](#update-an-object), if an object with the same name already exists when you upload an object, the object is updated. If you want to keep the content of the existing object, you can use the `X-History-Location` header to specify an **archive container** to store the previous version.
 
 Previous version objects are stored in the archive container in the following format:
 ```
@@ -1113,7 +1113,7 @@ You can use the `X-Versions-Retention` header together to set the lifecycle of p
 !!! danger "Caution"
     If the archive container is deleted before the original container, an error occurs when updating or deleting objects in the original container. If the archive container has already been deleted, you can solve the issue by creating a new archive container or disabling the original container's version control policy.
 
-It is recommended that you avoid using Unicode characters in container names for archive containers. If the name of the container to set as an archive container contains Unicode characters, it must be URL-encoded before being entered in the request header.
+    It is recommended that you avoid using Unicode characters in container names for archive containers. If the name of the container to set as an archive container contains Unicode characters, it must be URL-encoded before being entered in the request header.
 
 {% if encrypt %}
     If you specify an encryption container as the archive container and then delete the symmetric key from Secure Key Manager, the object of the original container fails to be uploaded and deleted.
@@ -1136,7 +1136,7 @@ The name for an error document of a static website has the form of `{response co
 If you directly call the Object Storage API from the browser, you need to set Cross-Origin Resource Sharing (CORS). Set an allowed-origin list using the `X-Container-Meta-Access-Control-Allow-Origin` header. You can enter one or more origins separated by spaces (` `) or allow all origins by entering `*`.
 
 !!! tip "Note"
-    The maximum number of allowed origins that can be set in `X-Container-Meta-Access-Control-Allow-Origin` is 100. This limit also applies when configuring via [container policy](container-policy-guide$[ file_suffix ]$/#cors).
+    You can set up to 100 allowed origins in `X-Container-Meta-Access-Control-Allow-Origin`. The same limit applies when you configure it using the [Container Policy](container-policy-guide/#cors).
 
 <details>
 <summary>View CORS configuration example</summary>
@@ -1209,9 +1209,9 @@ Some applications require ETag values enclosed in double quotes in accordance wi
 Use the `X-Container-Worm-Retention-Day` header to change the object lock cycle of an object lock container. The lock cycle can be entered in days and cannot be disabled. The changed lock cycle is applied to objects uploaded after the change. The object lock cycle can only be changed in an object lock container.
 
 !!! tip "Note"
-    You cannot change a general container to an object lock container or an object lock container to a general container.
+    You cannot change a general container to an object lock container and vice versa.
 
-Object lock containers cannot be designated as archive containers$[ " or replication target containers" if replication else "" ]$.
+    You cannot specify an object lock container as an archive container$[ " or replication target container" if replication else "" ]$.
 
 <br>
 
