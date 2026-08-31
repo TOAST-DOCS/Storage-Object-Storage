@@ -16,9 +16,7 @@ NHN Cloud オブジェクトストレージのコンテナに、ロールベー�
 
 <a id="role-based-access-console"></a>
 ### コンソール { #role-based-access-console }
-コンソールでは[コンテナ作成](console-guide/#create-container)ダイアログボックスまたは[コンテナ管理](console-guide/#manage-container)ウィンドウのコンテナアクセスポリシー設定ダイアログボックスでコンテナアクセスポリシーを選択できます。選択できるポリシーは`PRIVATE`と`PUBLIC`の2つに制限されます。
-
-コンソールでは、[コンテナの作成](console-guide$[ file_suffix ]$/#create-container)ダイアログボックス、または[コンテナ管理](console-guide$[ file_suffix ]$/#manage-container)ウィンドウのコンテナアクセスポリシー設定ダイアログボックスから、コンテナアクセスポリシーを選択できます。選択可能なポリシーは `PRIVATE` と `PUBLIC` の2種類に限られます。
+コンソールでは、[コンテナの作成](console-guide/#create-container) ダイアログボックス、または [コンテナの管理](console-guide/#manage-container) ウィンドウのコンテナアクセスポリシー設定ダイアログボックスで、コンテナアクセスポリシーを選択できます。選択できるポリシーは `PRIVATE` と `PUBLIC` の 2 つに制限されます。
 
 <a id="role-based-access-private"></a>
 #### PRIVATE
@@ -45,7 +43,7 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
 
 
 !!! tip "ヒント"
-    `X-Container-Read`、`X-Container-Write`、`X-Container-View` に設定できるアクセスポリシー要素は、各属性につき最大 100 個です。この制限は[コンテナポリシー](container-policy-guide$[ file_suffix ]$/#acl)で設定する場合にも同様に適用されます。
+    `X-Container-Read`、`X-Container-Write`、`X-Container-View` に設定できるアクセスポリシー要素は、各属性につき最大 100 個です。この制限は[コンテナポリシー](container-policy-guide/#acl)で設定する場合も同様に適用されます。
 
 <br>
 
@@ -62,8 +60,8 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
 | `*:*` | プロジェクトに関係なく、認証トークンを発行できるユーザーであれば誰でもオブジェクトにアクセスできます。<br>読み取りと書き込みのアクセス許可をどちらも付与できます。|
 
 !!! tip "ヒント"
-    `{api-user-id}` は、コンソールの API エンドポイント設定ダイアログの **[APIユーザーID]** 項目、または認証トークン発行 API のレスポンスボディの **access.user.id** フィールドで確認できます。
-    認証トークン発行 API を使用するには、API ガイドの [認証および権限](api-guide$[ file_suffix ]$/#auth) を参照してください。
+    `{api-user-id}` は、コンソールの API エンドポイント設定ダイアログの **[APIユーザーID]** 項目、または認証トークン発行 API 応答本文の **access.user.id** フィールドで確認できます。
+    認証トークン発行 API を使用するには、API ガイドの[認証および権限](api-guide/#auth)を参照してください。
 
 !!! tip "覚えておくこと"
     `{tenant-id}:` や `:{api-user-id}` のようにコロンの片側が空の値、`.` で始まる値は使用することはできません。
@@ -481,7 +479,7 @@ API を使用してコンテナの `X-Container-Ip-Acl-Allowed-List`、`X-Contai
 IPベースのアクセスポリシーが設定されたコンテナの属性を変更するには、許可されたテナントIDとAPIユーザーIDで発行した有効な認証トークンが必要であり、許可されたIPからリクエストする必要があります。
 
 !!! tip "ヒント"
-    `X-Container-Ip-Acl-Allowed-List`（ホワイトリスト）と `X-Container-Ip-Acl-Denied-List`（ブラックリスト）に設定できるポリシー要素は、それぞれ最大 100 個です。この制限は、[コンテナポリシー](container-policy-guide$[ file_suffix ]$/#ip-acl)で設定する場合にも同様に適用されます。
+    `X-Container-Ip-Acl-Allowed-List`（ホワイトリスト）と `X-Container-Ip-Acl-Denied-List`（ブラックリスト）に設定できるポリシー要素はそれぞれ最大 100 個です。この制限は[コンテナポリシー](container-policy-guide/#ip-acl)で設定する場合も同様に適用されます。
 
 <br>
 
