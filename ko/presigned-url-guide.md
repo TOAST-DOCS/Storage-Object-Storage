@@ -153,7 +153,7 @@ X-Auth-Token: {token-id}
 
 </details>
 
-`aws` CLI 또는 SDK로 서명을 생성하려면, 발급한 자격 증명을 로컬에 설정해야 합니다. 자세한 내용은 [Amazon S3 호환 API 가이드](s3-api-guide/#aws-command-line-interface-configuration) 설정 항목을 참고합니다.
+`aws` CLI 또는 SDK로 서명을 생성하려면 발급한 자격 증명을 로컬에 설정해야 합니다. 자세한 내용은 [Amazon S3 호환 API 가이드](s3-api-guide/#aws-command-line-interface-configuration) 설정 항목을 참고합니다.
 
 <br>
 
