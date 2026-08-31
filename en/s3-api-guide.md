@@ -43,9 +43,9 @@ This document describes only the basic usage of API. To use advanced features, i
 
 <a id="obtain-s3-api-credentials"></a>
 ### Obtain S3 API Credentials { #obtain-s3-api-credentials }
-To use the Amazon S3-compatible API, you must first issue S3 API credentials in the AWS EC2 format. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide$[ file_suffix ]$/#s3-api-credentials).
+To use the Amazon S3 compatible API, you must first obtain S3 API credentials in the form of AWS EC2. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
 
-To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to the [Object Storage API Guide](api-guide$[ file_suffix ]$/#auth).
+To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to [Object Storage API Guide](api-guide/#auth).
 
 ```
 POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
@@ -64,8 +64,8 @@ X-Auth-Token: {token-id}
 | tenant_id | Body | String | Y | Tenant ID; can be found in the API endpoint configuration dialog box |
 
 !!! tip "Note"
-    You can find `{api-user-id}` by referring to the **API User ID** field in the API Endpoint setting dialog on the console, or by checking the **access.user.id** field in the response body of the authentication token issuance API.
-    To use the authentication token issuance API, refer to [Authentication and Authorization](api-guide$[ file_suffix ]$/#auth) in the API guide.
+    You can find `{api-user-id}` by referring to the **API User ID** field in the API Endpoint setting dialog on the console, or by checking the **access.user.id** field in the authentication token issuance API response body.
+    To use the authentication token issuance API, refer to [Authentication and Authorization](api-guide/#auth) in the API guide.
 
     S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
 
@@ -689,7 +689,7 @@ This API does not require a request body.
 For a valid request, return status code 200.
 
 !!! tip "Note"
-    For more information about Swift TempURL and language-specific direct signing examples, see the [Presigned URL Guide](presigned-url-guide$[ file_suffix ]$/).
+    For more information, including the Swift TempURL method and per-language direct signing examples, see [Presigned URL Guide](presigned-url-guide/).
 
 <a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
