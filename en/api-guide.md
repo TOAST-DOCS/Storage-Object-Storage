@@ -1083,11 +1083,13 @@ You can set container access policies by using the `X-Container-Read`, `X-Contai
 You can use the `X-Container-Object-Lifecycle` header to set the lifecycle of objects stored in the container, in days. This setting applies only to objects uploaded after the configuration is applied.
 You can use the `X-Container-Object-Transfer-To` header to move objects whose lifecycle has expired to a specified container for storage. If no container is specified, expired objects are deleted.
 
+{% if release_2026_05 %}
 !!! tip "Tip"
     You can configure detailed lifecycle rules through container policies.
     For more information, see [Container Policy Configuration Guide](container-policy-guide/#lifecycle).
 
-<!-- Line break comment -->
+{% endif %}
+<!-- Notes for line break -->
 
 {% if ec %}
 !!! tip "알아두기"
@@ -1135,13 +1137,15 @@ The name for an error document of a static website has the form of `{response co
 
 If you directly call the Object Storage API from the browser, you need to set Cross-Origin Resource Sharing (CORS). Set an allowed-origin list using the `X-Container-Meta-Access-Control-Allow-Origin` header. You can enter one or more origins separated by spaces (` `) or allow all origins by entering `*`.
 
+{% if release_2026_08 %}
 !!! tip "Note"
-    You can set up to 100 allowed origins in `X-Container-Meta-Access-Control-Allow-Origin`. The same limit applies when you configure it using the [Container Policy](container-policy-guide/#cors).
+    The maximum number of allowed origins that can be set in `X-Container-Meta-Access-Control-Allow-Origin` is 100. This limit also applies when configuring via [container policy](container-policy-guide/#cors).
 
+{% endif %}
 <details>
-<summary>View CORS configuration example</summary>
+<summary>CORS Configuration Example</summary>
 
-Add a CORS configuration to the container.
+Add CORS settings to a container.
 
 ```
 $ curl -X POST \
@@ -1150,10 +1154,10 @@ $ curl -X POST \
 $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 ```
 <br>
-Go to a site that allows CORS from the browser, and then run the following script. You can run the script from the console of the developer tools provided by the browser.
+The script below is run after moving to a site that allows CORS from the browser. You can run the script from the console of the developer tools provided by the browser.
 
 <br>
-ex) `https://example.com/`
+Example: `https://example.com/`
 
 ```
 var token = "****";
@@ -1172,7 +1176,7 @@ request.send(null);
 ```
 
 <br>
-If there are no issues with the CORS configuration, you can confirm a successful response like the following in the console.
+If there is no problem in the CORS settings, you can see the success response as follows.
 
 ```
 Status: 200
@@ -1186,7 +1190,7 @@ x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 ```
 
 <br>
-If CORS is not configured or if the API is called from a site that is not allowed, the following error response is returned.
+If you do not set CORS or call an API from a site that is not allowed, you will receive an error response like the one below.
 
 ```
 Access to XMLHttpRequest at '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
