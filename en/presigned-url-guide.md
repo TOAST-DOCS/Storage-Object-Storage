@@ -128,34 +128,9 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # Container Settings
 <a id="obtain-s3-credentials"></a>
 ### Obtain S3 API Credentials { #obtain-s3-credentials }
 
-To use the S3-compatible API, you must first issue S3 API credentials in the AWS EC2 format (Access Key ID + Secret Access Key). Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
-
-```http
-POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
-
-Content-Type: application/json
-X-Auth-Token: {token-id}
-```
+To use the S3-compatible API, you must first obtain S3 API credentials (Access Key ID + Secret Access Key) in the AWS EC2 format. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide/#s3-api-credentials). For more information, see [S3 API Credentials](s3-api-guide/#s3-api-credential) in the Amazon S3-compatible API guide.
 
 The `Access Key ID` is exposed in the URL as `X-Amz-Credential`, while the `Secret Access Key` is used only for signature calculation and is not exposed in the URL.
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-  "credential": {
-    "access": "$[ access_key ]$",
-    "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
-    "secret": "$[ secret_key ]$",
-    "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-    "created_at": "2024-10-19T08:24:46.000000Z",
-    "accessed_at": "2024-10-19T08:24:46.000000Z"
-  }
-}
-```
-
-</details>
 
 To create a signature using the `aws` CLI or SDK, you must configure the issued credentials locally. For more information, see the configuration section in the [Amazon S3-compatible API Guide](s3-api-guide/#aws-command-line-interface-configuration).
 
