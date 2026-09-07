@@ -41,7 +41,7 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 <a id="s3-api-credential"></a>
 ## S3 API 자격 증명(S3 API Credential) { #s3-api-credential }
 
-오브젝트 스토리지는 Amazon S3 호환 API 호출 시 인증/인가를 위해 S3 API 자격 증명을 사용합니다. S3 API 자격 증명은 NHN Cloud에서 Amazon S3 호환 API를 지원하는 서비스 API를 사용하기 위한 AWS EC2 형식의 인증 키입니다.
+오브젝트 스토리지는 Amazon S3 호환 API 호출 시 인증/인가에 S3 API 자격 증명을 사용합니다. S3 API 자격 증명은 NHN Cloud에서 Amazon S3 호환 API를 지원하는 서비스 API를 사용하기 위한 AWS EC2 형식의 인증 키입니다.
 {% if s3_credential_guide_url %}S3 API 자격 증명에 관한 자세한 내용은 [S3 API 자격 증명]($[ s3_credential_guide_url ]$)을 참고합니다.{% endif %}
 
 <a id="bucket"></a>
