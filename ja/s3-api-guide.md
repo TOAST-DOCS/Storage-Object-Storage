@@ -1,8 +1,10 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=16de6192510c -->
+
 {% include-markdown '../_object-storage-vars.md' %}
 
-<!-- pre-align:aligned sig=acedf0f45de3 -->
+
 
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
 ## Storage > Object Storage > Amazon S3互換APIガイド { #storage-object-storage-amazon-s3-compatible-api-guide }
