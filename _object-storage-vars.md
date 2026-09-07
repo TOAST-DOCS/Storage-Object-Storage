@@ -1,6 +1,8 @@
 {%- set access_key = "253a3c7ca27f4731a9c757addfac29ca" -%}
 {%- set secret_key = "be057f235abf45ee8e2ba14edc5fb253" -%}
 
+{#- release_2026_05 / release_2026_08: 공개 릴리즈 노트 기준 해당 월 배포분이 이 환경에 반영됐는지 여부 -#}
+
 {%- if "gov" in build_flags -%}
   {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-gov/" -%}
   {%- set base_region = "KR1" -%}
@@ -11,6 +13,8 @@
   {%- set ratelimit = true -%}
   {%- set terraform_support = true -%}
   {%- set terraform_guide_url = "/nhncloud/ko/terraform-guide-gov/" -%}
+  {%- set release_2026_05 = true -%}
+  {%- set release_2026_08 = true -%}
   {%- set regions = [
     {"code": "KR1", "name": "한국(판교) 리전", "endpoint": "https://kr1-api-object-storage.gov-nhncloudservice.com"},
     {"code": "KR2", "name": "한국(평촌) 리전", "endpoint": "https://kr2-api-object-storage.gov-nhncloudservice.com"},
@@ -26,6 +30,8 @@
   {%- set ratelimit = true -%}
   {%- set terraform_support = false -%}
   {%- set terraform_guide_url = "/Compute/Instance/ko/terraform-guide/" -%}
+  {%- set release_2026_05 = true -%}
+  {%- set release_2026_08 = true -%}
   {%- set regions = [
     {"code": "KR1", "name": "한국(판교) 리전", "endpoint": "https://api-object-storage.gncloud.go.kr"},
   ] -%}
@@ -34,13 +40,15 @@
   {%- set base_region = "KR4" -%}
   {%- set ec = false -%}
   {%- set replication = false -%}
-  {%- set ratelimit = false -%}
   {%- set terraform_support = false -%}
   {%- set terraform_guide_url = "/Compute/Instance/ko/terraform-guide/" -%}
   {%- if "ngcc" in build_flags -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngcc/" -%}
     {%- set identity_url = "https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity" -%}
     {%- set encrypt = false -%}
+    {%- set ratelimit = false -%}
+    {%- set release_2026_05 = false -%}
+    {%- set release_2026_08 = false -%}
     {%- set regions = [
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "http://ngcc-kr4-swift.kr.cloud.toastoven.net"},
     ] -%}
@@ -48,6 +56,9 @@
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ninc/" -%}
     {%- set identity_url = "https://api-identity-infrastructure.ninc.go.kr" -%}
     {%- set encrypt = false -%}
+    {%- set ratelimit = false -%}
+    {%- set release_2026_05 = false -%}
+    {%- set release_2026_08 = false -%}
     {%- set regions = [
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "https://kr4-api-object-storage.ninc.go.kr"},
     ] -%}
@@ -55,6 +66,9 @@
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngsc/" -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngsc.go.kr" -%}
     {%- set encrypt = false -%}
+    {%- set ratelimit = false -%}
+    {%- set release_2026_05 = false -%}
+    {%- set release_2026_08 = false -%}
     {%- set regions = [
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "https://kr4-api-object-storage.ngsc.go.kr"},
     ] -%}
@@ -62,6 +76,9 @@
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngoic/" -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngoic.com" -%}
     {%- set encrypt = true -%}
+    {%- set ratelimit = true -%}
+    {%- set release_2026_05 = true -%}
+    {%- set release_2026_08 = false -%}
     {%- set regions = [
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "https://kr4-api-object-storage.ngoic.com"},
     ] -%}
@@ -69,6 +86,9 @@
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngovc/" -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngovc.com" -%}
     {%- set encrypt = true -%}
+    {%- set ratelimit = true -%}
+    {%- set release_2026_05 = true -%}
+    {%- set release_2026_08 = false -%}
     {%- set regions = [
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "https://kr4-api-object-storage.ngovc.com"},
     ] -%}
@@ -85,6 +105,8 @@
   {%- set ratelimit = true -%}
   {%- set terraform_support = true -%}
   {%- set terraform_guide_url = "/nhncloud/ko/terraform-guide/" -%}
+  {%- set release_2026_05 = true -%}
+  {%- set release_2026_08 = true -%}
   {%- set regions = [
     {"code": "KR1", "name": "한국(판교) 리전", "endpoint": "https://kr1-api-object-storage.nhncloudservice.com"},
     {"code": "KR2", "name": "한국(평촌) 리전", "endpoint": "https://kr2-api-object-storage.nhncloudservice.com"},
