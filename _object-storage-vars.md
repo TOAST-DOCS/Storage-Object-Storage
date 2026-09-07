@@ -5,6 +5,7 @@
 
 {%- if "gov" in build_flags -%}
   {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-gov/" -%}
+  {%- set s3_credential_guide_url = "/nhncloud/ko/public-api/s3-api-credential-gov/" -%}
   {%- set base_region = "KR1" -%}
   {%- set identity_url = "https://api-identity-infrastructure.gov-nhncloudservice.com" -%}
   {%- set ec = false -%}
@@ -22,6 +23,7 @@
 
 {%- elif "ncgn" in build_flags -%}
   {%- set identity_guide_url = false -%}
+  {%- set s3_credential_guide_url = false -%}
   {%- set base_region = "KR1" -%}
   {%- set identity_url = "https://api-identity-infrastructure.gncloud.go.kr" -%}
   {%- set ec = false -%}
@@ -44,6 +46,7 @@
   {%- set terraform_guide_url = "/Compute/Instance/ko/terraform-guide/" -%}
   {%- if "ngcc" in build_flags -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngcc/" -%}
+    {%- set s3_credential_guide_url = false -%}
     {%- set identity_url = "https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity" -%}
     {%- set encrypt = false -%}
     {%- set ratelimit = false -%}
@@ -54,6 +57,7 @@
     ] -%}
   {%- elif "ninc" in build_flags -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ninc/" -%}
+    {%- set s3_credential_guide_url = false -%}
     {%- set identity_url = "https://api-identity-infrastructure.ninc.go.kr" -%}
     {%- set encrypt = false -%}
     {%- set ratelimit = false -%}
@@ -64,6 +68,7 @@
     ] -%}
   {%- elif "ngsc" in build_flags -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngsc/" -%}
+    {%- set s3_credential_guide_url = false -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngsc.go.kr" -%}
     {%- set encrypt = false -%}
     {%- set ratelimit = false -%}
@@ -74,6 +79,7 @@
     ] -%}
   {%- elif "ngoic" in build_flags -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngoic/" -%}
+    {%- set s3_credential_guide_url = false -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngoic.com" -%}
     {%- set encrypt = true -%}
     {%- set ratelimit = true -%}
@@ -84,6 +90,7 @@
     ] -%}
   {%- elif "ngovc" in build_flags -%}
     {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngovc/" -%}
+    {%- set s3_credential_guide_url = false -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngovc.com" -%}
     {%- set encrypt = true -%}
     {%- set ratelimit = true -%}
@@ -97,6 +104,7 @@
 {%- else -%}
   {#- public (기본값) -#}
   {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token/" -%}
+  {%- set s3_credential_guide_url = "/nhncloud/ko/public-api/s3-api-credential/" -%}
   {%- set base_region = "KR1" -%}
   {%- set identity_url = "https://api-identity-infrastructure.nhncloudservice.com" -%}
   {%- set ec = true -%}
