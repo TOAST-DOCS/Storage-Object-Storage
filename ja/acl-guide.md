@@ -42,9 +42,11 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
 | X-Container-View | コンテナ内のオブジェクト一覧の照会及びオブジェクトの情報照会を許可します。コンテナに対するGET、HEADリクエスト及びオブジェクトに対するHEADリクエストが該当します。 |
 
 
+{% if release_2026_08 %}
 !!! tip "ヒント"
-    `X-Container-Read`、`X-Container-Write`、`X-Container-View` に設定できるアクセスポリシー要素は、各属性につき最大 100 個です。この制限は[コンテナポリシー](container-policy-guide/#acl)で設定する場合も同様に適用されます。
+    `X-Container-Read`、`X-Container-Write`、`X-Container-View` に設定できるアクセスポリシー要素は、各属性につき最大 100 個です。この制限は[コンテナポリシー](container-policy-guide/#acl)で設定する場合にも同様に適用されます。
 
+{% endif %}
 <br>
 
 <a id="role-based-access-elements"></a>
@@ -63,8 +65,11 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
     `{api-user-id}` は、コンソールの API エンドポイント設定ダイアログの **[APIユーザーID]** 項目、または認証トークン発行 API 応答本文の **access.user.id** フィールドで確認できます。
     認証トークン発行 API を使用するには、API ガイドの[認証および権限](api-guide/#auth)を参照してください。
 
+{% if release_2026_08 %}
 !!! tip "覚えておくこと"
-    `{tenant-id}:` や `:{api-user-id}` のようにコロンの片側が空の値、`.` で始まる値は使用することはできません。
+    `{tenant-id}:` や `:{api-user-id}` のようにコロンの片側が空の値、`.` で始まる値は使用できません。
+
+{% endif %}
 
 <a id="common-access-elements"></a>
 #### その他のアクセスポリシー要素
@@ -79,9 +84,11 @@ APIを使用して、コンテナの `X-Container-Read`、`X-Container-Write`、
 | `.rlistings` | 認証トークンなしで読み取りが許可されたユーザーに対して、コンテナの照会（GET または HEAD リクエスト）を許可します。<br>このポリシー要素がない場合、オブジェクト一覧を照会することはできません。<br>このポリシー要素は単独で設定することはできません。 |
 
 
+{% if release_2026_08 %}
 !!! tip "ヒント"
     リファラーで `*` は全体公開を意味する `.r:*` としてのみ使用できます。`*` を他の文字と組み合わせた値、全体をブロックする `.r:-*`、空の値は使用できません。
 
+{% endif %}
 <br>
 
 <a id="role-based-access-allow-rw-to-project-users"></a>
@@ -186,7 +193,7 @@ $ curl -X GET \
 HTTP リファラー (HTTP Referer) は、ハイパーリンクでリクエストされたウェブページのアドレス情報であり、リクエストヘッダーに含まれます。
 コンテナの `X-Container-Read` 属性に `.r:{referrer}` または `.r:-{referrer}` 形式のロールベースアクセスポリシー要素を設定すると、特定のリファラーからのアクセスリクエストを許可またはブロックできます。ロールベースアクセスポリシー要素として HTTP リファラーを設定する場合は、プロトコルとサブパスを除いたドメイン名を入力する必要があります。
 
-HTTP リファラーのアクセス許可/拒否ポリシーは、入力順序に関係なく拒否ポリシーが優先して適用されます。そのため、拒否対象として指定された HTTP リファラーのアクセスリクエストは、すべてのアクセスを許可する `.r:*` ポリシー要素を同時に入力した場合でも拒否されます。
+{% if release_2026_08 %}HTTP リファラーのアクセス許可/拒否ポリシーは、入力順序に関係なく拒否ポリシーが優先適用されます。そのため、拒否対象として指定された HTTP リファラーからのアクセス要求は、すべてのアクセスを許可する `.r:*` ポリシー要素を同時に指定しても拒否されます。{% endif %}
 
 !!! danger "注意"
     HTTP リファラーヘッダーは改ざんされる可能性があるため、アクセス制御の手段としてお勧めしません。
@@ -322,6 +329,33 @@ $ curl -X GET \
 
 </details>
 
+HTTP リファラーのアクセス許可/ブロックポリシーは、入力する順序に従って適用されます。たとえば、リファラーブロックポリシーの要素の後にすべてのアクセスを許可する `.r:*` ポリシー要素を入力した場合、リファラーブロックポリシーは無視されます。反対に、すべてのアクセスを許可するポリシー要素を先に入力し、特定のリファラーブロックポリシー要素を後に入力した場合、設定されたリファラーからのアクセスリクエストを除くすべてのアクセスリクエストが許可されます。
+
+<details>
+<summary>HTTP リファラーブロックが無視される誤ったポリシー設定の例</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
+  $[ object_storage_url ]$/v1/AUTH_*****/container
+```
+
+```
+$ curl -O -X GET \
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
+
+[オブジェクトのダウンロード]
+
+$ curl -O -X GET \
+  -H 'Referer: https://bar.foo.com' \
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
+
+[オブジェクトのダウンロード]
+```
+</details>
+
+{% endif %}
 <details>
 <summary>特定の HTTP リファラーを除くすべてのアクセスリクエストを許可する設定例</summary>
 
@@ -478,9 +512,11 @@ API を使用してコンテナの `X-Container-Ip-Acl-Allowed-List`、`X-Contai
 
 IPベースのアクセスポリシーが設定されたコンテナの属性を変更するには、許可されたテナントIDとAPIユーザーIDで発行した有効な認証トークンが必要であり、許可されたIPからリクエストする必要があります。
 
+{% if release_2026_08 %}
 !!! tip "ヒント"
-    `X-Container-Ip-Acl-Allowed-List`（ホワイトリスト）と `X-Container-Ip-Acl-Denied-List`（ブラックリスト）に設定できるポリシー要素はそれぞれ最大 100 個です。この制限は[コンテナポリシー](container-policy-guide/#ip-acl)で設定する場合も同様に適用されます。
+    `X-Container-Ip-Acl-Allowed-List`（ホワイトリスト）と `X-Container-Ip-Acl-Denied-List`（ブラックリスト）に設定できるポリシー要素はそれぞれ最大 100 個です。この制限は[コンテナポリシー](container-policy-guide/#ip-acl)で設定する場合にも同様に適用されます。
 
+{% endif %}
 <br>
 
 IPベースのアクセスポリシー要素は、アクセス権限とIPまたはネットワーク帯域で構成されており、カンマ(`,`)で区切って複数の値を入力できます。アクセス権限は次のとおりです。
