@@ -2,8 +2,7 @@
 
 {% include-markdown '../_object-storage-vars.md' %}
 
-
-
+{% if release_2026_05 %}
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > 컨테이너 정책 설정 가이드 { #storage-object-storage-container-policy-configuration-guide }
 
@@ -16,6 +15,7 @@
 
 정책 문서는 다음과 같이 기능별 최상위 키로 구성되며, 각 최상위 키 하위에 세부 설정을 정의합니다.
 
+{% if release_2026_08 %}
 ```json
 {
   "lifecycle": { ... },
@@ -35,6 +35,24 @@
 | `ip_acl` | IP 접근 제어(IP ACL) | IP 기반 접근 제어를 설정합니다. |
 | `cors` | 교차 출처 리소스 공유(CORS) | 허용 출처 등 CORS 설정을 관리합니다. |
 | `lock` | 오브젝트 잠금 | 오브젝트 잠금(WORM)의 잠금 주기를 설정합니다. |
+{% else %}
+```json
+{
+  "lifecycle": {
+    ...
+  },
+  "lock": {
+    ...
+  },
+  "ip_acl": {
+    ...
+  }
+}
+```
+
+!!! tip "알아두기"
+    2026년 5월 기준 **수명 주기** 설정만 지원하며, 향후 더 많은 기능으로 확대 적용될 예정입니다.
+{% endif %}
 
 <a id="container-policy-api"></a>
 ## 컨테이너 정책 API { #container-policy-api }
@@ -57,7 +75,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | Y | 토큰 ID |
 | Account | URL | String | Y | 스토리지 계정 |
 | Container | URL | String | Y | 컨테이너 이름 |
-| policy | Query | String | Y | 정책 조회를 위한 쿼리 파라미터<br>값을 지정하지 않으면 전체 정책 문서를, 기능별 최상위 키를 지정하면 해당 기능의 정책만 조회합니다. |
+| policy | Query | String | Y | 정책 조회를 위한 쿼리 파라미터{% if release_2026_08 %}<br>값을 지정하지 않으면 전체 정책 문서를, 기능별 최상위 키를 지정하면 해당 기능의 정책만 조회합니다.{% else %} (값 없이 사용){% endif %} |
 
 <a id="get-container-policy-response"></a>
 #### 응답
@@ -69,6 +87,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
 ```
 
+{% if release_2026_08 %}
 `policy` 쿼리 파라미터에 값을 지정하지 않으면 설정된 모든 기능의 정책을 하나의 문서로 반환합니다.
 
 <details>
@@ -136,16 +155,55 @@ X-Auth-Token: {token-id}
 </details>
 
 <br>
+{% else %}
+
+<details>
+  <summary>응답 예시</summary>
+
+```json
+{
+  "lifecycle": {
+    "default_rule" : {
+      "action": {
+        "type": "transfer",
+        "destination": "destination-con"
+      },
+      "days": 1
+    },
+    "rules": [
+      {
+        "name": "rule1",
+        "condition": {
+          "prefix": "temp/"
+        },
+        "days": 2,
+        "action": {
+          "type": "delete"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+<br>
+{% endif %}
 
 <a id="set-container-policy"></a>
 ### 정책 설정 { #set-container-policy }
 
 요청 본문에 JSON 정책 문서를 포함해 컨테이너 정책을 설정합니다.
 
+{% if release_2026_08 %}
 정책을 설정할 때 다음 규칙이 적용됩니다.
 
 * 최상위 키는 `lifecycle`, `acl`, `ip_acl`, `cors`, `lock`만 사용할 수 있으며, 스키마에 정의되지 않은 키나 필드를 포함하면 요청이 거부됩니다.
 * 정책 문서에 포함한 최상위 키는 보낸 내용으로 전체를 덮어쓰고, 포함하지 않은 최상위 키의 설정은 그대로 유지됩니다. 최상위 키를 보내면서 일부 하위 항목만 담으면 담지 않은 항목은 해제되므로, 유지하려는 항목은 항상 함께 보내야 합니다.
+{% else %}
+정책은 요청에 포함된 최상위 키(예: lifecycle) 단위로 덮어쓰며, 포함되지 않은 키의 설정은 유지됩니다.
+{% endif %}
 
 ```
 POST /v1/{Account}/{Container}
@@ -171,7 +229,9 @@ Content-Type: application/json
 
 !!! tip "알아두기"
     같은 요청에서 헤더와 정책 문서를 함께 사용하면 정책 문서가 우선 적용됩니다.
+{%- if release_2026_08 %}
     정책 문서가 스키마에 맞지 않으면 HTTP 상태 코드 `400`과 함께 오류 위치와 사유를 담은 메시지를 반환합니다.
+{%- endif %}
 
 <br>
 
@@ -225,11 +285,11 @@ Content-Type: application/json
 
 | 필드 | 형식 | 필수 | 설명 | 비고 |
 |---|---|---|---|---|
-| `default_rule` | Object | N | 기본 규칙 | |
+| `default_rule` | Object | N | 기본 규칙 |{% if not release_2026_08 %} 생략하거나 빈 오브젝트(`{}`)로 설정하면 기본 규칙이 해제됩니다.{% endif %} |
 | `default_rule.days` | Integer | Y | 오브젝트 수명 주기 | 일 단위, 최대 36,500일 |
 | `default_rule.action.type` | Enum | Y | 만료 동작 유형 | `"transfer"` (이동) 또는 `"delete"` (삭제) |
 | `default_rule.action.destination` | String | Conditional | 만료 시 오브젝트를 이동할 대상 컨테이너 이름 | `type`이 `"transfer"`일 때 필수 |
-| `rules` | Array | N | 조건 규칙 목록 | 최대 30개 |
+| `rules` | Array | N | 조건 규칙 목록 | {% if release_2026_08 %}최대 30개{% else %}생략하거나 빈 배열(`[]`)로 설정하면 조건 규칙이 모두 삭제됩니다.{% endif %} |
 | `rules[*].name` | String | Y | 규칙 이름 | 컨테이너 내에서 중복될 수 없습니다. |
 | `rules[*].condition.prefix` | String | Y | 오브젝트 이름의 접두사 조건 | 빈 문자열은 허용하지 않습니다. |
 | `rules[*].days` | Integer | Y | 오브젝트 수명 주기 | 일 단위, 최대 36,500일 |
@@ -303,6 +363,7 @@ Content-Type: application/json
 
 <br>
 
+{% if release_2026_08 %}
 <a id="acl"></a>
 ## 접근 제어(ACL) { #acl }
 
@@ -550,3 +611,6 @@ CORS 정책 문서의 구조는 다음과 같습니다.
   }
 }
 ```
+{% endif %}
+
+{% endif %}

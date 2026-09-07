@@ -2,8 +2,6 @@
 
 {% include-markdown '../_object-storage-vars.md' %}
 
-
-
 <a id="storage-object-storage-acl-configuration-guide"></a>
 ## Storage > Object Storage > 접근 정책 설정 가이드 { #storage-object-storage-acl-configuration-guide }
 
@@ -42,9 +40,11 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 | X-Container-Write | 컨테이너 내 오브젝트 변경 요청을 허용합니다. 오브젝트에 대한 PUT, POST, DELETE, COPY 요청이 해당됩니다.                    |
 | X-Container-View | 컨테이너 내 오브젝트 목록 조회 및 오브젝트의 정보 조회를 허용합니다. 컨테이너에 대한 GET, HEAD 요청 및 오브젝트에 대한 HEAD 요청이 해당됩니다. |
 
+{% if release_2026_08 %}
 !!! tip "알아두기"
     `X-Container-Read`, `X-Container-Write`, `X-Container-View`에 설정할 수 있는 접근 정책 요소는 각 속성별로 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#acl)으로 설정할 때도 동일하게 적용됩니다.
 
+{% endif %}
 <br>
 
 <a id="role-based-access-elements"></a>
@@ -63,9 +63,11 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
     `{api-user-id}`는 콘솔의 API 엔드포인트 설정 대화 상자의 **API 사용자 ID** 항목이나 인증 토큰 발급 API 응답 본문의 **access.user.id** 필드에서 확인할 수 있습니다.
     인증 토큰 발급 API를 사용하려면 API 가이드의 [인증 및 권한](api-guide/#auth) 항목을 참고합니다.
 
+{% if release_2026_08 %}
 !!! tip "알아두기"
     `{tenant-id}:`나 `:{api-user-id}`처럼 콜론의 한쪽이 비어 있는 값, `.`으로 시작하는 값은 사용할 수 없습니다.
 
+{% endif %}
 <a id="common-access-elements"></a>
 #### 기타 접근 정책 요소
 
@@ -78,9 +80,11 @@ API를 사용해 컨테이너의 `X-Container-Read`, `X-Container-Write`, `X-Con
 | `.r:-{referrer}` | 요청 헤더를 참조하여 설정된 HTTP 리퍼러의 접근을 제한합니다.<br>리퍼러 앞에 마이너스 기호(-)를 붙여 설정합니다. |
 | `.rlistings` | 인증 토큰 없이 읽기가 허용된 사용자에게 컨테이너 조회(GET 또는 HEAD 요청)를 허용합니다.<br>이 정책 요소가 없으면 오브젝트 목록을 조회할 수 없습니다.<br>이 정책 요소는 단독으로 설정할 수 없습니다. |
 
+{% if release_2026_08 %}
 !!! tip "알아두기"
     리퍼러에서 `*`는 전체 공개를 뜻하는 `.r:*`로만 사용할 수 있습니다. `*`를 다른 문자와 함께 넣은 값, 전체를 차단하는 `.r:-*`, 빈 값은 사용할 수 없습니다.
 
+{% endif %}
 <br>
 
 <a id="role-based-access-allow-rw-to-project-users"></a>
@@ -186,7 +190,7 @@ $ curl -X GET \
 HTTP 리퍼러(HTTP Referer)는 하이퍼링크로 요청한 웹 페이지의 주소 정보이며, 요청 헤더에 포함됩니다.
 컨테이너의 `X-Container-Read` 속성에 `.r:{referrer}` 또는 `.r:-{referrer}` 형태의 역할 기반 접근 정책 요소를 설정하면 특정 리퍼러의 접근 요청을 허용하거나 차단할 수 있습니다. 역할 기반 접근 정책 요소로 HTTP 리퍼러를 설정할 때는 프로토콜과 하위 경로를 제외한 도메인 이름을 입력해야 합니다.
 
-HTTP 리퍼러 접근 허용/차단 정책은 입력 순서와 관계없이 차단 정책을 우선 적용합니다. 따라서 차단 대상으로 지정된 HTTP 리퍼러의 접근 요청은 모든 접근을 허용하는 `.r:*` 정책 요소를 함께 입력하더라도 거부됩니다.
+{% if release_2026_08 %}HTTP 리퍼러 접근 허용/차단 정책은 입력 순서와 관계없이 차단 정책을 우선 적용합니다. 따라서 차단 대상으로 지정된 HTTP 리퍼러의 접근 요청은 모든 접근을 허용하는 `.r:*` 정책 요소를 함께 입력하더라도 거부됩니다.{% endif %}
 
 !!! danger "주의"
     HTTP 리퍼러 헤더는 위변조할 수 있으므로 접근 제어 수단으로 권장하지 않습니다.
@@ -322,6 +326,34 @@ $ curl -X GET \
 
 </details>
 
+{% if not release_2026_08 %}
+HTTP 리퍼러 접근 허용/차단 정책은 입력하는 순서에 따라 적용됩니다. 예를 들어, 리퍼러 차단 정책 요소 뒤에 모두에게 접근을 허용하는 `.r:*` 정책 요소를 입력했다면 리퍼러 차단 정책은 무시됩니다. 반대로 모두에게 접근을 허용하는 정책 요소를 먼저 입력하고 특정 리퍼러 차단 정책 요소를 뒤에 입력했다면, 설정된 리퍼러의 접근 요청을 제외한 모든 접근 요청이 허용됩니다.
+
+<details>
+<summary>HTTP 리퍼러 차단이 무시되는 잘못된 정책 설정 예시</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
+  $[ object_storage_url ]$/v1/AUTH_*****/container
+```
+
+```
+$ curl -O -X GET \
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
+
+[오브젝트 다운로드]
+
+$ curl -O -X GET \
+  -H 'Referer: https://bar.foo.com' \
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
+
+[오브젝트 다운로드]
+```
+</details>
+
+{% endif %}
 <details>
 <summary>특정 HTTP 리퍼러를 제외한 모든 접근 요청 허용 설정 예시</summary>
 
@@ -479,9 +511,11 @@ API를 사용해 컨테이너의 `X-Container-Ip-Acl-Allowed-List`, `X-Container
 
 IP 기반 접근 정책이 설정된 컨테이너의 속성을 변경하려면 허가된 테넌트 ID와 API 사용자 ID로 발급한 유효한 인증 토큰이 필요하며, 허용된 IP에서 요청해야 합니다.
 
+{% if release_2026_08 %}
 !!! tip "알아두기"
     `X-Container-Ip-Acl-Allowed-List`(화이트리스트)와 `X-Container-Ip-Acl-Denied-List`(블랙리스트)에 설정할 수 있는 정책 요소는 각각 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#ip-acl)으로 설정할 때도 동일하게 적용됩니다.
 
+{% endif %}
 <br>
 
 IP 기반 접근 정책 요소는 접근 권한과 IP 또는 네트워크 대역으로 이루어지며 쉼표(`,`)로 구분해 여러 개의 값을 입력할 수 있습니다. 접근 권한은 다음과 같습니다.

@@ -15,15 +15,17 @@ The following Amazon S3 compatible API is provided.
 | PUT Bucket | Create bucket |
 | HEAD Bucket | Query bucket information |
 | DELETE Bucket | Delete bucket |
-| PUT Bucket Object Lock | Create locked bucket |
+{%- if release_2026_08 %}
+| PUT Bucket Object Lock | Create a locked bucket |
 | PUT Object Lock Configuration | Set locked bucket retention period |
 | GET Object Lock Configuration | Get locked bucket retention period |
+{%- endif %}
 | PUT Bucket ACL | Set bucket ACL |
 | GET Bucket ACL | Get bucket ACL |
 | GET Bucket Location | Get region with bucket |
 | GET Bucket List Objects | List bucket objects |
 | GET Object | Download object |
-| HEAD Object | Query object information |
+| HEAD Object | Get object information |
 | PUT Object | Upload object |
 | PUT Object Copy | Copy object |
 | DELETE Object | Delete object |
@@ -31,7 +33,7 @@ The following Amazon S3 compatible API is provided.
 | Upload Part | Upload part |
 | Upload Part Copy | Copy part |
 | Complete Multipart Upload | Complete Multipart Upload |
-| Abort Multipart Upload | Stop Multipart Upload |
+| Abort Multipart Upload | Abort Multipart Upload |
 | List Parts | List multipart objects |
 | List Multipart Uploads | List multipart objects under uploading |
 | DELETE Multiple Objects | Delete two or more objects |
@@ -210,7 +212,8 @@ The information required to create a signature is as follows:
 | Region Name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 | Secret key | S3 API credentials secret key |
 
-The `x-amz-content-sha256` header is required when generating an AWS signature V4 signature. This header is included in the Canonical Request and used in the signature calculation, and the payload processing method is determined by the header value. The available values are as follows:
+{% if release_2026_05 %}
+The `x-amz-content-sha256` header is required when creating an AWS Signature V4 signature. This header is included in the Canonical Request and is used in signature calculation. The header value determines how the payload is processed. The following values are available.
 
 | x-amz-content-sha256 value | Description |
 |---|---|
@@ -235,6 +238,8 @@ If the `x-amz-content-sha256` value is `STREAMING-UNSIGNED-PAYLOAD-TRAILER` or `
 
 !!! tip "Note"
     For more information on signature calculation using trailer headers (chunked uploads), refer to the [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) documentation.
+
+{% endif %}
 
 <a id="bucket"></a>
 ## Bucket { #bucket }
@@ -421,6 +426,8 @@ This API does not require a request body.
 #### Response
 This API does not return request body. When the request is appropriate, return status code 204.
 
+{% if release_2026_08 %}
+
 <a id="create-lock-bucket"></a>
 ### Create Lock Bucket { #create-lock-bucket }
 Creates a bucket with object lock enabled. Set the `x-amz-bucket-object-lock-enabled` header to `true` when creating the bucket. The default retention period is set to 0 days.
@@ -561,6 +568,8 @@ For a valid request, returns status code 200 and the object lock configuration i
 
 </details>
 
+{% endif %}
+
 <a id="object"></a>
 ## Object { #object }
 
@@ -652,6 +661,8 @@ This API does not require a request body.
 #### Response
 This API does not return request body. When the request is appropriate, return status code 204.
 
+{% if release_2026_08 %}
+
 <a id="presigned-url"></a>
 ## Create Signed URL { #presigned-url }
 A URL that carries **AWS Signature Version 4 (SigV4)** signing in query parameters, allowing access to an object for a set period of time without an authentication token (Authorization header). Use `GET` for downloads and `PUT` for uploads.
@@ -688,8 +699,12 @@ This API does not require a request body.
 #### Response
 For a valid request, return status code 200.
 
+{% if release_2026_08 %}
 !!! tip "Note"
-    For more information, including the Swift TempURL method and per-language direct signing examples, see [Presigned URL Guide](presigned-url-guide/).
+    For more details, including Swift TempURL method and direct signing examples by language, see [Signed URL Guide](presigned-url-guide/).
+
+{% endif %}
+{% endif %}
 
 <a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
@@ -700,7 +715,7 @@ You can use NHN Cloud Object Storage with the [AWS Command Line Interface](https
 See [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) to install the AWS Command Line Interface.
 
 !!! tip "Note"
-    NHN Cloud Object Storage supports AWS CLI up to version 2.34.38.
+    NHN Cloud Object Storage supports up to version {% if release_2026_05 %}2.34.38{% else %}2.22.35{% endif %} of the AWS CLI.
 
 <a id="aws-command-line-interface-configuration"></a>
 ### Configuration { #aws-command-line-interface-configuration }
@@ -778,12 +793,13 @@ remove_bucket: example-bucket
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>Locked bucket</summary>
+<summary>Lock Bucket</summary>
 
-Locked buckets are managed using the <code>aws s3api</code> subcommand.
+A lock bucket is managed using the <code>aws s3api</code> subcommand.
 <br>
-Using the <code>--object-lock-enabled-for-bucket</code> option with the <code>create-bucket</code> command creates a bucket with object lock (오브젝트 잠금) enabled. The default retention period is set to 0 days.
+Using the <code>--object-lock-enabled-for-bucket</code> option with the <code>create-bucket</code> command creates a bucket with object lock enabled. The default retention period is set to 0 days.
 
 ```shell
 $ aws --endpoint-url=$[ object_storage_url ]$ s3api create-bucket \
@@ -807,7 +823,7 @@ $ aws --endpoint-url=$[ object_storage_url ]$ s3api put-object-lock-configuratio
     }'
 ```
 
-To view the lock configuration, use the <code>get-object-lock-configuration</code> command.
+To retrieve the lock configuration, use the <code>get-object-lock-configuration</code> command.
 
 ```shell
 $ aws --endpoint-url=$[ object_storage_url ]$ s3api get-object-lock-configuration --bucket example-bucket
@@ -825,6 +841,7 @@ $ aws --endpoint-url=$[ object_storage_url ]$ s3api get-object-lock-configuratio
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>Upload an object</summary>
@@ -866,8 +883,9 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>Create a presigned URL</summary>
+<summary>Create Signed URL</summary>
 
 ```shell
 $ aws --endpoint-url=$[ object_storage_url ]$ s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
@@ -875,6 +893,9 @@ $[ object_storage_url ]$/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-A
 ```
 
 </details>
+{% endif %}
+
+{% if release_2026_05 %}
 
 <a id="aws-command-line-interface-virtual-hosted-style"></a>
 ### Use Domain-Style Endpoints { #aws-command-line-interface-virtual-hosted-style }
@@ -907,6 +928,8 @@ s3 =
 
 !!! danger "Caution"
     If the bucket name contains a period (`.`), using Virtual Hosted-style may result in certificate validation failure because the bucket name falls outside the scope of the wildcard SSL certificate. In this case, use Path-style instead.
+
+{% endif %}
 
 <a id="aws-sdk"></a>
 ## AWS SDK { #aws-sdk }
@@ -1011,10 +1034,11 @@ def delete_bucket(self, bucket_name):
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>Locked bucket</summary>
+<summary>Lock Bucket</summary>
 
-Setting <code>ObjectLockEnabledForBucket=True</code> in the <code>create_bucket</code> method creates a locked bucket. The default retention period is set to 0 days.
+Setting <code>ObjectLockEnabledForBucket=True</code> in the <code>create_bucket</code> method creates a lock bucket. The default retention period is set to 0 days.
 
 ```python
 def create_bucket_with_lock(self, bucket_name):
@@ -1062,6 +1086,7 @@ def get_object_lock_configuration(self, bucket_name):
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>Upload an object</summary>
@@ -1119,13 +1144,14 @@ def delete(self, bucket_name, key):
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>Generate a signed URL</summary>
+<summary>Create Signed URL</summary>
 
 ```python
 def generate_presigned_url(self, bucket_name, key, expires_in):
     try:
-        # Use 'put_object' for uploads
+        # Use 'put_object' for upload
         return self.s3.generate_presigned_url(
             'get_object',
             Params={'Bucket': bucket_name, 'Key': key},
@@ -1135,6 +1161,7 @@ def generate_presigned_url(self, bucket_name, key, expires_in):
 ```
 
 </details>
+{% endif %}
 
 <a id="aws-sdk-java"></a>
 ### Java SDK { #aws-sdk-java }
@@ -1247,8 +1274,9 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>Lock bucket</summary>
+<summary>Lock Bucket</summary>
 
 Setting <code>withObjectLockEnabledForBucket(true)</code> in <code>CreateBucketRequest</code> creates a lock bucket. The default retention period is set to 0 days.
 
@@ -1315,6 +1343,7 @@ public ObjectLockConfiguration getObjectLockConfiguration(
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>Upload an object</summary>
@@ -1391,8 +1420,9 @@ public void deleteObject(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>Generate a signed URL</summary>
+<summary>Create Signed URL</summary>
 
 ```java
 public String generatePresignedUrl(
@@ -1402,7 +1432,7 @@ public String generatePresignedUrl(
         Date expiration = new Date(System.currentTimeMillis() + expirationMillis);
         GeneratePresignedUrlRequest request =
             new GeneratePresignedUrlRequest(bucketName, objKeyName)
-                .withMethod(HttpMethod.GET)          // Use HttpMethod.PUT for uploads
+                .withMethod(HttpMethod.GET)          // For upload, use HttpMethod.PUT
                 .withExpiration(expiration);
         return s3Client.generatePresignedUrl(request).toString();
     } catch (AmazonServiceException e) {
@@ -1414,6 +1444,7 @@ public String generatePresignedUrl(
 ```
 
 </details>
+{% endif %}
 
 <a id="aws-sdk-dotnet"></a>
 ### .NET SDK { #aws-sdk-dotnet }
@@ -1567,8 +1598,9 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>Lock bucket</summary>
+<summary>Lock Bucket</summary>
 
 Setting <code>ObjectLockEnabledForBucket = true</code> in <code>PutBucketRequest</code> creates a lock bucket. The default retention period is set to 0 days.
 
@@ -1661,6 +1693,7 @@ static async Task<GetObjectLockConfigurationResponse> GetObjectLockConfiguration
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>Upload an object</summary>
@@ -1765,8 +1798,9 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>Create a presigned URL</summary>
+<summary>Create Signed URL</summary>
 
 ```csharp
 static string GeneratePresignedUrl(
@@ -1796,6 +1830,9 @@ static string GeneratePresignedUrl(
 ```
 
 </details>
+{% endif %}
+
+{% if release_2026_05 %}
 
 <a id="aws-sdk-virtual-hosted-style"></a>
 ### Use domain-style endpoints { #aws-sdk-virtual-hosted-style }
@@ -1875,4 +1912,4 @@ private static AmazonS3Client GetS3Client()
 </details>
 
 !!! danger "Caution"
-    If the bucket name contains a dot (`.`), using the domain style may cause certificate validation to fail because the bucket name falls outside the valid scope of the wildcard SSL certificate. In this case, use the path style instead.
+    If the bucket name contains a dot (`.`), using the domain style may cause certificate validation to fail because the bucket name falls outside the valid scope of the wildcard SSL certificate. In this case, use the path style instead.{% endif %}
