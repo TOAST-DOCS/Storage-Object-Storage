@@ -4,6 +4,8 @@
 
 <!-- pre-align:aligned sig=4d6c14c57aab -->
 
+{% if release_2026_05 %}
+
 <a id="storage-object-storage-cli-guide"></a>
 ## Storage > Object Storage > CLI Guide { #storage-object-storage-cli-guide }
 
@@ -657,4 +659,4 @@ $ swift stat media
 
 <a id="reference"></a>
 ## References { #reference }
-Object Storage service (swift) command-line client - [https://docs.openstack.org/ocata/cli-reference/swift.html](https://docs.openstack.org/ocata/cli-reference/swift.html)
+Object Storage service (swift) command-line client - [https://docs.openstack.org/ocata/cli-reference/swift.html](https://docs.openstack.org/ocata/cli-reference/swift.html){% endif %}
