@@ -281,18 +281,22 @@ For blacklist, setting `exe`, `jpg` as blacklist will prevent all objects with `
 
 Views and modifies the lifecycle rules of objects stored in containers.
 
-For more information about lifecycle settings, see [How to Apply Lifecycle Rules](container-policy-guide/#lifecycle-apply).
+{% if release_2026_05 %}For more information about how to configure lifecycle settings, see [How to Apply Lifecycle Rules](container-policy-guide/#lifecycle-apply).{% endif %}
 
 <table class="it" style="padding-top: 15px; padding-bottom: 10px;">
   <tr>
+{%- if release_2026_05 %}
     <th>Type</th>
+{%- endif %}
     <th>Item</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td rowspan="3">Basic Rules</td>
+{%- if release_2026_05 %}
+    <td rowspan="3">Default Rules</td>
+{%- endif %}
     <td>Object Lifecycle</td>
-    <td>Enter the object lifecycle in days.</td>
+    <td>Enter the object life cycle in days.{% if not release_2026_05 %} Life cycle setting will be cleared if it is not filled in.{% endif %}</td>
   </tr>
   <tr>
     <td>Lifecycle Expiration Action</td>
@@ -302,6 +306,7 @@ For more information about lifecycle settings, see [How to Apply Lifecycle Rules
     <td>Destination Container</td>
     <td>When you select <b>Move Container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
   </tr>
+{%- if release_2026_05 %}
   <tr>
     <td rowspan="5">Conditional Rules</td>
     <td>Rule Name</td>
@@ -313,7 +318,7 @@ For more information about lifecycle settings, see [How to Apply Lifecycle Rules
   </tr>
   <tr>
     <td>Object Lifecycle</td>
-    <td>Enter the object lifecycle in days.</td>
+    <td>Enter the object life cycle in days.</td>
   </tr>
   <tr>
     <td>Lifecycle Expiration Action</td>
@@ -323,22 +328,29 @@ For more information about lifecycle settings, see [How to Apply Lifecycle Rules
     <td>Destination Container</td>
     <td>When you select <b>Move Container</b> as the lifecycle expiration action, you must select a container to move the object to.</td>
   </tr>
+{%- endif %}
 </table>
 
-!!! TIP "Note"
-    The modified lifecycle rules apply only to objects uploaded after the rules are set.
+!!! tip "Note"
+    The updated life cycle rules are applied only to objects uploaded after the settings are configured.
+{%- if release_2026_08 %}
 
-    Up to 30 condition rules can be configured. This limit also applies when configuring via [Container Policy](container-policy-guide/#lifecycle).
+Up to 30 condition rules can be configured. This limit also applies when configuring with [container policy](container-policy-guide/#lifecycle).
+{%- endif %}
 {%- if ec %}
     Objects stored in Standard class containers can be moved to Economy class containers over their lifecycle to reduce the cost of long-term storage.
 
 {% endif %}
+
+{% if release_2026_05 %}
 
 <a id="set-object-lifecycle-batch"></a>
 ##### Bulk Apply Rules
 
 Clicking the **Bulk Apply Rules** button resets the lifecycle of all objects in the container according to the rules at once.
 Rules are applied in order of priority, and the lifecycle is recalculated based on the time of bulk application.
+
+{% endif %}
 
 <a id="set-object-versioning"></a>
 #### Object Version
@@ -490,6 +502,8 @@ Suspends container replication. While replication is suspended, any deletions or
 <br>
 
 {% endif %}
+{% if release_2026_08 %}
+
 <a id="task-record"></a>
 #### Task History
 You can view the history of tasks that batch-process multiple objects. The task types for which history is provided are as follows:
@@ -498,7 +512,9 @@ You can view the history of tasks that batch-process multiple objects. The task 
 * [Delete Object](#delete-object)
 * [Copy Object](#copy-or-move-object)
 * [Move Object](#copy-or-move-object)
-* [Apply Lifecycle Rules in Batch](#set-object-lifecycle-batch)
+{%- if release_2026_05 %}
+* [Bulk Apply Lifecycle Rules](#set-object-lifecycle-batch)
+{%- endif %}
 
 !!! tip "Tip"
     Task history is retained for 90 days from the date the task ends.
@@ -606,6 +622,8 @@ The following additional information is displayed for object copy/move tasks:
 
 <br>
 
+{% endif %}
+
 <a id="object"></a>
 ## Object { #object }
 
@@ -677,7 +695,7 @@ Deletes the selected objects. You can select and delete multiple objects at the 
 
 <a id="create-signed-url"></a>
 ### Create Signed URL { #create-signed-url }
-Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies. For more information, see [Signed URL Guide](presigned-url-guide/).
+Create a signed URL that allows free access to the specified object for the time you set, regardless of role-based access policies.{% if release_2026_08 %} For more details on how to use it, see [Signed URL Guide](presigned-url-guide/).{% endif %}
 
 !!! tip "Note"
     Only single objects can be selected, not folder objects.
