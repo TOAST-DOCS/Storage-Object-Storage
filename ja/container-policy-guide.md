@@ -1,8 +1,10 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=5dd7d08822ff -->
+
 {% include-markdown '../_object-storage-vars.md' %}
 
-<!-- pre-align:aligned sig=5dd7d08822ff -->
+{% if release_2026_05 %}
 
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > コンテナポリシー設定ガイド { #storage-object-storage-container-policy-configuration-guide }
@@ -16,6 +18,7 @@
 
 ポリシードキュメントは次のように機能別の最上位キーで構成され、各最上位キーの下位に詳細設定を定義します。
 
+{% if release_2026_08 %}
 ```json
 {
   "lifecycle": { ... },
@@ -35,6 +38,25 @@
 | `ip_acl` | IP アクセス制御 (IP ACL) | IP ベースのアクセス制御を設定します。 |
 | `cors` | クロスオリジンリソース共有 (CORS) | 許可オリジンなどの CORS 設定を管理します。 |
 | `lock` | オブジェクトロック | オブジェクトロック (WORM) のロック期間を設定します。 |
+{% else %}
+```json
+{
+  "lifecycle": {
+    ...
+  },
+  "lock": {
+    ...
+  },
+  "ip_acl": {
+    ...
+  }
+}
+```
+
+!!! tip "ヒント"
+    2026年5月時点では、**ライフサイクル**設定のみサポートしており、今後さらに多くの機能に拡大適用される予定です。
+{% endif %}
+
 <a id="container-policy-api"></a>
 ## コンテナポリシーAPI { #container-policy-api }
 
@@ -56,7 +78,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | Y | トークンID |
 | Account | URL | String | Y | ストレージアカウント |
 | Container | URL | String | Y | コンテナ名 |
-| policy | Query | String | Y | ポリシー照会のためのクエリパラメータ<br>値を指定しない場合は全体のポリシードキュメントを、機能別の最上位キーを指定した場合は該当機能のポリシーのみ照会します。 |
+| policy | Query | String | Y | ポリシー照会のためのクエリパラメータ{% if release_2026_08 %}<br>値を指定しない場合は全ポリシードキュメントを、機能別の最上位キーを指定した場合は該当機能のポリシーのみ照会します。{% else %} (値なしで使用){% endif %} |
 <a id="get-container-policy-response"></a>
 #### レスポンス
 
@@ -67,6 +89,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
 ```
 
+{% if release_2026_08 %}
 `policy` クエリパラメータに値を指定しない場合、設定されたすべての機能のポリシーを1つのドキュメントとして返します。
 
 <details>
@@ -134,16 +157,55 @@ X-Auth-Token: {token-id}
 </details>
 
 <br>
+{% else %}
+
+<details>
+  <summary>応答例</summary>
+
+```json
+{
+  "lifecycle": {
+    "default_rule" : {
+      "action": {
+        "type": "transfer",
+        "destination": "destination-con"
+      },
+      "days": 1
+    },
+    "rules": [
+      {
+        "name": "rule1",
+        "condition": {
+          "prefix": "temp/"
+        },
+        "days": 2,
+        "action": {
+          "type": "delete"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+<br>
+{% endif %}
 
 <a id="set-container-policy"></a>
 ### ポリシー設定 { #set-container-policy }
 
 リクエスト本文にJSONポリシードキュメントを含めてコンテナポリシーを設定します。
 
-ポリシーを設定する際には、次のルールが適用されます。
+{% if release_2026_08 %}
+ポリシーを設定する際、次のルールが適用されます。
 
-* 最上位キーは `lifecycle`、`acl`、`ip_acl`、`cors`、`lock` のみ使用できます。スキーマに定義されていないキーやフィールドを含めると、リクエストが拒否されます。
-* ポリシードキュメントに含めた最上位キーは、送信した内容で全体が上書きされます。含めなかった最上位キーの設定はそのまま維持されます。最上位キーを送信する際に一部のサブ項目のみを含めた場合、含めなかった項目は解除されるため、維持したい項目は必ず一緒に送信する必要があります。
+* 使用できるトップレベルキーは `lifecycle`、`acl`、`ip_acl`、`cors`、`lock` のみです。スキーマに定義されていないキーやフィールドが含まれている場合、リクエストは拒否されます。
+* ポリシードキュメントに含めたトップレベルキーは、送信した内容で全体が上書きされます。含めなかったトップレベルキーの設定はそのまま維持されます。トップレベルキーを送信する際に一部のサブ項目のみを含めた場合、含めなかった項目は解除されるため、維持したい項目は常に一緒に送信する必要があります。
+{% else %}
+ポリシーはリクエストに含まれるトップレベルキー（例: lifecycle）単位で上書きされ、含まれていないキーの設定は維持されます。
+{% endif %}
 
 ```
 POST /v1/{Account}/{Container}
@@ -167,8 +229,10 @@ Content-Type: application/json
 成功時、HTTPステータスコード`204`を返却します。レスポンス本文はありません。
 
 !!! tip "ヒント"
-    同じリクエストでヘッダーとポリシードキュメントを併用した場合、ポリシードキュメントが優先して適用されます。
-    ポリシードキュメントがスキーマに一致しない場合、HTTP ステータスコード `400` とともにエラーの位置と理由を含むメッセージを返します。
+    同じリクエストでヘッダーとポリシードキュメントを同時に使用した場合、ポリシードキュメントが優先して適用されます。
+{%- if release_2026_08 %}
+    ポリシードキュメントがスキーマに一致しない場合、HTTP ステータスコード `400` とともに、エラーの場所と理由を含むメッセージを返します。
+{%- endif %}
 
 <br>
 
@@ -222,16 +286,17 @@ Content-Type: application/json
 
 | フィールド | 形式 | 必須 | 説明 | 備考 |
 |---|---|---|---|---|
-| `default_rule` | Object | N | デフォルトルール | |
+| `default_rule` | Object | N | デフォルトルール |{% if not release_2026_08 %} 省略するか、空のオブジェクト(`{}`)に設定するとデフォルトルールが解除されます。{% endif %} |
 | `default_rule.days` | Integer | Y | オブジェクトのライフサイクル | 日単位、最大 36,500 日 |
 | `default_rule.action.type` | Enum | Y | 有効期限アクションのタイプ | `"transfer"` (移動) または `"delete"` (削除) |
 | `default_rule.action.destination` | String | Conditional | 有効期限切れ時にオブジェクトを移動する対象コンテナ名 | `type` が `"transfer"` の場合は必須 |
-| `rules` | Array | N | 条件ルールリスト | 最大30個 |
+| `rules` | Array | N | 条件ルールリスト | {% if release_2026_08 %}最大30件{% else %}省略するか、空の配列(`[]`)に設定すると条件ルールがすべて削除されます。{% endif %} |
 | `rules[*].name` | String | Y | ルール名 | コンテナ内で重複することはできません。 |
 | `rules[*].condition.prefix` | String | Y | オブジェクト名のプレフィックス条件 | 空文字列は許可されません。 |
 | `rules[*].days` | Integer | Y | オブジェクトのライフサイクル | 日単位、最大 36,500 日 |
 | `rules[*].action.type` | Enum | Y | 有効期限アクションのタイプ | `"transfer"` (移動) または `"delete"` (削除) |
 | `rules[*].action.destination` | String | Conditional | 有効期限切れ時にオブジェクトを移動する宛先コンテナ名 | `type` が `"transfer"` の場合は必須 |
+
 <br>
 
 <a id="lifecycle-apply"></a>
@@ -288,15 +353,18 @@ Content-Type: application/json
 }
 ```
 
-* **オブジェクト`image/test.jpg`のアップロード**
-    * `logs/`プレフィックス条件に合致しないため、基本ルールを適用
-    * ライフサイクル10日を設定
-* **アップロード後、`rule1`の条件を変更**
-    * 条件を`"condition": { "prefix": "image/" }`に変更
-* **オブジェクト`image/test.jpg`のライフサイクルが期限切れ**
-    * 有効期限切れ時点にルールを再評価：`rule1`の`image/`プレフィックス条件に合致
-    * 有効期限切れ時の動作：`archive-container`に移動
+* **オブジェクト `image/test.jpg` のアップロード**
+    * `logs/` プレフィックス条件に該当しないため、デフォルトルールを適用
+    * ライフサイクル 10 日に設定
+* **アップロード後、`rule1` の条件を変更**
+    * 条件を `"condition": { "prefix": "image/" }` に変更
+* **オブジェクト `image/test.jpg` のライフサイクル期限切れ**
+    * 期限切れ時点でルールを再評価: `rule1` の `image/` プレフィックス条件に該当
+    * 期限切れ動作: `archive-container` に移動
+
 <br>
+
+{% if release_2026_08 %}
 
 <a id="acl"></a>
 ## アクセス制御 (ACL) { #acl }
@@ -540,4 +608,6 @@ CORS ポリシードキュメントの構造は次のとおりです。
   }
 }
 ```
-s
+{% endif %}
+
+{% endif %}

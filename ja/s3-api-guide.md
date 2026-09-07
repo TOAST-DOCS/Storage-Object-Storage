@@ -15,13 +15,15 @@ NHN Cloud オブジェクトストレージは、AWS のオブジェクトスト
 | PUT Bucket | バケットの作成 |
 | HEAD Bucket | バケット情報の照会 |
 | DELETE Bucket | バケットの削除 |
+{%- if release_2026_08 %}
 | PUT Bucket Object Lock | ロックバケットの作成 |
-| PUT Object Lock Configuration | ロックバケット保管期間の設定 |
-| GET Object Lock Configuration | ロックバケット保管期間の照会 |
+| PUT Object Lock Configuration | ロックバケットの保管期間設定 |
+| GET Object Lock Configuration | ロックバケットの保管期間照会 |
+{%- endif %}
 | PUT Bucket ACL | バケット ACL の設定 |
 | GET Bucket ACL | バケット ACL の照会 |
 | GET Bucket Location | バケットが存在するリージョンの照会 |
-| GET Bucket List Objects | バケット内オブジェクト一覧の照会 |
+| GET Bucket List Objects | バケットのオブジェクト一覧の照会 |
 | GET Object | オブジェクトのダウンロード |
 | HEAD Object | オブジェクト情報の照会 |
 | PUT Object | オブジェクトのアップロード |
@@ -211,7 +213,8 @@ S3 API を使用するには、認証情報を使用して署名を生成する�
 | リージョン名 | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 | シークレットキー | S3 API認証情報シークレットキー |
 
-AWS signature V4 の署名生成時に `x-amz-content-sha256` ヘッダーが必要です。このヘッダーは正規リクエスト(Canonical Request)に含まれて署名の計算に使用され、ヘッダーの値によってペイロードの処理方式が決まります。使用可能な値は次のとおりです。
+{% if release_2026_05 %}
+AWS signature V4 の署名を生成する際、`x-amz-content-sha256` ヘッダーが必要です。このヘッダーは正規リクエスト (Canonical Request) に含まれ、署名の計算に使用されます。また、ヘッダーの値によってペイロードの処理方式が決まります。使用可能な値は次のとおりです。
 
 | x-amz-content-sha256 値 | 説明 |
 |---|---|
@@ -236,6 +239,8 @@ x-amz-content-sha256 の値が `STREAMING-UNSIGNED-PAYLOAD-TRAILER` または `S
 
 !!! tip "ヒント"
     トレーラーヘッダーを使用した署名計算方法の詳細については、[Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) のドキュメントを参照してください。
+
+{% endif %}
 
 <a id="bucket"></a>
 ## Bucket { #bucket }
@@ -423,6 +428,8 @@ Authorization: AWS {access}:{signature}
 #### レスポンス
 この API はレスポンス本文を返しません。リクエストが正しければ、ステータスコード 204 を返します。
 
+{% if release_2026_08 %}
+
 <a id="create-lock-bucket"></a>
 ### ロックバケットの作成 { #create-lock-bucket }
 オブジェクトロックが有効なバケットを作成します。バケットを作成する際に `x-amz-bucket-object-lock-enabled` ヘッダーを `true` に設定します。デフォルトの保管期間は 0 日に設定されます。
@@ -563,6 +570,8 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
+{% endif %}
+
 <a id="object"></a>
 ## オブジェクト { #object }
 
@@ -654,6 +663,8 @@ Authorization: AWS {access}:{signature}
 #### レスポンス
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード 204 を返します。
 
+{% if release_2026_08 %}
+
 <a id="presigned-url"></a>
 ## 署名付き URL の生成 { #presigned-url }
 **AWS Signature Version 4 (SigV4)** の署名をクエリパラメータに含めることで、認証トークン (Authorization ヘッダー) なしに一定時間オブジェクトにアクセスできる URL です。ダウンロードは `GET`、アップロードは `PUT` でリクエストします。
@@ -690,8 +701,12 @@ GET /{bucket}/{obj}
 #### レスポンス
 リクエストが正しい場合、ステータスコード 200 を返します。
 
+{% if release_2026_08 %}
 !!! tip "ヒント"
-    Swift TempURL 方式と言語別の直接署名の例など、詳細については[署名済みURLガイド](presigned-url-guide/)を参照してください。
+    Swift TempURL 方式や言語別の直接署名の例など、詳細については[署名付き URL ガイド](presigned-url-guide/)を参照してください。
+
+{% endif %}
+{% endif %}
 
 <a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
@@ -702,7 +717,7 @@ S3互換APIを使用して、[AWS Command Line Interface](https://aws.amazon.com
 [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) ドキュメントを参照して、AWS Command Line Interfaceをインストールします。
 
 !!! tip "注記"
-    NHN CloudオブジェクトストレージはAWS CLIバージョン2.34.38までサポートしています。
+    NHN Cloud オブジェクトストレージは、AWS CLI バージョン {% if release_2026_05 %}2.34.38{% else %}2.22.35{% endif %} までサポートしています。
 
 <a id="aws-command-line-interface-configuration"></a>
 ### 設定 { #aws-command-line-interface-configuration }
@@ -780,13 +795,13 @@ remove_bucket: example-bucket
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>ロックバケット</summary>
 
 ロックバケットは <code>aws s3api</code> サブコマンドで管理します。
 <br>
-<code>create-bucket</code> コマンドに <code>--object-lock-enabled-for-bucket</code> オプションを使用すると、オブジェクトロックが有効なバケットを作成します。
-デフォルトの保持期間は0日に設定されます。
+<code>create-bucket</code> コマンドに <code>--object-lock-enabled-for-bucket</code> オプションを使用すると、オブジェクトロックが有効化されたバケットを作成します。デフォルトの保管期間は 0 日に設定されます。
 
 ```shell
 $ aws --endpoint-url=$[ object_storage_url ]$ s3api create-bucket \
@@ -794,7 +809,7 @@ $ aws --endpoint-url=$[ object_storage_url ]$ s3api create-bucket \
   --object-lock-enabled-for-bucket
 ```
 
-デフォルトの保持期間を設定するには、<code>put-object-lock-configuration</code> コマンドを使用します。
+デフォルトの保管期間を設定するには、<code>put-object-lock-configuration</code> コマンドを使用します。
 
 ```shell
 $ aws --endpoint-url=$[ object_storage_url ]$ s3api put-object-lock-configuration \
@@ -828,6 +843,7 @@ $ aws --endpoint-url=$[ object_storage_url ]$ s3api get-object-lock-configuratio
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>オブジェクトのアップロード</summary>
@@ -869,8 +885,9 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>署名付きURLの生成</summary>
+<summary>署名済み URL の生成</summary>
 
 ```shell
 $ aws --endpoint-url=$[ object_storage_url ]$ s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
@@ -878,6 +895,9 @@ $[ object_storage_url ]$/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-A
 ```
 
 </details>
+{% endif %}
+
+{% if release_2026_05 %}
 
 <a id="aws-command-line-interface-virtual-hosted-style"></a>
 ### ドメインスタイルエンドポイントの使用 { #aws-command-line-interface-virtual-hosted-style }
@@ -910,6 +930,8 @@ s3 =
 
 !!! danger "警告"
     バケット名にピリオド(`.`)が含まれている場合、ドメインスタイルを使用するとワイルドカードSSL証明書の有効範囲外となり、証明書の検証に失敗する可能性があります。この場合はパススタイルを使用してください。
+
+{% endif %}
 
 <a id="aws-sdk"></a>
 ## AWS SDK { #aws-sdk }
@@ -1015,6 +1037,7 @@ def delete_bucket(self, bucket_name):
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>ロックバケット</summary>
 
@@ -1066,6 +1089,7 @@ def get_object_lock_configuration(self, bucket_name):
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>オブジェクトのアップロード</summary>
@@ -1123,6 +1147,7 @@ def delete(self, bucket_name, key):
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>署名付き URL の生成</summary>
 
@@ -1139,6 +1164,7 @@ def generate_presigned_url(self, bucket_name, key, expires_in):
 ```
 
 </details>
+{% endif %}
 
 <a id="aws-sdk-java"></a>
 ### Java SDK { #aws-sdk-java }
@@ -1251,10 +1277,11 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>ロックバケット</summary>
 
-<code>CreateBucketRequest</code> に <code>withObjectLockEnabledForBucket(true)</code> を設定すると、ロックバケットを作成します。デフォルトの保管期間は 0 日に設定されます。
+<code>CreateBucketRequest</code>に<code>withObjectLockEnabledForBucket(true)</code>を設定すると、ロックバケットを作成します。デフォルトの保管期間は 0 日に設定されます。
 
 ```java
 public String createBucketWithLock(String bucketName) throws RuntimeException {
@@ -1270,7 +1297,7 @@ public String createBucketWithLock(String bucketName) throws RuntimeException {
 }
 ```
 
-デフォルトの保管期間を設定するには、<code>setObjectLockConfiguration</code> メソッドを使用します。
+デフォルトの保管期間を設定するには、<code>setObjectLockConfiguration</code>メソッドを使用します。
 
 ```java
 public void putObjectLockConfiguration(
@@ -1298,7 +1325,7 @@ public void putObjectLockConfiguration(
 }
 ```
 
-ロック設定を照会するには、<code>getObjectLockConfiguration</code> メソッドを使用します。
+ロック設定を照会するには、<code>getObjectLockConfiguration</code>メソッドを使用します。
 
 ```java
 public ObjectLockConfiguration getObjectLockConfiguration(
@@ -1319,6 +1346,7 @@ public ObjectLockConfiguration getObjectLockConfiguration(
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>オブジェクトのアップロード</summary>
@@ -1395,8 +1423,9 @@ public void deleteObject(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>署名付き URL の作成</summary>
+<summary>署名付き URL の生成</summary>
 
 ```java
 public String generatePresignedUrl(
@@ -1418,6 +1447,7 @@ public String generatePresignedUrl(
 ```
 
 </details>
+{% endif %}
 
 <a id="aws-sdk-dotnet"></a>
 ### .NET SDK { #aws-sdk-dotnet }
@@ -1571,10 +1601,11 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>ロックバケット</summary>
 
-<code>PutBucketRequest</code> に <code>ObjectLockEnabledForBucket = true</code> を設定すると、ロックバケットを作成します。デフォルトの保持期間は 0 日に設定されます。
+<code>PutBucketRequest</code>に <code>ObjectLockEnabledForBucket = true</code>を設定すると、ロックバケットを作成します。デフォルトの保管期間は0日に設定されます。
 
 ```csharp
 static async Task<PutBucketResponse> CreateBucketWithLockAsync(
@@ -1600,7 +1631,7 @@ static async Task<PutBucketResponse> CreateBucketWithLockAsync(
 }
 ```
 
-デフォルトの保持期間を設定するには、<code>PutObjectLockConfigurationAsync</code> メソッドを使用します。
+デフォルトの保管期間を設定するには、<code>PutObjectLockConfigurationAsync</code>メソッドを使用します。
 
 ```csharp
 static async Task<PutObjectLockConfigurationResponse> PutObjectLockConfigurationAsync(
@@ -1640,7 +1671,7 @@ static async Task<PutObjectLockConfigurationResponse> PutObjectLockConfiguration
 }
 ```
 
-ロック設定を照会するには、<code>GetObjectLockConfigurationAsync</code> メソッドを使用します。
+ロック設定を照会するには、<code>GetObjectLockConfigurationAsync</code>メソッドを使用します。
 
 ```csharp
 static async Task<GetObjectLockConfigurationResponse> GetObjectLockConfigurationAsync(
@@ -1665,6 +1696,7 @@ static async Task<GetObjectLockConfigurationResponse> GetObjectLockConfiguration
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>オブジェクトのアップロード</summary>
@@ -1769,6 +1801,7 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>署名付き URL の生成</summary>
 
@@ -1800,6 +1833,9 @@ static string GeneratePresignedUrl(
 ```
 
 </details>
+{% endif %}
+
+{% if release_2026_05 %}
 
 <a id="aws-sdk-virtual-hosted-style"></a>
 ### ドメインスタイルエンドポイントの使用 { #aws-sdk-virtual-hosted-style }
@@ -1879,4 +1915,4 @@ private static AmazonS3Client GetS3Client()
 </details>
 
 !!! danger "注意"
-    バケット名にドット (`.`) が含まれている場合、ドメインスタイルを使用するとワイルドカード SSL 証明書の有効範囲外となり、証明書の検証に失敗する可能性があります。この場合は、パススタイルを使用してください。
+    バケット名にドット (`.`) が含まれている場合、ドメインスタイルを使用するとワイルドカード SSL 証明書の有効範囲外となり、証明書の検証に失敗する可能性があります。この場合は、パススタイルを使用してください。{% endif %}

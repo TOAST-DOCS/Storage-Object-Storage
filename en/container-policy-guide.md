@@ -1,8 +1,10 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=5dd7d08822ff -->
+
 {% include-markdown '../_object-storage-vars.md' %}
 
-<!-- pre-align:aligned sig=5dd7d08822ff -->
+{% if release_2026_05 %}
 
 <a id="storage-object-storage-container-policy-configuration-guide"></a>
 ## Storage > Object Storage > Container Policy Configuration Guide { #storage-object-storage-container-policy-configuration-guide }
@@ -16,6 +18,7 @@ Container policies allow you to manage container settings in an integrated manne
 
 A policy document is structured with top-level keys for each feature, as shown below. Detailed settings are defined under each top-level key.
 
+{% if release_2026_08 %}
 ```json
 {
   "lifecycle": { ... },
@@ -35,6 +38,25 @@ The functions of each top-level key are as follows.
 | `ip_acl` | IP access control (IP ACL) | Sets IP-based access control. |
 | `cors` | Cross-Origin Resource Sharing (CORS) | Manages CORS settings such as allowed origins. |
 | `lock` | Object lock | Sets the object lock (WORM) lock cycle. |
+{% else %}
+```json
+{
+  "lifecycle": {
+    ...
+  },
+  "lock": {
+    ...
+  },
+  "ip_acl": {
+    ...
+  }
+}
+```
+
+!!! tip "Tip"
+    As of May 2026, only **life cycle** settings are supported. Support will be expanded to include more features in the future.
+{% endif %}
+
 <a id="container-policy-api"></a>
 ## Container Policy API { #container-policy-api }
 
@@ -56,7 +78,7 @@ X-Auth-Token: {token-id}
 | X-Auth-Token | Header | String | Y | Token ID |
 | Account | URL | String | Y | Storage Account |
 | Container | URL | String | Y | Container name |
-| policy | Query | String | Y | Query parameter for retrieving a policy<br>If no value is specified, the entire policy document is retrieved. If a top-level key for a specific feature is specified, only the policy for that feature is retrieved. |
+| policy | Query | String | Y | Query parameter for policy lookup{% if release_2026_08 %}<br>If no value is specified, the full policy document is returned. If a top-level key for a specific feature is specified, only the policy for that feature is returned.{% else %} (used without a value){% endif %} |
 <a id="get-container-policy-response"></a>
 #### Response
 
@@ -67,6 +89,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
 ```
 
+{% if release_2026_08 %}
 If no value is specified for the `policy` query parameter, the policies of all configured features are returned as a single document.
 
 <details>
@@ -134,16 +157,55 @@ X-Auth-Token: {token-id}
 </details>
 
 <br>
+{% else %}
+
+<details>
+  <summary>Response Example</summary>
+
+```json
+{
+  "lifecycle": {
+    "default_rule" : {
+      "action": {
+        "type": "transfer",
+        "destination": "destination-con"
+      },
+      "days": 1
+    },
+    "rules": [
+      {
+        "name": "rule1",
+        "condition": {
+          "prefix": "temp/"
+        },
+        "days": 2,
+        "action": {
+          "type": "delete"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+<br>
+{% endif %}
 
 <a id="set-container-policy"></a>
 ### Set policy { #set-container-policy }
 
 Configures a container policy by including a JSON policy document in the request body.
 
-The following rules apply when you set a policy.
+{% if release_2026_08 %}
+The following rules apply when configuring a policy.
 
-* Only `lifecycle`, `acl`, `ip_acl`, `cors`, and `lock` can be used as top-level keys. If you include keys or fields that are not defined in the schema, the request will be rejected.
-* Top-level keys included in the policy document will overwrite the entire existing configuration with the sent content, while the settings of top-level keys not included will remain unchanged. If you send a top-level key with only some sub-items, any sub-items that are not included will be removed, so you must always include all items that you want to retain.
+* Only `lifecycle`, `acl`, `ip_acl`, `cors`, and `lock` can be used as top-level keys. Requests that include keys or fields not defined in the schema are rejected.
+* Top-level keys included in the policy document are completely overwritten with the content you send, while the settings of top-level keys not included remain unchanged. If you send a top-level key with only some of its sub-items, the sub-items that are not included are removed, so you must always send all the items that you want to keep.
+{% else %}
+Policies are overwritten on a per-top-level-key basis (for example, `lifecycle`) for the keys included in the request, while the settings of keys not included are retained.
+{% endif %}
 
 ```
 POST /v1/{Account}/{Container}
@@ -168,7 +230,9 @@ On success, returns HTTP status code `204`. There is no response body.
 
 !!! tip "Tip"
     If you use both a header and a policy document in the same request, the policy document takes precedence.
-    If the policy document does not conform to the schema, it returns HTTP status code `400` along with a message containing the error location and reason.
+{%- if release_2026_08 %}
+    If the policy document does not conform to the schema, an HTTP status code `400` is returned along with a message indicating the error location and reason.
+{%- endif %}
 
 <br>
 
@@ -222,16 +286,17 @@ The structure of the lifecycle policy document is as follows.
 
 | Field | Type | Required | Description | Notes |
 |---|---|---|---|---|
-| `default_rule` | Object | N | Default rule | |
+| `default_rule` | Object | N | Basic rules |{% if not release_2026_08 %} If omitted or set to an empty object (`{}`), the basic rules are cleared.{% endif %} |
 | `default_rule.days` | Integer | Y | Object life cycle | In days, up to 36,500 days |
 | `default_rule.action.type` | Enum | Y | Expiration behavior type | `"transfer"` (move) or `"delete"` (delete) |
 | `default_rule.action.destination` | String | Conditional | Name of the target container to move the object to when it expires | Required when `type` is `"transfer"` |
-| `rules` | Array | N | List of condition rules | Max. 30 items |
+| `rules` | Array | N | List of condition rules | {% if release_2026_08 %}Up to 30{% else %}If omitted or set to an empty array (`[]`), all condition rules are deleted.{% endif %} |
 | `rules[*].name` | String | Y | Rule name | Cannot be duplicated within the container. |
 | `rules[*].condition.prefix` | String | Y | Prefix condition for the object name | Empty strings are not allowed. |
 | `rules[*].days` | Integer | Y | Object life cycle | In days, up to 36,500 days |
 | `rules[*].action.type` | Enum | Y | Expiration behavior type | `"transfer"` (transfer) or `"delete"` (delete) |
 | `rules[*].action.destination` | String | Conditional | Target container name to move the object to when it expires | Required when `type` is `"transfer"` |
+
 <br>
 
 <a id="lifecycle-apply"></a>
@@ -296,6 +361,10 @@ Assume the following lifecycle rules are configured.
 * **Object `image/test.jpg` lifecycle expires**
     * Rules are re-evaluated at expiration: matches the `image/` prefix condition of `rule1`.
     * Expiration action: move to `archive-container`.<br>
+
+<br>
+
+{% if release_2026_08 %}
 
 <a id="acl"></a>
 ## Access control (ACLs) { #acl }
@@ -539,4 +608,6 @@ When configuring Object Lock, note the following:
   }
 }
 ```
-s
+{% endif %}
+
+{% endif %}
