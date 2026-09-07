@@ -6,6 +6,7 @@
 
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
 ## Storage > Object Storage > Amazon S3-compatible API Guide { #storage-object-storage-amazon-s3-compatible-api-guide }
+
 NHN Cloud Object Storage provides an API compatible with the S3 API of AWS object storage. Therefore, you can use applications developed to use the Amazon S3 API as is, with only a few configuration changes.
 
 The following Amazon S3 compatible API is provided.
@@ -43,209 +44,15 @@ This document describes only the basic usage of API. To use advanced features, i
 <a id="s3-api-credential"></a>
 ## S3 API Credentials { #s3-api-credential }
 
-<a id="obtain-s3-api-credentials"></a>
-### Obtain S3 API Credentials { #obtain-s3-api-credentials }
-To use the Amazon S3 compatible API, you must first obtain S3 API credentials in the form of AWS EC2. Credentials can be issued using the console or API. To obtain credentials using the console, refer to [S3 API Credentials](console-guide/#s3-api-credentials).
-
-To obtain credentials using the API, an authentication token is required. To obtain the authentication token, refer to [Object Storage API Guide](api-guide/#auth).
-
-```
-POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
-
-Content-Type: application/json
-X-Auth-Token: {token-id}
-```
-
-<a id="obtain-s3-api-credentials-request"></a>
-#### Request
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | Y | Issued token ID |
-| api-user-id | URL | String | Y | API User ID; can be found in the API endpoint configuration dialog box |
-| tenant_id | Body | String | Y | Tenant ID; can be found in the API endpoint configuration dialog box |
-
-!!! tip "Note"
-    You can find `{api-user-id}` by referring to the **API User ID** field in the API Endpoint setting dialog on the console, or by checking the **access.user.id** field in the authentication token issuance API response body.
-    To use the authentication token issuance API, refer to [Authentication and Authorization](api-guide/#auth) in the API guide.
-
-    S3 API credentials have no expiration date, and up to 3 credentials can be issued per project for each user.
-
-<!-- This comment is for line breaks and must be included. -->
-
-!!! danger "Caution"
-    If the S3 API credentials key is leaked, anyone can access the object using the leaked key. If the key is leaked, it is recommended to delete the leaked credentials and obtain a new one.
-
-    If the user account that obtained the S3 API credentials loses access to the project or is deleted by leaving NHN Cloud, the credentials expire immediately and cannot be used.
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-  "tenant_id": "84c9e9a51aea402e95389c08ac562ac5"
-}
-```
-
-</details>
-
-<a id="obtain-s3-api-credentials-response"></a>
-#### Response
-
-| Name | Type | Format | Description |
-|---|---|---|---|
-| access | Body | String | S3 API credentials access key |
-| secret | Body | String | S3 API credentials secret key |
-| user_id | Body | String | API User ID |
-| tenant_id | Body | String | Tenant ID |
-| created_at | Body | String | S3 API credentials creation time |
-| accessed_at | Body | String | S3 API credentials last access time |
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-  "credential": {
-    "access": "253a3c7ca27f4731a9c757addfac29ca",
-    "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
-    "secret": "be057f235abf45ee8e2ba14edc5fb253",
-    "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-    "created_at": "2024-10-19T08:24:46.000000Z",
-    "accessed_at": "2024-10-19T08:24:46.000000Z"
-  }
-}
-```
-
-</details>
-
-<a id="get-s3-api-credentials"></a>
-### Get S3 API Credentials { #get-s3-api-credentials }
-Retrieves the issued S3 API credentials.
-
-**[Method, URL]**
-
-```
-GET $[ identity_url ]$/v2.0/users/{user-id}/credentials/OS-EC2
-
-X-Auth-Token: {token-id}
-```
-
-<a id="get-s3-api-credentials-request"></a>
-#### Request
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | Y | Issued token ID |
-| user-id | URL | String | Y | User ID; included in the authentication token |
-
-<a id="get-s3-api-credentials-response"></a>
-#### Response
-
-| Name | Type | Format | Description |
-|---|---|---|---|
-| access | Body | String | S3 API credentials access key |
-| secret | Body | String | S3 API credentials secret key |
-| user_id | Body | String | API User ID |
-| tenant_id | Body | String | Tenant ID |
-| created_at | Body | String | S3 API credentials creation time |
-| accessed_at | Body | String | S3 API credentials last access time |
-
-<details>
-<summary>Example</summary>
-
-```json
-{
-  "credentials": [
-    {
-      "access": "253a3c7ca27f4731a9c757addfac29ca",
-      "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
-      "secret": "be057f235abf45ee8e2ba14edc5fb253",
-      "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-      "created_at": "2024-10-19T08:24:46.000000Z",
-      "accessed_at": "2024-10-19T08:30:42.000000Z"
-    }
-  ]
-}
-```
-
-</details>
-
-<a id="delete-s3-api-credentials"></a>
-### Delete S3 API Credentials { #delete-s3-api-credentials }
-Deletes the issued S3 API credentials.
-
-**[Method, URL]**
-
-```
-DELETE $[ identity_url ]$/v2.0/users/{user-id}/credentials/OS-EC2/{access}
-
-X-Auth-Token: {token-id}
-```
-
-<a id="delete-s3-api-credentials-request"></a>
-#### Request
-This API does not require a request body.
-
-| Name | Type | Format | Required | Description |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | Y | Issued token ID |
-| user-id | URL | String | Y | User ID; included in the authentication token |
-| access | URL | String | Y | S3 API credentials access key |
-
-<a id="delete-s3-api-credentials-response"></a>
-#### Response
-This API does not return a response body. When the request is appropriate, it returns status code 204.
-
-<a id="create-signature"></a>
-## Create Signature { #create-signature }
-To use S3 API, you must create a signature using credentials. For information on how to create a signature, refer to the [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) documentation.
-
-The information required to create a signature is as follows:
-
-| Name | Value |
-|---|---|
-| Algorithm | AWS4-HMAC-SHA256 |
-| Signature time | YYYYMMDDThhmmssZ format |
-| Service name | s3 |
-| Region Name | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
-| Secret key | S3 API credentials secret key |
-
-{% if release_2026_05 %}
-The `x-amz-content-sha256` header is required when creating an AWS Signature V4 signature. This header is included in the Canonical Request and is used in signature calculation. The header value determines how the payload is processed. The following values are available.
-
-| x-amz-content-sha256 value | Description |
-|---|---|
-| `<payload hash>` | Default method that uses the SHA-256 hash value of the entire request payload |
-| `UNSIGNED-PAYLOAD` | Omits payload signing |
-| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD` | AWS Chunked Upload method (signature included in each chunk) |
-| `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload method (uses trailer header without chunk signature) |
-| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload method (signature included in each chunk + trailer header used) |
-
-!!! tip "Note"
-    For more information, refer to the [Authenticating Requests: Using the Authorization Header (AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) documentation.
-
-If the `x-amz-content-sha256` value is `STREAMING-UNSIGNED-PAYLOAD-TRAILER` or `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER`, you must declare the checksum algorithm to be sent in the trailer using the `x-amz-trailer` request header. The supported algorithms are as follows:
-
-| x-amz-trailer value | Algorithm |
-|---|---|
-| `x-amz-checksum-crc32` | CRC-32 |
-| `x-amz-checksum-crc32c` | CRC-32C |
-| `x-amz-checksum-crc64nvme` | CRC-64/NVME |
-| `x-amz-checksum-sha1` | SHA-1 |
-| `x-amz-checksum-sha256` | SHA-256 |
-
-!!! tip "Note"
-    For more information on signature calculation using trailer headers (chunked uploads), refer to the [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) documentation.
-
-{% endif %}
+Object Storage uses S3 API credentials for authentication/authorization when making Amazon S3-compatible API calls. S3 API credentials are authentication keys in AWS EC2 format required to use service APIs that support the Amazon S3-compatible API in NHN Cloud.
+{% if s3_credential_guide_url %}For more information about S3 API credentials, see [S3 API Credentials]($[ s3_credential_guide_url ]$).{% endif %}
 
 <a id="bucket"></a>
 ## Bucket { #bucket }
 
 <a id="create-bucket"></a>
 ### Create Bucket { #create-bucket }
+
 Creates a bucket. Bucket names must follow Amazon S3's bucket naming rules:
 
 * Bucket names must be between 3 and 63 characters long.
@@ -268,6 +75,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="create-bucket-request"></a>
 #### Request
+
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -278,6 +86,7 @@ This API does not require a request body.
 
 <a id="create-bucket-response"></a>
 #### Response
+
 This API does not return a response body. For a valid request, return status code 200.
 
 | Name | Type | Format | Description |
@@ -286,6 +95,7 @@ This API does not return a response body. For a valid request, return status cod
 
 <a id="list-buckets"></a>
 ### List Buckets { #list-buckets }
+
 Retrieves a list of buckets.
 
 ```
@@ -297,6 +107,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="list-buckets-request"></a>
 #### Request
+
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -306,6 +117,7 @@ This API does not require a request body.
 
 <a id="list-buckets-response"></a>
 #### Response
+
 For a valid request, returns status code 200 and a bucket list in XML format.
 
 <details>
@@ -336,6 +148,7 @@ For a valid request, returns status code 200 and a bucket list in XML format.
 
 <a id="get-bucket"></a>
 ### Get Bucket { #get-bucket }
+
 Retrieves information about the specified bucket and a list of objects stored in it.
 
 ```
@@ -350,6 +163,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="get-bucket-request"></a>
 #### Request
+
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -360,6 +174,7 @@ This API does not require a request body.
 
 <a id="get-bucket-response"></a>
 #### Response
+
 For a valid request, returns status code 200 and a list of objects in XML format.
 
 <details>
@@ -403,6 +218,7 @@ For a valid request, returns status code 200 and a list of objects in XML format
 
 <a id="delete-bucket"></a>
 ### Delete Bucket { #delete-bucket }
+
 Deletes the specified bucket. The bucket to be deleted must be empty.
 
 ```
@@ -414,6 +230,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="delete-bucket-request"></a>
 #### Request
+
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -424,12 +241,14 @@ This API does not require a request body.
 
 <a id="delete-bucket-response"></a>
 #### Response
+
 This API does not return request body. When the request is appropriate, return status code 204.
 
 {% if release_2026_08 %}
 
 <a id="create-lock-bucket"></a>
 ### Create Lock Bucket { #create-lock-bucket }
+
 Creates a bucket with object lock enabled. Set the `x-amz-bucket-object-lock-enabled` header to `true` when creating the bucket. The default retention period is set to 0 days.
 
 ```
@@ -442,6 +261,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="create-lock-bucket-request"></a>
 #### Request
+
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -453,6 +273,7 @@ This API does not require a request body.
 
 <a id="create-lock-bucket-response"></a>
 #### Response
+
 This API does not return a response body. For a valid request, return status code 200.
 
 | Name | Type | Format | Description |
@@ -461,6 +282,7 @@ This API does not return a response body. For a valid request, return status cod
 
 <a id="put-object-lock-configuration"></a>
 ### Set Lock Bucket Retention Period { #put-object-lock-configuration }
+
 Sets the default retention period for a lock bucket.
 
 ```
@@ -513,10 +335,12 @@ The request body must contain the object lock configuration in JSON format.
 
 <a id="put-object-lock-configuration-response"></a>
 #### Response
+
 This API does not return a response body. For a valid request, return status code 200.
 
 <a id="get-object-lock-configuration"></a>
 ### Get Lock Bucket Retention Period { #get-object-lock-configuration }
+
 Retrieves the object lock configuration of a lock bucket.
 
 ```
@@ -528,6 +352,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="get-object-lock-configuration-request"></a>
 #### Request
+
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -538,6 +363,7 @@ This API does not require a request body.
 
 <a id="get-object-lock-configuration-response"></a>
 #### Response
+
 For a valid request, returns status code 200 and the object lock configuration in JSON format.
 
 | Name | Type | Format | Description |
@@ -575,6 +401,7 @@ For a valid request, returns status code 200 and the object lock configuration i
 
 <a id="upload-object"></a>
 ### Upload Object { #upload-object }
+
 Uploads an object to the specified bucket.
 
 ```
@@ -586,6 +413,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="upload-object-request"></a>
 #### Request
+
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -597,6 +425,7 @@ This API does not require a request body.
 
 <a id="upload-object-response"></a>
 #### Response
+
 This API does not return a response body. For a valid request, return status code 200.
 
 | Name | Type | Format | Description |
@@ -606,6 +435,7 @@ This API does not return a response body. For a valid request, return status cod
 
 <a id="download-object"></a>
 ### Download Object { #download-object }
+
 Downloads an object.
 
 ```
@@ -617,6 +447,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="download-object-request"></a>
 #### Request
+
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -628,6 +459,7 @@ This API does not require a request body.
 
 <a id="download-object-response"></a>
 #### Response
+
 For a valid request, return status code 200.
 
 | Name | Type | Format | Description |
@@ -637,6 +469,7 @@ For a valid request, return status code 200.
 
 <a id="delete-object"></a>
 ### Delete Object { #delete-object }
+
 Deletes the specified object.
 
 ```
@@ -648,6 +481,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="delete-object-request"></a>
 #### Request
+
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -659,12 +493,14 @@ This API does not require a request body.
 
 <a id="delete-object-response"></a>
 #### Response
+
 This API does not return request body. When the request is appropriate, return status code 204.
 
 {% if release_2026_08 %}
 
 <a id="presigned-url"></a>
 ## Create Signed URL { #presigned-url }
+
 A URL that carries **AWS Signature Version 4 (SigV4)** signing in query parameters, allowing access to an object for a set period of time without an authentication token (Authorization header). Use `GET` for downloads and `PUT` for uploads.
 
 <a id="presigned-url-format"></a>
@@ -682,6 +518,7 @@ GET /{bucket}/{obj}
 
 <a id="presigned-url-format-request"></a>
 #### Request
+
 This API does not require a request body.
 
 | Name | Type | Format | Required | Description |
@@ -697,6 +534,7 @@ This API does not require a request body.
 
 <a id="presigned-url-format-response"></a>
 #### Response
+
 For a valid request, return status code 200.
 
 {% if release_2026_08 %}
@@ -708,10 +546,12 @@ For a valid request, return status code 200.
 
 <a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
+
 You can use NHN Cloud Object Storage with the [AWS Command Line Interface](https://aws.amazon.com/ko/cli/) using the S3 compatible API.
 
 <a id="aws-command-line-interface-installation"></a>
 ### Installation { #aws-command-line-interface-installation }
+
 See [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) to install the AWS Command Line Interface.
 
 !!! tip "Note"
@@ -719,6 +559,7 @@ See [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.
 
 <a id="aws-command-line-interface-configuration"></a>
 ### Configuration { #aws-command-line-interface-configuration }
+
 To use the AWS Command Line Interface, you must first configure the S3 API credentials and environment.
 
 ```shell
@@ -899,6 +740,7 @@ $[ object_storage_url ]$/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-A
 
 <a id="aws-command-line-interface-virtual-hosted-style"></a>
 ### Use Domain-Style Endpoints { #aws-command-line-interface-virtual-hosted-style }
+
 The S3-compatible API supports both Path-style and Virtual Hosted-style as bucket access methods. Virtual Hosted-style uses the bucket name as a subdomain of the endpoint.
 
 | Method | Format |
@@ -933,6 +775,7 @@ s3 =
 
 <a id="aws-sdk"></a>
 ## AWS SDK { #aws-sdk }
+
 AWS provides SDKs for many types of programming languages. By using the S3 compatible API, you can use NHN Cloud Object Storage with AWS SDK.
 
 !!! tip "Note"
@@ -1836,6 +1679,7 @@ static string GeneratePresignedUrl(
 
 <a id="aws-sdk-virtual-hosted-style"></a>
 ### Use domain-style endpoints { #aws-sdk-virtual-hosted-style }
+
 To use domain-style endpoints in the AWS SDK, disable path-style access in the client configuration. The endpoint URL and credentials remain the same as before, and the SDK combines the bucket name as a subdomain to send requests.
 
 <details>
