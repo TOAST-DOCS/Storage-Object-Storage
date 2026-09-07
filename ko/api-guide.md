@@ -2,8 +2,6 @@
 
 {% include-markdown '../_object-storage-vars.md' %}
 
-
-
 <a id="storage-object-storage-api-guide"></a>
 ## Storage > Object Storage > API 가이드 { #storage-object-storage-api-guide }
 
@@ -1083,10 +1081,12 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 `X-Container-Object-Lifecycle` 헤더를 사용하면 컨테이너에 저장될 오브젝트의 수명 주기를 일 단위로 설정할 수 있습니다. 설정 이후 업로드한 오브젝트에만 적용됩니다.
 `X-Container-Object-Transfer-To` 헤더를 사용하면 수명 주기가 만료된 오브젝트를 지정된 컨테이너로 옮겨 보관할 수 있습니다. 컨테이너가 지정되어 있지 않으면 만료된 오브젝트는 삭제됩니다.
 
+{% if release_2026_05 %}
 !!! tip "알아두기"
     컨테이너 정책을 통해 세밀한 수명 주기 규칙을 설정할 수 있습니다.
     자세한 설명은 [컨테이너 정책 설정 가이드](container-policy-guide/#lifecycle)를 참고합니다.
 
+{% endif %}
 <!-- 개행을 위한 주석 -->
 
 {% if ec %}
@@ -1135,9 +1135,11 @@ X-Container-Object-Allow-Keyword-Policy: {오브젝트 업로드 정책의 파�
 
 브라우저에서 오브젝트 스토리지 API를 직접 호출하려면 교차 출처 리소스 공유(CORS) 설정이 필요합니다. `X-Container-Meta-Access-Control-Allow-Origin` 헤더를 사용하여 허용할 출처 목록을 설정합니다. 공백(` `)으로 구분된 하나 이상의 출처를 입력하거나 `*`를 입력하여 모든 출처를 허용할 수 있습니다.
 
+{% if release_2026_08 %}
 !!! tip "알아두기"
     `X-Container-Meta-Access-Control-Allow-Origin`에 설정할 수 있는 허용 출처는 최대 100개입니다. 이 제한은 [컨테이너 정책](container-policy-guide/#cors)으로 설정할 때도 동일하게 적용됩니다.
 
+{% endif %}
 <details>
 <summary>CORS 설정 예시</summary>
 

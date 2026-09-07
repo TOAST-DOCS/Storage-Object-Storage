@@ -13,9 +13,11 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 | PUT Bucket | 버킷 생성 |
 | HEAD Bucket | 버킷 정보 조회 |
 | DELETE Bucket | 버킷 삭제 |
+{%- if release_2026_08 %}
 | PUT Bucket Object Lock | 잠금 버킷 생성 |
 | PUT Object Lock Configuration | 잠금 버킷 보관 기간 설정 |
 | GET Object Lock Configuration | 잠금 버킷 보관 기간 조회 |
+{%- endif %}
 | PUT Bucket ACL | 버킷 ACL 설정 |
 | GET Bucket ACL | 버킷 ACL 조회 |
 | GET Bucket Location | 버킷이 있는 리전 조회 |
@@ -208,6 +210,7 @@ S3 API를 사용하려면 자격 증명을 사용하여 서명을 생성해야 �
 | 리전 이름 | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
 | 비밀 키 | S3 API 자격 증명 비밀 키 |
 
+{% if release_2026_05 %}
 AWS signature V4 서명 생성 시 `x-amz-content-sha256` 헤더가 필요합니다. 이 헤더는 정규 요청(Canonical Request)에 포함되어 서명 계산에 사용되며, 헤더 값에 따라 페이로드 처리 방식이 결정됩니다. 사용 가능한 값은 다음과 같습니다.
 
 | x-amz-content-sha256 값 | 설명 |
@@ -234,6 +237,7 @@ x-amz-content-sha256 값이 `STREAMING-UNSIGNED-PAYLOAD-TRAILER` 또는 `STREAMI
 !!! tip "알아두기"
     트레일러 헤더를 사용한 서명 계산 방법에 관한 자세한 내용은 [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) 문서를 참고합니다.
 
+{% endif %}
 <a id="bucket"></a>
 ## 버킷(Bucket) { #bucket }
 
@@ -419,6 +423,7 @@ Authorization: AWS {access}:{signature}
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
+{% if release_2026_08 %}
 <a id="create-lock-bucket"></a>
 ### 잠금 버킷 생성 { #create-lock-bucket }
 오브젝트 잠금이 활성화된 버킷을 생성합니다. 버킷을 생성할 때 `x-amz-bucket-object-lock-enabled` 헤더를 `true`로 설정합니다. 기본 보관 기간은 0일로 설정됩니다.
@@ -559,6 +564,7 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
+{% endif %}
 <a id="object"></a>
 ## 오브젝트 { #object }
 
@@ -650,6 +656,7 @@ Authorization: AWS {access}:{signature}
 #### 응답
 이 API는 응답 본문을 반환하지 않습니다. 요청이 올바르면 상태 코드 204를 반환합니다.
 
+{% if release_2026_08 %}
 <a id="presigned-url"></a>
 ## 서명된 URL 생성 { #presigned-url }
 **AWS Signature Version 4(SigV4)** 서명을 쿼리 파라미터에 담아, 인증 토큰(Authorization 헤더) 없이 일정 시간 동안 오브젝트에 접근할 수 있는 URL입니다. 다운로드는 `GET`, 업로드는 `PUT`으로 요청합니다.
@@ -686,9 +693,12 @@ GET /{bucket}/{obj}
 #### 응답
 요청이 올바르면 상태 코드 200을 반환합니다.
 
+{% if release_2026_08 %}
 !!! tip "알아두기"
     Swift TempURL 방식과 언어별 직접 서명 예시 등 자세한 내용은 [서명된 URL 가이드](presigned-url-guide/)를 참고합니다.
 
+{% endif %}
+{% endif %}
 <a id="aws-command-line-interface"></a>
 ## AWS 명령줄 인터페이스(CLI) { #aws-command-line-interface }
 S3 호환 API를 사용하여 [AWS 명령줄 인터페이스](https://aws.amazon.com/ko/cli/)로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
@@ -698,7 +708,7 @@ S3 호환 API를 사용하여 [AWS 명령줄 인터페이스](https://aws.amazon
 [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) 문서를 참조해 AWS 명령줄 인터페이스를 설치합니다.
 
 !!! tip "알아두기"
-    NHN Cloud 오브젝트 스토리지는 AWS CLI 버전 2.34.38까지 지원합니다.
+    NHN Cloud 오브젝트 스토리지는 AWS CLI 버전 {% if release_2026_05 %}2.34.38{% else %}2.22.35{% endif %}까지 지원합니다.
 
 <a id="aws-command-line-interface-configuration"></a>
 ### 설정 { #aws-command-line-interface-configuration }
@@ -776,6 +786,7 @@ remove_bucket: example-bucket
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>잠금 버킷</summary>
 
@@ -823,6 +834,7 @@ $ aws --endpoint-url=$[ object_storage_url ]$ s3api get-object-lock-configuratio
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>오브젝트 업로드</summary>
@@ -864,6 +876,7 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>서명된 URL 생성</summary>
 
@@ -873,7 +886,9 @@ $[ object_storage_url ]$/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-A
 ```
 
 </details>
+{% endif %}
 
+{% if release_2026_05 %}
 <a id="aws-command-line-interface-virtual-hosted-style"></a>
 ### 도메인 스타일 엔드포인트 사용 { #aws-command-line-interface-virtual-hosted-style }
 S3 호환 API는 버킷 접근 방식으로 경로 스타일(Path-style)과 도메인 스타일(Virtual Hosted-style)을 모두 지원합니다. 도메인 스타일은 버킷 이름을 엔드포인트의 서브 도메인으로 사용합니다.
@@ -906,6 +921,7 @@ s3 =
 !!! danger "주의"
     버킷 이름에 점(`.`)이 포함되어 있으면 도메인 스타일 사용 시 와일드카드 SSL 인증서의 유효 범위를 벗어나 인증서 검증에 실패할 수 있습니다. 이때는 경로 스타일을 사용하세요.
 
+{% endif %}
 <a id="aws-sdk"></a>
 ## AWS SDK { #aws-sdk }
 AWS는 여러 가지 프로그래밍 언어를 위한 SDK를 제공하고 있습니다. S3 호환 API를 사용하여 AWS SDK로 NHN Cloud 오브젝트 스토리지를 사용할 수 있습니다.
@@ -1009,6 +1025,7 @@ def delete_bucket(self, bucket_name):
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>잠금 버킷</summary>
 
@@ -1060,6 +1077,7 @@ def get_object_lock_configuration(self, bucket_name):
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>오브젝트 업로드</summary>
@@ -1117,6 +1135,7 @@ def delete(self, bucket_name, key):
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>서명된 URL 생성</summary>
 
@@ -1133,6 +1152,7 @@ def generate_presigned_url(self, bucket_name, key, expires_in):
 ```
 
 </details>
+{% endif %}
 
 <a id="aws-sdk-java"></a>
 ### Java SDK { #aws-sdk-java }
@@ -1245,6 +1265,7 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>잠금 버킷</summary>
 
@@ -1313,6 +1334,7 @@ public ObjectLockConfiguration getObjectLockConfiguration(
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>오브젝트 업로드</summary>
@@ -1389,6 +1411,7 @@ public void deleteObject(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>서명된 URL 생성</summary>
 
@@ -1412,6 +1435,7 @@ public String generatePresignedUrl(
 ```
 
 </details>
+{% endif %}
 
 <a id="aws-sdk-dotnet"></a>
 ### .NET SDK { #aws-sdk-dotnet }
@@ -1565,6 +1589,7 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>잠금 버킷</summary>
 
@@ -1659,6 +1684,7 @@ static async Task<GetObjectLockConfigurationResponse> GetObjectLockConfiguration
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>오브젝트 업로드</summary>
@@ -1763,6 +1789,7 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>서명된 URL 생성</summary>
 
@@ -1794,7 +1821,9 @@ static string GeneratePresignedUrl(
 ```
 
 </details>
+{% endif %}
 
+{% if release_2026_05 %}
 <a id="aws-sdk-virtual-hosted-style"></a>
 ### 도메인 스타일 엔드포인트 사용 { #aws-sdk-virtual-hosted-style }
 AWS SDK에서 도메인 스타일 엔드포인트를 사용하려면 클라이언트 설정에서 경로 스타일 접근을 비활성화합니다. 엔드포인트 URL과 자격 증명은 기존과 동일하게 사용하며, SDK가 버킷 이름을 서브 도메인으로 조합해 요청을 보냅니다.
@@ -1874,4 +1903,6 @@ private static AmazonS3Client GetS3Client()
 
 !!! danger "주의"
     버킷 이름에 점(`.`)이 포함되어 있으면 도메인 스타일 사용 시 와일드카드 SSL 인증서의 유효 범위를 벗어나 인증서 검증에 실패할 수 있습니다. 이때는 경로 스타일을 사용하세요.
+
+{% endif %}
 

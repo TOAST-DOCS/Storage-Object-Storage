@@ -2,6 +2,7 @@
 
 <!-- pre-align:aligned sig=ba6b9ac2ecbb -->
 
+{% if release_2026_08 %}
 <a id="storage-object-storage-presigned-url-guide"></a>
 ## Storage > Object Storage > 서명된 URL 가이드 { #storage-object-storage-presigned-url-guide }
 
@@ -471,3 +472,5 @@ curl -X PUT -T ./cat.jpg \
 curl -X PUT -T ./cat.jpg \
   "$[ object_storage_url ]$/my-container/cat.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=$[ access_key ]$%2F20260601%2F$[ base_region | lower ]$%2Fs3%2Faws4_request&X-Amz-Date=20260601T201207Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=2b1d4e70f3a8c1d9e2b5f4076a3b8c1d9e2b5f40a1b2c3d4e5f60718293a4b50"
 ```
+
+{% endif %}
