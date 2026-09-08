@@ -1,11 +1,14 @@
 <!-- machine_translated: true -->
 
+<!-- pre-align:aligned sig=16de6192510c -->
+
 {% include-markdown '../_object-storage-vars.md' %}
 
-<!-- pre-align:aligned sig=acedf0f45de3 -->
+
 
 <a id="storage-object-storage-amazon-s3-compatible-api-guide"></a>
 ## Storage > Object Storage > Amazon S3互換APIガイド { #storage-object-storage-amazon-s3-compatible-api-guide }
+
 NHN Cloud オブジェクトストレージは、AWS のオブジェクトストレージ S3 API と互換性のある API を提供します。そのため、Amazon S3 API を使用するように開発されたアプリケーションは、設定を変更するだけでそのまま使用できます。
 
 提供する Amazon S3互換 API は次のとおりです。
@@ -15,13 +18,15 @@ NHN Cloud オブジェクトストレージは、AWS のオブジェクトスト
 | PUT Bucket | バケットの作成 |
 | HEAD Bucket | バケット情報の照会 |
 | DELETE Bucket | バケットの削除 |
+{%- if release_2026_08 %}
 | PUT Bucket Object Lock | ロックバケットの作成 |
-| PUT Object Lock Configuration | ロックバケット保管期間の設定 |
-| GET Object Lock Configuration | ロックバケット保管期間の照会 |
+| PUT Object Lock Configuration | ロックバケットの保管期間設定 |
+| GET Object Lock Configuration | ロックバケットの保管期間照会 |
+{%- endif %}
 | PUT Bucket ACL | バケット ACL の設定 |
 | GET Bucket ACL | バケット ACL の照会 |
 | GET Bucket Location | バケットが存在するリージョンの照会 |
-| GET Bucket List Objects | バケット内オブジェクト一覧の照会 |
+| GET Bucket List Objects | バケットのオブジェクト一覧の照会 |
 | GET Object | オブジェクトのダウンロード |
 | HEAD Object | オブジェクト情報の照会 |
 | PUT Object | オブジェクトのアップロード |
@@ -41,207 +46,15 @@ NHN Cloud オブジェクトストレージは、AWS のオブジェクトスト
 <a id="s3-api-credential"></a>
 ## S3 API認証情報(S3 API Credential) { #s3-api-credential }
 
-<a id="obtain-s3-api-credentials"></a>
-### S3 API認証情報の発行 { #obtain-s3-api-credentials }
-Amazon S3互換APIを使用するには、まず AWS EC2 形式の S3 API認証情報を発行する必要があります。認証情報はコンソールまたは API を使用して発行できます。コンソールを使用した認証情報の発行については、[S3 API認証情報](console-guide/#s3-api-credentials)を参照してください。
-
-APIを使用して認証情報を発行するには、認証トークンが必要です。認証トークンの発行については、[オブジェクトストレージAPIガイド](api-guide/#auth)を参照してください。
-
-```
-POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
-
-Content-Type: application/json
-X-Auth-Token: {token-id}
-```
-
-<a id="obtain-s3-api-credentials-request"></a>
-#### 要求
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | Y | 発行済みトークン ID |
-| api-user-id | URL | String | Y | APIユーザーID。API エンドポイント設定ダイアログボックスで確認可能 |
-| tenant_id | Body | String | Y | テナントID。API エンドポイント設定ダイアログボックスで確認可能 |
-
-!!! tip "ヒント"
-    `{api-user-id}` は、コンソールの API エンドポイント設定ダイアログで **[APIユーザーID]** 項目を参照するか、認証トークン発行 API レスポンス本文の **access.user.id** フィールドで確認できます。
-    認証トークン発行 API を使用するには、API ガイドの[認証および権限](api-guide/#auth)を参照してください。
-
-    S3 API認証情報は有効期限がなく、ユーザーごとにプロジェクトあたり最大 3 個まで発行できます。
-
-<!-- 改行のためのコメントのため、必ず含める必要があります。 -->
-
-!!! danger "注意"
-    S3 API認証情報キーが漏洩すると、誰でも漏洩したキーを使用してオブジェクトにアクセスできます。キーが漏洩した場合は、漏洩した認証情報を削除して新しく発行して使用することをお勧めします。
-
-    S3 API認証情報を発行したユーザーアカウントがプロジェクトへのアクセス権限を失った場合、または NHN Cloud を退会して削除された場合、認証情報は即座に失効して使用できなくなります。
-
-<details>
-<summary>例</summary>
-
-```json
-{
-  "tenant_id": "84c9e9a51aea402e95389c08ac562ac5"
-}
-```
-
-</details>
-
-<a id="obtain-s3-api-credentials-response"></a>
-#### 応答
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| access | Body | String | S3 API認証情報アクセスキー |
-| secret | Body | String | S3 API認証情報シークレットキー |
-| user_id | Body | String | APIユーザーID |
-| tenant_id | Body | String | テナントID |
-| created_at | Body | String | S3 API認証情報の作成日時 |
-| accessed_at | Body | String | S3 API認証情報の最終アクセス日時 |
-
-<details>
-<summary>例</summary>
-
-```json
-{
-  "credential": {
-    "access": "253a3c7ca27f4731a9c757addfac29ca",
-    "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
-    "secret": "be057f235abf45ee8e2ba14edc5fb253",
-    "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-    "created_at": "2024-10-19T08:24:46.000000Z",
-    "accessed_at": "2024-10-19T08:24:46.000000Z"
-  }
-}
-```
-
-</details>
-
-<a id="get-s3-api-credentials"></a>
-### S3 API認証情報の照会 { #get-s3-api-credentials }
-発行済みの S3 API認証情報を照会します。
-
-**[Method, URL]**
-
-```
-GET $[ identity_url ]$/v2.0/users/{user-id}/credentials/OS-EC2
-
-X-Auth-Token: {token-id}
-```
-
-<a id="get-s3-api-credentials-request"></a>
-#### 要求
-この API はリクエスト本文を必要としません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | Y | 発行済みトークン ID |
-| user-id | URL | String | Y | ユーザー ID。認証トークンに含まれています |
-
-<a id="get-s3-api-credentials-response"></a>
-#### 応答
-
-| 名前 | 種類 | 形式 | 説明 |
-|---|---|---|---|
-| access | Body | String | S3 API認証情報アクセスキー |
-| secret | Body | String | S3 API認証情報シークレットキー |
-| user_id | Body | String | APIユーザーID |
-| tenant_id | Body | String | テナントID |
-| created_at | Body | String | S3 API認証情報の作成日時 |
-| accessed_at | Body | String | S3 API認証情報の最終アクセス日時 |
-
-<details>
-<summary>例</summary>
-
-```json
-{
-  "credentials": [
-    {
-      "access": "253a3c7ca27f4731a9c757addfac29ca",
-      "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
-      "secret": "be057f235abf45ee8e2ba14edc5fb253",
-      "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-      "created_at": "2024-10-19T08:24:46.000000Z",
-      "accessed_at": "2024-10-19T08:30:42.000000Z"
-    }
-  ]
-}
-```
-
-</details>
-
-<a id="delete-s3-api-credentials"></a>
-### S3 API認証情報の削除 { #delete-s3-api-credentials }
-発行済みの S3 API認証情報を削除します。
-
-**[Method, URL]**
-
-```
-DELETE $[ identity_url ]$/v2.0/users/{user-id}/credentials/OS-EC2/{access}
-
-X-Auth-Token: {token-id}
-```
-
-<a id="delete-s3-api-credentials-request"></a>
-#### 要求
-この API はリクエスト本文を必要としません。
-
-| 名前 | 種類 | 形式 | 必須 | 説明 |
-|---|---|---|---|---|
-| X-Auth-Token | Header | String | Y | 発行済みトークン ID |
-| user-id | URL | String | Y | ユーザー ID。認証トークンに含まれています |
-| access | URL | String | Y | S3 API認証情報アクセスキー |
-
-<a id="delete-s3-api-credentials-response"></a>
-#### 応答
-この API はレスポンス本文を返しません。リクエストが正しい場合、ステータスコード 204 を返します。
-
-<a id="create-signature"></a>
-## 署名(signature)の生成 { #create-signature }
-S3 API を使用するには、認証情報を使用して署名を生成する必要があります。署名の生成方法については、[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) のドキュメントを参照してください。
-
-
-署名の生成に必要な情報は次のとおりです。
-
-| 名前 | 値 |
-|---|---|
-| アルゴリズム | AWS4-HMAC-SHA256 |
-| 署名日時 | YYYYMMDDThhmmssZ 形式 |
-| サービス名 | s3 |
-| リージョン名 | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
-| シークレットキー | S3 API認証情報シークレットキー |
-
-AWS signature V4 の署名生成時に `x-amz-content-sha256` ヘッダーが必要です。このヘッダーは正規リクエスト(Canonical Request)に含まれて署名の計算に使用され、ヘッダーの値によってペイロードの処理方式が決まります。使用可能な値は次のとおりです。
-
-| x-amz-content-sha256 値 | 説明 |
-|---|---|
-| `<ペイロードハッシュ>` | リクエストペイロード全体の SHA-256 ハッシュ値を使用する基本方式 |
-| `UNSIGNED-PAYLOAD` | ペイロードの署名を省略 |
-| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD` | AWS Chunked Upload 方式(各チャンクに署名を含む) |
-| `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload 方式(チャンク署名なしでトレーラーヘッダーを使用) |
-| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload 方式(各チャンクに署名を含む + トレーラーヘッダーを使用) |
-
-!!! tip "ヒント"
-    詳細については、[Authenticating Requests: Using the Authorization Header(AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) のドキュメントを参照してください。
-
-x-amz-content-sha256 の値が `STREAMING-UNSIGNED-PAYLOAD-TRAILER` または `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` の場合、`x-amz-trailer` リクエストヘッダーでトレーラーに送信するチェックサムアルゴリズムを宣言する必要があります。サポートしているアルゴリズムは次のとおりです。
-
-| x-amz-trailer 値 | アルゴリズム |
-|---|---|
-| `x-amz-checksum-crc32` | CRC-32 |
-| `x-amz-checksum-crc32c` | CRC-32C |
-| `x-amz-checksum-crc64nvme` | CRC-64/NVME |
-| `x-amz-checksum-sha1` | SHA-1 |
-| `x-amz-checksum-sha256` | SHA-256 |
-
-!!! tip "ヒント"
-    トレーラーヘッダーを使用した署名計算方法の詳細については、[Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) のドキュメントを参照してください。
+Object Storage は、Amazon S3互換API の呼び出し時の認証/認可に S3 API認証情報を使用します。S3 API認証情報は、NHN Cloud で Amazon S3互換API をサポートするサービス API を使用するための AWS EC2 形式の認証キーです。
+{% if s3_credential_guide_url %}S3 API認証情報の詳細については、[S3 API認証情報]($[ s3_credential_guide_url ]$)を参照してください。{% endif %}
 
 <a id="bucket"></a>
 ## Bucket { #bucket }
 
 <a id="create-bucket"></a>
 ### バケットの作成 { #create-bucket }
+
 バケットを作成します。バケット名は、次の Amazon S3 の命名規則に従う必要があります。
 
 * バケット名は 3〜63 文字である必要があります。
@@ -265,6 +78,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="create-bucket-request"></a>
 #### リクエスト
+
 この API はリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -275,6 +89,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="create-bucket-response"></a>
 #### レスポンス
+
 この API はレスポンス本文を返しません。リクエストが正しければ、ステータスコード 200 を返します。
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -283,6 +98,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="list-buckets"></a>
 ### バケット一覧の照会 { #list-buckets }
+
 バケットの一覧を照会します。
 
 ```
@@ -294,6 +110,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="list-buckets-request"></a>
 #### リクエスト
+
 この API はリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -303,6 +120,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="list-buckets-response"></a>
 #### レスポンス
+
 リクエストが正しければ、ステータスコード 200 と XML 形式のバケット一覧を返します。
 
 <details>
@@ -333,6 +151,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="get-bucket"></a>
 ### バケットの照会 { #get-bucket }
+
 指定したバケットの情報と、内部に保存されているオブジェクトの一覧を照会します。
 
 ```
@@ -347,6 +166,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="get-bucket-request"></a>
 #### リクエスト
+
 この API はリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -357,6 +177,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="get-bucket-response"></a>
 #### レスポンス
+
 リクエストが正しければ、ステータスコード 200 と XML 形式のオブジェクト一覧を返します。
 
 <details>
@@ -400,6 +221,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="delete-bucket"></a>
 ### バケットの削除 { #delete-bucket }
+
 指定したバケットを削除します。削除するバケットは空である必要があります。
 
 ```
@@ -411,6 +233,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="delete-bucket-request"></a>
 #### リクエスト
+
 この API はリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -421,10 +244,14 @@ Authorization: AWS {access}:{signature}
 
 <a id="delete-bucket-response"></a>
 #### レスポンス
+
 この API はレスポンス本文を返しません。リクエストが正しければ、ステータスコード 204 を返します。
+
+{% if release_2026_08 %}
 
 <a id="create-lock-bucket"></a>
 ### ロックバケットの作成 { #create-lock-bucket }
+
 オブジェクトロックが有効なバケットを作成します。バケットを作成する際に `x-amz-bucket-object-lock-enabled` ヘッダーを `true` に設定します。デフォルトの保管期間は 0 日に設定されます。
 
 ```
@@ -437,6 +264,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="create-lock-bucket-request"></a>
 #### リクエスト
+
 この API はリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -448,6 +276,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="create-lock-bucket-response"></a>
 #### レスポンス
+
 この API はレスポンス本文を返しません。リクエストが正しければ、ステータスコード 200 を返します。
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -456,6 +285,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="put-object-lock-configuration"></a>
 ### ロックバケットの保管期間の設定 { #put-object-lock-configuration }
+
 ロックバケットのデフォルトの保管期間を設定します。
 
 ```
@@ -508,10 +338,12 @@ Authorization: AWS {access}:{signature}
 
 <a id="put-object-lock-configuration-response"></a>
 #### レスポンス
+
 この API はレスポンス本文を返しません。リクエストが正しければ、ステータスコード 200 を返します。
 
 <a id="get-object-lock-configuration"></a>
 ### ロックバケットの保管期間の照会 { #get-object-lock-configuration }
+
 ロックバケットのオブジェクトロック設定を照会します。
 
 ```
@@ -523,6 +355,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="get-object-lock-configuration-request"></a>
 #### リクエスト
+
 この API はリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -533,6 +366,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="get-object-lock-configuration-response"></a>
 #### レスポンス
+
 リクエストが正しければ、ステータスコード 200 と JSON 形式のオブジェクトロック設定を返します。
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -563,11 +397,14 @@ Authorization: AWS {access}:{signature}
 
 </details>
 
+{% endif %}
+
 <a id="object"></a>
 ## オブジェクト { #object }
 
 <a id="upload-object"></a>
 ### オブジェクトのアップロード { #upload-object }
+
 指定したバケットにオブジェクトをアップロードします。
 
 ```
@@ -579,6 +416,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="upload-object-request"></a>
 #### リクエスト
+
 このAPIはリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -590,6 +428,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="upload-object-response"></a>
 #### レスポンス
+
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード 200 を返します。
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -599,6 +438,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="download-object"></a>
 ### オブジェクトのダウンロード { #download-object }
+
 オブジェクトをダウンロードします。
 
 ```
@@ -610,6 +450,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="download-object-request"></a>
 #### リクエスト
+
 このAPIはリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -621,6 +462,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="download-object-response"></a>
 #### レスポンス
+
 リクエストが正しい場合、ステータスコード 200 を返します。
 
 | 名前 | 種類 | 形式 | 説明 |
@@ -630,6 +472,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="delete-object"></a>
 ### オブジェクトの削除 { #delete-object }
+
 指定したオブジェクトを削除します。
 
 ```
@@ -641,6 +484,7 @@ Authorization: AWS {access}:{signature}
 
 <a id="delete-object-request"></a>
 #### リクエスト
+
 このAPIはリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -652,10 +496,14 @@ Authorization: AWS {access}:{signature}
 
 <a id="delete-object-response"></a>
 #### レスポンス
+
 このAPIはレスポンス本文を返しません。リクエストが正しい場合、ステータスコード 204 を返します。
+
+{% if release_2026_08 %}
 
 <a id="presigned-url"></a>
 ## 署名付き URL の生成 { #presigned-url }
+
 **AWS Signature Version 4 (SigV4)** の署名をクエリパラメータに含めることで、認証トークン (Authorization ヘッダー) なしに一定時間オブジェクトにアクセスできる URL です。ダウンロードは `GET`、アップロードは `PUT` でリクエストします。
 
 <a id="presigned-url-format"></a>
@@ -673,6 +521,7 @@ GET /{bucket}/{obj}
 
 <a id="presigned-url-format-request"></a>
 #### リクエスト
+
 このAPIはリクエスト本文を必要としません。
 
 | 名前 | 種類 | 形式 | 必須 | 説明                                                                             |
@@ -688,24 +537,32 @@ GET /{bucket}/{obj}
 
 <a id="presigned-url-format-response"></a>
 #### レスポンス
+
 リクエストが正しい場合、ステータスコード 200 を返します。
 
+{% if release_2026_08 %}
 !!! tip "ヒント"
-    Swift TempURL 方式と言語別の直接署名の例など、詳細については[署名済みURLガイド](presigned-url-guide/)を参照してください。
+    Swift TempURL 方式や言語別の直接署名の例など、詳細については[署名付き URL ガイド](presigned-url-guide/)を参照してください。
+
+{% endif %}
+{% endif %}
 
 <a id="aws-command-line-interface"></a>
 ## AWS Command Line Interface (CLI) { #aws-command-line-interface }
+
 S3互換APIを使用して、[AWS Command Line Interface](https://aws.amazon.com/ko/cli/)でNHN Cloudオブジェクトストレージを使用できます。
 
 <a id="aws-command-line-interface-installation"></a>
 ### インストール { #aws-command-line-interface-installation }
+
 [Installing past releases of the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-version.html) ドキュメントを参照して、AWS Command Line Interfaceをインストールします。
 
 !!! tip "注記"
-    NHN CloudオブジェクトストレージはAWS CLIバージョン2.34.38までサポートしています。
+    NHN Cloud オブジェクトストレージは、AWS CLI バージョン {% if release_2026_05 %}2.34.38{% else %}2.22.35{% endif %} までサポートしています。
 
 <a id="aws-command-line-interface-configuration"></a>
 ### 設定 { #aws-command-line-interface-configuration }
+
 AWS Command Line Interfaceを使用するには、まずS3 API認証情報と環境を設定する必要があります。
 
 ```shell
@@ -780,13 +637,13 @@ remove_bucket: example-bucket
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>ロックバケット</summary>
 
 ロックバケットは <code>aws s3api</code> サブコマンドで管理します。
 <br>
-<code>create-bucket</code> コマンドに <code>--object-lock-enabled-for-bucket</code> オプションを使用すると、オブジェクトロックが有効なバケットを作成します。
-デフォルトの保持期間は0日に設定されます。
+<code>create-bucket</code> コマンドに <code>--object-lock-enabled-for-bucket</code> オプションを使用すると、オブジェクトロックが有効化されたバケットを作成します。デフォルトの保管期間は 0 日に設定されます。
 
 ```shell
 $ aws --endpoint-url=$[ object_storage_url ]$ s3api create-bucket \
@@ -794,7 +651,7 @@ $ aws --endpoint-url=$[ object_storage_url ]$ s3api create-bucket \
   --object-lock-enabled-for-bucket
 ```
 
-デフォルトの保持期間を設定するには、<code>put-object-lock-configuration</code> コマンドを使用します。
+デフォルトの保管期間を設定するには、<code>put-object-lock-configuration</code> コマンドを使用します。
 
 ```shell
 $ aws --endpoint-url=$[ object_storage_url ]$ s3api put-object-lock-configuration \
@@ -828,6 +685,7 @@ $ aws --endpoint-url=$[ object_storage_url ]$ s3api get-object-lock-configuratio
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>オブジェクトのアップロード</summary>
@@ -869,8 +727,9 @@ delete: s3://example-bucket/3b5ab489edffdea7bf4d914e3e9b8240.jpg
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>署名付きURLの生成</summary>
+<summary>署名済み URL の生成</summary>
 
 ```shell
 $ aws --endpoint-url=$[ object_storage_url ]$ s3 presign s3://example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg --expires-in 3600
@@ -878,9 +737,13 @@ $[ object_storage_url ]$/example-bucket/0428b9e3e419d4fb7aedffde984ba5b3.jpg?X-A
 ```
 
 </details>
+{% endif %}
+
+{% if release_2026_05 %}
 
 <a id="aws-command-line-interface-virtual-hosted-style"></a>
 ### ドメインスタイルエンドポイントの使用 { #aws-command-line-interface-virtual-hosted-style }
+
 S3互換APIは、バケットへのアクセス方式としてパススタイル(Path-style)とドメインスタイル(Virtual Hosted-style)の両方をサポートしています。ドメインスタイルはバケット名をエンドポイントのサブドメインとして使用します。
 
 | 方式 | 形式 |
@@ -911,8 +774,11 @@ s3 =
 !!! danger "警告"
     バケット名にピリオド(`.`)が含まれている場合、ドメインスタイルを使用するとワイルドカードSSL証明書の有効範囲外となり、証明書の検証に失敗する可能性があります。この場合はパススタイルを使用してください。
 
+{% endif %}
+
 <a id="aws-sdk"></a>
 ## AWS SDK { #aws-sdk }
+
 AWSは複数のプログラミング言語向けのSDKを提供しています。S3互換APIを使用して、AWS SDKでNHN Cloudオブジェクトストレージを使用できます。
 
 !!! tip "注記"
@@ -1015,6 +881,7 @@ def delete_bucket(self, bucket_name):
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>ロックバケット</summary>
 
@@ -1066,6 +933,7 @@ def get_object_lock_configuration(self, bucket_name):
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>オブジェクトのアップロード</summary>
@@ -1123,6 +991,7 @@ def delete(self, bucket_name, key):
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>署名付き URL の生成</summary>
 
@@ -1139,6 +1008,7 @@ def generate_presigned_url(self, bucket_name, key, expires_in):
 ```
 
 </details>
+{% endif %}
 
 <a id="aws-sdk-java"></a>
 ### Java SDK { #aws-sdk-java }
@@ -1251,10 +1121,11 @@ public void deleteBucket(String bucketName) throws RuntimeException {
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>ロックバケット</summary>
 
-<code>CreateBucketRequest</code> に <code>withObjectLockEnabledForBucket(true)</code> を設定すると、ロックバケットを作成します。デフォルトの保管期間は 0 日に設定されます。
+<code>CreateBucketRequest</code>に<code>withObjectLockEnabledForBucket(true)</code>を設定すると、ロックバケットを作成します。デフォルトの保管期間は 0 日に設定されます。
 
 ```java
 public String createBucketWithLock(String bucketName) throws RuntimeException {
@@ -1270,7 +1141,7 @@ public String createBucketWithLock(String bucketName) throws RuntimeException {
 }
 ```
 
-デフォルトの保管期間を設定するには、<code>setObjectLockConfiguration</code> メソッドを使用します。
+デフォルトの保管期間を設定するには、<code>setObjectLockConfiguration</code>メソッドを使用します。
 
 ```java
 public void putObjectLockConfiguration(
@@ -1298,7 +1169,7 @@ public void putObjectLockConfiguration(
 }
 ```
 
-ロック設定を照会するには、<code>getObjectLockConfiguration</code> メソッドを使用します。
+ロック設定を照会するには、<code>getObjectLockConfiguration</code>メソッドを使用します。
 
 ```java
 public ObjectLockConfiguration getObjectLockConfiguration(
@@ -1319,6 +1190,7 @@ public ObjectLockConfiguration getObjectLockConfiguration(
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>オブジェクトのアップロード</summary>
@@ -1395,8 +1267,9 @@ public void deleteObject(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
-<summary>署名付き URL の作成</summary>
+<summary>署名付き URL の生成</summary>
 
 ```java
 public String generatePresignedUrl(
@@ -1418,6 +1291,7 @@ public String generatePresignedUrl(
 ```
 
 </details>
+{% endif %}
 
 <a id="aws-sdk-dotnet"></a>
 ### .NET SDK { #aws-sdk-dotnet }
@@ -1571,10 +1445,11 @@ static async Task<DeleteBucketResponse> DeleteBucketAsync(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>ロックバケット</summary>
 
-<code>PutBucketRequest</code> に <code>ObjectLockEnabledForBucket = true</code> を設定すると、ロックバケットを作成します。デフォルトの保持期間は 0 日に設定されます。
+<code>PutBucketRequest</code>に <code>ObjectLockEnabledForBucket = true</code>を設定すると、ロックバケットを作成します。デフォルトの保管期間は0日に設定されます。
 
 ```csharp
 static async Task<PutBucketResponse> CreateBucketWithLockAsync(
@@ -1600,7 +1475,7 @@ static async Task<PutBucketResponse> CreateBucketWithLockAsync(
 }
 ```
 
-デフォルトの保持期間を設定するには、<code>PutObjectLockConfigurationAsync</code> メソッドを使用します。
+デフォルトの保管期間を設定するには、<code>PutObjectLockConfigurationAsync</code>メソッドを使用します。
 
 ```csharp
 static async Task<PutObjectLockConfigurationResponse> PutObjectLockConfigurationAsync(
@@ -1640,7 +1515,7 @@ static async Task<PutObjectLockConfigurationResponse> PutObjectLockConfiguration
 }
 ```
 
-ロック設定を照会するには、<code>GetObjectLockConfigurationAsync</code> メソッドを使用します。
+ロック設定を照会するには、<code>GetObjectLockConfigurationAsync</code>メソッドを使用します。
 
 ```csharp
 static async Task<GetObjectLockConfigurationResponse> GetObjectLockConfigurationAsync(
@@ -1665,6 +1540,7 @@ static async Task<GetObjectLockConfigurationResponse> GetObjectLockConfiguration
 ```
 
 </details>
+{% endif %}
 
 <details>
 <summary>オブジェクトのアップロード</summary>
@@ -1769,6 +1645,7 @@ static async Task<DeleteObjectResponse> DeleteObjectNonVersionedBucketAsync(
 
 </details>
 
+{% if release_2026_08 %}
 <details>
 <summary>署名付き URL の生成</summary>
 
@@ -1800,9 +1677,13 @@ static string GeneratePresignedUrl(
 ```
 
 </details>
+{% endif %}
+
+{% if release_2026_05 %}
 
 <a id="aws-sdk-virtual-hosted-style"></a>
 ### ドメインスタイルエンドポイントの使用 { #aws-sdk-virtual-hosted-style }
+
 AWS SDK でドメインスタイルエンドポイントを使用するには、クライアント設定でパススタイルアクセスを無効にします。エンドポイント URL と認証情報は従来と同様に使用し、SDK がバケット名をサブドメインとして組み合わせてリクエストを送信します。
 
 <details>
@@ -1879,4 +1760,4 @@ private static AmazonS3Client GetS3Client()
 </details>
 
 !!! danger "注意"
-    バケット名にドット (`.`) が含まれている場合、ドメインスタイルを使用するとワイルドカード SSL 証明書の有効範囲外となり、証明書の検証に失敗する可能性があります。この場合は、パススタイルを使用してください。
+    バケット名にドット (`.`) が含まれている場合、ドメインスタイルを使用するとワイルドカード SSL 証明書の有効範囲外となり、証明書の検証に失敗する可能性があります。この場合は、パススタイルを使用してください。{% endif %}

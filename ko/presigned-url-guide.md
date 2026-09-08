@@ -2,6 +2,7 @@
 
 <!-- pre-align:aligned sig=ba6b9ac2ecbb -->
 
+{% if release_2026_08 %}
 <a id="storage-object-storage-presigned-url-guide"></a>
 ## Storage > Object Storage > 서명된 URL 가이드 { #storage-object-storage-presigned-url-guide }
 
@@ -124,34 +125,9 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # 컨테이너 단위 설정
 <a id="obtain-s3-credentials"></a>
 ### S3 API 자격 증명 발급 { #obtain-s3-credentials }
 
-S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명(Access Key ID + Secret Access Key)을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide/#s3-api-credentials) 항목을 참고합니다.
-
-```http
-POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
-
-Content-Type: application/json
-X-Auth-Token: {token-id}
-```
+S3 호환 API를 사용하려면 먼저 AWS EC2 형태의 S3 API 자격 증명(Access Key ID + Secret Access Key)을 발급해야 합니다. 자격 증명은 콘솔 또는 API를 사용하여 발급할 수 있습니다. 콘솔을 사용한 자격 증명 발급은 [S3 API 자격 증명](console-guide/#s3-api-credentials) 항목을, 그 외 자세한 내용은 Amazon S3 호환 API 가이드의 [S3 API 자격 증명](s3-api-guide/#s3-api-credential) 항목을 참고합니다.
 
 `Access Key ID`는 URL의 `X-Amz-Credential`에 노출되고, `Secret Access Key`는 서명 계산에만 쓰이며 URL에 노출되지 않습니다.
-
-<details>
-<summary>예시</summary>
-
-```json
-{
-  "credential": {
-    "access": "$[ access_key ]$",
-    "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
-    "secret": "$[ secret_key ]$",
-    "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-    "created_at": "2024-10-19T08:24:46.000000Z",
-    "accessed_at": "2024-10-19T08:24:46.000000Z"
-  }
-}
-```
-
-</details>
 
 `aws` CLI 또는 SDK로 서명을 생성하려면 발급한 자격 증명을 로컬에 설정해야 합니다. 자세한 내용은 [Amazon S3 호환 API 가이드](s3-api-guide/#aws-command-line-interface-configuration) 설정 항목을 참고합니다.
 
@@ -471,3 +447,5 @@ curl -X PUT -T ./cat.jpg \
 curl -X PUT -T ./cat.jpg \
   "$[ object_storage_url ]$/my-container/cat.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=$[ access_key ]$%2F20260601%2F$[ base_region | lower ]$%2Fs3%2Faws4_request&X-Amz-Date=20260601T201207Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=2b1d4e70f3a8c1d9e2b5f4076a3b8c1d9e2b5f40a1b2c3d4e5f60718293a4b50"
 ```
+
+{% endif %}

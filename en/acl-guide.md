@@ -42,9 +42,11 @@ You can use the API to set access policies for different situations by entering 
 | X-Container-View | Allow viewing a list of objects within a container and viewing information about them. This includes GET and HEAD requests for containers and HEAD requests for objects. |
 
 
+{% if release_2026_08 %}
 !!! tip "Tip"
-    You can set up to 100 access policy elements per property in `X-Container-Read`, `X-Container-Write`, and `X-Container-View`. This limit also applies when configuring with the [container policy](container-policy-guide/#acl).
+    The maximum number of access policy elements that can be set for `X-Container-Read`, `X-Container-Write`, and `X-Container-View` is 100 per property. This limit also applies when setting policies through [container policy](container-policy-guide/#acl).
 
+{% endif %}
 <br>
 
 <a id="role-based-access-elements"></a>
@@ -63,8 +65,11 @@ The role-based access policy elements that can be set are as follows. All policy
     You can find `{api-user-id}` in the **API User ID** field of the API endpoint settings dialog on the console, or in the **access.user.id** field of the authentication token issuance API response body.
     To use the authentication token issuance API, refer to the [Authentication and Authorization](api-guide/#auth) section in the API guide.
 
+{% if release_2026_08 %}
 !!! tip "Note"
-    You cannot use values where one side of the colon is empty (such as `{tenant-id}:` or `:{api-user-id}`) or values that start with `.`.
+    Values where one side of the colon is empty, such as `{tenant-id}:` or `:{api-user-id}`, and values that start with `.` cannot be used.
+
+{% endif %}
 
 <a id="common-access-elements"></a>
 #### Other Access Policy Elements
@@ -79,9 +84,11 @@ In addition to role-based access policy elements, you can also enter the followi
 | `.rlistings` | Allows a container query (GET or HEAD request) to users who are allowed to read without an authentication token.<br>Without this policy element, the list of objects cannot be queried.<br>This policy element cannot be set alone. |
 
 
+{% if release_2026_08 %}
 !!! tip "Note"
-    In referrers, `*` can only be used as `.r:*`, which means full public access. Values that combine `*` with other characters, `.r:-*` for blocking all access, and empty values cannot be used.
+    In referrers, `*` can only be used as `.r:*`, which means full public access. Values that combine `*` with other characters, `.r:-*` (which blocks all access), and empty values cannot be used.
 
+{% endif %}
 <br>
 
 <a id="role-based-access-allow-rw-to-project-users"></a>
@@ -187,7 +194,7 @@ $ curl -X GET \
 HTTP referer is the address information of a web page that is requested through a hyperlink. It is included in the request header.
 If you set a role-based access policy element in the form of `.r:{referrer}` or `.r:-{referrer}` in the `X-Container-Read` property of the container, you can allow or block access requests from specific referers. When setting the HTTP referer with a role-based access policy element, you must enter the domain name without the protocol and sub-path.
 
-The HTTP referer allow/block access policy applies the block policy first, regardless of the input order. Therefore, access requests from an HTTP referer designated as a block target are denied even if the `.r:*` policy element that allows all access is also entered.
+{% if release_2026_08 %}The HTTP referer allow/block access policy applies the block policy first, regardless of the order in which the policies are entered. Therefore, access requests from HTTP referers designated as blocked are denied even if the `.r:*` policy element that allows access to all users is also entered.{% endif %}
 
 !!! danger "Caution"
     The HTTP referer header can be forged or tampered with and is therefore not recommended as an access control measure.
@@ -266,7 +273,7 @@ $ curl -O -X GET \
 [Download Object]
 ```
 
-Requests that do not contain subdomains are blocked.
+Requests that do not include a subdomain are blocked.
 
 ```
 $ curl -X GET \
@@ -299,6 +306,7 @@ $ curl -O -X GET \
 
 [Download Object]
 ```
+</details>
 
 <details>
 <summary>Example of blocking read requests from a specific HTTP referer</summary>
@@ -310,7 +318,7 @@ $ curl -i -X POST \
   $[ object_storage_url ]$/v1/AUTH_*****/container
 ```
 
-If you set the HTTP referer domain name with a minus sign in front of it, requests from the HTTP referer are blocked.
+If you set the HTTP referer domain name with a minus sign in front of it, requests from the set HTTP referer is blocked.
 
 ```
 $ curl -X GET \
@@ -322,8 +330,36 @@ $ curl -X GET \
 
 </details>
 
+{% if not release_2026_08 %}
+The policy to allow/block access for the HTTP referer is applied according to the entered order. For example, if you enter a `.r:*` policy element that allows access to all users after the block referer policy element, the block referer policy is ignored. Conversely, if a policy element that allows access to all users is entered first and a block policy element for a specific referer is entered later, all access requests are allowed except for the set referer's access request.
+
 <details>
-<summary>Example of configuration that allows all access requests except from a specific HTTP referer</summary>
+<summary>Example of incorrect policy setting that ignores HTTP referer blocking</summary>
+
+```
+$ curl -i -X POST \
+  -H 'X-Auth-Token: ${token-id}' \
+  -H 'X-Container-Read: .r:-bar.foo.com, .r:*' \
+  $[ object_storage_url ]$/v1/AUTH_*****/container
+```
+
+```
+$ curl -O -X GET \
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
+
+[Download Object]
+
+$ curl -O -X GET \
+  -H 'Referer: https://bar.foo.com' \
+  $[ object_storage_url ]$/v1/AUTH_*****/container/object
+
+[Download Object]
+```
+</details>
+
+{% endif %}
+<details>
+<summary>Example of policy setting that allows all access requests except for access requests from a specific HTTP referer</summary>
 
 ```
 $ curl -i -X POST \
@@ -477,9 +513,11 @@ You can use the API to enable IP-based access policies by entering IP-based acce
 
 To modify the properties of a container with an IP-based access policy configured, a valid authentication token issued by an authorized tenant ID and API User ID is required, and the request must be made from an allowed IP address.
 
+{% if release_2026_08 %}
 !!! tip "Note"
-    `X-Container-Ip-Acl-Allowed-List` (whitelist) and `X-Container-Ip-Acl-Denied-List` (blacklist) can each have a maximum of 100 policy elements. This limit also applies when setting the policy via [Container Policy](container-policy-guide/#ip-acl).
+    The maximum number of policy elements that can be set in `X-Container-Ip-Acl-Allowed-List` (whitelist) and `X-Container-Ip-Acl-Denied-List` (blacklist) is 100 each. This limit also applies when configuring via [container policy](container-policy-guide/#ip-acl).
 
+{% endif %}
 <br>
 
 The IP-based access policy elements consist of access permissions and IP addresses or network ranges, and you can enter multiple values by separating them with commas (`,`). The access permissions are as follows.

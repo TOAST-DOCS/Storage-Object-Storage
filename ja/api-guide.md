@@ -1088,11 +1088,13 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 `X-Container-Object-Lifecycle` ヘッダーを使用すると、コンテナに保存されるオブジェクトのライフサイクルを日単位で設定できます。設定後にアップロードしたオブジェクトにのみ適用されます。
 `X-Container-Object-Transfer-To` ヘッダーを使用すると、ライフサイクルが期限切れになったオブジェクトを指定したコンテナに移動して保管できます。コンテナが指定されていない場合、期限切れのオブジェクトは削除されます。
 
+{% if release_2026_05 %}
 !!! tip "ヒント"
-    コンテナポリシーを使用して、詳細なライフサイクルルールを設定できます。
+    コンテナポリシーを通じて、きめ細かいライフサイクルルールを設定できます。
     詳細については、[コンテナポリシー設定ガイド](container-policy-guide/#lifecycle)を参照してください。
 
-<!-- 改行用コメント -->
+{% endif %}
+<!-- 改行のためのコメント -->
 
 {% if ec %}
 !!! tip "ヒント"
@@ -1140,13 +1142,15 @@ X-Container-Object-Allow-Keyword-Policy: {オブジェクトアップロード�
 
 ブラウザから Object Storage API を直接呼び出すには、Cross-Origin Resource Sharing (CORS) の設定が必要です。`X-Container-Meta-Access-Control-Allow-Origin` ヘッダーを使用して、許可するオリジンのリストを設定します。スペース（` `）区切りで1つ以上のオリジンを入力するか、`*` を入力してすべてのオリジンを許可できます。
 
+{% if release_2026_08 %}
 !!! tip "ヒント"
-    `X-Container-Meta-Access-Control-Allow-Origin` に設定できる許可オリジンは最大 100 個です。この制限は、[コンテナポリシー](container-policy-guide/#cors) で設定する場合も同様に適用されます。
+    `X-Container-Meta-Access-Control-Allow-Origin`に設定できる許可オリジンは最大100件です。この制限は[コンテナポリシー](container-policy-guide/#cors)で設定する場合も同様に適用されます。
 
+{% endif %}
 <details>
-<summary>CORS設定確認の例</summary>
+<summary>CORS 設定例</summary>
 
-コンテナにCORS設定を追加します。
+コンテナに CORS 設定を追加します。
 
 ```
 $ curl -X POST \
@@ -1155,10 +1159,10 @@ $ curl -X POST \
 $[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container
 ```
 <br>
-ブラウザで CORS を許可したサイトに移動してから、次のスクリプトを実行します。スクリプトは、ブラウザが提供する開発者ツールのコンソールで実行できます。
+ブラウザで CORS を許可したサイトに移動し、次のスクリプトを実行します。スクリプトはブラウザが提供する開発者ツールのコンソールで実行できます。
 
 <br>
-例） `https://example.com/`
+例: `https://example.com/`
 
 ```
 var token = "****";
@@ -1177,7 +1181,7 @@ request.send(null);
 ```
 
 <br>
-CORS設定に問題がなければ、コンソールで以下のような成功レスポンスを確認できます。
+CORS 設定に問題がなければ、コンソールで次のような成功レスポンスを確認できます。
 
 ```
 Status: 200
@@ -1191,7 +1195,7 @@ x-trans-id: tx0b1637089d1841d6833d2-0062a60940
 ```
 
 <br>
-CORS設定をしていない場合や、許可されていないサイトからAPIを呼び出すと、以下のようなエラーレスポンスが返されます。
+CORS 設定を行っていない場合、または許可されていないサイトから API を呼び出した場合は、次のようなエラーレスポンスが返されます。
 
 ```
 Access to XMLHttpRequest at '$[ object_storage_url ]$/v1/AUTH_6dbc368b94894416bec4cdfc65b5e067/container/object' from origin 'https://example.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.

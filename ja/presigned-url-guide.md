@@ -4,6 +4,8 @@
 
 <!-- pre-align:aligned sig=ba6b9ac2ecbb -->
 
+{% if release_2026_08 %}
+
 <a id="storage-object-storage-presigned-url-guide"></a>
 ## Storage > Object Storage > 署名付き URL ガイド { #storage-object-storage-presigned-url-guide }
 
@@ -126,34 +128,9 @@ swift post my-container -m "Temp-URL-Key:MYKEY" # コンテナ単位の設定
 <a id="obtain-s3-credentials"></a>
 ### S3 API 認証情報の発行 { #obtain-s3-credentials }
 
-S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報（Access Key ID + Secret Access Key）を発行する必要があります。認証情報は、コンソールまたはAPIを使用して発行できます。コンソールを使用した認証情報の発行については、「[S3 API認証情報](console-guide/#s3-api-credentials)」を参照してください。
-
-```http
-POST $[ identity_url ]$/v2.0/users/{api-user-id}/credentials/OS-EC2
-
-Content-Type: application/json
-X-Auth-Token: {token-id}
-```
+S3互換APIを使用するには、まずAWS EC2形式のS3 API認証情報（Access Key ID + Secret Access Key）を発行する必要があります。認証情報はコンソールまたはAPIを使用して発行できます。コンソールを使用した認証情報の発行については「[S3 API認証情報](console-guide/#s3-api-credentials)」を、その他の詳細については、Amazon S3互換APIガイドの「[S3 API認証情報](s3-api-guide/#s3-api-credential)」を参照してください。
 
 `Access Key ID` は URL の `X-Amz-Credential` に公開され、`Secret Access Key` は署名の計算にのみ使用され、URL には公開されません。
-
-<details>
-<summary>例</summary>
-
-```json
-{
-  "credential": {
-    "access": "$[ access_key ]$",
-    "tenant_id": "84c9e9a51aea402e95389c08ac562ac5",
-    "secret": "$[ secret_key ]$",
-    "user_id": "84db0c80-3c39-11e7-b29c-005056ac1497",
-    "created_at": "2024-10-19T08:24:46.000000Z",
-    "accessed_at": "2024-10-19T08:24:46.000000Z"
-  }
-}
-```
-
-</details>
 
 `aws` CLI または SDK で署名を生成するには、発行した認証情報をローカルに設定する必要があります。詳細については、[Amazon S3互換APIガイド](s3-api-guide/#aws-command-line-interface-configuration)の設定の項目を参照してください。
 
@@ -472,4 +449,4 @@ curl -X PUT -T ./cat.jpg \
 # S3 SigV4
 curl -X PUT -T ./cat.jpg \
   "$[ object_storage_url ]$/my-container/cat.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=$[ access_key ]$%2F20260601%2F$[ base_region | lower ]$%2Fs3%2Faws4_request&X-Amz-Date=20260601T201207Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=2b1d4e70f3a8c1d9e2b5f4076a3b8c1d9e2b5f40a1b2c3d4e5f60718293a4b50"
-```
+```{% endif %}
