@@ -103,8 +103,8 @@
 
 {%- else -%}
   {#- public (기본값) -#}
-  {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token/" -%}
-  {%- set s3_credential_guide_url = "/nhncloud/ko/public-api/s3-api-credential/" -%}
+  {%- set identity_guide_url = "/nhncloud/" ~ language ~ "/public-api/iaas-token/" -%}
+  {%- set s3_credential_guide_url = "/nhncloud/" ~ language ~ "/public-api/s3-api-credential/" -%}
   {%- set base_region = "KR1" -%}
   {%- set identity_url = "https://api-identity-infrastructure.nhncloudservice.com" -%}
   {%- set ec = true -%}
@@ -112,7 +112,7 @@
   {%- set replication = true -%}
   {%- set ratelimit = true -%}
   {%- set terraform_support = true -%}
-  {%- set terraform_guide_url = "/nhncloud/ko/terraform-guide/" -%}
+  {%- set terraform_guide_url = "/nhncloud/" ~ language ~ "/terraform-guide/" -%}
   {%- set release_2026_05 = true -%}
   {%- set release_2026_08 = true -%}
   {%- set regions = [
