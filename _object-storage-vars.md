@@ -45,7 +45,7 @@
   {%- set terraform_support = false -%}
   {%- set terraform_guide_url = "/Compute/Instance/ko/terraform-guide/" -%}
   {%- if "ngcc" in build_flags -%}
-    {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngcc/" -%}
+    {%- set identity_guide_url = false -%}
     {%- set s3_credential_guide_url = false -%}
     {%- set identity_url = "https://ngcc-kr4-iaas.kr.cloud.toastoven.net/identity" -%}
     {%- set encrypt = false -%}
@@ -56,7 +56,7 @@
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "http://ngcc-kr4-swift.kr.cloud.toastoven.net"},
     ] -%}
   {%- elif "ninc" in build_flags -%}
-    {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ninc/" -%}
+    {%- set identity_guide_url = false -%}
     {%- set s3_credential_guide_url = false -%}
     {%- set identity_url = "https://api-identity-infrastructure.ninc.go.kr" -%}
     {%- set encrypt = false -%}
@@ -67,7 +67,7 @@
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "https://kr4-api-object-storage.ninc.go.kr"},
     ] -%}
   {%- elif "ngsc" in build_flags -%}
-    {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngsc/" -%}
+    {%- set identity_guide_url = false -%}
     {%- set s3_credential_guide_url = false -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngsc.go.kr" -%}
     {%- set encrypt = false -%}
@@ -78,7 +78,7 @@
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "https://kr4-api-object-storage.ngsc.go.kr"},
     ] -%}
   {%- elif "ngoic" in build_flags -%}
-    {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngoic/" -%}
+    {%- set identity_guide_url = false -%}
     {%- set s3_credential_guide_url = false -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngoic.com" -%}
     {%- set encrypt = true -%}
@@ -89,7 +89,7 @@
       {"code": "KR4", "name": "한국(대구) 리전", "endpoint": "https://kr4-api-object-storage.ngoic.com"},
     ] -%}
   {%- elif "ngovc" in build_flags -%}
-    {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token-ngovc/" -%}
+    {%- set identity_guide_url = false -%}
     {%- set s3_credential_guide_url = false -%}
     {%- set identity_url = "https://api-identity-infrastructure.ngovc.com" -%}
     {%- set encrypt = true -%}
@@ -103,8 +103,8 @@
 
 {%- else -%}
   {#- public (기본값) -#}
-  {%- set identity_guide_url = "/nhncloud/ko/public-api/iaas-token/" -%}
-  {%- set s3_credential_guide_url = "/nhncloud/ko/public-api/s3-api-credential/" -%}
+  {%- set identity_guide_url = "/nhncloud/" ~ language ~ "/public-api/iaas-token/" -%}
+  {%- set s3_credential_guide_url = "/nhncloud/" ~ language ~ "/public-api/s3-api-credential/" -%}
   {%- set base_region = "KR1" -%}
   {%- set identity_url = "https://api-identity-infrastructure.nhncloudservice.com" -%}
   {%- set ec = true -%}
@@ -112,7 +112,7 @@
   {%- set replication = true -%}
   {%- set ratelimit = true -%}
   {%- set terraform_support = true -%}
-  {%- set terraform_guide_url = "/nhncloud/ko/terraform-guide/" -%}
+  {%- set terraform_guide_url = "/nhncloud/" ~ language ~ "/terraform-guide/" -%}
   {%- set release_2026_05 = true -%}
   {%- set release_2026_08 = true -%}
   {%- set regions = [
