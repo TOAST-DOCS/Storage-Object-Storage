@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=16de6192510c -->
+<!-- pre-align:aligned sig=c8f91552cdc2 -->
 
 {% include-markdown '../_object-storage-vars.md' %}
 
@@ -48,6 +48,50 @@ NHN Cloud オブジェクトストレージは、AWS のオブジェクトスト
 
 Object Storage は、Amazon S3互換API の呼び出し時の認証/認可に S3 API認証情報を使用します。S3 API認証情報は、NHN Cloud で Amazon S3互換API をサポートするサービス API を使用するための AWS EC2 形式の認証キーです。
 {% if s3_credential_guide_url %}S3 API認証情報の詳細については、[S3 API認証情報]($[ s3_credential_guide_url ]$)を参照してください。{% endif %}
+
+<a id="create-signature"></a>
+## 署名(signature)の生成 { #create-signature }
+
+S3 API を使用するには、認証情報を使用して署名を生成する必要があります。署名方法については、[AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) ドキュメントを参照してください。
+
+署名の生成に必要な情報は次のとおりです。
+
+| 名前 | 値 |
+|---|---|
+| アルゴリズム | AWS4-HMAC-SHA256 |
+| 署名時刻 | YYYYMMDDThhmmssZ 形式 |
+| サービス名 | s3 |
+| リージョン名 | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
+| シークレットキー | S3 API認証情報のシークレットキー |
+
+{% if release_2026_05 %}
+AWS signature V4 で署名を生成する際には、`x-amz-content-sha256` ヘッダーが必要です。このヘッダーは正規リクエスト(Canonical Request)に含まれ、署名の計算に使用されます。また、ヘッダーの値によってペイロードの処理方法が決まります。使用可能な値は次のとおりです。
+
+| x-amz-content-sha256 値 | 説明 |
+|---|---|
+| `<ペイロードハッシュ>` | リクエストペイロード全体の SHA-256 ハッシュ値を使用する基本的な方式 |
+| `UNSIGNED-PAYLOAD` | ペイロードの署名を省略 |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD` | AWS Chunked Upload 方式（各チャンクに署名を含む） |
+| `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload 方式（チャンク署名なしでトレーラーヘッダーを使用） |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload 方式（各チャンクに署名を含む + トレーラーヘッダーを使用） |
+
+!!! tip "ヒント"
+    詳細については、[Authenticating Requests: Using the Authorization Header(AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) ドキュメントを参照してください。
+
+x-amz-content-sha256 の値が `STREAMING-UNSIGNED-PAYLOAD-TRAILER` または `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` の場合、`x-amz-trailer` リクエストヘッダーでトレーラーに送信するチェックサムアルゴリズムを宣言する必要があります。サポートされているアルゴリズムは次のとおりです。
+
+| x-amz-trailer 値 | アルゴリズム |
+|---|---|
+| `x-amz-checksum-crc32` | CRC-32 |
+| `x-amz-checksum-crc32c` | CRC-32C |
+| `x-amz-checksum-crc64nvme` | CRC-64/NVME |
+| `x-amz-checksum-sha1` | SHA-1 |
+| `x-amz-checksum-sha256` | SHA-256 |
+
+!!! tip "ヒント"
+    トレーラーヘッダーを使用した署名の計算方法の詳細については、[Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) ドキュメントを参照してください。
+
+{% endif %}
 
 <a id="bucket"></a>
 ## Bucket { #bucket }
