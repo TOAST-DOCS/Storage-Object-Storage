@@ -46,6 +46,49 @@ NHN Cloud 오브젝트 스토리지는 AWS의 오브젝트 스토리지 S3 API�
 오브젝트 스토리지는 Amazon S3 호환 API 호출 시 인증/인가에 S3 API 자격 증명을 사용합니다. S3 API 자격 증명은 NHN Cloud에서 Amazon S3 호환 API를 지원하는 서비스 API를 사용하기 위한 AWS EC2 형식의 인증 키입니다.
 {% if s3_credential_guide_url %}S3 API 자격 증명에 관한 자세한 내용은 [S3 API 자격 증명]($[ s3_credential_guide_url ]$)을 참고합니다.{% endif %}
 
+<a id="create-signature"></a>
+## 서명(signature) 생성 { #create-signature }
+S3 API를 사용하려면 자격 증명을 사용하여 서명을 생성해야 합니다. 서명 방법은 [AWS signature V4](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html) 문서를 참고합니다.
+
+서명 생성에 필요한 정보는 다음과 같습니다.
+
+| 이름 | 값 |
+|---|---|
+| 알고리즘 | AWS4-HMAC-SHA256 |
+| 서명 시각 | YYYYMMDDThhmmssZ 형태 |
+| 서비스 이름 | s3 |
+| 리전 이름 | {% for region in regions %}$[ region.code ]$ - $[ region.name ]${% if not loop.last %}<br>{% endif %}{% endfor %} |
+| 비밀 키 | S3 API 자격 증명 비밀 키 |
+
+{% if release_2026_05 %}
+AWS signature V4 서명 생성 시 `x-amz-content-sha256` 헤더가 필요합니다. 이 헤더는 정규 요청(Canonical Request)에 포함되어 서명 계산에 사용되며, 헤더 값에 따라 페이로드 처리 방식이 결정됩니다. 사용 가능한 값은 다음과 같습니다.
+
+| x-amz-content-sha256 값 | 설명 |
+|---|---|
+| `<페이로드 해시>` | 요청 페이로드 전체의 SHA-256 해시 값을 사용하는 기본 방식 |
+| `UNSIGNED-PAYLOAD` | 페이로드 서명을 생략 |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD` | AWS Chunked Upload 방식(각 청크에 서명 포함) |
+| `STREAMING-UNSIGNED-PAYLOAD-TRAILER` | AWS Chunked Upload 방식(청크 서명 없이 트레일러 헤더 사용) |
+| `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER` | AWS Chunked Upload 방식(각 청크에 서명 포함 + 트레일러 헤더 사용) |
+
+!!! tip "알아두기"
+    자세한 내용은 [Authenticating Requests: Using the Authorization Header(AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html) 문서를 참고합니다.
+
+x-amz-content-sha256 값이 `STREAMING-UNSIGNED-PAYLOAD-TRAILER` 또는 `STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER`인 경우 `x-amz-trailer` 요청 헤더로 트레일러에 전송할 체크섬 알고리즘을 선언해야 합니다. 지원하는 알고리즘은 다음과 같습니다.
+
+| x-amz-trailer 값 | 알고리즘 |
+|---|---|
+| `x-amz-checksum-crc32` | CRC-32 |
+| `x-amz-checksum-crc32c` | CRC-32C |
+| `x-amz-checksum-crc64nvme` | CRC-64/NVME |
+| `x-amz-checksum-sha1` | SHA-1 |
+| `x-amz-checksum-sha256` | SHA-256 |
+
+!!! tip "알아두기"
+    트레일러 헤더를 사용한 서명 계산 방법에 관한 자세한 내용은 [Signature calculations for trailing headers(chunked uploads)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming-trailers.html) 문서를 참고합니다.
+
+{% endif %}
+
 <a id="bucket"></a>
 ## 버킷(Bucket) { #bucket }
 
