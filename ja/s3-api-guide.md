@@ -1,6 +1,6 @@
 <!-- machine_translated: true -->
 
-<!-- pre-align:aligned sig=16de6192510c -->
+<!-- pre-align:aligned sig=c8f91552cdc2 -->
 
 {% include-markdown '../_object-storage-vars.md' %}
 
