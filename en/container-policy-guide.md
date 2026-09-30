@@ -38,6 +38,7 @@ The functions of each top-level key are as follows.
 | `ip_acl` | IP access control (IP ACL) | Sets IP-based access control. |
 | `cors` | Cross-Origin Resource Sharing (CORS) | Manages CORS settings such as allowed origins. |
 | `lock` | Object lock | Sets the object lock (WORM) lock cycle. |
+
 {% else %}
 ```json
 {
@@ -79,6 +80,7 @@ X-Auth-Token: {token-id}
 | Account | URL | String | Y | Storage Account |
 | Container | URL | String | Y | Container name |
 | policy | Query | String | Y | Query parameter for policy lookup{% if release_2026_08 %}<br>If no value is specified, the full policy document is returned. If a top-level key for a specific feature is specified, only the policy for that feature is returned.{% else %} (used without a value){% endif %} |
+
 <a id="get-container-policy-response"></a>
 #### Response
 
@@ -223,6 +225,7 @@ Content-Type: application/json
 | Account | URL | String | Y | Storage Account |
 | Container | URL | String | Y | Container name |
 | - | Body | JSON | Y | Policy document to set |
+
 <a id="set-container-policy-response"></a>
 #### Response
 
@@ -376,6 +379,7 @@ Use the `acl` key of the container policy document to configure container access
 | Read | `read` | Allows querying container information and object information, and downloading objects. |
 | Write | `write` | Allows change requests such as uploading and deleting objects. |
 | View | `view` | Allows listing objects in the container. |
+
 The `read`, `write`, and `view` in the policy document correspond to the `X-Container-Read`, `X-Container-Write`, and `X-Container-View` properties of a container, respectively. For more information about each permission, see [Access Policy Configuration Guide](acl-guide/#role-based-access-api).
 
 <br>
@@ -549,6 +553,7 @@ The structure of the CORS policy document is as follows.
 | `allow_origins` | Array | N | List of origins to allow | Max. 100 items<br>Cannot include a blank space in each entry. |
 | `max_age` | Integer | N | Preflight response cache time | In seconds, an integer of 0 or greater |
 | `expose_headers` | Array | N | List of response headers to expose to the browser | Max. 100 items<br>Cannot include a blank space in each item. |
+
 <a id="cors-schema-application-example"></a>
 #### Application Example
 
@@ -590,6 +595,7 @@ The structure of the Object Lock policy document is as follows.
 | Field | Format | Required | Description | Note |
 |---|---|---|---|---|
 | `days` | Integer | Y | Object lock cycle | In days, from 0 to 36,500 days (max. 100 years) |
+
 <a id="lock-schema-application-rules"></a>
 #### Application Rules
 

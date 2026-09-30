@@ -38,6 +38,7 @@
 | `ip_acl` | IP アクセス制御 (IP ACL) | IP ベースのアクセス制御を設定します。 |
 | `cors` | クロスオリジンリソース共有 (CORS) | 許可オリジンなどの CORS 設定を管理します。 |
 | `lock` | オブジェクトロック | オブジェクトロック (WORM) のロック期間を設定します。 |
+
 {% else %}
 ```json
 {
@@ -79,6 +80,7 @@ X-Auth-Token: {token-id}
 | Account | URL | String | Y | ストレージアカウント |
 | Container | URL | String | Y | コンテナ名 |
 | policy | Query | String | Y | ポリシー照会のためのクエリパラメータ{% if release_2026_08 %}<br>値を指定しない場合は全ポリシードキュメントを、機能別の最上位キーを指定した場合は該当機能のポリシーのみ照会します。{% else %} (値なしで使用){% endif %} |
+
 <a id="get-container-policy-response"></a>
 #### レスポンス
 
@@ -223,6 +225,7 @@ Content-Type: application/json
 | Account | URL | String | Y | ストレージアカウント |
 | Container | URL | String | Y | コンテナ名 |
 | - | Body | JSON | Y | 設定するポリシードキュメント |
+
 <a id="set-container-policy-response"></a>
 #### レスポンス
 
@@ -376,6 +379,7 @@ Content-Type: application/json
 | 読み取り | `read` | コンテナ情報とオブジェクト情報の照会およびダウンロードを許可します。 |
 | 書き込み | `write` | オブジェクトのアップロード、削除などの変更リクエストを許可します。 |
 | 照会 | `view` | コンテナのオブジェクト一覧の照会を許可します。 |
+
 ポリシードキュメントの `read`、`write`、`view` はそれぞれ、コンテナの `X-Container-Read`、`X-Container-Write`、`X-Container-View` 属性に対応します。各権限の詳細については、「[アクセスポリシー設定ガイド](acl-guide/#role-based-access-api)」を参照してください。
 
 <br>
@@ -549,6 +553,7 @@ CORS ポリシードキュメントの構造は次のとおりです。
 | `allow_origins` | Array | N | 許可するオリジン (Origin) のリスト | 最大 100 件<br>各項目にスペースを含めることはできません。 |
 | `max_age` | Integer | N | プリフライトレスポンスのキャッシュ時間 | 秒単位、0以上の整数 |
 | `expose_headers` | Array | N | ブラウザに公開するレスポンスヘッダーのリスト | 最大 100 個<br>各項目に空白を含めることはできません。 |
+
 <a id="cors-schema-application-example"></a>
 #### 適用例
 
@@ -590,6 +595,7 @@ CORS ポリシードキュメントの構造は次のとおりです。
 | フィールド | 形式 | 必須 | 説明 | 備考 |
 |---|---|---|---|---|
 | `days` | Integer | Y | オブジェクトロック期間 | 日単位、0〜36,500日（最大100年） |
+
 <a id="lock-schema-application-rules"></a>
 #### 適用ルール
 
